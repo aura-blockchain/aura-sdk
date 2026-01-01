@@ -124,20 +124,39 @@ describe('Security Integration Tests', () => {
     });
 
     it('should prevent time-based replay attacks', async () => {
-      // Create QR with short expiration
+      // Strategy: Create QR with longer initial expiration, measure first verification time,
+      // then wait enough to ensure expiration, accounting for CI timing variance
       const now = Math.floor(Date.now() / 1000);
+      const expirationTime = now + 10; // 10 seconds to ensure first verification completes
       const shortExpQR = encodeQRCodeData(
         createMockQRCodeData({
-          exp: now + 2, // 2 seconds - shorter for faster test
+          exp: expirationTime,
           vcs: ['vc_time_replay'],
         })
       );
 
+      // First verification should succeed (not expired yet)
+      const verifyStartTime = Date.now();
       const result1 = await verifier.verify({ qrCodeData: shortExpQR });
-      expect(result1.isValid).toBe(true);
+      const verifyDuration = Date.now() - verifyStartTime;
 
-      // Wait for expiration with margin for timing precision
-      await new Promise((resolve) => setTimeout(resolve, 4000));
+      expect(result1.isValid).toBe(true);
+      expect(result1.expiresAt).toBeInstanceOf(Date);
+
+      // Calculate wait time: time until expiration + safety margin
+      const currentTime = Math.floor(Date.now() / 1000);
+      const timeUntilExpiration = Math.max(0, expirationTime - currentTime);
+      // Add 3 second safety margin: 1s for timer resolution, 1s for CI variance, 1s for strict > comparison
+      const safetyMargin = 3;
+      const waitTime = (timeUntilExpiration + safetyMargin) * 1000;
+
+      // Wait for expiration
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
+
+      // Verify we've actually passed the expiration time
+      // Use >= to account for timing precision issues in CI environments
+      const nowAfterWait = Math.floor(Date.now() / 1000);
+      expect(nowAfterWait).toBeGreaterThanOrEqual(expirationTime + 1);
 
       // Create a new verifier instance to simulate a fresh verification attempt
       // This tests time-based expiration separately from nonce replay protection
@@ -158,13 +177,15 @@ describe('Security Integration Tests', () => {
 
       await freshVerifier.initialize();
 
-      // Should now be expired
+      // Second verification should fail (now expired)
       const result2 = await freshVerifier.verify({ qrCodeData: shortExpQR });
       expect(result2.isValid).toBe(false);
       expect(result2.verificationError).toContain('expired');
+      expect(result2.expiresAt).toBeInstanceOf(Date);
+      expect(result2.expiresAt.getTime()).toBe(expirationTime * 1000);
 
       await freshVerifier.destroy();
-    }, 15000);
+    }, 25000); // Increased timeout to 25s to handle slow CI environments
   });
 
   describe('Expired Credential Rejection', () => {
