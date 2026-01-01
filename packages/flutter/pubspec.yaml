@@ -1,0 +1,44 @@
+name: aura_verifier
+description: Flutter SDK for verifying Aura blockchain credentials. Verify age, identity, and other credentials with a simple API.
+version: 1.0.0
+homepage: https://github.com/aura-blockchain/aura-verifier-sdk
+repository: https://github.com/aura-blockchain/aura-verifier-sdk
+issue_tracker: https://github.com/aura-blockchain/aura-verifier-sdk/issues
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.1.0
+  shared_preferences: ^2.2.2
+  mobile_scanner: ^4.0.0
+  path_provider: ^2.1.0
+  crypto: ^3.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  mockito: ^5.4.0
+  build_runner: ^2.4.0
+
+flutter:
+  # This package does not include any assets or fonts
+
+platforms:
+  android:
+  ios:
+  web:
+  macos:
+  linux:
+  windows:
+
+topics:
+  - blockchain
+  - identity
+  - verification
+  - credentials
+  - aura

@@ -1,0 +1,661 @@
+openapi: 3.1.0
+info:
+  title: Aura Verifier API
+  description: |
+    REST API for the Aura Network Third-Party Verifier SDK.
+
+    This API allows businesses to verify Aura blockchain credentials for:
+    - Age verification (21+, 18+)
+    - Identity verification
+    - Trust scoring
+    - Credential status checking
+
+    ## Authentication
+
+    API requests require an API key passed in the `X-API-Key` header.
+
+    ## Rate Limits
+
+    - Standard tier: 100 requests/minute
+    - Business tier: 1,000 requests/minute
+    - Enterprise tier: Unlimited
+
+    ## Networks
+
+    - **Mainnet**: Production network (`https://api.aura.network`)
+    - **Testnet**: Testing network (`https://api.testnet.aura.network`)
+  version: 1.0.0
+  contact:
+    name: Aura Network Developer Support
+    email: dev@aura.network
+    url: https://docs.aura.network
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.aura.network/v1
+    description: Mainnet Production Server
+  - url: https://api.testnet.aura.network/v1
+    description: Testnet Server
+  - url: http://localhost:3000/v1
+    description: Local Development Server
+
+tags:
+  - name: Verification
+    description: Credential verification endpoints
+  - name: Credentials
+    description: Credential status and information
+  - name: DID
+    description: Decentralized Identifier resolution
+  - name: Health
+    description: Service health and status
+
+paths:
+  /verify:
+    post:
+      tags:
+        - Verification
+      summary: Verify a QR code presentation
+      description: |
+        Verifies a credential presentation from a QR code. This is the main
+        verification endpoint used to validate age, identity, and other claims.
+      operationId: verifyPresentation
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationRequest'
+            examples:
+              ageVerification:
+                summary: Age verification request
+                value:
+                  qr_code_data: "aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXNfMTIzIiwiaCI6ImRpZDphdXJhOm1haW5uZXQ6YWJjMTIzIiwidmNzIjpbInZjXzQ1NiJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTY4OTYwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ=="
+                  required_vc_types:
+                    - AGE_OVER_21
+              identityVerification:
+                summary: Identity verification request
+                value:
+                  qr_code_data: "aura://verify?data=..."
+                  required_vc_types:
+                    - KYC_VERIFICATION
+                    - PROOF_OF_HUMANITY
+      responses:
+        '200':
+          description: Verification completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResult'
+              examples:
+                success:
+                  summary: Successful verification
+                  value:
+                    is_valid: true
+                    holder_did: "did:aura:mainnet:abc123def456"
+                    presentation_id: "pres_123"
+                    verified_at: "2025-01-15T10:30:00Z"
+                    expires_at: "2025-01-15T10:35:00Z"
+                    signature_valid: true
+                    verification_method: "online"
+                    network_latency_ms: 145
+                    vc_details:
+                      - vc_id: "vc_456"
+                        vc_type: "AGE_OVER_21"
+                        issuer_did: "did:aura:mainnet:issuer789"
+                        status: "ACTIVE"
+                        issued_at: "2024-06-15T00:00:00Z"
+                    attributes:
+                      age_over_21: true
+                      age_over_18: true
+                    audit_id: "audit_abc123"
+                failed:
+                  summary: Failed verification
+                  value:
+                    is_valid: false
+                    holder_did: "did:aura:mainnet:xyz789"
+                    presentation_id: "pres_456"
+                    verification_error: "Credential has been revoked"
+                    error_code: "CREDENTIAL_REVOKED"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /verify/age-21:
+    post:
+      tags:
+        - Verification
+      summary: Quick age 21+ verification
+      description: |
+        Convenience endpoint for age 21+ verification.
+        Returns a simple boolean result.
+      operationId: verifyAge21Plus
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - qr_code_data
+              properties:
+                qr_code_data:
+                  type: string
+                  description: QR code data (URL or base64)
+      responses:
+        '200':
+          description: Age verification result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_over_21:
+                    type: boolean
+                  verified_at:
+                    type: string
+                    format: date-time
+                  audit_id:
+                    type: string
+
+  /verify/age-18:
+    post:
+      tags:
+        - Verification
+      summary: Quick age 18+ verification
+      description: Convenience endpoint for age 18+ verification.
+      operationId: verifyAge18Plus
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - qr_code_data
+              properties:
+                qr_code_data:
+                  type: string
+      responses:
+        '200':
+          description: Age verification result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_over_18:
+                    type: boolean
+                  verified_at:
+                    type: string
+                    format: date-time
+                  audit_id:
+                    type: string
+
+  /verify/human:
+    post:
+      tags:
+        - Verification
+      summary: Verify human (anti-bot)
+      description: |
+        Verifies that the credential holder is a verified human.
+        Useful for preventing bot attacks and ensuring authentic users.
+      operationId: verifyHuman
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - qr_code_data
+              properties:
+                qr_code_data:
+                  type: string
+      responses:
+        '200':
+          description: Human verification result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_human:
+                    type: boolean
+                  verified_at:
+                    type: string
+                    format: date-time
+                  audit_id:
+                    type: string
+
+  /verify/batch:
+    post:
+      tags:
+        - Verification
+      summary: Batch verify multiple presentations
+      description: |
+        Verify multiple credential presentations in a single request.
+        Maximum 50 presentations per batch.
+      operationId: batchVerify
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - presentations
+              properties:
+                presentations:
+                  type: array
+                  maxItems: 50
+                  items:
+                    $ref: '#/components/schemas/VerificationRequest'
+      responses:
+        '200':
+          description: Batch verification results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VerificationResult'
+                  total:
+                    type: integer
+                  successful:
+                    type: integer
+                  failed:
+                    type: integer
+
+  /credentials/{vcId}/status:
+    get:
+      tags:
+        - Credentials
+      summary: Get credential status
+      description: Check the current status of a verifiable credential.
+      operationId: getCredentialStatus
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: vcId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Verifiable Credential ID
+      responses:
+        '200':
+          description: Credential status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CredentialStatus'
+        '404':
+          description: Credential not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /did/{did}:
+    get:
+      tags:
+        - DID
+      summary: Resolve DID document
+      description: |
+        Resolve a Decentralized Identifier (DID) to its DID Document.
+        Supports `did:aura:` method.
+      operationId: resolveDID
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: did
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^did:aura:(mainnet|testnet|local):[a-zA-Z0-9]+$'
+          description: DID to resolve
+          example: "did:aura:mainnet:abc123def456"
+      responses:
+        '200':
+          description: DID Document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DIDDocument'
+        '404':
+          description: DID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /score:
+    post:
+      tags:
+        - Verification
+      summary: Get Aura Trust Score
+      description: |
+        Calculate and return the Aura Trust Score for a credential holder.
+        Score ranges from 0-100 based on credential diversity, on-chain presence,
+        and verification history.
+      operationId: getAuraScore
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - qr_code_data
+              properties:
+                qr_code_data:
+                  type: string
+      responses:
+        '200':
+          description: Aura Score result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  score:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                  breakdown:
+                    type: object
+                    properties:
+                      base_score:
+                        type: integer
+                      credential_diversity:
+                        type: integer
+                      on_chain_presence:
+                        type: integer
+                      signature_validity:
+                        type: integer
+                  verified_at:
+                    type: string
+                    format: date-time
+
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Check if the API is healthy and operational.
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, degraded, unhealthy]
+                  version:
+                    type: string
+                  network:
+                    type: string
+                  blockchain_connected:
+                    type: boolean
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /health/ready:
+    get:
+      tags:
+        - Health
+      summary: Readiness check
+      description: Check if the API is ready to accept requests.
+      operationId: readinessCheck
+      responses:
+        '200':
+          description: Service is ready
+        '503':
+          description: Service is not ready
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication
+
+  schemas:
+    VerificationRequest:
+      type: object
+      required:
+        - qr_code_data
+      properties:
+        qr_code_data:
+          type: string
+          description: |
+            QR code data. Can be:
+            - Full URL format: `aura://verify?data=<base64>`
+            - Raw base64 encoded JSON
+        verifier_address:
+          type: string
+          description: Optional verifier's Aura address for audit
+        required_vc_types:
+          type: array
+          items:
+            type: string
+            enum:
+              - PROOF_OF_HUMANITY
+              - AGE_OVER_18
+              - AGE_OVER_21
+              - GOVERNMENT_ID
+              - PASSPORT
+              - KYC_VERIFICATION
+              - BIOMETRIC
+          description: Required credential types for verification to pass
+        max_credential_age:
+          type: integer
+          description: Maximum credential age in seconds
+        offline_only:
+          type: boolean
+          default: false
+          description: Only use cached/offline verification
+
+    VerificationResult:
+      type: object
+      properties:
+        is_valid:
+          type: boolean
+          description: Whether the verification passed
+        holder_did:
+          type: string
+          description: DID of the credential holder
+        presentation_id:
+          type: string
+          description: Unique presentation identifier
+        verified_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        signature_valid:
+          type: boolean
+        verification_method:
+          type: string
+          enum: [online, offline, cached]
+        network_latency_ms:
+          type: integer
+        vc_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/VCDetail'
+        attributes:
+          $ref: '#/components/schemas/DiscloseableAttributes'
+        verification_error:
+          type: string
+          description: Error message if verification failed
+        error_code:
+          type: string
+          description: Machine-readable error code
+        audit_id:
+          type: string
+          description: Unique audit trail identifier
+
+    VCDetail:
+      type: object
+      properties:
+        vc_id:
+          type: string
+        vc_type:
+          type: string
+        issuer_did:
+          type: string
+        status:
+          type: string
+          enum: [ACTIVE, REVOKED, EXPIRED, SUSPENDED, PENDING]
+        issued_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        on_chain:
+          type: boolean
+
+    DiscloseableAttributes:
+      type: object
+      properties:
+        age_over_21:
+          type: boolean
+        age_over_18:
+          type: boolean
+        is_human:
+          type: boolean
+        country:
+          type: string
+        kyc_level:
+          type: integer
+        trust_score:
+          type: integer
+
+    CredentialStatus:
+      type: object
+      properties:
+        vc_id:
+          type: string
+        status:
+          type: string
+          enum: [ACTIVE, REVOKED, EXPIRED, SUSPENDED, PENDING, UNKNOWN]
+        issuer_did:
+          type: string
+        holder_did:
+          type: string
+        issued_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        revoked_at:
+          type: string
+          format: date-time
+        revocation_reason:
+          type: string
+        on_chain:
+          type: boolean
+        merkle_root:
+          type: string
+
+    DIDDocument:
+      type: object
+      properties:
+        '@context':
+          type: array
+          items:
+            type: string
+        id:
+          type: string
+        verificationMethod:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+              controller:
+                type: string
+              publicKeyMultibase:
+                type: string
+        authentication:
+          type: array
+          items:
+            type: string
+        service:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+              serviceEndpoint:
+                type: string
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+        request_id:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+security:
+  - ApiKeyAuth: []

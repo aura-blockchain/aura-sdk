@@ -1,0 +1,504 @@
+{
+  "info": {
+    "_postman_id": "aura-verifier-api-v1",
+    "name": "Aura Verifier API",
+    "description": "Complete Postman collection for the Aura Network Third-Party Verifier SDK REST API.\n\n## Overview\n\nThis collection provides endpoints for:\n- **Verification**: Verify credential presentations from QR codes\n- **Age Checks**: Quick 21+ and 18+ verification\n- **Human Verification**: Anti-bot checks\n- **Batch Operations**: Verify multiple presentations\n- **Credential Status**: Check credential validity\n- **DID Resolution**: Resolve Decentralized Identifiers\n- **Trust Score**: Get Aura Trust Score\n\n## Authentication\n\nAll requests require an API key in the `X-API-Key` header.\n\nSet the `api_key` variable in your environment.\n\n## Networks\n\n- **Mainnet**: `https://api.aura.network/v1`\n- **Testnet**: `https://api.testnet.aura.network/v1`\n- **Local**: `http://localhost:3000/v1`",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Verification",
+      "description": "Credential verification endpoints",
+      "item": [
+        {
+          "name": "Verify Presentation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"qr_code_data\": \"{{qr_code_data}}\",\n  \"required_vc_types\": [\"AGE_OVER_21\"],\n  \"verifier_address\": \"{{verifier_address}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/verify",
+              "host": ["{{base_url}}"],
+              "path": ["verify"]
+            },
+            "description": "Verifies a credential presentation from a QR code. This is the main verification endpoint used to validate age, identity, and other claims."
+          },
+          "response": [
+            {
+              "name": "Success - Valid Credential",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"qr_code_data\": \"aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXNfMTIzIiwiaCI6ImRpZDphdXJhOm1haW5uZXQ6YWJjMTIzIiwidmNzIjpbInZjXzQ1NiJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTY4OTYwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ==\",\n  \"required_vc_types\": [\"AGE_OVER_21\"]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/verify",
+                  "host": ["{{base_url}}"],
+                  "path": ["verify"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"is_valid\": true,\n  \"holder_did\": \"did:aura:mainnet:abc123def456\",\n  \"presentation_id\": \"pres_123\",\n  \"verified_at\": \"2025-01-15T10:30:00Z\",\n  \"expires_at\": \"2025-01-15T10:35:00Z\",\n  \"signature_valid\": true,\n  \"verification_method\": \"online\",\n  \"network_latency_ms\": 145,\n  \"vc_details\": [\n    {\n      \"vc_id\": \"vc_456\",\n      \"vc_type\": \"AGE_OVER_21\",\n      \"issuer_did\": \"did:aura:mainnet:issuer789\",\n      \"status\": \"ACTIVE\",\n      \"issued_at\": \"2024-06-15T00:00:00Z\"\n    }\n  ],\n  \"attributes\": {\n    \"age_over_21\": true,\n    \"age_over_18\": true\n  },\n  \"audit_id\": \"audit_abc123\"\n}"
+            },
+            {
+              "name": "Failed - Credential Revoked",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"qr_code_data\": \"aura://verify?data=...\",\n  \"required_vc_types\": [\"AGE_OVER_21\"]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/verify",
+                  "host": ["{{base_url}}"],
+                  "path": ["verify"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"is_valid\": false,\n  \"holder_did\": \"did:aura:mainnet:xyz789\",\n  \"presentation_id\": \"pres_456\",\n  \"verification_error\": \"Credential has been revoked\",\n  \"error_code\": \"CREDENTIAL_REVOKED\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify Age 21+",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"qr_code_data\": \"{{qr_code_data}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/verify/age-21",
+              "host": ["{{base_url}}"],
+              "path": ["verify", "age-21"]
+            },
+            "description": "Quick age 21+ verification. Returns a simple boolean result. Ideal for bars, liquor stores, and cannabis dispensaries."
+          },
+          "response": [
+            {
+              "name": "Success - Over 21",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"is_over_21\": true,\n  \"verified_at\": \"2025-01-15T10:30:00Z\",\n  \"audit_id\": \"audit_def456\"\n}"
+            },
+            {
+              "name": "Success - Under 21",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"is_over_21\": false,\n  \"verified_at\": \"2025-01-15T10:30:00Z\",\n  \"audit_id\": \"audit_ghi789\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify Age 18+",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"qr_code_data\": \"{{qr_code_data}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/verify/age-18",
+              "host": ["{{base_url}}"],
+              "path": ["verify", "age-18"]
+            },
+            "description": "Quick age 18+ verification. Returns a simple boolean result. Ideal for adult content, tobacco, and voting verification."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"is_over_18\": true,\n  \"verified_at\": \"2025-01-15T10:30:00Z\",\n  \"audit_id\": \"audit_jkl012\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify Human",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"qr_code_data\": \"{{qr_code_data}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/verify/human",
+              "host": ["{{base_url}}"],
+              "path": ["verify", "human"]
+            },
+            "description": "Verifies that the credential holder is a verified human. Useful for preventing bot attacks, Sybil resistance, and ensuring authentic users."
+          },
+          "response": [
+            {
+              "name": "Success - Is Human",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"is_human\": true,\n  \"verified_at\": \"2025-01-15T10:30:00Z\",\n  \"audit_id\": \"audit_mno345\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Batch Verify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"presentations\": [\n    {\n      \"qr_code_data\": \"{{qr_code_data_1}}\",\n      \"required_vc_types\": [\"AGE_OVER_21\"]\n    },\n    {\n      \"qr_code_data\": \"{{qr_code_data_2}}\",\n      \"required_vc_types\": [\"PROOF_OF_HUMANITY\"]\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/verify/batch",
+              "host": ["{{base_url}}"],
+              "path": ["verify", "batch"]
+            },
+            "description": "Verify multiple credential presentations in a single request. Maximum 50 presentations per batch."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"results\": [\n    {\n      \"is_valid\": true,\n      \"holder_did\": \"did:aura:mainnet:abc123\",\n      \"presentation_id\": \"pres_001\"\n    },\n    {\n      \"is_valid\": true,\n      \"holder_did\": \"did:aura:mainnet:def456\",\n      \"presentation_id\": \"pres_002\"\n    }\n  ],\n  \"total\": 2,\n  \"successful\": 2,\n  \"failed\": 0\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Aura Trust Score",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"qr_code_data\": \"{{qr_code_data}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/score",
+              "host": ["{{base_url}}"],
+              "path": ["score"]
+            },
+            "description": "Calculate and return the Aura Trust Score for a credential holder. Score ranges from 0-100 based on credential diversity, on-chain presence, and verification history."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"score\": 87,\n  \"breakdown\": {\n    \"base_score\": 50,\n    \"credential_diversity\": 15,\n    \"on_chain_presence\": 12,\n    \"signature_validity\": 10\n  },\n  \"verified_at\": \"2025-01-15T10:30:00Z\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Credentials",
+      "description": "Credential status and information",
+      "item": [
+        {
+          "name": "Get Credential Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/credentials/{{vc_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["credentials", "{{vc_id}}", "status"]
+            },
+            "description": "Check the current status of a verifiable credential."
+          },
+          "response": [
+            {
+              "name": "Success - Active",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"vc_id\": \"vc_456\",\n  \"status\": \"ACTIVE\",\n  \"issuer_did\": \"did:aura:mainnet:issuer789\",\n  \"holder_did\": \"did:aura:mainnet:holder123\",\n  \"issued_at\": \"2024-06-15T00:00:00Z\",\n  \"expires_at\": \"2025-06-15T00:00:00Z\",\n  \"on_chain\": true,\n  \"merkle_root\": \"0xabc123...\"\n}"
+            },
+            {
+              "name": "Success - Revoked",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"vc_id\": \"vc_789\",\n  \"status\": \"REVOKED\",\n  \"issuer_did\": \"did:aura:mainnet:issuer789\",\n  \"holder_did\": \"did:aura:mainnet:holder456\",\n  \"issued_at\": \"2024-03-01T00:00:00Z\",\n  \"revoked_at\": \"2024-12-01T00:00:00Z\",\n  \"revocation_reason\": \"Identity compromise detected\",\n  \"on_chain\": true\n}"
+            },
+            {
+              "name": "Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"error\": {\n    \"code\": \"CREDENTIAL_NOT_FOUND\",\n    \"message\": \"Credential with ID 'vc_unknown' not found\"\n  },\n  \"request_id\": \"req_xyz789\",\n  \"timestamp\": \"2025-01-15T10:30:00Z\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DID",
+      "description": "Decentralized Identifier resolution",
+      "item": [
+        {
+          "name": "Resolve DID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/did/{{did}}",
+              "host": ["{{base_url}}"],
+              "path": ["did", "{{did}}"]
+            },
+            "description": "Resolve a Decentralized Identifier (DID) to its DID Document. Supports `did:aura:` method."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"@context\": [\n    \"https://www.w3.org/ns/did/v1\",\n    \"https://w3id.org/security/suites/ed25519-2020/v1\"\n  ],\n  \"id\": \"did:aura:mainnet:abc123def456\",\n  \"verificationMethod\": [\n    {\n      \"id\": \"did:aura:mainnet:abc123def456#key-1\",\n      \"type\": \"Ed25519VerificationKey2020\",\n      \"controller\": \"did:aura:mainnet:abc123def456\",\n      \"publicKeyMultibase\": \"z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK\"\n    }\n  ],\n  \"authentication\": [\n    \"did:aura:mainnet:abc123def456#key-1\"\n  ],\n  \"service\": [\n    {\n      \"id\": \"did:aura:mainnet:abc123def456#vc-service\",\n      \"type\": \"VerifiableCredentialService\",\n      \"serviceEndpoint\": \"https://vc.aura.network/abc123def456\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"error\": {\n    \"code\": \"DID_NOT_FOUND\",\n    \"message\": \"DID 'did:aura:mainnet:unknown' not found\"\n  },\n  \"request_id\": \"req_abc123\",\n  \"timestamp\": \"2025-01-15T10:30:00Z\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "description": "Service health and status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Check if the API is healthy and operational."
+          },
+          "response": [
+            {
+              "name": "Healthy",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"healthy\",\n  \"version\": \"1.0.0\",\n  \"network\": \"mainnet\",\n  \"blockchain_connected\": true,\n  \"timestamp\": \"2025-01-15T10:30:00Z\"\n}"
+            },
+            {
+              "name": "Degraded",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"status\": \"degraded\",\n  \"version\": \"1.0.0\",\n  \"network\": \"mainnet\",\n  \"blockchain_connected\": false,\n  \"timestamp\": \"2025-01-15T10:30:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Readiness Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health/ready",
+              "host": ["{{base_url}}"],
+              "path": ["health", "ready"]
+            },
+            "description": "Check if the API is ready to accept requests. Returns 200 if ready, 503 if not."
+          },
+          "response": [
+            {
+              "name": "Ready",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "body": "OK"
+            },
+            {
+              "name": "Not Ready",
+              "status": "Service Unavailable",
+              "code": 503,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"error\": {\n    \"code\": \"SERVICE_UNAVAILABLE\",\n    \"message\": \"Service is starting up\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set timestamp for requests",
+          "pm.environment.set('request_timestamp', new Date().toISOString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Common response tests",
+          "pm.test('Response time is less than 500ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(500);",
+          "});",
+          "",
+          "pm.test('Content-Type is application/json', function () {",
+          "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+          "});"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.aura.network/v1",
+      "type": "string"
+    },
+    {
+      "key": "api_key",
+      "value": "your-api-key-here",
+      "type": "string"
+    },
+    {
+      "key": "qr_code_data",
+      "value": "aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXNfMTIzIiwiaCI6ImRpZDphdXJhOm1haW5uZXQ6YWJjMTIzIiwidmNzIjpbInZjXzQ1NiJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTY4OTYwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ==",
+      "type": "string"
+    },
+    {
+      "key": "verifier_address",
+      "value": "aura1verifier123...",
+      "type": "string"
+    },
+    {
+      "key": "vc_id",
+      "value": "vc_456",
+      "type": "string"
+    },
+    {
+      "key": "did",
+      "value": "did:aura:mainnet:abc123def456",
+      "type": "string"
+    }
+  ]
+}

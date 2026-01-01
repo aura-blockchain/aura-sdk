@@ -1,0 +1,39 @@
+{
+  "name": "@aura-network/verifier-integrations",
+  "version": "1.0.0",
+  "description": "Integration adapters for Aura Verifier SDK",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "aura",
+    "verifier",
+    "integration",
+    "webhook",
+    "pos",
+    "audit",
+    "compliance"
+  ],
+  "author": "Aura Network",
+  "license": "MIT",
+  "dependencies": {
+    "@aura-network/verifier-sdk": "workspace:*",
+    "node-fetch": "^3.3.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/uuid": "^9.0.7",
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}

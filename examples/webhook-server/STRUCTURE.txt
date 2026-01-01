@@ -1,0 +1,35 @@
+.
+|-- CHANGELOG.md
+|-- DEPLOYMENT.md
+|-- Dockerfile
+|-- MONITORING.md
+|-- QUICKSTART.md
+|-- README.md
+|-- SECURITY.md
+|-- STRUCTURE.txt
+|-- docker-compose.yml
+|-- index.md
+|-- nginx.conf.example
+|-- package.json
+|-- scripts
+|   |-- generate-secret.ts
+|   `-- test-webhook.ts
+|-- src
+|   |-- index.ts
+|   |-- middleware
+|   |   |-- ipAllowlist.ts
+|   |   `-- validateSignature.ts
+|   |-- routes
+|   |   |-- analytics.ts
+|   |   `-- webhooks.ts
+|   |-- services
+|   |   |-- database.ts
+|   |   `-- eventHandler.ts
+|   |-- types
+|   |   `-- webhook.ts
+|   `-- utils
+|       |-- crypto.ts
+|       `-- logger.ts
+`-- tsconfig.json
+
+8 directories, 25 files

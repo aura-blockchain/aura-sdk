@@ -1,0 +1,85 @@
+{
+  "name": "@aura-network/verifier-sdk-react",
+  "version": "1.0.0",
+  "description": "React integration for Aura Network Verifier SDK",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix"
+  },
+  "dependencies": {
+    "@aura-network/verifier-sdk": "workspace:*",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@types/node": "^20.11.5",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@testing-library/jest-dom": "^6.2.0",
+    "@vitest/coverage-v8": "^1.2.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "jsdom": "^24.0.0"
+  },
+  "keywords": [
+    "aura",
+    "blockchain",
+    "verifier",
+    "react",
+    "hooks",
+    "components",
+    "sdk",
+    "typescript",
+    "qr-code",
+    "verification"
+  ],
+  "author": "Aura Network",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:aura-blockchain/aura-verifier-sdk.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/aura-blockchain/aura-verifier-sdk/issues"
+  },
+  "homepage": "https://github.com/aura-blockchain/aura-verifier-sdk#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

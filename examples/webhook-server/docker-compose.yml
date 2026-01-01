@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  webhook-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aura-webhook-server
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET:-change-this-secret-in-production}
+      - DATABASE_PATH=/app/data/webhooks.db
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_FILE_PATH=/app/logs/webhook-server.log
+      - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS:-900000}
+      - RATE_LIMIT_MAX_REQUESTS=${RATE_LIMIT_MAX_REQUESTS:-100}
+      - ALLOWED_IPS=${ALLOWED_IPS:-}
+      - ADMIN_API_KEY=${ADMIN_API_KEY:-}
+    volumes:
+      # Persist database
+      - webhook-data:/app/data
+      # Persist logs
+      - webhook-logs:/app/logs
+    networks:
+      - webhook-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+  # Optional: Add a reverse proxy (nginx) for production
+  # Uncomment this section if you want nginx as reverse proxy
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: aura-webhook-nginx
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./ssl:/etc/nginx/ssl:ro
+  #   depends_on:
+  #     - webhook-server
+  #   networks:
+  #     - webhook-network
+
+volumes:
+  webhook-data:
+    driver: local
+  webhook-logs:
+    driver: local
+
+networks:
+  webhook-network:
+    driver: bridge

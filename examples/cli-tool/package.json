@@ -1,0 +1,31 @@
+{
+  "name": "aura-verifier-cli-example",
+  "version": "1.0.0",
+  "description": "CLI tool example for Aura Verifier SDK",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "aura-verify": "./dist/index.js"
+  },
+  "scripts": {
+    "start": "node --loader ts-node/esm index.ts",
+    "build": "tsc",
+    "verify": "node --loader ts-node/esm index.ts verify",
+    "status": "node --loader ts-node/esm index.ts status"
+  },
+  "dependencies": {
+    "@aura-network/verifier-sdk": "workspace:*",
+    "commander": "^11.1.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.1",
+    "table": "^6.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

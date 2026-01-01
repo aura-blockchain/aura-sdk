@@ -1,0 +1,26 @@
+{
+  "name": "aura-verifier-offline-example",
+  "version": "1.0.0",
+  "description": "Offline mode example for Aura Verifier SDK",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node --loader ts-node/esm index.ts",
+    "dev": "node --loader ts-node/esm --watch index.ts",
+    "build": "tsc",
+    "sync": "node --loader ts-node/esm index.ts --sync",
+    "offline": "node --loader ts-node/esm index.ts --offline",
+    "clean": "rm -rf .cache"
+  },
+  "dependencies": {
+    "@aura-network/verifier-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

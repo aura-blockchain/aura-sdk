@@ -1,0 +1,11 @@
+# Cache directory
+.cache/
+
+# Build output
+dist/
+
+# Logs
+*.log
+
+# Node modules
+node_modules/
