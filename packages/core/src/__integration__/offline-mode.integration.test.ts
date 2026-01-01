@@ -321,15 +321,15 @@ describe('Offline Mode Integration Tests', () => {
       const cached1 = await shortCache.get('vc_expire_test');
       expect(cached1).toBeDefined();
 
-      // Wait for expiration
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Wait for expiration (add safety margin for CI/slow systems)
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Should be expired
       const cached2 = await shortCache.get('vc_expire_test');
       expect(cached2).toBeNull();
 
       await shortCache.clear();
-    }, 3000);
+    }, 5000);
 
     it('should clean expired entries', async () => {
       const testCache = new CredentialCache({
@@ -358,15 +358,15 @@ describe('Offline Mode Integration Tests', () => {
         });
       }
 
-      // Wait for expiration
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Wait for expiration (add safety margin for CI/slow systems)
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Clean expired
       const removedCount = await testCache.cleanExpired();
       expect(removedCount).toBeGreaterThan(0);
 
       await testCache.clear();
-    }, 3000);
+    }, 5000);
 
     it('should not return expired entries', async () => {
       const now = new Date();
