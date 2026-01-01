@@ -83,8 +83,10 @@ describe('useVerification', () => {
 
     result.current.reset();
 
-    expect(result.current.result).toBeNull();
-    expect(result.current.error).toBeNull();
-    expect(result.current.loading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.result).toBeNull();
+      expect(result.current.error).toBeNull();
+      expect(result.current.loading).toBe(false);
+    });
   });
 });
