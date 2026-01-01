@@ -41,7 +41,7 @@ describe('AURA_NETWORKS', () => {
     expect(AURA_NETWORKS.local).toBeDefined();
     expect(AURA_NETWORKS.local.grpc).toBe('grpc://localhost:9090');
     expect(AURA_NETWORKS.local.rest).toBe('http://localhost:1317');
-    expect(AURA_NETWORKS.local.chainId).toBe('aura-local');
+    expect(AURA_NETWORKS.local.chainId).toBe('aura-local-test');
   });
 
   it('should use HTTPS for mainnet REST endpoint', () => {

@@ -52,7 +52,7 @@ export const AURA_NETWORKS: Record<'mainnet' | 'testnet' | 'local', NetworkConfi
   local: {
     grpc: 'grpc://localhost:9090',
     rest: 'http://localhost:1317',
-    chainId: 'aura-local',
+    chainId: 'aura-local-test',
   },
 };
 

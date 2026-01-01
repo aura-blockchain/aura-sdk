@@ -66,7 +66,7 @@ describe('AuraClient', () => {
       const info = client.getNetworkInfo();
 
       expect(info.network).toBe('local');
-      expect(info.chain_id).toBe('aura-local');
+      expect(info.chain_id).toBe('aura-local-test');
       expect(info.rest_endpoint).toBe('http://localhost:1317');
     });
 
