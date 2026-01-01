@@ -128,7 +128,7 @@ describe('Security Integration Tests', () => {
       const now = Math.floor(Date.now() / 1000);
       const shortExpQR = encodeQRCodeData(
         createMockQRCodeData({
-          exp: now + 5, // 5 seconds
+          exp: now + 2, // 2 seconds - shorter for faster test
           vcs: ['vc_time_replay'],
         })
       );
@@ -136,8 +136,8 @@ describe('Security Integration Tests', () => {
       const result1 = await verifier.verify({ qrCodeData: shortExpQR });
       expect(result1.isValid).toBe(true);
 
-      // Wait for expiration
-      await new Promise((resolve) => setTimeout(resolve, 6000));
+      // Wait for expiration with margin for timing precision
+      await new Promise((resolve) => setTimeout(resolve, 4000));
 
       // Create a new verifier instance to simulate a fresh verification attempt
       // This tests time-based expiration separately from nonce replay protection
