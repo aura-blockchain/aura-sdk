@@ -301,6 +301,7 @@ describe('Offline Mode Integration Tests', () => {
       });
 
       const now = new Date();
+      const futureExpiry = new Date(now.getTime() + 500); // 500ms in future
 
       await shortCache.set('vc_expire_test', {
         vcId: 'vc_expire_test',
@@ -313,7 +314,7 @@ describe('Offline Mode Integration Tests', () => {
         },
         metadata: {
           cachedAt: now,
-          expiresAt: new Date(now.getTime() + 1000), // 1 second
+          expiresAt: futureExpiry,
         },
       });
 
@@ -321,8 +322,8 @@ describe('Offline Mode Integration Tests', () => {
       const cached1 = await shortCache.get('vc_expire_test');
       expect(cached1).toBeDefined();
 
-      // Wait for expiration (add safety margin for CI/slow systems)
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Wait for expiration with generous margin for CI/slow systems
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Should be expired
       const cached2 = await shortCache.get('vc_expire_test');

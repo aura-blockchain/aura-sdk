@@ -34,7 +34,7 @@
     "husky": "^8.0.3",
     "prettier": "^3.2.4",
     "typescript": "^5.3.3",
-    "vitest": "^1.2.1"
+    "vitest": "^4.0.16"
   },
   "repository": {
     "type": "git",
@@ -49,5 +49,10 @@
     "typescript"
   ],
   "author": "Aura Network",
-  "license": "MIT"
+  "license": "MIT",
+  "pnpm": {
+    "overrides": {
+      "esbuild": ">=0.25.0"
+    }
+  }
 }
