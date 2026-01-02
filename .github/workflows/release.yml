@@ -1,0 +1,263 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate Release
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+      tag: ${{ steps.get_version.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from tag
+        id: get_version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG#v}
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Tag: $TAG"
+          echo "Version: $VERSION"
+
+      - name: Validate tag format
+        run: |
+          if [[ ! "${{ steps.get_version.outputs.tag }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+            echo "Invalid tag format. Expected: v1.2.3 or v1.2.3-beta.1"
+            exit 1
+          fi
+
+  build-and-test:
+    name: Build and Test
+    needs: validate
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18, 20]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run linting
+        run: pnpm lint
+
+      - name: Run type checking
+        run: pnpm typecheck
+
+      - name: Build all packages
+        run: pnpm build
+
+      - name: Run tests with coverage
+        run: pnpm test:coverage
+
+      - name: Verify build outputs
+        run: |
+          # Verify core package
+          test -d packages/core/dist || (echo "Core package build failed" && exit 1)
+          test -f packages/core/dist/index.js || (echo "Core index.js not found" && exit 1)
+          test -f packages/core/dist/index.d.ts || (echo "Core index.d.ts not found" && exit 1)
+
+          # Verify other packages exist and have dist folders
+          for pkg in packages/*/; do
+            pkg_name=$(basename "$pkg")
+            if [ "$pkg_name" != "flutter" ]; then
+              if [ -d "$pkg/dist" ] || [ -d "$pkg/lib" ]; then
+                echo "✓ Package $pkg_name built successfully"
+              else
+                echo "⚠ Package $pkg_name might not have built outputs"
+              fi
+            fi
+          done
+
+      - name: Upload build artifacts
+        if: matrix.node == 18
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            packages/*/dist
+            packages/*/lib
+          retention-days: 1
+
+  publish-npm:
+    name: Publish to npm
+    needs: [validate, build-and-test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all packages
+        run: pnpm build
+
+      - name: Verify package versions match tag
+        run: |
+          TAG_VERSION="${{ needs.validate.outputs.version }}"
+          echo "Expected version from tag: $TAG_VERSION"
+
+          # Check each publishable package
+          for pkg_json in packages/*/package.json; do
+            pkg_dir=$(dirname "$pkg_json")
+            pkg_name=$(jq -r '.name' "$pkg_json")
+            pkg_version=$(jq -r '.version' "$pkg_json")
+            is_private=$(jq -r '.private // false' "$pkg_json")
+
+            if [ "$is_private" = "false" ]; then
+              echo "Checking $pkg_name: $pkg_version"
+              if [ "$pkg_version" != "$TAG_VERSION" ]; then
+                echo "ERROR: Version mismatch for $pkg_name"
+                echo "  Package version: $pkg_version"
+                echo "  Tag version: $TAG_VERSION"
+                exit 1
+              fi
+            fi
+          done
+
+          echo "All package versions match tag version ✓"
+
+      - name: Publish to npm with provenance
+        run: pnpm -r publish --access public --no-git-checks --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Generate package list
+        id: packages
+        run: |
+          echo "## Published Packages" > published-packages.md
+          echo "" >> published-packages.md
+          for pkg_json in packages/*/package.json; do
+            pkg_name=$(jq -r '.name' "$pkg_json")
+            pkg_version=$(jq -r '.version' "$pkg_json")
+            is_private=$(jq -r '.private // false' "$pkg_json")
+
+            if [ "$is_private" = "false" ]; then
+              echo "- [\`$pkg_name@$pkg_version\`](https://www.npmjs.com/package/$pkg_name/v/$pkg_version)" >> published-packages.md
+            fi
+          done
+          cat published-packages.md
+
+      - name: Upload package list
+        uses: actions/upload-artifact@v4
+        with:
+          name: published-packages
+          path: published-packages.md
+          retention-days: 1
+
+  create-release:
+    name: Create GitHub Release
+    needs: [validate, publish-npm]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download package list
+        uses: actions/download-artifact@v4
+        with:
+          name: published-packages
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get previous tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          CURRENT_TAG="${{ needs.validate.outputs.tag }}"
+
+          echo "# Release $CURRENT_TAG" > changelog.md
+          echo "" >> changelog.md
+
+          if [ -n "$PREV_TAG" ]; then
+            echo "## What's Changed" >> changelog.md
+            echo "" >> changelog.md
+
+            # Generate commit list between tags
+            git log --pretty=format:"- %s (%h)" "$PREV_TAG..$CURRENT_TAG" >> changelog.md
+            echo "" >> changelog.md
+            echo "" >> changelog.md
+            echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/$PREV_TAG...$CURRENT_TAG" >> changelog.md
+          else
+            echo "## What's Changed" >> changelog.md
+            echo "" >> changelog.md
+            echo "Initial release" >> changelog.md
+          fi
+
+          echo "" >> changelog.md
+          echo "" >> changelog.md
+
+          # Append published packages
+          cat published-packages.md >> changelog.md
+
+          # Display changelog
+          cat changelog.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.validate.outputs.tag }}
+          name: Release ${{ needs.validate.outputs.tag }}
+          body_path: changelog.md
+          draft: false
+          prerelease: ${{ contains(needs.validate.outputs.tag, '-') }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify-failure:
+    name: Notify on Failure
+    needs: [validate, build-and-test, publish-npm, create-release]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Failure notification
+        run: |
+          echo "Release workflow failed for tag ${{ needs.validate.outputs.tag }}"
+          echo "Please check the workflow logs and retry if necessary"
+          exit 1

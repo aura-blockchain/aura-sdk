@@ -341,7 +341,7 @@ describe('Offline Mode Integration Tests', () => {
 
       const now = new Date();
 
-      // Add multiple entries
+      // Add multiple entries that are already expired (set expiresAt in the past)
       for (let i = 0; i < 5; i++) {
         await testCache.set(`vc_clean_${i}`, {
           vcId: `vc_clean_${i}`,
@@ -353,16 +353,13 @@ describe('Offline Mode Integration Tests', () => {
             checkedAt: now,
           },
           metadata: {
-            cachedAt: now,
-            expiresAt: new Date(now.getTime() + 1000),
+            cachedAt: new Date(now.getTime() - 2000), // Cached 2 seconds ago
+            expiresAt: new Date(now.getTime() - 1000), // Already expired 1 second ago
           },
         });
       }
 
-      // Wait for expiration (add safety margin for CI/slow systems)
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Clean expired
+      // Clean expired - no need to wait since entries are already expired
       const removedCount = await testCache.cleanExpired();
       expect(removedCount).toBeGreaterThan(0);
 
