@@ -1,15 +1,6 @@
 # @aura-network/verifier-sdk
 
-Core SDK for Aura Network third-party verifiers.
-
-## Features
-
-- Ed25519 signature verification using `@noble/ed25519`
-- secp256k1 signature verification using `@noble/secp256k1`
-- SHA-256 hashing using `@noble/hashes`
-- Cosmos SDK transaction verification
-- Protobuf message handling
-- Full TypeScript support with strict types
+Core TypeScript SDK for building third-party verifiers on the Aura Network.
 
 ## Installation
 
@@ -17,28 +8,107 @@ Core SDK for Aura Network third-party verifiers.
 npm install @aura-network/verifier-sdk
 ```
 
+## Features
+
+- Ed25519 and secp256k1 signature verification
+- SHA-256, SHA-512, and Keccak-256 hashing
+- QR code parsing and validation
+- Blockchain integration via REST API
+- Offline verification with credential caching
+- Full TypeScript support with strict types
+
 ## Usage
 
 ```typescript
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
-// Example usage (API will be defined in implementation)
 const verifier = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aura.network',
 });
 
-// Verify a signature
-const isValid = await verifier.verifySignature({
-  publicKey: '0x...',
-  message: 'Hello, Aura!',
-  signature: '0x...',
+await verifier.initialize();
+
+const result = await verifier.verify({
+  qrCodeData: 'aura://verify?data=...',
+});
+
+if (result.isValid) {
+  console.log('Credential verified');
+}
+
+await verifier.destroy();
+```
+
+## API
+
+### VerifierSDK
+
+Main SDK class for credential verification.
+
+**Constructor Options:**
+- `rpcEndpoint` - Aura Network RPC endpoint
+- `restEndpoint` - REST API endpoint (optional)
+- `timeout` - Request timeout in milliseconds (default: 30000)
+- `network` - Network preset: 'mainnet' | 'testnet' | 'local'
+
+**Methods:**
+- `initialize()` - Connect to the network
+- `verify(options)` - Verify a credential presentation
+- `destroy()` - Clean up resources
+
+### Cryptographic Utilities
+
+```typescript
+import { verifySignature, hash, deriveAddress } from '@aura-network/verifier-sdk';
+
+// Verify Ed25519 signature
+const isValid = await verifySignature({
+  publicKey: 'hex-encoded-public-key',
+  message: 'message-to-verify',
+  signature: 'hex-encoded-signature',
   algorithm: 'ed25519',
+});
+
+// Hash data
+const digest = hash({
+  data: 'data-to-hash',
+  algorithm: 'sha256',
+  encoding: 'hex',
+});
+
+// Derive Bech32 address
+const address = deriveAddress({
+  publicKey: 'hex-encoded-public-key',
+  prefix: 'aura',
+  algorithm: 'secp256k1',
 });
 ```
 
-## API Documentation
+### QR Code Parsing
 
-Coming soon...
+```typescript
+import { parseQRCode } from '@aura-network/verifier-sdk';
+
+const qrData = parseQRCode('aura://verify?data=...');
+
+console.log(qrData.h);   // Holder DID
+console.log(qrData.vcs); // Credential IDs
+console.log(qrData.ctx); // Disclosure context
+console.log(qrData.exp); // Expiration timestamp
+```
+
+## Network Endpoints
+
+| Network | RPC | REST |
+|---------|-----|------|
+| Mainnet | https://rpc.aura.network | https://lcd.aura.network |
+| Testnet | https://rpc.euphoria.aura.network | https://lcd.euphoria.aura.network |
+| Local | http://localhost:26657 | http://localhost:1317 |
+
+## Requirements
+
+- Node.js 18.0.0 or higher
+- TypeScript 5.0 or higher (for development)
 
 ## License
 

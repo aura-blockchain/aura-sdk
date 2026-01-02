@@ -105,17 +105,16 @@ if (qrData.ctx.show_age_over_21) {
 
 ## Documentation
 
+- [Quick Start](./QUICKSTART.md) - Get started in minutes
 - [Getting Started Guide](./docs/getting-started.md) - Installation, configuration, and first verification
 - [API Reference](./docs/api-reference.md) - Complete API documentation
 - [Verification Flow](./docs/verification-flow.md) - How credential verification works
 - [Offline Mode](./docs/offline-mode.md) - Enable offline verification with caching
-- [Error Handling](./docs/error-handling.md) - Error types, codes, and recovery strategies
-- [Security Best Practices](./docs/security.md) - Security considerations and recommendations
-
-### Examples
-
-- [Bar/Nightclub Age Verification](./docs/examples/bar-age-verification.md)
-- [Marketplace Trust Verification](./docs/examples/marketplace-trust.md)
+- [Error Handling](./docs/error-handling.md) - Error types and handling strategies
+- [Security Guide](./docs/security-guide.md) - Security best practices
+- [Migration Guide](./docs/migration-guide.md) - Upgrading between versions
+- [Troubleshooting](./docs/troubleshooting.md) - Common issues and solutions
+- [Contributing](./CONTRIBUTING.md) - Development workflow and guidelines
 
 ## Network Endpoints
 

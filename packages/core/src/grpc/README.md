@@ -245,7 +245,7 @@ interface AuraClientConfig {
 ### Local
 - REST: `http://localhost:1317`
 - gRPC: `localhost:9090`
-- Chain ID: `aura-local`
+- Chain ID: `aura-local-test`
 
 ## REST API Endpoints
 
