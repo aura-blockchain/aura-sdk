@@ -104,7 +104,7 @@ export function NetworkStatus({ network, isOnline, onNetworkChange, onOfflineMod
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600 dark:text-gray-400">RPC Endpoint</span>
               <code className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
-                {network === 'mainnet' ? 'rpc.aura.network' : 'rpc.euphoria.aura.network'}
+                {network === 'mainnet' ? 'rpc.aurablockchain.org' : 'testnet-rpc.aurablockchain.org'}
               </code>
             </div>
             <div className="flex justify-between items-center">

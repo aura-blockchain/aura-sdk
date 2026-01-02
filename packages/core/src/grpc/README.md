@@ -101,7 +101,7 @@ const client = new AuraClient({
   network: 'mainnet',
   timeout: 15000, // 15 seconds
   connectTimeout: 5000, // 5 seconds
-  restEndpoint: 'https://custom.api.aura.network', // Optional custom endpoint
+  restEndpoint: 'https://custom.api.aurablockchain.org', // Optional custom endpoint
   retryConfig: {
     maxAttempts: 5,
     initialDelay: 1000,
@@ -233,13 +233,13 @@ interface AuraClientConfig {
 ## Network Endpoints
 
 ### Mainnet
-- REST: `https://api.aura.network`
-- gRPC: `grpc.aura.network:9090`
+- REST: `https://api.aurablockchain.org`
+- gRPC: `rpc.aurablockchain.org:9090`
 - Chain ID: `aura-mainnet-1`
 
 ### Testnet
-- REST: `https://api.testnet.aura.network`
-- gRPC: `grpc.testnet.aura.network:9090`
+- REST: `https://testnet-api.aurablockchain.org`
+- gRPC: `testnet-rpc.aurablockchain.org:9090`
 - Chain ID: `aura-testnet-1`
 
 ### Local

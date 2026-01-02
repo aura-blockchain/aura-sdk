@@ -377,14 +377,14 @@ export interface NetworkEndpoints {
  */
 export const NETWORK_ENDPOINTS: Record<NetworkType, NetworkEndpoints> = {
   mainnet: {
-    grpc: 'grpc.aura.network:9090',
-    rest: 'https://lcd.aura.network',
+    grpc: 'rpc.aurablockchain.org:9090',
+    rest: 'https://api.aurablockchain.org',
     chainId: 'aura-mainnet-1',
     name: 'Aura Mainnet',
   },
   testnet: {
-    grpc: 'grpc.testnet.aura.network:9090',
-    rest: 'https://lcd.testnet.aura.network',
+    grpc: 'testnet-rpc.aurablockchain.org:9090',
+    rest: 'https://testnet-api.aurablockchain.org',
     chainId: 'aura-testnet-2',
     name: 'Aura Testnet',
   },

@@ -112,10 +112,10 @@ describe('TimeoutError', () => {
 
 describe('NodeUnavailableError', () => {
   it('should create error with endpoint', () => {
-    const error = new NodeUnavailableError('https://rpc.aura.network');
+    const error = new NodeUnavailableError('https://rpc.aurablockchain.org');
 
-    expect(error.message).toContain('https://rpc.aura.network');
-    expect(error.endpoint).toBe('https://rpc.aura.network');
+    expect(error.message).toContain('https://rpc.aurablockchain.org');
+    expect(error.endpoint).toBe('https://rpc.aurablockchain.org');
     expect(error.code).toBe('NODE_UNAVAILABLE');
     expect(error.statusCode).toBe(503);
     expect(error.name).toBe('NodeUnavailableError');
@@ -123,25 +123,25 @@ describe('NodeUnavailableError', () => {
 
   it('should list attempted endpoints', () => {
     const attempted = [
-      'https://rpc1.aura.network',
-      'https://rpc2.aura.network',
+      'https://rpc1.aurablockchain.org',
+      'https://rpc2.aurablockchain.org',
     ];
-    const error = new NodeUnavailableError('https://rpc.aura.network', attempted);
+    const error = new NodeUnavailableError('https://rpc.aurablockchain.org', attempted);
 
-    expect(error.message).toContain('rpc1.aura.network');
-    expect(error.message).toContain('rpc2.aura.network');
+    expect(error.message).toContain('rpc1.aurablockchain.org');
+    expect(error.message).toContain('rpc2.aurablockchain.org');
     expect(error.attemptedEndpoints).toEqual(attempted);
   });
 
   it('should include details', () => {
     const details = { reason: 'DNS resolution failed' };
-    const error = new NodeUnavailableError('https://rpc.aura.network', [], details);
+    const error = new NodeUnavailableError('https://rpc.aurablockchain.org', [], details);
 
     expect(error.details).toEqual(details);
   });
 
   it('should handle empty attempted endpoints', () => {
-    const error = new NodeUnavailableError('https://rpc.aura.network');
+    const error = new NodeUnavailableError('https://rpc.aurablockchain.org');
 
     expect(error.attemptedEndpoints).toEqual([]);
     expect(error.message).not.toContain('tried:');

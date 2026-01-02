@@ -20,7 +20,7 @@ describe('VerifierSDK', () => {
   describe('constructor', () => {
     it('should create instance with valid config', () => {
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       expect(sdk).toBeInstanceOf(VerifierSDK);
@@ -32,7 +32,7 @@ describe('VerifierSDK', () => {
 
     it('should use default values for optional config', () => {
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       expect(sdk).toBeInstanceOf(VerifierSDK);
@@ -40,8 +40,8 @@ describe('VerifierSDK', () => {
 
     it('should accept all config options', () => {
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
-        restEndpoint: 'https://api.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
+        restEndpoint: 'https://api.aurablockchain.org',
         timeout: 60000,
         debug: true,
       });
@@ -55,7 +55,7 @@ describe('VerifierSDK', () => {
 
     beforeEach(() => {
       sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
     });
 
@@ -105,7 +105,7 @@ describe('VerifierSDK', () => {
 
     beforeEach(() => {
       sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
     });
 
@@ -127,7 +127,7 @@ describe('VerifierSDK', () => {
 
     beforeEach(() => {
       sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
     });
 
@@ -147,7 +147,7 @@ describe('VerifierSDK', () => {
   describe('disconnect', () => {
     it('should disconnect gracefully', async () => {
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       await expect(sdk.disconnect()).resolves.not.toThrow();
@@ -161,7 +161,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       // Connect first
@@ -182,7 +182,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
         debug: true,
       });
 
@@ -209,7 +209,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       const height = await sdk.getHeight();
@@ -228,7 +228,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       // Call twice
@@ -255,7 +255,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       const chainId = await sdk.getChainId();
@@ -288,7 +288,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       const result = await sdk.verifyTransaction({
@@ -314,7 +314,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       const result = await sdk.verifyTransaction({
@@ -341,7 +341,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       const result = await sdk.verifyTransaction({
@@ -368,7 +368,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       const result = await sdk.verifyTransaction({
@@ -389,7 +389,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       await expect(
@@ -411,7 +411,7 @@ describe('VerifierSDK', () => {
       );
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
       await expect(sdk.getHeight()).rejects.toThrow(RpcConnectionError);
@@ -426,7 +426,7 @@ describe('VerifierSDK', () => {
       (StargateClient.connect as any).mockResolvedValue(mockClient);
 
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
         debug: true,
       });
 
@@ -437,7 +437,7 @@ describe('VerifierSDK', () => {
 
       expect(consoleSpy).toHaveBeenCalledWith(
         'Connected to RPC endpoint:',
-        'https://rpc.aura.network'
+        'https://rpc.aurablockchain.org'
       );
 
       consoleSpy.mockRestore();
@@ -466,14 +466,14 @@ describe('VerifierSDK', () => {
 
     it('should use default timeout when not provided', () => {
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
       expect(sdk).toBeInstanceOf(VerifierSDK);
     });
 
     it('should use default restEndpoint when not provided', () => {
       const sdk = new VerifierSDK({
-        rpcEndpoint: 'https://rpc.aura.network',
+        rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
       expect(sdk).toBeInstanceOf(VerifierSDK);
     });

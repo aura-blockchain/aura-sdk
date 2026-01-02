@@ -423,7 +423,7 @@ const verifier = new AuraVerifier({
 ```
 
 Generate test QR codes:
-- Visit the [Aura Testnet Wallet](https://testnet-wallet.aura.network)
+- Visit the [Aura Testnet Wallet](https://testnet-wallet.aurablockchain.org)
 - Create credentials
 - Generate verification QR codes
 
@@ -489,5 +489,5 @@ If you're stuck:
 
 1. Check the [Troubleshooting Guide](../troubleshooting.md)
 2. Search [GitHub Issues](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-3. Ask on [Discord](https://discord.gg/aura)
-4. Email support: dev@aura.network
+3. Ask on [Discord](https://discord.gg/aurablockchain)
+4. Email support: dev@aurablockchain.org

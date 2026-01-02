@@ -28,9 +28,9 @@ const verifier = new AuraVerifier({
 
 ### Network Details
 - **Network ID**: `aura-mainnet-1`
-- **gRPC Endpoint**: `grpc.aura.network:9090`
-- **REST Endpoint**: `https://lcd.aura.network`
-- **Explorer**: `https://explorer.aura.network`
+- **gRPC Endpoint**: `rpc.aurablockchain.org:9090`
+- **REST Endpoint**: `https://api.aurablockchain.org`
+- **Explorer**: `https://explorer.aurablockchain.org`
 - **Block Time**: ~6 seconds
 - **Finality**: 1 block (~6 seconds)
 
@@ -89,9 +89,9 @@ const verifier = new AuraVerifier({
 
 ### Network Details
 - **Network ID**: `aura-testnet-2`
-- **gRPC Endpoint**: `grpc.testnet.aura.network:9090`
-- **REST Endpoint**: `https://lcd.testnet.aura.network`
-- **Explorer**: `https://testnet.explorer.aura.network`
+- **gRPC Endpoint**: `testnet-rpc.aurablockchain.org:9090`
+- **REST Endpoint**: `https://testnet-api.aurablockchain.org`
+- **Explorer**: `https://testnet.explorer.aurablockchain.org`
 - **Block Time**: ~6 seconds
 - **Finality**: 1 block (~6 seconds)
 
@@ -105,9 +105,9 @@ const verifier = new AuraVerifier({
 
 ### Getting Test Credentials
 
-1. **Testnet Wallet**: https://testnet-wallet.aura.network
-2. **Faucet**: https://faucet.testnet.aura.network
-3. **Test Issuer**: https://issuer.testnet.aura.network
+1. **Testnet Wallet**: https://testnet-wallet.aurablockchain.org
+2. **Faucet**: https://testnet-faucet.aurablockchain.org
+3. **Test Issuer**: https://testnet-issuer.aurablockchain.org
 
 ### Testnet Best Practices
 
@@ -358,9 +358,9 @@ const verifier = new AuraVerifier({
 
 // Multiple fallback nodes
 const endpoints = [
-  'grpc.aura.network:9090',
-  'backup1.aura.network:9090',
-  'backup2.aura.network:9090',
+  'rpc.aurablockchain.org:9090',
+  'backup1.aurablockchain.org:9090',
+  'backup2.aurablockchain.org:9090',
 ];
 
 const verifier = createVerifierWithFallback(endpoints);

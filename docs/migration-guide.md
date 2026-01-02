@@ -70,7 +70,7 @@ const verifier = new AuraVerifier(config);
 **Before (Beta):**
 ```typescript
 const verifier = new Verifier({
-  rpcUrl: 'https://rpc.aura.network',
+  rpcUrl: 'https://rpc.aurablockchain.org',
   network: 'mainnet'
 });
 ```
@@ -92,7 +92,7 @@ const verifier = new AuraVerifier({
 ```typescript
 // Old configuration
 const oldConfig = {
-  rpcUrl: 'https://rpc.aura.network',
+  rpcUrl: 'https://rpc.aurablockchain.org',
   network: 'mainnet',
   timeout: 30000
 };
@@ -389,7 +389,7 @@ import {
 ```typescript
 // Before
 const config = {
-  rpcUrl: 'https://rpc.aura.network',
+  rpcUrl: 'https://rpc.aurablockchain.org',
   network: 'mainnet'
 };
 
@@ -472,7 +472,7 @@ import { Verifier } from '@aura-network/verifier-sdk';
 async function verifyAge(qrCode: string): Promise<boolean> {
   try {
     const verifier = new Verifier({
-      rpcUrl: 'https://rpc.aura.network',
+      rpcUrl: 'https://rpc.aurablockchain.org',
       network: 'mainnet'
     });
 
@@ -588,8 +588,8 @@ If you encounter issues during migration:
 2. **Review examples**: Check the [examples directory](../examples/)
 3. **Search issues**: Look for similar issues on [GitHub](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
 4. **Ask for help**:
-   - Discord: [https://discord.gg/aura](https://discord.gg/aura)
-   - Email: dev@aura.network
+   - Discord: [https://discord.gg/aurablockchain](https://discord.gg/aurablockchain)
+   - Email: dev@aurablockchain.org
    - GitHub Issues: Create a new issue with the `migration` label
 
 ---

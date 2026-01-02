@@ -227,9 +227,9 @@ class LoadBalancedVerifier {
 // Usage
 const lb = new LoadBalancedVerifier();
 await lb.initialize([
-  { grpc: 'grpc1.aura.network:9090', rest: 'https://lcd1.aura.network' },
-  { grpc: 'grpc2.aura.network:9090', rest: 'https://lcd2.aura.network' },
-  { grpc: 'grpc3.aura.network:9090', rest: 'https://lcd3.aura.network' }
+  { grpc: 'rpc1.aurablockchain.org:9090', rest: 'https://api1.aurablockchain.org' },
+  { grpc: 'rpc2.aurablockchain.org:9090', rest: 'https://api2.aurablockchain.org' },
+  { grpc: 'rpc3.aurablockchain.org:9090', rest: 'https://api3.aurablockchain.org' }
 ]);
 ```
 
@@ -248,8 +248,8 @@ async function createResilientVerifier() {
 
   const fallbackVerifier = new AuraVerifier({
     network: 'mainnet',
-    grpcEndpoint: 'grpc-backup.aura.network:9090',
-    restEndpoint: 'https://lcd-backup.aura.network',
+    grpcEndpoint: 'rpc-backup.aurablockchain.org:9090',
+    restEndpoint: 'https://api-backup.aurablockchain.org',
     timeout: 10000
   });
 
@@ -466,8 +466,8 @@ class CircuitBreakerVerifier {
 ```bash
 # .env
 AURA_NETWORK=mainnet
-AURA_GRPC_ENDPOINT=grpc.aura.network:9090
-AURA_REST_ENDPOINT=https://lcd.aura.network
+AURA_GRPC_ENDPOINT=rpc.aurablockchain.org:9090
+AURA_REST_ENDPOINT=https://api.aurablockchain.org
 CACHE_DIR=/var/cache/aura
 ENCRYPTION_KEY=your-encryption-key
 ```

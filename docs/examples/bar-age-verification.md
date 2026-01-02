@@ -99,7 +99,7 @@ const cache = new CacheManager({
 
 // Initialize SDK
 export const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
   offlineMode: false,        // Try online first
   timeout: 10000             // 10 second timeout
@@ -549,7 +549,7 @@ const cache = new CacheManager({
 });
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
   timeout: 10000
 });
@@ -656,7 +656,7 @@ app.listen(PORT, () => {
 ```typescript
 // Use short timeout for quick response
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   timeout: 5000  // 5 seconds max
 });
 

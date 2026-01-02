@@ -23,7 +23,7 @@ npm install @aura-network/verifier-sdk
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://testnet-rpc.aurablockchain.org', // Testnet
 });
 
 await verifier.initialize();
@@ -101,9 +101,9 @@ console.log(qrData.exp); // Expiration timestamp
 
 | Network | RPC | REST |
 |---------|-----|------|
-| Mainnet | https://rpc.aura.network | https://lcd.aura.network |
-| Testnet | https://rpc.euphoria.aura.network | https://lcd.euphoria.aura.network |
+| Testnet (Current) | https://testnet-rpc.aurablockchain.org | https://testnet-api.aurablockchain.org |
 | Local | http://localhost:26657 | http://localhost:1317 |
+| Mainnet (TBD) | https://mainnet-rpc.aurablockchain.org | https://mainnet-api.aurablockchain.org |
 
 ## Requirements
 

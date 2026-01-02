@@ -26,7 +26,7 @@ We are committed to providing a welcoming and inclusive environment for all cont
 
 ### Enforcement
 
-Report violations to: dev@aura.network
+Report violations to: dev@aurablockchain.org
 
 ## Getting Started
 
@@ -283,7 +283,7 @@ BREAKING CHANGE: verifySignature now returns VerificationResult instead of boole
 - **GitHub Issues**: Bug reports and feature requests
 - **GitHub Discussions**: General questions and discussions
 - **Discord**: Real-time chat and community support
-- **Email**: dev@aura.network for direct contact
+- **Email**: dev@aurablockchain.org for direct contact
 
 ### Getting Help
 
@@ -331,7 +331,7 @@ pnpm dev
 ```typescript
 // Enable debug logging
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   debug: true  // Enables verbose logging
 });
 ```

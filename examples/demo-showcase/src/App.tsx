@@ -160,7 +160,7 @@ function App() {
                   View on GitHub
                 </a>
                 <a
-                  href="https://docs.aura.network"
+                  href="https://docs.aurablockchain.org"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white rounded-xl font-semibold transition-all"

@@ -176,13 +176,13 @@ Always use encrypted connections:
 // Good: HTTPS endpoints
 const verifier = new AuraVerifier({
   network: 'mainnet',
-  restEndpoint: 'https://lcd.aura.network', // HTTPS
+  restEndpoint: 'https://api.aurablockchain.org', // HTTPS
 });
 
 // Bad: HTTP in production
 const verifier = new AuraVerifier({
   network: 'mainnet',
-  restEndpoint: 'http://lcd.aura.network', // NEVER IN PRODUCTION
+  restEndpoint: 'http://api.aurablockchain.org', // NEVER IN PRODUCTION
 });
 ```
 
@@ -533,8 +533,8 @@ Before deploying to production:
 ## Security Contacts
 
 Report security vulnerabilities to:
-- Email: security@aura.network
-- Bug Bounty: https://aura.network/security
+- Email: security@aurablockchain.org
+- Bug Bounty: https://docs.aurablockchain.org/security
 
 ## Next Steps
 

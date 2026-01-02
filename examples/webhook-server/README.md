@@ -696,4 +696,4 @@ MIT
 
 For issues and questions:
 - GitHub Issues: [https://github.com/aura-network/aura-verifier-sdk/issues](https://github.com/aura-network/aura-verifier-sdk/issues)
-- Documentation: [https://docs.aura.network](https://docs.aura.network)
+- Documentation: [https://docs.aurablockchain.org](https://docs.aurablockchain.org)

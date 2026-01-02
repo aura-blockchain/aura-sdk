@@ -627,7 +627,7 @@ const verifier = new AuraVerifier({
 # Use environment variables
 export ENCRYPTION_KEY="your-hex-key"
 export VERIFIER_DID="did:aura:verifier123"
-export RPC_ENDPOINT="https://rpc.aura.network"
+export RPC_ENDPOINT="https://rpc.aurablockchain.org"
 
 # Or use a secrets manager
 export ENCRYPTION_KEY=$(aws secretsmanager get-secret-value --secret-id aura-encryption-key --query SecretString --output text)
@@ -639,8 +639,8 @@ export ENCRYPTION_KEY=$(aws secretsmanager get-secret-value --secret-id aura-enc
 // Use HTTPS endpoints only
 const verifier = new AuraVerifier({
   network: 'mainnet',
-  grpcEndpoint: 'grpcs://grpc.aura.network:9090',  // TLS
-  restEndpoint: 'https://lcd.aura.network'         // HTTPS
+  grpcEndpoint: 'grpcs://rpc.aurablockchain.org:9090',  // TLS
+  restEndpoint: 'https://api.aurablockchain.org'         // HTTPS
 });
 ```
 
@@ -786,4 +786,4 @@ npm audit fix
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
 - [API Security Best Practices](https://apisecurity.io/)
-- [Aura Security Documentation](https://docs.aura.network/security)
+- [Aura Security Documentation](https://docs.aurablockchain.org/security)

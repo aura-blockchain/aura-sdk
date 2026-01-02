@@ -186,8 +186,8 @@ All documentation follows these standards:
 Help us improve the documentation:
 
 - **GitHub Issues**: [Report documentation issues](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-- **Discord**: [Ask questions on Discord](https://discord.gg/aura)
-- **Email**: dev@aura.network
+- **Discord**: [Ask questions on Discord](https://discord.gg/aurablockchain)
+- **Email**: dev@aurablockchain.org
 
 ## License
 

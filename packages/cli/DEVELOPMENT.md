@@ -690,7 +690,7 @@ ls dist/commands/my-command.js
 - [ESM in Node.js](https://nodejs.org/api/esm.html)
 
 ### Aura Network
-- [Aura Docs](https://docs.aura.network)
+- [Aura Docs](https://docs.aurablockchain.org)
 - [Verifier SDK](../../README.md)
 
 ## Support

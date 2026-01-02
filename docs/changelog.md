@@ -95,7 +95,7 @@ import { AuraVerifier } from '@aura-network/verifier-sdk';
 **Before:**
 ```typescript
 const verifier = new Verifier({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   network: 'mainnet',
 });
 ```

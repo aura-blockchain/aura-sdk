@@ -389,7 +389,7 @@ interface VerifierConfig {
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const sdk = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   timeout: 30000,
   debug: false
 });
@@ -724,8 +724,8 @@ function createOfflineVerifier(options: {
 import { createOfflineVerifier, createAuraClient } from '@aura-network/verifier-sdk';
 
 const client = createAuraClient({
-  grpcEndpoint: 'https://grpc.aura.network:9090',
-  restEndpoint: 'https://lcd.aura.network'
+  grpcEndpoint: 'https://rpc.aurablockchain.org:9090',
+  restEndpoint: 'https://api.aurablockchain.org'
 });
 
 const offlineVerifier = createOfflineVerifier({

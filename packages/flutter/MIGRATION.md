@@ -477,7 +477,7 @@ If you encounter issues during migration:
 1. Check the [API documentation](README.md)
 2. Review the [example app](example/lib/main.dart)
 3. Search [GitHub Issues](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-4. Ask on [Discord](https://discord.gg/aura-network)
+4. Ask on [Discord](https://discord.gg/aurablockchain-network)
 
 ---
 

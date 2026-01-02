@@ -28,20 +28,21 @@ export const AURA_NETWORKS: Record<'mainnet' | 'testnet' | 'local', NetworkConfi
   /**
    * Aura Mainnet (Production)
    * Security: TLS required for all connections
+   * Note: Mainnet endpoints are TBD
    */
   mainnet: {
-    grpc: 'grpcs://grpc.aura.network:443',
-    rest: 'https://api.aura.network',
+    grpc: 'grpcs://mainnet-rpc.aurablockchain.org:443', // TBD
+    rest: 'https://mainnet-api.aurablockchain.org', // TBD
     chainId: 'aura-mainnet-1',
   },
 
   /**
-   * Aura Testnet (Serenity)
+   * Aura Testnet
    * Security: TLS required for all connections
    */
   testnet: {
-    grpc: 'grpcs://grpc.testnet.aura.network:443',
-    rest: 'https://api.testnet.aura.network',
+    grpc: 'grpcs://testnet-rpc.aurablockchain.org:443',
+    rest: 'https://testnet-api.aurablockchain.org',
     chainId: 'aura-testnet-1',
   },
 
@@ -164,7 +165,7 @@ export function validateTLSEndpoint(
  * Security: Validate gRPC endpoint format and TLS requirements
  *
  * Production gRPC MUST use TLS (grpcs:// protocol or port 443)
- * @param endpoint - gRPC endpoint URL (e.g., grpcs://grpc.aura.network:443)
+ * @param endpoint - gRPC endpoint URL (e.g., grpcs://rpc.aurablockchain.org:443)
  * @param network - Network type (mainnet, testnet, local)
  * @param allowInsecure - Allow insecure connections (default: false, only for local)
  * @returns true if valid, throws SecurityError otherwise
@@ -207,7 +208,7 @@ export function validateGRPCEndpoint(
     );
   }
 
-  // Legacy format without protocol (e.g., "grpc.aura.network:9090")
+  // Legacy format without protocol (e.g., "rpc.aurablockchain.org:9090")
   if (legacyMatch) {
     const host = legacyMatch[1];
     const port = parseInt(legacyMatch[2], 10);

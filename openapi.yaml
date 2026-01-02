@@ -22,21 +22,21 @@ info:
 
     ## Networks
 
-    - **Mainnet**: Production network (`https://api.aura.network`)
-    - **Testnet**: Testing network (`https://api.testnet.aura.network`)
+    - **Mainnet**: Production network (`https://api.aurablockchain.org`)
+    - **Testnet**: Testing network (`https://testnet-api.aurablockchain.org`)
   version: 1.0.0
   contact:
     name: Aura Network Developer Support
-    email: dev@aura.network
-    url: https://docs.aura.network
+    email: dev@aurablockchain.org
+    url: https://docs.aurablockchain.org
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://api.aura.network/v1
+  - url: https://api.aurablockchain.org/v1
     description: Mainnet Production Server
-  - url: https://api.testnet.aura.network/v1
+  - url: https://testnet-api.aurablockchain.org/v1
     description: Testnet Server
   - url: http://localhost:3000/v1
     description: Local Development Server

@@ -79,7 +79,7 @@ VerifierError (base class)
   code: 'RPC_CONNECTION_FAILED',
   message: 'Failed to connect to RPC endpoint',
   details: {
-    endpoint: 'https://rpc.aura.network',
+    endpoint: 'https://rpc.aurablockchain.org',
     error: 'Network timeout after 30000ms'
   }
 }
@@ -195,7 +195,7 @@ Basic error handling with try-catch:
 import { VerifierSDK, VerifierError } from '@aura-network/verifier-sdk';
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network'
+  rpcEndpoint: 'https://rpc.aurablockchain.org'
 });
 
 try {
@@ -333,7 +333,7 @@ try {
 
     // Solution 2: Try alternative endpoint
     const alternativeVerifier = new VerifierSDK({
-      rpcEndpoint: 'https://rpc-backup.aura.network'
+      rpcEndpoint: 'https://rpc-backup.aurablockchain.org'
     });
     return await alternativeVerifier.verifyTransaction(request);
 

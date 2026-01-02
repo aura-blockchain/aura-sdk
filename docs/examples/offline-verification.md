@@ -26,8 +26,8 @@ import {
 async function main() {
   // 1. Create Aura client
   const client = createAuraClient({
-    grpcEndpoint: 'https://grpc.aura.network:9090',
-    restEndpoint: 'https://lcd.aura.network',
+    grpcEndpoint: 'https://rpc.aurablockchain.org:9090',
+    restEndpoint: 'https://api.aurablockchain.org',
     timeout: 10000
   });
 

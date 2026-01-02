@@ -243,10 +243,10 @@ const verifier = new AuraVerifier({
 2. **Check Network Connectivity**
 ```bash
 # Test gRPC endpoint
-curl https://lcd.aura.network/cosmos/base/tendermint/v1beta1/node_info
+curl https://api.aurablockchain.org/cosmos/base/tendermint/v1beta1/node_info
 
 # Test DNS resolution
-nslookup grpc.aura.network
+nslookup testnet-rpc.aurablockchain.org
 ```
 
 3. **Use Custom Endpoint**
@@ -268,7 +268,7 @@ NetworkError: Failed to connect to blockchain
 
 1. **Check Internet Connection**
 ```bash
-ping grpc.aura.network
+ping testnet-rpc.aurablockchain.org
 ```
 
 2. **Verify Endpoint**
@@ -315,7 +315,7 @@ const verifier = new AuraVerifier({ network: 'mainnet' });
 3. **Check DID Exists**
 ```bash
 # Query via REST
-curl https://lcd.aura.network/aura/did/v1/did/did:aura:mainnet:abc123
+curl https://api.aurablockchain.org/aura/did/v1/did/did:aura:mainnet:abc123
 ```
 
 ## Performance Issues
@@ -394,7 +394,7 @@ await verifier.destroy();
 
 **Error:**
 ```
-Access to fetch at 'https://lcd.aura.network' blocked by CORS policy
+Access to fetch at 'https://api.aurablockchain.org' blocked by CORS policy
 ```
 
 **Solution:**
@@ -520,8 +520,8 @@ verifier.on('error', (data) => {
 If your issue isn't listed here:
 
 1. **Check GitHub Issues**: https://github.com/aura-blockchain/aura-verifier-sdk/issues
-2. **Ask on Discord**: https://discord.gg/aura
-3. **Email Support**: dev@aura.network
+2. **Ask on Discord**: https://discord.gg/aurablockchain
+3. **Email Support**: dev@aurablockchain.org
 4. **Stack Overflow**: Tag with `aura-network`
 
 When reporting issues, include:

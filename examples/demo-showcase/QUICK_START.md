@@ -123,8 +123,8 @@ npm install
 ## Support
 
 - Issues: [GitHub Issues](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-- Docs: [https://docs.aura.network](https://docs.aura.network)
-- Discord: [https://discord.gg/aura](https://discord.gg/aura)
+- Docs: [https://docs.aurablockchain.org](https://docs.aurablockchain.org)
+- Discord: [https://discord.gg/aurablockchain](https://discord.gg/aurablockchain)
 
 ---
 

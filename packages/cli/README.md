@@ -258,15 +258,15 @@ The CLI supports three networks:
 ```bash
 aura-verify check "..." --network mainnet
 ```
-- gRPC: `grpc.aura.network:9090`
-- REST: `https://lcd.aura.network`
+- gRPC: `rpc.aurablockchain.org:9090`
+- REST: `https://api.aurablockchain.org`
 
 ### Testnet (Testing)
 ```bash
 aura-verify check "..." --network testnet
 ```
-- gRPC: `grpc-testnet.aura.network:9090`
-- REST: `https://lcd-testnet.aura.network`
+- gRPC: `testnet-rpc.aurablockchain.org:9090`
+- REST: `https://testnet-api.aurablockchain.org`
 
 ### Local (Development)
 ```bash
@@ -563,7 +563,7 @@ fi
 
 - Documentation: https://github.com/aura-blockchain/aura-verifier-sdk
 - Issues: https://github.com/aura-blockchain/aura-verifier-sdk/issues
-- Discord: https://discord.gg/aura-network
+- Discord: https://discord.gg/aurablockchain-network
 
 ## License
 

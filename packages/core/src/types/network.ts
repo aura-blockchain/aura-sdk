@@ -43,11 +43,11 @@ export enum ChainID {
  * NetworkEndpoints defines RPC and REST endpoints for a network
  */
 export interface NetworkEndpoints {
-  /** gRPC endpoint (e.g., https://grpc.aura.network:9090) */
+  /** gRPC endpoint (e.g., https://rpc.aurablockchain.org:9090) */
   grpc: string;
-  /** REST/LCD endpoint (e.g., https://lcd.aura.network) */
+  /** REST/LCD endpoint (e.g., https://api.aurablockchain.org) */
   rest: string;
-  /** Tendermint RPC endpoint (e.g., https://rpc.aura.network) */
+  /** Tendermint RPC endpoint (e.g., https://rpc.aurablockchain.org) */
   rpc: string;
   /** WebSocket endpoint for subscriptions (optional) */
   websocket?: string;
@@ -93,15 +93,16 @@ export interface GasPrice {
 
 /**
  * Mainnet configuration
+ * Note: Mainnet endpoints are TBD - these are placeholders
  */
 export const MAINNET_CONFIG: NetworkConfig = {
   network: NetworkType.MAINNET,
   chainId: ChainID.MAINNET,
   endpoints: {
-    grpc: 'https://grpc.aura.network:9090',
-    rest: 'https://lcd.aura.network',
-    rpc: 'https://rpc.aura.network',
-    websocket: 'wss://rpc.aura.network/websocket',
+    grpc: 'https://mainnet-rpc.aurablockchain.org:9090', // TBD
+    rest: 'https://mainnet-api.aurablockchain.org', // TBD
+    rpc: 'https://mainnet-rpc.aurablockchain.org', // TBD
+    websocket: 'wss://mainnet-rpc.aurablockchain.org/websocket', // TBD
   },
   addressPrefix: 'aura',
   didPrefix: 'did:aura',
@@ -121,10 +122,10 @@ export const TESTNET_CONFIG: NetworkConfig = {
   network: NetworkType.TESTNET,
   chainId: ChainID.TESTNET,
   endpoints: {
-    grpc: 'https://grpc.testnet.aura.network:9090',
-    rest: 'https://lcd.testnet.aura.network',
-    rpc: 'https://rpc.testnet.aura.network',
-    websocket: 'wss://rpc.testnet.aura.network/websocket',
+    grpc: 'testnet-rpc.aurablockchain.org:9090',
+    rest: 'https://testnet-api.aurablockchain.org',
+    rpc: 'https://testnet-rpc.aurablockchain.org',
+    websocket: 'wss://testnet-rpc.aurablockchain.org/websocket',
   },
   addressPrefix: 'aura',
   didPrefix: 'did:aura',

@@ -143,7 +143,7 @@ export async function verifyUserProfile(
   qrString: string
 ): Promise<UserVerification> {
   const verifier = new VerifierSDK({
-    rpcEndpoint: 'https://rpc.aura.network',
+    rpcEndpoint: 'https://rpc.aurablockchain.org',
     timeout: 15000
   });
 

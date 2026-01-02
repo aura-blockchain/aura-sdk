@@ -331,7 +331,7 @@ function createMockCredential(vcId: string): VerifiableCredential {
   return {
     '@context': [
       'https://www.w3.org/2018/credentials/v1',
-      'https://aura.network/credentials/v1'
+      'https://testnet-api.aurablockchain.org/aura/vcregistry/v1beta1'
     ],
     id: vcId,
     type: ['VerifiableCredential', 'AuraIdentityCredential'],

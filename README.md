@@ -48,7 +48,7 @@ import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 // Initialize the SDK
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network', // Mainnet
+  rpcEndpoint: 'https://testnet-rpc.aurablockchain.org', // Use testnet for now
   timeout: 30000,
   debug: false
 });
@@ -118,19 +118,19 @@ if (qrData.ctx.show_age_over_21) {
 
 ## Network Endpoints
 
-### Mainnet
+### Testnet (Current)
 ```typescript
 {
-  rpcEndpoint: 'https://rpc.aura.network',
-  restEndpoint: 'https://lcd.aura.network'
+  rpcEndpoint: 'https://testnet-rpc.aurablockchain.org',
+  restEndpoint: 'https://testnet-api.aurablockchain.org'
 }
 ```
 
-### Testnet
+### Mainnet (Coming Soon)
 ```typescript
 {
-  rpcEndpoint: 'https://rpc.euphoria.aura.network',
-  restEndpoint: 'https://lcd.euphoria.aura.network'
+  rpcEndpoint: 'https://mainnet-rpc.aurablockchain.org', // TBD
+  restEndpoint: 'https://mainnet-api.aurablockchain.org'  // TBD
 }
 ```
 
@@ -223,10 +223,10 @@ Copyright (c) 2025 Aura Network
 
 ## Support
 
-- **Documentation**: [https://docs.aura.network](https://docs.aura.network)
-- **Discord**: [https://discord.gg/aura](https://discord.gg/aura)
 - **Issues**: [GitHub Issues](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-- **Email**: dev@aura.network
+- **Email**: dev@aurablockchain.org
+- **Explorer**: [https://testnet-explorer.aurablockchain.org](https://testnet-explorer.aurablockchain.org)
+- **Faucet**: [https://testnet-faucet.aurablockchain.org](https://testnet-faucet.aurablockchain.org)
 
 ## Acknowledgments
 

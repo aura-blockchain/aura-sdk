@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "aura-verifier-api-v1",
     "name": "Aura Verifier API",
-    "description": "Complete Postman collection for the Aura Network Third-Party Verifier SDK REST API.\n\n## Overview\n\nThis collection provides endpoints for:\n- **Verification**: Verify credential presentations from QR codes\n- **Age Checks**: Quick 21+ and 18+ verification\n- **Human Verification**: Anti-bot checks\n- **Batch Operations**: Verify multiple presentations\n- **Credential Status**: Check credential validity\n- **DID Resolution**: Resolve Decentralized Identifiers\n- **Trust Score**: Get Aura Trust Score\n\n## Authentication\n\nAll requests require an API key in the `X-API-Key` header.\n\nSet the `api_key` variable in your environment.\n\n## Networks\n\n- **Mainnet**: `https://api.aura.network/v1`\n- **Testnet**: `https://api.testnet.aura.network/v1`\n- **Local**: `http://localhost:3000/v1`",
+    "description": "Complete Postman collection for the Aura Network Third-Party Verifier SDK REST API.\n\n## Overview\n\nThis collection provides endpoints for:\n- **Verification**: Verify credential presentations from QR codes\n- **Age Checks**: Quick 21+ and 18+ verification\n- **Human Verification**: Anti-bot checks\n- **Batch Operations**: Verify multiple presentations\n- **Credential Status**: Check credential validity\n- **DID Resolution**: Resolve Decentralized Identifiers\n- **Trust Score**: Get Aura Trust Score\n\n## Authentication\n\nAll requests require an API key in the `X-API-Key` header.\n\nSet the `api_key` variable in your environment.\n\n## Networks\n\n- **Mainnet**: `https://api.aurablockchain.org/v1`\n- **Testnet**: `https://testnet-api.aurablockchain.org/v1`\n- **Local**: `http://localhost:3000/v1`",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "version": "1.0.0"
   },
@@ -363,7 +363,7 @@
               "status": "OK",
               "code": 200,
               "_postman_previewlanguage": "json",
-              "body": "{\n  \"@context\": [\n    \"https://www.w3.org/ns/did/v1\",\n    \"https://w3id.org/security/suites/ed25519-2020/v1\"\n  ],\n  \"id\": \"did:aura:mainnet:abc123def456\",\n  \"verificationMethod\": [\n    {\n      \"id\": \"did:aura:mainnet:abc123def456#key-1\",\n      \"type\": \"Ed25519VerificationKey2020\",\n      \"controller\": \"did:aura:mainnet:abc123def456\",\n      \"publicKeyMultibase\": \"z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK\"\n    }\n  ],\n  \"authentication\": [\n    \"did:aura:mainnet:abc123def456#key-1\"\n  ],\n  \"service\": [\n    {\n      \"id\": \"did:aura:mainnet:abc123def456#vc-service\",\n      \"type\": \"VerifiableCredentialService\",\n      \"serviceEndpoint\": \"https://vc.aura.network/abc123def456\"\n    }\n  ]\n}"
+              "body": "{\n  \"@context\": [\n    \"https://www.w3.org/ns/did/v1\",\n    \"https://w3id.org/security/suites/ed25519-2020/v1\"\n  ],\n  \"id\": \"did:aura:mainnet:abc123def456\",\n  \"verificationMethod\": [\n    {\n      \"id\": \"did:aura:mainnet:abc123def456#key-1\",\n      \"type\": \"Ed25519VerificationKey2020\",\n      \"controller\": \"did:aura:mainnet:abc123def456\",\n      \"publicKeyMultibase\": \"z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK\"\n    }\n  ],\n  \"authentication\": [\n    \"did:aura:mainnet:abc123def456#key-1\"\n  ],\n  \"service\": [\n    {\n      \"id\": \"did:aura:mainnet:abc123def456#vc-service\",\n      \"type\": \"VerifiableCredentialService\",\n      \"serviceEndpoint\": \"https://vc.aurablockchain.org/abc123def456\"\n    }\n  ]\n}"
             },
             {
               "name": "Not Found",
@@ -472,7 +472,7 @@
   "variable": [
     {
       "key": "base_url",
-      "value": "https://api.aura.network/v1",
+      "value": "https://api.aurablockchain.org/v1",
       "type": "string"
     },
     {

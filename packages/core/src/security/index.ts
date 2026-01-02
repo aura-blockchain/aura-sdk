@@ -18,7 +18,7 @@
  *
  * // Create a secure verifier with all protections enabled
  * const verifier = createSecureVerifier({
- *   rpcEndpoint: 'https://rpc.aura.network',
+ *   rpcEndpoint: 'https://rpc.aurablockchain.org',
  *   security: {
  *     enableNonceTracking: true,
  *     enableRateLimiting: true,

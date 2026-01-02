@@ -90,7 +90,7 @@ const cache = new CacheManager({
 
 // Initialize SDK with cache
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
   offlineMode: true  // Enable offline verification
 });
@@ -110,7 +110,7 @@ const cache = new CacheManager({
 });
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
   offlineMode: true
 });
@@ -131,7 +131,7 @@ const cache = new CacheManager({
 });
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
   offlineMode: true
 });
@@ -212,7 +212,7 @@ process.env.CACHE_ENCRYPTION_KEY = encryptionKey;
 import { RevocationListSync } from '@aura-network/verifier-sdk';
 
 const syncManager = new RevocationListSync({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache
 });
 
@@ -228,7 +228,7 @@ console.log('Last sync:', result.lastSyncTime);
 
 ```typescript
 const syncManager = new RevocationListSync({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
   autoSync: {
     enabled: true,
@@ -295,7 +295,7 @@ Try online verification first, fall back to cache:
 ```typescript
 async function verifyCredential(qrString: string): Promise<boolean> {
   const verifier = new VerifierSDK({
-    rpcEndpoint: 'https://rpc.aura.network',
+    rpcEndpoint: 'https://rpc.aurablockchain.org',
     cache: cache,
     offlineMode: false // Prefer online
   });
@@ -334,7 +334,7 @@ Verify entirely from cache:
 ```typescript
 async function verifyOffline(qrString: string): Promise<boolean> {
   const verifier = new VerifierSDK({
-    rpcEndpoint: 'https://rpc.aura.network',
+    rpcEndpoint: 'https://rpc.aurablockchain.org',
     cache: cache,
     offlineMode: true // Force offline
   });
@@ -490,7 +490,7 @@ await syncManager.syncAll({
 ```typescript
 // Sync frequently in background
 const syncManager = new RevocationListSync({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
   autoSync: {
     enabled: true,
@@ -630,14 +630,14 @@ class OfflineFirstVerifier {
 
     // Setup SDK
     this.verifier = new VerifierSDK({
-      rpcEndpoint: 'https://rpc.aura.network',
+      rpcEndpoint: 'https://rpc.aurablockchain.org',
       cache: this.cache,
       offlineMode: false
     });
 
     // Setup sync
     this.syncManager = new RevocationListSync({
-      rpcEndpoint: 'https://rpc.aura.network',
+      rpcEndpoint: 'https://rpc.aurablockchain.org',
       cache: this.cache,
       autoSync: {
         enabled: true,

@@ -104,7 +104,7 @@ export class MockBlockchainServer {
           {
             id: `${did}#credential-service`,
             type: 'CredentialService',
-            serviceEndpoint: 'https://aura.network/credentials',
+            serviceEndpoint: 'https://testnet-api.aurablockchain.org/aura/vcregistry/v1beta1',
           },
         ],
       };

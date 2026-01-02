@@ -81,7 +81,7 @@ The SDK requires minimal configuration to get started. At minimum, you need to p
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network'
+  rpcEndpoint: 'https://rpc.aurablockchain.org'
 });
 ```
 
@@ -92,10 +92,10 @@ import { VerifierSDK, VerifierConfig } from '@aura-network/verifier-sdk';
 
 const config: VerifierConfig = {
   // Required: RPC endpoint for blockchain queries
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
 
   // Optional: REST API endpoint (for additional queries)
-  restEndpoint: 'https://lcd.aura.network',
+  restEndpoint: 'https://api.aurablockchain.org',
 
   // Optional: Request timeout in milliseconds (default: 30000)
   timeout: 30000,
@@ -113,8 +113,8 @@ For production applications, it's recommended to use environment variables:
 
 ```typescript
 // .env file
-AURA_RPC_ENDPOINT=https://rpc.aura.network
-AURA_REST_ENDPOINT=https://lcd.aura.network
+AURA_RPC_ENDPOINT=https://rpc.aurablockchain.org
+AURA_REST_ENDPOINT=https://api.aurablockchain.org
 AURA_SDK_TIMEOUT=30000
 AURA_SDK_DEBUG=false
 ```
@@ -164,7 +164,7 @@ try {
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network'
+  rpcEndpoint: 'https://rpc.aurablockchain.org'
 });
 
 // Construct the message that was signed
@@ -213,7 +213,7 @@ import { VerifierSDK, parseQRCode } from '@aura-network/verifier-sdk';
 
 async function verifyCredential(qrString: string): Promise<boolean> {
   const verifier = new VerifierSDK({
-    rpcEndpoint: 'https://rpc.aura.network',
+    rpcEndpoint: 'https://rpc.aurablockchain.org',
     timeout: 30000
   });
 
@@ -287,8 +287,8 @@ Use mainnet for production applications:
 
 ```typescript
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
-  restEndpoint: 'https://lcd.aura.network'
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
+  restEndpoint: 'https://api.aurablockchain.org'
 });
 ```
 
@@ -300,12 +300,12 @@ const verifier = new VerifierSDK({
 
 ### Testnet (Development)
 
-Use testnet (Euphoria) for development and testing:
+Use testnet (testnet) for development and testing:
 
 ```typescript
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.euphoria.aura.network',
-  restEndpoint: 'https://lcd.euphoria.aura.network',
+  rpcEndpoint: 'https://testnet-rpc.aurablockchain.org',
+  restEndpoint: 'https://testnet-api.aurablockchain.org',
   debug: true // Enable debug logging during development
 });
 ```
@@ -350,7 +350,7 @@ Now that you've completed your first verification, explore these topics:
 **Issue: "RPC connection failed"**
 ```
 Solution: Check that the RPC endpoint is accessible and correct. Try pinging the endpoint:
-curl https://rpc.aura.network/status
+curl https://rpc.aurablockchain.org/status
 ```
 
 **Issue: "Invalid signature" errors**
@@ -378,5 +378,5 @@ If you encounter issues:
 1. Check the [API Reference](./api-reference.md) for detailed documentation
 2. Review the [Error Handling Guide](./error-handling.md)
 3. Search existing [GitHub Issues](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-4. Join our [Discord community](https://discord.gg/aura)
-5. Email dev@aura.network for support
+4. Join our [Discord community](https://discord.gg/aurablockchain)
+5. Email dev@aurablockchain.org for support

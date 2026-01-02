@@ -189,15 +189,15 @@ graph TB
 
 ### Mainnet
 - **Network ID**: `aura-mainnet-1`
-- **gRPC Endpoint**: `grpc.aura.network:9090`
-- **REST Endpoint**: `https://lcd.aura.network`
-- **Explorer**: `https://explorer.aura.network`
+- **gRPC Endpoint**: `rpc.aurablockchain.org:9090`
+- **REST Endpoint**: `https://api.aurablockchain.org`
+- **Explorer**: `https://explorer.aurablockchain.org`
 
 ### Testnet
 - **Network ID**: `aura-testnet-2`
-- **gRPC Endpoint**: `grpc.testnet.aura.network:9090`
-- **REST Endpoint**: `https://lcd.testnet.aura.network`
-- **Explorer**: `https://testnet.explorer.aura.network`
+- **gRPC Endpoint**: `testnet-rpc.aurablockchain.org:9090`
+- **REST Endpoint**: `https://testnet-api.aurablockchain.org`
+- **Explorer**: `https://testnet.explorer.aurablockchain.org`
 
 ### Local Development
 - **Network ID**: `aura-local-1`
@@ -239,10 +239,10 @@ Copyright (c) 2025 Aura Network
 
 ## Support
 
-- **Documentation**: [https://docs.aura.network](https://docs.aura.network)
-- **Discord**: [https://discord.gg/aura](https://discord.gg/aura)
+- **Documentation**: [https://docs.aurablockchain.org](https://docs.aurablockchain.org)
+- **Discord**: [https://discord.gg/aurablockchain](https://discord.gg/aurablockchain)
 - **GitHub Issues**: [https://github.com/aura-blockchain/aura-verifier-sdk/issues](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-- **Email**: dev@aura.network
+- **Email**: dev@aurablockchain.org
 - **Stack Overflow**: Tag questions with `aura-network`
 
 ## Contributing

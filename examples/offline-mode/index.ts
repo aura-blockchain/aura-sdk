@@ -213,7 +213,7 @@ async function runSyncOnly() {
 
   const sync = new CacheSync({
     cache,
-    networkEndpoint: 'https://rpc.euphoria.aura.network',
+    networkEndpoint: 'https://testnet-rpc.aurablockchain.org',
   });
 
   try {

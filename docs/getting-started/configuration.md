@@ -56,8 +56,8 @@ const verifier = new AuraVerifier({
 ```
 
 **Default Endpoints:**
-- gRPC: `grpc.aura.network:9090`
-- REST: `https://lcd.aura.network`
+- gRPC: `rpc.aurablockchain.org:9090`
+- REST: `https://api.aurablockchain.org`
 - Chain ID: `aura-mainnet-1`
 
 ### Testnet (Development)
@@ -71,8 +71,8 @@ const verifier = new AuraVerifier({
 ```
 
 **Default Endpoints:**
-- gRPC: `grpc.testnet.aura.network:9090`
-- REST: `https://lcd.testnet.aura.network`
+- gRPC: `testnet-rpc.aurablockchain.org:9090`
+- REST: `https://testnet-api.aurablockchain.org`
 - Chain ID: `aura-testnet-2`
 
 ### Local (Development)
@@ -237,8 +237,8 @@ const verifier = new AuraVerifier({
 ```
 [AuraVerifier] Initializing...
 [AuraVerifier] Network: testnet
-[AuraVerifier] gRPC: grpc.testnet.aura.network:9090
-[AuraVerifier] REST: https://lcd.testnet.aura.network
+[AuraVerifier] gRPC: testnet-rpc.aurablockchain.org:9090
+[AuraVerifier] REST: https://testnet-api.aurablockchain.org
 [AuraVerifier] Offline Mode: false
 [AuraVerifier] Testing connectivity...
 [AuraVerifier] Connectivity test passed
@@ -290,8 +290,8 @@ AURA_NETWORK=mainnet
 AURA_TIMEOUT=10000
 
 # Custom endpoints (optional)
-AURA_GRPC_ENDPOINT=grpc.aura.network:9090
-AURA_REST_ENDPOINT=https://lcd.aura.network
+AURA_GRPC_ENDPOINT=rpc.aurablockchain.org:9090
+AURA_REST_ENDPOINT=https://api.aurablockchain.org
 
 # Modes
 AURA_OFFLINE_MODE=false

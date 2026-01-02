@@ -15,7 +15,7 @@ We take security vulnerabilities seriously. If you discover a security issue, pl
 
 ### How to Report
 
-1. Email: security@aura.network
+1. Email: security@aurablockchain.org
 2. Include:
    - Description of the vulnerability
    - Steps to reproduce

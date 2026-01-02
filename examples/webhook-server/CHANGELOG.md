@@ -169,4 +169,4 @@ See [CONTRIBUTING.md](../../CONTRIBUTING.md) for details on how to contribute to
 
 For issues and questions:
 - GitHub Issues: https://github.com/aura-network/aura-verifier-sdk/issues
-- Documentation: https://docs.aura.network
+- Documentation: https://docs.aurablockchain.org

@@ -320,8 +320,8 @@ SUPPORT & RESOURCES
 
 Documentation: All guides included in this directory
 GitHub Issues: https://github.com/aura-network/aura-verifier-sdk/issues
-Aura Network Docs: https://docs.aura.network
-Security Contact: security@aura.network
+Aura Network Docs: https://docs.aurablockchain.org
+Security Contact: security@aurablockchain.org
 
 ================================================================================
 LICENSE

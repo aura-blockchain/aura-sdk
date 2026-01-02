@@ -363,7 +363,7 @@ class OfflineMonitor {
 
   private async checkConnectivity(): Promise<boolean> {
     try {
-      await fetch('https://lcd.aura.network/health', { timeout: 5000 });
+      await fetch('https://api.aurablockchain.org/health', { timeout: 5000 });
       return true;
     } catch {
       return false;

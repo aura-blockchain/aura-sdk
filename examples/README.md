@@ -324,7 +324,7 @@ pnpm build
 
 ```bash
 # Check network connectivity
-curl https://rpc.euphoria.aura.network/health
+curl https://testnet-rpc.aurablockchain.org/status
 
 # Try increasing timeout
 TIMEOUT=30000 pnpm start

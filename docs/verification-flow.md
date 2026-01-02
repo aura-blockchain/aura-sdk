@@ -225,7 +225,7 @@ Verify the holder signed this presentation.
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network'
+  rpcEndpoint: 'https://rpc.aurablockchain.org'
 });
 
 // Construct the signed message (must match exactly what holder signed)
@@ -611,7 +611,7 @@ import { VerifierSDK, parseQRCode } from '@aura-network/verifier-sdk';
 
 async function verifyCredential(qrString: string): Promise<boolean> {
   const verifier = new VerifierSDK({
-    rpcEndpoint: 'https://rpc.aura.network'
+    rpcEndpoint: 'https://rpc.aurablockchain.org'
   });
 
   try {

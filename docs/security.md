@@ -403,13 +403,13 @@ const auditLog = {
 ```typescript
 // ✓ GOOD: Enforce HTTPS
 const config = {
-  rpcEndpoint: 'https://rpc.aura.network',  // HTTPS
-  restEndpoint: 'https://lcd.aura.network'  // HTTPS
+  rpcEndpoint: 'https://rpc.aurablockchain.org',  // HTTPS
+  restEndpoint: 'https://api.aurablockchain.org'  // HTTPS
 };
 
 // ✗ BAD: HTTP is insecure
 const config = {
-  rpcEndpoint: 'http://rpc.aura.network',  // Vulnerable to MITM
+  rpcEndpoint: 'http://rpc.aurablockchain.org',  // Vulnerable to MITM
 };
 
 // ✓ GOOD: Validate HTTPS in production

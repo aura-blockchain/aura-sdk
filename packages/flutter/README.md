@@ -512,9 +512,9 @@ This project is licensed under the MIT License - see the [LICENSE](../../LICENSE
 
 ## Support
 
-- Documentation: [https://docs.aura.network](https://docs.aura.network)
+- Documentation: [https://docs.aurablockchain.org](https://docs.aurablockchain.org)
 - Issues: [GitHub Issues](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-- Discord: [Aura Network Discord](https://discord.gg/aura-network)
+- Discord: [Aura Network Discord](https://discord.gg/aurablockchain-network)
 
 ## Related Packages
 

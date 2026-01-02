@@ -466,4 +466,4 @@ If webhooks contain PII:
 
 ## Contact
 
-For security issues, please contact: security@aura.network
+For security issues, please contact: security@aurablockchain.org

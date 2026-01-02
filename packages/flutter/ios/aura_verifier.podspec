@@ -11,7 +11,7 @@ Flutter SDK for verifying Aura blockchain credentials. Verify age, identity, and
                        DESC
   s.homepage         = 'https://github.com/aura-blockchain/aura-verifier-sdk'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Aura Network' => 'info@aura.network' }
+  s.author           = { 'Aura Network' => 'info@aurablockchain.org' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'

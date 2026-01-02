@@ -47,7 +47,7 @@ describe('AuraClient', () => {
 
       expect(info.network).toBe('mainnet');
       expect(info.chain_id).toBe('aura-mainnet-1');
-      expect(info.rest_endpoint).toBe('https://api.aura.network');
+      expect(info.rest_endpoint).toBe('https://mainnet-api.aurablockchain.org');
       expect(info.connected).toBe(false);
     });
 
@@ -57,7 +57,7 @@ describe('AuraClient', () => {
 
       expect(info.network).toBe('testnet');
       expect(info.chain_id).toBe('aura-testnet-1');
-      expect(info.rest_endpoint).toBe('https://api.testnet.aura.network');
+      expect(info.rest_endpoint).toBe('https://testnet-api.aurablockchain.org');
     });
 
     it('should create client with local configuration', () => {
@@ -80,11 +80,11 @@ describe('AuraClient', () => {
     it('should allow custom REST endpoint', () => {
       const client = new AuraClient({
         network: 'testnet',
-        restEndpoint: 'https://custom.api.aura.network',
+        restEndpoint: 'https://custom.api.aurablockchain.org',
       });
       const info = client.getNetworkInfo();
 
-      expect(info.rest_endpoint).toBe('https://custom.api.aura.network');
+      expect(info.rest_endpoint).toBe('https://custom.api.aurablockchain.org');
     });
 
     it('should throw error for invalid network', () => {
@@ -173,7 +173,7 @@ describe('AuraClient', () => {
       const status = client.getConnectionStatus();
       expect(status.connected).toBe(true);
       expect(status.network).toBe('testnet');
-      expect(status.endpoint).toBe('https://api.testnet.aura.network');
+      expect(status.endpoint).toBe('https://testnet-api.aurablockchain.org');
       expect(status.last_connected).toBeDefined();
     });
   });

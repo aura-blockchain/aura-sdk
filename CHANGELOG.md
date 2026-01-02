@@ -146,8 +146,8 @@ This project follows [Semantic Versioning](https://semver.org/):
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-- **Discord**: [Aura Network Discord](https://discord.gg/aura)
-- **Email**: dev@aura.network
+- **Discord**: [Aura Network Discord](https://discord.gg/aurablockchain)
+- **Email**: dev@aurablockchain.org
 
 ## License
 

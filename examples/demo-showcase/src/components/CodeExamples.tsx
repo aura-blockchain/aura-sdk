@@ -12,7 +12,7 @@ const examples = {
 
 // Initialize the SDK
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   timeout: 30000,
   debug: false
 });
@@ -74,7 +74,7 @@ const cache = new OfflineCache({
 });
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
   offlineMode: true
 });

@@ -113,16 +113,16 @@ Copy any example to your clipboard with one click.
 ### Mainnet
 ```typescript
 {
-  rpcEndpoint: 'https://rpc.aura.network',
-  restEndpoint: 'https://lcd.aura.network'
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
+  restEndpoint: 'https://api.aurablockchain.org'
 }
 ```
 
-### Testnet (Euphoria)
+### Testnet (testnet)
 ```typescript
 {
-  rpcEndpoint: 'https://rpc.euphoria.aura.network',
-  restEndpoint: 'https://lcd.euphoria.aura.network'
+  rpcEndpoint: 'https://testnet-rpc.aurablockchain.org',
+  restEndpoint: 'https://testnet-api.aurablockchain.org'
 }
 ```
 
@@ -338,10 +338,10 @@ MIT License - see [LICENSE](../../LICENSE) for details.
 
 ## Support
 
-- **Documentation**: [https://docs.aura.network](https://docs.aura.network)
-- **Discord**: [https://discord.gg/aura](https://discord.gg/aura)
+- **Documentation**: [https://docs.aurablockchain.org](https://docs.aurablockchain.org)
+- **Discord**: [https://discord.gg/aurablockchain](https://discord.gg/aurablockchain)
 - **Issues**: [GitHub Issues](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-- **Email**: dev@aura.network
+- **Email**: dev@aurablockchain.org
 
 ## Acknowledgments
 

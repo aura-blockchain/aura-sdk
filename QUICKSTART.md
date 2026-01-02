@@ -46,7 +46,7 @@ pnpm typecheck
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
 });
 
 await verifier.initialize();
@@ -101,4 +101,4 @@ pnpm build && pnpm test
 ## Support
 
 - GitHub Issues: https://github.com/aura-blockchain/aura-verifier-sdk/issues
-- Discord: https://discord.gg/aura
+- Discord: https://discord.gg/aurablockchain

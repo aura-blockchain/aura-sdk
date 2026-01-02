@@ -15,7 +15,7 @@ void main() {
 
     test('network configuration', () {
       final mainnetVerifier = AuraVerifier(network: AuraNetwork.mainnet);
-      expect(mainnetVerifier.restEndpoint, contains('api.aura.network'));
+      expect(mainnetVerifier.restEndpoint, contains('api.aurablockchain.org'));
 
       final testnetVerifier = AuraVerifier(network: AuraNetwork.testnet);
       expect(testnetVerifier.restEndpoint, contains('testnet'));

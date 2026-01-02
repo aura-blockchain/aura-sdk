@@ -256,11 +256,11 @@ ADMIN_API_KEY=<strong-random-key>
 
 ### Getting Help
 - **GitHub Issues**: https://github.com/aura-network/aura-verifier-sdk/issues
-- **Documentation**: https://docs.aura.network
-- **Security Issues**: security@aura.network
+- **Documentation**: https://docs.aurablockchain.org
+- **Security Issues**: security@aurablockchain.org
 
 ### Additional Resources
-- [Aura Network Website](https://aura.network)
+- [Aura Network Website](https://aurablockchain.org)
 - [Webhook Best Practices](https://webhooks.fyi/)
 - [Express.js Documentation](https://expressjs.com/)
 - [Docker Documentation](https://docs.docker.com/)

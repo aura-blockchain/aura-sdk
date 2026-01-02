@@ -31,16 +31,16 @@ class AuraNetworkConfig {
   /// Mainnet configuration
   static const mainnet = AuraNetworkConfig(
     name: 'mainnet',
-    restEndpoint: 'https://api.aura.network',
-    grpcEndpoint: 'grpc.aura.network:9090',
+    restEndpoint: 'https://api.aurablockchain.org',
+    grpcEndpoint: 'rpc.aurablockchain.org:9090',
     chainId: 'aura-mainnet-1',
   );
 
   /// Testnet configuration
   static const testnet = AuraNetworkConfig(
     name: 'testnet',
-    restEndpoint: 'https://api.testnet.aura.network',
-    grpcEndpoint: 'grpc.testnet.aura.network:9090',
+    restEndpoint: 'https://testnet-api.aurablockchain.org',
+    grpcEndpoint: 'testnet-rpc.aurablockchain.org:9090',
     chainId: 'aura-testnet-1',
   );
 

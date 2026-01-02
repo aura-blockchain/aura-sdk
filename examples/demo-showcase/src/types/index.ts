@@ -17,13 +17,13 @@ export interface NetworkConfig {
 export const NETWORKS: Record<string, NetworkConfig> = {
   mainnet: {
     name: 'Mainnet',
-    rpcEndpoint: 'https://rpc.aura.network',
-    restEndpoint: 'https://lcd.aura.network',
+    rpcEndpoint: 'https://rpc.aurablockchain.org',
+    restEndpoint: 'https://api.aurablockchain.org',
   },
   testnet: {
-    name: 'Testnet (Euphoria)',
-    rpcEndpoint: 'https://rpc.euphoria.aura.network',
-    restEndpoint: 'https://lcd.euphoria.aura.network',
+    name: 'Testnet (testnet)',
+    rpcEndpoint: 'https://testnet-rpc.aurablockchain.org',
+    restEndpoint: 'https://testnet-api.aurablockchain.org',
   },
 };
 

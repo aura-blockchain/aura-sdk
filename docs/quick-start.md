@@ -68,7 +68,7 @@ For direct blockchain operations and custom workflows:
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const sdk = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aura.network',
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
   timeout: 30000,
   debug: false
 });
@@ -392,10 +392,10 @@ Check out these complete examples:
 
 ### Community and Support
 
-- **Documentation**: [https://docs.aura.network](https://docs.aura.network)
-- **Discord**: [https://discord.gg/aura](https://discord.gg/aura)
+- **Documentation**: [https://docs.aurablockchain.org](https://docs.aurablockchain.org)
+- **Discord**: [https://discord.gg/aurablockchain](https://discord.gg/aurablockchain)
 - **GitHub Issues**: [github.com/aura-blockchain/aura-verifier-sdk](https://github.com/aura-blockchain/aura-verifier-sdk/issues)
-- **Email**: dev@aura.network
+- **Email**: dev@aurablockchain.org
 
 ---
 
@@ -406,8 +406,8 @@ Check out these complete examples:
 **Mainnet:**
 ```typescript
 {
-  grpc: 'grpc.aura.network:9090',
-  rest: 'https://lcd.aura.network',
+  grpc: 'rpc.aurablockchain.org:9090',
+  rest: 'https://api.aurablockchain.org',
   chainId: 'aura-mainnet-1'
 }
 ```
@@ -415,8 +415,8 @@ Check out these complete examples:
 **Testnet:**
 ```typescript
 {
-  grpc: 'grpc.testnet.aura.network:9090',
-  rest: 'https://lcd.testnet.aura.network',
+  grpc: 'testnet-rpc.aurablockchain.org:9090',
+  rest: 'https://testnet-api.aurablockchain.org',
   chainId: 'aura-testnet-2'
 }
 ```

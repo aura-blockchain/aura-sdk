@@ -244,7 +244,7 @@ DEBUG=1 aura-verify check "$QR_DATA" --verbose
 - Read the [full documentation](./README.md)
 - Explore [usage examples](./EXAMPLES.md)
 - Check the [SDK documentation](../../README.md)
-- Join the [Aura Network Discord](https://discord.gg/aura-network)
+- Join the [Aura Network Discord](https://discord.gg/aurablockchain-network)
 
 ## Getting Help
 
@@ -293,5 +293,5 @@ aura-verify config --reset
 ## Support
 
 - Issues: https://github.com/aura-blockchain/aura-verifier-sdk/issues
-- Discord: https://discord.gg/aura-network
+- Discord: https://discord.gg/aurablockchain-network
 - Documentation: https://github.com/aura-blockchain/aura-verifier-sdk
