@@ -97,8 +97,8 @@ importers:
         specifier: ^0.32.2
         version: 0.32.4
       '@cosmjs/encoding':
-        specifier: ^0.32.2
-        version: 0.32.4
+        specifier: ^0.38.1
+        version: 0.38.1
       '@cosmjs/proto-signing':
         specifier: ^0.32.2
         version: 0.32.4
@@ -365,6 +365,14 @@ packages:
       base64-js: 1.5.1
       bech32: 1.1.4
       readonly-date: 1.0.0
+    dev: false
+
+  /@cosmjs/encoding@0.38.1:
+    resolution: {integrity: sha512-i5jGgJhiXs7boePGA48xzYxnCbf3MS5nT/R2HvnvSQyVAG2A99NyL96lBgmz6etOJSGOiwVrB8uh1Qp5bq6WKQ==}
+    dependencies:
+      '@scure/base': 2.0.0
+      base64-js: 1.5.1
+      readonly-date-esm: 2.0.0
     dev: false
 
   /@cosmjs/json-rpc@0.32.4:
@@ -1201,6 +1209,10 @@ packages:
   /@rtsao/scc@1.1.0:
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
     dev: true
+
+  /@scure/base@2.0.0:
+    resolution: {integrity: sha512-3E1kpuZginKkek01ovG8krQ0Z44E3DHPjc5S2rjJw9lZn3KSQOs8S7wqikF/AH7iRanHypj85uGyxk0XAyC37w==}
+    dev: false
 
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
@@ -4197,6 +4209,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
+
+  /readonly-date-esm@2.0.0:
+    resolution: {integrity: sha512-adlyzz144ofU22kjnnRIN0HPPqIbc5IZvMmMuVtEgMY4mKgNyKqOVb4Fa2GUzE2By4TEPOYoGqDoKRyqmeEuPQ==}
+    dev: false
 
   /readonly-date@1.0.0:
     resolution: {integrity: sha512-tMKIV7hlk0h4mO3JTmmVuIlJVXjKk3Sep9Bf5OH0O+758ruuVkUy2J9SttDLm91IEX/WHlXPSpxMGjPj4beMIQ==}
