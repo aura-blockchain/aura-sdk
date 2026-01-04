@@ -12,8 +12,8 @@ Quick setup instructions for running the Aura Verifier SDK benchmarks.
 ## Installation
 
 ```bash
-# Navigate to the package directory
-cd /home/decri/blockchain-projects/third-party-verifier/aura-verifier-sdk/packages/core
+# Navigate to the package directory (from repo root)
+cd packages/core
 
 # Install dependencies (includes tsx for running TypeScript)
 npm install

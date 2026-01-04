@@ -7,7 +7,7 @@ Successfully created a complete React integration package for the Aura Verifier 
 ## Package Location
 
 ```
-/home/decri/blockchain-projects/third-party-verifier/aura-verifier-sdk/packages/react/
+packages/react/
 ```
 
 ## What Was Created
@@ -166,7 +166,8 @@ Warning:   #F59E0B (Amber)
 
 1. **Install Dependencies**
    ```bash
-   cd /home/decri/blockchain-projects/third-party-verifier/aura-verifier-sdk/packages/react
+   # From repo root
+   cd packages/react
    npm install
    ```
 

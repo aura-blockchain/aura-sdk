@@ -7,7 +7,7 @@ Complete, production-ready QR code parsing and validation module for the Aura Ve
 ## Location
 
 ```
-/home/decri/blockchain-projects/third-party-verifier/aura-verifier-sdk/packages/core/src/qr/
+packages/core/src/qr/
 ```
 
 ## Files Created

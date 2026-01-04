@@ -97,8 +97,8 @@ Benchmarks include:
 ### Quick Start
 
 ```bash
-# Install dependencies
-cd /home/decri/blockchain-projects/third-party-verifier/aura-verifier-sdk/packages/core
+# Install dependencies (from repo root)
+cd packages/core
 npm install
 
 # Run quick validation (1 minute)

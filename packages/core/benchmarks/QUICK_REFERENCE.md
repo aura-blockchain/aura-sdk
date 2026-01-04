@@ -3,7 +3,8 @@
 ## Installation
 
 ```bash
-cd /home/decri/blockchain-projects/third-party-verifier/aura-verifier-sdk/packages/core
+# From repo root
+cd packages/core
 npm install
 npm run build
 ```
