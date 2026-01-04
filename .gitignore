@@ -22,12 +22,15 @@ coverage/
 .env
 .env.local
 .env.*.local
+.env.production
+.env.development
 
 # Logs
 logs/
 *.log
 npm-debug.log*
 pnpm-debug.log*
+yarn-error.log*
 
 # Generated files
 *.generated.ts
@@ -36,3 +39,25 @@ proto/**/*.d.ts
 
 # OS
 Thumbs.db
+
+# Claude/AI assistant
+.claude/
+
+# Secrets and credentials
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+secrets/
+credentials/
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
