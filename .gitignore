@@ -2,6 +2,15 @@
 node_modules/
 .pnpm-store/
 
+# Binaries / build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.o
+*.bin
+
 # Build outputs
 dist/
 build/
