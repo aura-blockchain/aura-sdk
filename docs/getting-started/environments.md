@@ -88,10 +88,10 @@ const verifier = new AuraVerifier({
 ```
 
 ### Network Details
-- **Network ID**: `aura-testnet-2`
-- **gRPC Endpoint**: `testnet-rpc.aurablockchain.org:9090`
+- **Network ID**: `aura-mvp-1`
+- **gRPC Endpoint**: `testnet-grpc.aurablockchain.org:443`
 - **REST Endpoint**: `https://testnet-api.aurablockchain.org`
-- **Explorer**: `https://testnet.explorer.aurablockchain.org`
+- **Explorer**: `https://testnet-explorer.aurablockchain.org`
 - **Block Time**: ~6 seconds
 - **Finality**: 1 block (~6 seconds)
 

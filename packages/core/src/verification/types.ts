@@ -383,10 +383,10 @@ export const NETWORK_ENDPOINTS: Record<NetworkType, NetworkEndpoints> = {
     name: 'Aura Mainnet',
   },
   testnet: {
-    grpc: 'testnet-rpc.aurablockchain.org:9090',
+    grpc: 'testnet-grpc.aurablockchain.org:443',
     rest: 'https://testnet-api.aurablockchain.org',
-    chainId: 'aura-testnet-2',
-    name: 'Aura Testnet',
+    chainId: 'aura-mvp-1',
+    name: 'Aura Testnet (MVP)',
   },
   local: {
     grpc: 'localhost:9090',

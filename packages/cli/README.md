@@ -265,7 +265,7 @@ aura-verify check "..." --network mainnet
 ```bash
 aura-verify check "..." --network testnet
 ```
-- gRPC: `testnet-rpc.aurablockchain.org:9090`
+- gRPC: `testnet-grpc.aurablockchain.org:443`
 - REST: `https://testnet-api.aurablockchain.org`
 
 ### Local (Development)

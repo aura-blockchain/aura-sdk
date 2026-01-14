@@ -415,9 +415,9 @@ Check out these complete examples:
 **Testnet:**
 ```typescript
 {
-  grpc: 'testnet-rpc.aurablockchain.org:9090',
+  grpc: 'testnet-grpc.aurablockchain.org:443',
   rest: 'https://testnet-api.aurablockchain.org',
-  chainId: 'aura-testnet-2'
+  chainId: 'aura-mvp-1'
 }
 ```
 

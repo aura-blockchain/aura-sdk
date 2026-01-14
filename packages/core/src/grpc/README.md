@@ -239,8 +239,8 @@ interface AuraClientConfig {
 
 ### Testnet
 - REST: `https://testnet-api.aurablockchain.org`
-- gRPC: `testnet-rpc.aurablockchain.org:9090`
-- Chain ID: `aura-testnet-1`
+- gRPC: `testnet-grpc.aurablockchain.org:443`
+- Chain ID: `aura-mvp-1`
 
 ### Local
 - REST: `http://localhost:1317`

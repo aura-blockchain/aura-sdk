@@ -20,6 +20,14 @@ import {
   APIResponse,
   VerifyPresentationRequest,
   RetryConfig,
+  VCStatus,
+  AttributeVC,
+  DisclosurePolicy,
+  DisclosureRequest,
+  VCPolicy,
+  RegistryStats,
+  MintEligibilityResponse,
+  VCType,
 } from './types.js';
 import { API_PATHS, DEFAULT_RETRY_CONFIG, DEFAULT_TIMEOUT } from './endpoints.js';
 
@@ -251,76 +259,25 @@ export class QueryExecutor {
 
 /**
  * Query functions for Aura VC Registry module
+ * Aligned with aura/vcregistry/v1beta1 proto definitions
  */
 export class VCRegistryQueries {
   constructor(private readonly executor: QueryExecutor) {}
 
   /**
-   * Verify a presentation
-   */
-  async verifyPresentation(
-    qrCodeData: string,
-    verifierAddress?: string
-  ): Promise<VerificationResult> {
-    const request: VerifyPresentationRequest = {
-      presentation_data: qrCodeData,
-      verifier_did: verifierAddress,
-      options: {
-        check_revocation: true,
-        check_expiration: true,
-        verify_signature: true,
-      },
-    };
-
-    const response = await this.executor.post<APIResponse<VerificationResult>>(
-      API_PATHS.vcregistry.verifyPresentation,
-      request
-    );
-
-    if (response.error) {
-      throw new APIError(
-        response.error.message,
-        API_PATHS.vcregistry.verifyPresentation,
-        response.status,
-        response.error.code?.toString(),
-        response.error.details
-      );
-    }
-
-    if (!response.data) {
-      throw NetworkError.invalidResponse(
-        'Missing data in verification response',
-        response
-      );
-    }
-
-    return response.data;
-  }
-
-  /**
-   * Get VC by ID
+   * Get VC by ID - maps to Query.GetVC
    */
   async getVC(vcId: string): Promise<VCRecord | null> {
     try {
-      const response = await this.executor.get<APIResponse<{ vc: VCRecord }>>(
+      const response = await this.executor.get<{ vc: VCRecord; exists: boolean }>(
         API_PATHS.vcregistry.getVC(vcId)
       );
 
-      if (response.error) {
-        // If VC not found, return null instead of throwing
-        if (response.status === 404) {
-          return null;
-        }
-        throw new APIError(
-          response.error.message,
-          API_PATHS.vcregistry.getVC(vcId),
-          response.status,
-          response.error.code?.toString(),
-          response.error.details
-        );
+      if (!response.exists) {
+        return null;
       }
 
-      return response.data?.vc ?? null;
+      return response.vc ?? null;
     } catch (error) {
       // Handle 404 gracefully
       if (error instanceof APIError && error.statusCode === 404) {
@@ -331,35 +288,59 @@ export class VCRegistryQueries {
   }
 
   /**
-   * Check VC status
+   * List VCs for a user - maps to Query.ListUserVCs
+   */
+  async listUserVCs(
+    holderAddress: string,
+    options?: {
+      statusFilter?: VCStatus;
+      typeFilter?: VCType;
+      pagination?: { key?: string; limit?: number };
+    }
+  ): Promise<{ vcs: VCRecord[]; pagination?: { nextKey?: string } }> {
+    let path = API_PATHS.vcregistry.listUserVCs(holderAddress);
+
+    // Add query params
+    const params = new URLSearchParams();
+    if (options?.statusFilter !== undefined) {
+      params.set('status_filter', options.statusFilter.toString());
+    }
+    if (options?.typeFilter !== undefined) {
+      params.set('type_filter', options.typeFilter.toString());
+    }
+    if (options?.pagination?.key) {
+      params.set('pagination.key', options.pagination.key);
+    }
+    if (options?.pagination?.limit) {
+      params.set('pagination.limit', options.pagination.limit.toString());
+    }
+
+    const queryString = params.toString();
+    if (queryString) {
+      path += `?${queryString}`;
+    }
+
+    const response = await this.executor.get<{
+      vcs: VCRecord[];
+      pagination?: { next_key?: string };
+    }>(path);
+
+    return {
+      vcs: response.vcs ?? [],
+      pagination: response.pagination ? { nextKey: response.pagination.next_key } : undefined,
+    };
+  }
+
+  /**
+   * Check VC status - maps to Query.CheckVCStatus
    */
   async checkVCStatus(vcId: string): Promise<VCStatusResponse> {
     try {
-      const response = await this.executor.get<APIResponse<VCStatusResponse>>(
-        API_PATHS.vcregistry.getVCStatus(vcId)
+      const response = await this.executor.get<VCStatusResponse>(
+        API_PATHS.vcregistry.checkVCStatus(vcId)
       );
 
-      if (response.error) {
-        throw new APIError(
-          response.error.message,
-          API_PATHS.vcregistry.getVCStatus(vcId),
-          response.status,
-          response.error.code?.toString(),
-          response.error.details
-        );
-      }
-
-      if (!response.data) {
-        // If VC doesn't exist, return status indicating that
-        return {
-          vc_id: vcId,
-          exists: false,
-          revoked: false,
-          expired: false,
-        };
-      }
-
-      return response.data;
+      return response;
     } catch (error) {
       // Handle 404 gracefully (VC not found = doesn't exist)
       if (
@@ -367,10 +348,8 @@ export class VCRegistryQueries {
         (error instanceof NetworkError && error.statusCode === 404)
       ) {
         return {
-          vc_id: vcId,
-          exists: false,
-          revoked: false,
-          expired: false,
+          status: VCStatus.UNSPECIFIED,
+          valid: false,
         };
       }
       throw error;
@@ -378,76 +357,513 @@ export class VCRegistryQueries {
   }
 
   /**
-   * Batch check VC status for multiple VCs
+   * Batch check VC status - maps to Query.BatchVCStatus
    */
   async batchCheckVCStatus(vcIds: string[]): Promise<Map<string, VCStatusResponse>> {
-    const results = new Map<string, VCStatusResponse>();
+    try {
+      const response = await this.executor.post<{
+        statuses: Record<string, { vc_id: string; status: VCStatus; valid: boolean; expires_at?: string }>;
+      }>(API_PATHS.vcregistry.batchVCStatus, { vc_ids: vcIds });
 
-    // Execute queries in parallel with concurrency limit
-    const concurrency = 10;
-    for (let i = 0; i < vcIds.length; i += concurrency) {
-      const batch = vcIds.slice(i, i + concurrency);
-      const promises = batch.map(async (vcId) => {
-        try {
-          const status = await this.checkVCStatus(vcId);
-          return { vcId, status };
-        } catch (error) {
-          // On error, return error status
-          return {
-            vcId,
-            status: {
-              vc_id: vcId,
-              exists: false,
-              revoked: false,
-              expired: false,
-              error: error instanceof Error ? error.message : 'Unknown error',
-            } as VCStatusResponse,
-          };
-        }
-      });
+      const results = new Map<string, VCStatusResponse>();
+      for (const [vcId, status] of Object.entries(response.statuses ?? {})) {
+        results.set(vcId, {
+          status: status.status,
+          valid: status.valid,
+          expires_at: status.expires_at,
+        });
+      }
 
-      const batchResults = await Promise.all(promises);
-      batchResults.forEach(({ vcId, status }) => {
-        results.set(vcId, status);
-      });
+      return results;
+    } catch (error) {
+      // Fallback to individual queries if batch endpoint not available
+      const results = new Map<string, VCStatusResponse>();
+
+      const concurrency = 10;
+      for (let i = 0; i < vcIds.length; i += concurrency) {
+        const batch = vcIds.slice(i, i + concurrency);
+        const promises = batch.map(async (vcId) => {
+          try {
+            const status = await this.checkVCStatus(vcId);
+            return { vcId, status };
+          } catch (err) {
+            return {
+              vcId,
+              status: { status: VCStatus.UNSPECIFIED, valid: false } as VCStatusResponse,
+            };
+          }
+        });
+
+        const batchResults = await Promise.all(promises);
+        batchResults.forEach(({ vcId, status }) => {
+          results.set(vcId, status);
+        });
+      }
+
+      return results;
+    }
+  }
+
+  /**
+   * Resolve DID - maps to Query.ResolveDID
+   */
+  async resolveDID(did: string): Promise<DIDResolutionResponse | null> {
+    try {
+      const response = await this.executor.get<{
+        did_document: DIDDocument;
+        exists: boolean;
+        credentials?: VCRecord[];
+      }>(API_PATHS.vcregistry.resolveDID(did));
+
+      if (!response.exists) {
+        return null;
+      }
+
+      return {
+        did_document: response.did_document,
+        metadata: {},
+      };
+    } catch (error) {
+      if (error instanceof APIError && error.statusCode === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Get DIDs by address - maps to Query.GetDIDByAddress
+   */
+  async getDIDsByAddress(controller: string): Promise<string[]> {
+    const response = await this.executor.get<{ dids: string[] }>(
+      API_PATHS.vcregistry.getDIDByAddress(controller)
+    );
+
+    return response.dids ?? [];
+  }
+
+  /**
+   * Get VC policy - maps to Query.GetVCPolicy
+   */
+  async getVCPolicy(vcTypeName: string): Promise<VCPolicy | null> {
+    try {
+      const response = await this.executor.get<{ policy: VCPolicy; exists: boolean }>(
+        API_PATHS.vcregistry.getVCPolicy(vcTypeName)
+      );
+
+      if (!response.exists) {
+        return null;
+      }
+
+      return response.policy;
+    } catch (error) {
+      if (error instanceof APIError && error.statusCode === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * List VC policies - maps to Query.ListVCPolicies
+   */
+  async listVCPolicies(options?: {
+    statusFilter?: number;
+    pagination?: { key?: string; limit?: number };
+  }): Promise<{ policies: VCPolicy[]; pagination?: { nextKey?: string } }> {
+    let path = API_PATHS.vcregistry.listVCPolicies;
+
+    const params = new URLSearchParams();
+    if (options?.statusFilter !== undefined) {
+      params.set('status_filter', options.statusFilter.toString());
+    }
+    if (options?.pagination?.key) {
+      params.set('pagination.key', options.pagination.key);
+    }
+    if (options?.pagination?.limit) {
+      params.set('pagination.limit', options.pagination.limit.toString());
     }
 
-    return results;
+    const queryString = params.toString();
+    if (queryString) {
+      path += `?${queryString}`;
+    }
+
+    const response = await this.executor.get<{
+      policies: VCPolicy[];
+      pagination?: { next_key?: string };
+    }>(path);
+
+    return {
+      policies: response.policies ?? [],
+      pagination: response.pagination ? { nextKey: response.pagination.next_key } : undefined,
+    };
+  }
+
+  /**
+   * Check revocation status - maps to Query.CheckRevocation
+   */
+  async checkRevocation(vcId: string): Promise<{
+    revoked: boolean;
+    merkleProof?: string;
+  }> {
+    const response = await this.executor.get<{
+      revoked: boolean;
+      record?: unknown;
+      merkle_proof?: string;
+    }>(API_PATHS.vcregistry.checkRevocation(vcId));
+
+    return {
+      revoked: response.revoked,
+      merkleProof: response.merkle_proof,
+    };
+  }
+
+  /**
+   * Validate mint eligibility - maps to Query.ValidateMintEligibility
+   */
+  async validateMintEligibility(
+    holderAddress: string,
+    vcType: VCType
+  ): Promise<MintEligibilityResponse> {
+    const response = await this.executor.get<MintEligibilityResponse>(
+      API_PATHS.vcregistry.validateMintEligibility(holderAddress, vcType)
+    );
+
+    return response;
+  }
+
+  /**
+   * Get registry stats - maps to Query.Stats
+   */
+  async getStats(): Promise<RegistryStats> {
+    const response = await this.executor.get<RegistryStats>(API_PATHS.vcregistry.stats);
+    return response;
+  }
+
+  /**
+   * Get module params - maps to Query.Params
+   */
+  async getParams(): Promise<Record<string, unknown>> {
+    const response = await this.executor.get<{ params: Record<string, unknown> }>(
+      API_PATHS.vcregistry.params
+    );
+    return response.params;
+  }
+
+  // ============================
+  // ATTRIBUTE VC QUERIES
+  // ============================
+
+  /**
+   * Get attribute VC - maps to Query.GetAttributeVC
+   */
+  async getAttributeVC(attributeVcId: string): Promise<AttributeVC | null> {
+    try {
+      const response = await this.executor.get<{ attribute_vc: AttributeVC; exists: boolean }>(
+        API_PATHS.vcregistry.getAttributeVC(attributeVcId)
+      );
+
+      if (!response.exists) {
+        return null;
+      }
+
+      return response.attribute_vc;
+    } catch (error) {
+      if (error instanceof APIError && error.statusCode === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * List attribute VCs for a user - maps to Query.ListAttributeVCs
+   */
+  async listAttributeVCs(
+    holderAddress: string,
+    filterTypes?: number[]
+  ): Promise<AttributeVC[]> {
+    let path = API_PATHS.vcregistry.listAttributeVCs(holderAddress);
+
+    if (filterTypes && filterTypes.length > 0) {
+      const params = new URLSearchParams();
+      filterTypes.forEach((t) => params.append('filter_types', t.toString()));
+      path += `?${params.toString()}`;
+    }
+
+    const response = await this.executor.get<{ attribute_vcs: AttributeVC[] }>(path);
+    return response.attribute_vcs ?? [];
+  }
+
+  /**
+   * Get disclosure policy - maps to Query.GetDisclosurePolicy
+   */
+  async getDisclosurePolicy(holderAddress: string): Promise<DisclosurePolicy | null> {
+    try {
+      const response = await this.executor.get<{ policy: DisclosurePolicy; exists: boolean }>(
+        API_PATHS.vcregistry.getDisclosurePolicy(holderAddress)
+      );
+
+      if (!response.exists) {
+        return null;
+      }
+
+      return response.policy;
+    } catch (error) {
+      if (error instanceof APIError && error.statusCode === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Get disclosure request - maps to Query.GetDisclosureRequest
+   */
+  async getDisclosureRequest(requestId: string): Promise<DisclosureRequest | null> {
+    try {
+      const response = await this.executor.get<{ request: DisclosureRequest; exists: boolean }>(
+        API_PATHS.vcregistry.getDisclosureRequest(requestId)
+      );
+
+      if (!response.exists) {
+        return null;
+      }
+
+      return response.request;
+    } catch (error) {
+      if (error instanceof APIError && error.statusCode === 404) {
+        return null;
+      }
+      throw error;
+    }
   }
 }
 
 /**
  * Query functions for Aura Identity module
+ * Aligned with aura/identity/v1beta1 proto definitions
  */
 export class IdentityQueries {
   constructor(private readonly executor: QueryExecutor) {}
 
   /**
-   * Resolve DID document
+   * Get identity record by DID - maps to Query.IdentityRecord
    */
-  async resolveDID(did: string): Promise<DIDDocument> {
-    const response = await this.executor.get<APIResponse<DIDResolutionResponse>>(
-      API_PATHS.identity.resolveDID(did)
+  async getIdentity(did: string): Promise<unknown | null> {
+    try {
+      const response = await this.executor.get<{ record: unknown }>(
+        API_PATHS.identity.getIdentity(did)
+      );
+      return response.record ?? null;
+    } catch (error) {
+      if (error instanceof APIError && error.statusCode === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Get identity record by address - maps to Query.IdentityRecordByAddress
+   */
+  async getIdentityByAddress(address: string): Promise<unknown | null> {
+    try {
+      const response = await this.executor.get<{ record: unknown }>(
+        API_PATHS.identity.getIdentityByAddress(address)
+      );
+      return response.record ?? null;
+    } catch (error) {
+      if (error instanceof APIError && error.statusCode === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * List all identity records - maps to Query.AllIdentityRecords
+   */
+  async listIdentities(pagination?: {
+    key?: string;
+    limit?: number;
+  }): Promise<{ records: unknown[]; pagination?: { nextKey?: string } }> {
+    let path = API_PATHS.identity.listIdentities;
+
+    if (pagination) {
+      const params = new URLSearchParams();
+      if (pagination.key) params.set('pagination.key', pagination.key);
+      if (pagination.limit) params.set('pagination.limit', pagination.limit.toString());
+      const queryString = params.toString();
+      if (queryString) path += `?${queryString}`;
+    }
+
+    const response = await this.executor.get<{
+      records: unknown[];
+      pagination?: { next_key?: string };
+    }>(path);
+
+    return {
+      records: response.records ?? [],
+      pagination: response.pagination ? { nextKey: response.pagination.next_key } : undefined,
+    };
+  }
+
+  /**
+   * Get change request - maps to Query.ChangeRequest
+   */
+  async getChangeRequest(requestId: string): Promise<unknown | null> {
+    try {
+      const response = await this.executor.get<{ request: unknown }>(
+        API_PATHS.identity.getChangeRequest(requestId)
+      );
+      return response.request ?? null;
+    } catch (error) {
+      if (error instanceof APIError && error.statusCode === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Get change history for a DID - maps to Query.ChangeHistory
+   */
+  async getChangeHistory(did: string, pagination?: {
+    key?: string;
+    limit?: number;
+  }): Promise<{ entries: unknown[]; pagination?: { nextKey?: string } }> {
+    let path = API_PATHS.identity.getChangeHistory(did);
+
+    if (pagination) {
+      const params = new URLSearchParams();
+      if (pagination.key) params.set('pagination.key', pagination.key);
+      if (pagination.limit) params.set('pagination.limit', pagination.limit.toString());
+      const queryString = params.toString();
+      if (queryString) path += `?${queryString}`;
+    }
+
+    const response = await this.executor.get<{
+      entries: unknown[];
+      pagination?: { next_key?: string };
+    }>(path);
+
+    return {
+      entries: response.entries ?? [],
+      pagination: response.pagination ? { nextKey: response.pagination.next_key } : undefined,
+    };
+  }
+
+  /**
+   * Check if address has permission - maps to Query.HasPermission
+   */
+  async hasPermission(address: string, permission: string): Promise<{
+    hasPermission: boolean;
+    roles: string[];
+  }> {
+    const response = await this.executor.get<{
+      has_permission: boolean;
+      roles: string[];
+    }>(API_PATHS.identity.hasPermission(address, permission));
+
+    return {
+      hasPermission: response.has_permission,
+      roles: response.roles ?? [],
+    };
+  }
+
+  /**
+   * Get role assignments for address - maps to Query.RoleAssignments
+   */
+  async getRoleAssignments(address: string): Promise<unknown[]> {
+    const response = await this.executor.get<{ assignments: unknown[] }>(
+      API_PATHS.identity.getRoleAssignments(address)
     );
+    return response.assignments ?? [];
+  }
 
-    if (response.error) {
-      throw new APIError(
-        response.error.message,
-        API_PATHS.identity.resolveDID(did),
-        response.status,
-        response.error.code?.toString(),
-        response.error.details
+  /**
+   * Get session by ID - maps to Query.Session
+   */
+  async getSession(sessionId: string): Promise<unknown | null> {
+    try {
+      const response = await this.executor.get<{ session: unknown }>(
+        API_PATHS.identity.getSession(sessionId)
       );
+      return response.session ?? null;
+    } catch (error) {
+      if (error instanceof APIError && error.statusCode === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Get sessions by address - maps to Query.SessionsByAddress
+   */
+  async getSessionsByAddress(address: string, pagination?: {
+    key?: string;
+    limit?: number;
+  }): Promise<{ sessions: unknown[]; pagination?: { nextKey?: string } }> {
+    let path = API_PATHS.identity.getSessionsByAddress(address);
+
+    if (pagination) {
+      const params = new URLSearchParams();
+      if (pagination.key) params.set('pagination.key', pagination.key);
+      if (pagination.limit) params.set('pagination.limit', pagination.limit.toString());
+      const queryString = params.toString();
+      if (queryString) path += `?${queryString}`;
     }
 
-    if (!response.data?.did_document) {
-      throw NetworkError.invalidResponse(
-        'Missing DID document in response',
-        response
-      );
+    const response = await this.executor.get<{
+      sessions: unknown[];
+      pagination?: { next_key?: string };
+    }>(path);
+
+    return {
+      sessions: response.sessions ?? [],
+      pagination: response.pagination ? { nextKey: response.pagination.next_key } : undefined,
+    };
+  }
+
+  /**
+   * Get audit logs - maps to Query.AuditLogs
+   */
+  async getAuditLogs(pagination?: {
+    key?: string;
+    limit?: number;
+  }): Promise<{ logs: unknown[]; pagination?: { nextKey?: string } }> {
+    let path = API_PATHS.identity.getAuditLogs;
+
+    if (pagination) {
+      const params = new URLSearchParams();
+      if (pagination.key) params.set('pagination.key', pagination.key);
+      if (pagination.limit) params.set('pagination.limit', pagination.limit.toString());
+      const queryString = params.toString();
+      if (queryString) path += `?${queryString}`;
     }
 
-    return response.data.did_document;
+    const response = await this.executor.get<{
+      logs: unknown[];
+      pagination?: { next_key?: string };
+    }>(path);
+
+    return {
+      logs: response.logs ?? [],
+      pagination: response.pagination ? { nextKey: response.pagination.next_key } : undefined,
+    };
+  }
+
+  /**
+   * Get module params - maps to Query.Params
+   */
+  async getParams(): Promise<Record<string, unknown>> {
+    const response = await this.executor.get<{ params: Record<string, unknown> }>(
+      API_PATHS.identity.params
+    );
+    return response.params;
   }
 }
 

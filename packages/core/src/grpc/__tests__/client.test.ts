@@ -56,7 +56,7 @@ describe('AuraClient', () => {
       const info = client.getNetworkInfo();
 
       expect(info.network).toBe('testnet');
-      expect(info.chain_id).toBe('aura-testnet-1');
+      expect(info.chain_id).toBe('aura-mvp-1');
       expect(info.rest_endpoint).toBe('https://testnet-api.aurablockchain.org');
     });
 

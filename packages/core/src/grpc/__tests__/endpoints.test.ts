@@ -32,9 +32,9 @@ describe('AURA_NETWORKS', () => {
 
   it('should have testnet configuration with TLS', () => {
     expect(AURA_NETWORKS.testnet).toBeDefined();
-    expect(AURA_NETWORKS.testnet.grpc).toBe('grpcs://testnet-rpc.aurablockchain.org:443');
+    expect(AURA_NETWORKS.testnet.grpc).toBe('grpcs://testnet-grpc.aurablockchain.org:443');
     expect(AURA_NETWORKS.testnet.rest).toBe('https://testnet-api.aurablockchain.org');
-    expect(AURA_NETWORKS.testnet.chainId).toBe('aura-testnet-1');
+    expect(AURA_NETWORKS.testnet.chainId).toBe('aura-mvp-1');
   });
 
   it('should have local configuration (insecure allowed)', () => {

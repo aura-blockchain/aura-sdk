@@ -169,7 +169,7 @@ export class MockBlockchainServer {
       throw new Error('Network error: Failed to query chain ID');
     }
 
-    return 'aura-testnet-2';
+    return 'aura-mvp-1';
   }
 
   /**

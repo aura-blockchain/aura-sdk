@@ -29,8 +29,8 @@ export enum NetworkType {
 export enum ChainID {
   /** Mainnet chain ID */
   MAINNET = 'aura-mainnet-1',
-  /** Testnet chain ID */
-  TESTNET = 'aura-testnet-1',
+  /** Testnet chain ID (MVP testnet) */
+  TESTNET = 'aura-mvp-1',
   /** Local chain ID */
   LOCALNET = 'aura-local-1',
 }
@@ -122,10 +122,10 @@ export const TESTNET_CONFIG: NetworkConfig = {
   network: NetworkType.TESTNET,
   chainId: ChainID.TESTNET,
   endpoints: {
-    grpc: 'testnet-rpc.aurablockchain.org:9090',
+    grpc: 'testnet-grpc.aurablockchain.org:443',
     rest: 'https://testnet-api.aurablockchain.org',
     rpc: 'https://testnet-rpc.aurablockchain.org',
-    websocket: 'wss://testnet-rpc.aurablockchain.org/websocket',
+    websocket: 'wss://testnet-ws.aurablockchain.org/websocket',
   },
   addressPrefix: 'aura',
   didPrefix: 'did:aura',

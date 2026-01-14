@@ -71,9 +71,9 @@ const verifier = new AuraVerifier({
 ```
 
 **Default Endpoints:**
-- gRPC: `testnet-rpc.aurablockchain.org:9090`
+- gRPC: `testnet-grpc.aurablockchain.org:443`
 - REST: `https://testnet-api.aurablockchain.org`
-- Chain ID: `aura-testnet-2`
+- Chain ID: `aura-mvp-1`
 
 ### Local (Development)
 
@@ -237,7 +237,7 @@ const verifier = new AuraVerifier({
 ```
 [AuraVerifier] Initializing...
 [AuraVerifier] Network: testnet
-[AuraVerifier] gRPC: testnet-rpc.aurablockchain.org:9090
+[AuraVerifier] gRPC: testnet-grpc.aurablockchain.org:443
 [AuraVerifier] REST: https://testnet-api.aurablockchain.org
 [AuraVerifier] Offline Mode: false
 [AuraVerifier] Testing connectivity...

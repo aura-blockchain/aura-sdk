@@ -36,12 +36,12 @@ class AuraNetworkConfig {
     chainId: 'aura-mainnet-1',
   );
 
-  /// Testnet configuration
+  /// Testnet configuration (MVP testnet)
   static const testnet = AuraNetworkConfig(
     name: 'testnet',
     restEndpoint: 'https://testnet-api.aurablockchain.org',
-    grpcEndpoint: 'testnet-rpc.aurablockchain.org:9090',
-    chainId: 'aura-testnet-1',
+    grpcEndpoint: 'testnet-grpc.aurablockchain.org:443',
+    chainId: 'aura-mvp-1',
   );
 
   /// Local development configuration

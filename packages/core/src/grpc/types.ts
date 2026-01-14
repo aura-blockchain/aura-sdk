@@ -40,9 +40,46 @@ export interface JsonWebKey {
 }
 
 /**
- * DID Document structure (W3C DID Core specification)
+ * DID Document structure matching chain DIDDocument proto
+ * Based on W3C DID Core specification with Aura-specific extensions
  */
 export interface DIDDocument {
+  /** The DID this document describes (did:aura:mainnet:...) */
+  did: string;
+  /** Bech32 address of controller */
+  controller: string;
+  /** Verification methods (public keys) */
+  verification_methods: ChainVerificationMethod[];
+  /** List of active VC IDs */
+  credential_ids: string[];
+  /** When created (ISO 8601) */
+  created: string;
+  /** When last updated (ISO 8601) */
+  updated: string;
+  /** Full document URI (IPFS) */
+  metadata_uri?: string;
+  /** Service endpoint map */
+  service_endpoints?: Record<string, string>;
+}
+
+/**
+ * Chain verification method structure
+ */
+export interface ChainVerificationMethod {
+  /** Method ID */
+  id: string;
+  /** Type (e.g., "Ed25519VerificationKey2020") */
+  type: string;
+  /** DID of controller */
+  controller: string;
+  /** Raw public key bytes (hex encoded) */
+  public_key: string;
+}
+
+/**
+ * W3C DID Document structure (for external compatibility)
+ */
+export interface W3CDIDDocument {
   /** The DID this document describes */
   id: string;
   /** Verification methods for the DID */
@@ -147,33 +184,141 @@ export interface Proof {
 }
 
 /**
+ * VCType enum values matching chain proto definition
+ */
+export enum VCType {
+  UNSPECIFIED = 0,
+  VERIFIED_HUMAN = 1,
+  AGE_OVER_18 = 2,
+  AGE_OVER_21 = 3,
+  RESIDENT_OF = 4,
+  BIOMETRIC_AUTH = 5,
+  KYC_VERIFICATION = 6,
+  NOTARY_PUBLIC = 7,
+  PROFESSIONAL_LICENSE = 8,
+  // Arena focus credentials
+  BIOMETRIC_FOCUS = 20,
+  SOCIAL_FOCUS = 21,
+  GEOLOCATION_FOCUS = 22,
+  HIGH_ASSURANCE_FOCUS = 23,
+  POSSESSION_FOCUS = 24,
+  KNOWLEDGE_FOCUS = 25,
+  PERSISTENCE_FOCUS = 26,
+  SPECIALIZED_FOCUS = 27,
+  // Custom types start at 100
+  CUSTOM = 100,
+}
+
+/**
+ * VCStatus enum values matching chain proto definition
+ */
+export enum VCStatus {
+  UNSPECIFIED = 0,
+  PENDING = 1,
+  ACTIVE = 2,
+  REVOKED = 3,
+  EXPIRED = 4,
+  SUSPENDED = 5,
+}
+
+/**
+ * RevocationReason enum matching chain proto definition
+ */
+export enum RevocationReason {
+  UNSPECIFIED = 0,
+  USER_REQUEST = 1,
+  FRAUD_DETECTED = 2,
+  CS_BELOW_THRESHOLD = 3,
+  IR_INVALIDATED = 4,
+  EXPIRED = 5,
+  GOVERNANCE = 6,
+  SECURITY_COMPROMISE = 7,
+  POLICY_CHANGE = 8,
+}
+
+/**
  * VC record stored on Aura blockchain
+ * Matches VCRecord in aura/vcregistry/v1beta1/vc_registry.proto
  */
 export interface VCRecord {
-  /** Credential ID */
+  /** Unique identifier (DID-based or UUID) */
   vc_id: string;
-  /** Holder DID */
+  /** Type of credential */
+  vc_type: VCType;
+  /** Custom type name (if VC_TYPE_CUSTOM) */
+  vc_type_custom?: string;
+  /** DID of holder */
   holder_did: string;
-  /** Issuer DID */
-  issuer_did: string;
-  /** VC data hash (SHA-256) */
-  data_hash: string;
-  /** Issuance timestamp (Unix time) */
-  issued_at: number;
-  /** Expiration timestamp (Unix time, 0 if no expiration) */
-  expires_at: number;
-  /** Revocation status */
-  revoked: boolean;
-  /** Revocation timestamp (Unix time, 0 if not revoked) */
-  revoked_at: number;
+  /** Bech32 address of holder */
+  holder_address: string;
+  /** Current status (ACTIVE, REVOKED, SUSPENDED, etc.) */
+  status: VCStatus;
+  /** When issued (ISO 8601 timestamp) */
+  issued_at: string;
+  /** Expiration (ISO 8601 timestamp, empty = never expires) */
+  expires_at?: string;
+  /** Block height of issuance (for audit) */
+  issued_height: number;
+  /** SHA256 of full credential (tamper detection) */
+  credential_hash: string;
+  /** Hash of issuing plug-in (code verification) */
+  verifier_plugin_hash?: string;
+  /** AI assistant address (IR runner) */
+  issuer_assistant?: string;
+  /** Inclusion Routines required for minting */
+  prerequisite_ir_ids?: string[];
+  /** Extensible metadata (IPFS CID, etc.) */
+  metadata?: Record<string, string>;
+  /** Confidence Score at mint time (audit trail) */
+  cs_at_mint?: number;
+  /** Policy version used (governance tracking) */
+  policy_version?: string;
   /** Full VC data (optional, may be stored off-chain) */
   credential_data?: VerifiableCredential;
 }
 
 /**
- * VC status response
+ * VC status response matching QueryCheckVCStatusResponse
  */
 export interface VCStatusResponse {
+  /** VC status enum */
+  status: VCStatus;
+  /** Whether credential is valid (active and not expired) */
+  valid: boolean;
+  /** Expiration timestamp (ISO 8601) */
+  expires_at?: string;
+  /** Revocation record (if revoked) */
+  revocation?: RevocationRecord;
+  /** Merkle proof for trustless verification */
+  merkle_proof?: string;
+}
+
+/**
+ * Revocation record matching RevocationRecord proto
+ */
+export interface RevocationRecord {
+  /** Credential ID */
+  vc_id: string;
+  /** When revoked (ISO 8601) */
+  revoked_at: string;
+  /** Block height of revocation */
+  revoked_height: number;
+  /** Reason for revocation */
+  reason: RevocationReason;
+  /** Who revoked (holder_did or "governance") */
+  revoker: string;
+  /** Evidence (IPFS hash or metadata) */
+  evidence?: string;
+  /** Merkle proof bytes (hex encoded) */
+  merkle_proof?: string;
+  /** Position in Merkle tree */
+  merkle_index?: number;
+}
+
+/**
+ * Legacy VC status response format for backwards compatibility
+ */
+export interface LegacyVCStatusResponse {
   /** Credential ID */
   vc_id: string;
   /** Whether credential exists on chain */
@@ -356,4 +501,244 @@ export interface RetryConfig {
   retryOnTimeout: boolean;
   /** HTTP status codes that should trigger retry */
   retryableStatusCodes: number[];
+}
+
+// ============================
+// ATTRIBUTE VC TYPES
+// ============================
+
+/**
+ * AttributeType enum matching chain proto
+ */
+export enum AttributeType {
+  UNSPECIFIED = 0,
+  // Personal attributes
+  FULL_NAME = 1,
+  FIRST_NAME = 2,
+  LAST_NAME = 3,
+  DATE_OF_BIRTH = 4,
+  AGE = 5,
+  GENDER = 6,
+  // Contact attributes
+  EMAIL = 10,
+  PHONE = 11,
+  ADDRESS_FULL = 12,
+  ADDRESS_STREET = 13,
+  ADDRESS_CITY = 14,
+  ADDRESS_STATE = 15,
+  ADDRESS_ZIP = 16,
+  ADDRESS_COUNTRY = 17,
+  // Government IDs
+  PASSPORT_NUMBER = 20,
+  DRIVERS_LICENSE = 21,
+  SSN = 22,
+  TAX_ID = 23,
+  // Physical attributes
+  HEIGHT = 30,
+  WEIGHT = 31,
+  EYE_COLOR = 32,
+  HAIR_COLOR = 33,
+  // Professional attributes
+  OCCUPATION = 40,
+  EMPLOYER = 41,
+  PROFESSIONAL_LICENSE = 42,
+  EDUCATION_LEVEL = 43,
+  DEGREE = 44,
+  // Special certifications
+  SCUBA_CERTIFIED = 50,
+  PILOTS_LICENSE = 51,
+  SECURITY_CLEARANCE = 52,
+  // Custom
+  CUSTOM = 100,
+}
+
+/**
+ * DisclosurePolicyMode enum matching chain proto
+ */
+export enum DisclosurePolicyMode {
+  DENY = 0,
+  ASK = 1,
+  ALLOW = 2,
+  CONDITIONAL = 3,
+}
+
+/**
+ * AttributeVC representing a single identity attribute as a VC
+ */
+export interface AttributeVC {
+  /** Unique ID */
+  attribute_vc_id: string;
+  /** Owner address */
+  holder_address: string;
+  /** What attribute */
+  attribute_type: AttributeType;
+  /** Encrypted attribute value (hex encoded) */
+  encrypted_value: string;
+  /** Hash for ZK proofs (hex encoded) */
+  value_hash: string;
+  /** When issued (ISO 8601) */
+  issued_at: string;
+  /** Expiration (ISO 8601) */
+  expires_at?: string;
+  /** Current status */
+  status: VCStatus;
+  /** Who verified this attribute */
+  issuer: string;
+  /** Confidence level 1-100 */
+  verification_level: number;
+}
+
+/**
+ * Disclosure policy defining user's disclosure preferences
+ */
+export interface DisclosurePolicy {
+  /** User's address */
+  holder_address: string;
+  /** Attribute-specific rules */
+  rules: AttributeDisclosureRule[];
+  /** Default mode (deny all by default) */
+  default_mode: DisclosurePolicyMode;
+  /** When last updated (ISO 8601) */
+  updated_at: string;
+}
+
+/**
+ * Rule for disclosing a specific attribute
+ */
+export interface AttributeDisclosureRule {
+  /** Which attribute */
+  attribute_type: AttributeType;
+  /** Disclosure mode */
+  mode: DisclosurePolicyMode;
+  /** Whitelist of allowed verifiers (optional) */
+  allowed_verifiers?: string[];
+  /** Rate limit */
+  max_disclosures_per_day?: number;
+}
+
+/**
+ * Disclosure request from a verifier
+ */
+export interface DisclosureRequest {
+  /** Request ID */
+  request_id: string;
+  /** Verifier's address */
+  verifier_address: string;
+  /** Verifier's display name */
+  verifier_name: string;
+  /** Requested attributes */
+  requested_attributes: AttributeType[];
+  /** Purpose description */
+  purpose: string;
+  /** When requested (ISO 8601) */
+  requested_at: string;
+  /** TTL in seconds */
+  expires_in_seconds: number;
+}
+
+/**
+ * Disclosure response from user
+ */
+export interface DisclosureResponse {
+  /** Request ID */
+  request_id: string;
+  /** User's address */
+  holder_address: string;
+  /** Whether approved */
+  approved: boolean;
+  /** Disclosed attributes */
+  disclosed_attributes: AttributeDisclosure[];
+  /** When responded (ISO 8601) */
+  responded_at: string;
+}
+
+/**
+ * Single attribute disclosure
+ */
+export interface AttributeDisclosure {
+  /** Which attribute */
+  attribute_type: AttributeType;
+  /** Decrypted value (if full disclosure) */
+  revealed_value?: string;
+  /** ZK proof (hex encoded, if selective) */
+  zk_proof?: string;
+  /** True if using ZK, false if full reveal */
+  is_zk_proof: boolean;
+}
+
+/**
+ * VC Policy defining minting criteria for a VC type
+ */
+export interface VCPolicy {
+  /** Human-readable type name */
+  vc_type_name: string;
+  /** Enum value */
+  vc_type_enum: VCType;
+  /** Minimum confidence score required */
+  cs_threshold: number;
+  /** Required IR completions */
+  required_ir_ids: string[];
+  /** Required arena (if any) */
+  required_arena?: string;
+  /** Minimum arena score */
+  required_arena_score?: number;
+  /** Expiry duration (0 = no expiry) */
+  expiry_duration_days: number;
+  /** Only one active per user */
+  singleton: boolean;
+  /** Requires annual renewal */
+  requires_annual_renewal: boolean;
+  /** Policy details URI */
+  metadata_uri?: string;
+  /** Policy status */
+  status: VCPolicyStatus;
+  /** Policy version */
+  version: string;
+  /** When created (ISO 8601) */
+  created_at?: string;
+  /** Creation block height */
+  created_height?: number;
+  /** Governance address */
+  creator?: string;
+}
+
+/**
+ * VCPolicyStatus enum
+ */
+export enum VCPolicyStatus {
+  UNSPECIFIED = 0,
+  DRAFT = 1,
+  ACTIVE = 2,
+  DEPRECATED = 3,
+}
+
+/**
+ * Registry statistics
+ */
+export interface RegistryStats {
+  total_vcs_minted: number;
+  total_active_vcs: number;
+  total_revoked_vcs: number;
+  total_expired_vcs: number;
+  total_dids: number;
+  total_policies: number;
+  vcs_by_type: Record<string, number>;
+}
+
+/**
+ * Mint eligibility check response
+ */
+export interface MintEligibilityResponse {
+  /** Whether user is eligible to mint */
+  eligible: boolean;
+  /** What's missing */
+  missing_requirements: string[];
+  /** Current confidence score */
+  current_cs: number;
+  /** Required confidence score */
+  required_cs: number;
+  /** Completed IR IDs */
+  completed_ir_ids: string[];
+  /** Required IR IDs */
+  required_ir_ids: string[];
 }

@@ -8,8 +8,11 @@
 /**
  * Verifiable Credential types supported by Aura blockchain
  * Maps credential type to numeric identifier used in on-chain storage
+ * Matches VCType enum in aura/vcregistry/v1beta1/types.proto
  */
 export const VC_TYPES = {
+  /** Unspecified type */
+  UNSPECIFIED: 0,
   /** Verified human credential - proves holder is a real person */
   VERIFIED_HUMAN: 1,
   /** Age verification - holder is over 18 years old */
@@ -22,8 +25,29 @@ export const VC_TYPES = {
   BIOMETRIC_AUTH: 5,
   /** KYC (Know Your Customer) verification credential */
   KYC_VERIFICATION: 6,
+  /** Notary public credential */
+  NOTARY_PUBLIC: 7,
   /** Professional license credential */
   PROFESSIONAL_LICENSE: 8,
+  // Arena focus credentials
+  /** Biometric focus arena credential */
+  BIOMETRIC_FOCUS: 20,
+  /** Social focus arena credential */
+  SOCIAL_FOCUS: 21,
+  /** Geolocation focus arena credential */
+  GEOLOCATION_FOCUS: 22,
+  /** High assurance focus arena credential */
+  HIGH_ASSURANCE_FOCUS: 23,
+  /** Possession focus arena credential */
+  POSSESSION_FOCUS: 24,
+  /** Knowledge focus arena credential */
+  KNOWLEDGE_FOCUS: 25,
+  /** Persistence focus arena credential */
+  PERSISTENCE_FOCUS: 26,
+  /** Specialized focus arena credential */
+  SPECIALIZED_FOCUS: 27,
+  /** Custom credential types start at 100 */
+  CUSTOM: 100,
 } as const;
 
 /**
