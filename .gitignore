@@ -51,6 +51,32 @@ Thumbs.db
 
 # Claude/AI assistant
 .claude/
+CLAUDE.md
+AGENTS.md
+
+# ============================================================================
+# AI-Generated Reports and Summaries - Never Commit
+# ============================================================================
+*_SUMMARY*.md
+*_SUMMARY*.txt
+*_REPORT*.md
+*_REPORT*.txt
+*IMPLEMENTATION*.md
+*IMPLEMENTATION*.txt
+*EXECUTIVE*.md
+*COMPLETE*.md
+*FINDINGS*.md
+*ANALYSIS*.md
+PROJECT_SUMMARY.txt
+FILE_SUMMARY.md
+TEST_SUMMARY.md
+MODULE_SUMMARY.md
+PACKAGE_SUMMARY.md
+
+# Coverage reports (generated, not source)
+**/coverage/
+**/lcov-report/
+lcov.info
 
 # Secrets and credentials
 *.pem
