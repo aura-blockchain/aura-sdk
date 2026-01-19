@@ -33,7 +33,7 @@ export const AURA_NETWORKS: Record<'mainnet' | 'testnet' | 'local', NetworkConfi
   mainnet: {
     grpc: 'grpcs://mainnet-rpc.aurablockchain.org:443', // TBD
     rest: 'https://mainnet-api.aurablockchain.org', // TBD
-    chainId: 'aura-mainnet-1',
+    chainId: 'aura-mvp-1',
   },
 
   /**
@@ -66,14 +66,23 @@ export const API_PATHS = {
    * VC Registry module endpoints (aura.vcregistry.v1beta1.Query)
    */
   vcregistry: {
+    /** Verify presentation - maps to Query.VerifyPresentation (POST) */
+    verifyPresentation: '/aura/vcregistry/v1beta1/verify_presentation',
     /** Get VC by ID - maps to Query.GetVC */
-    getVC: (vcId: string) => `/aura/vcregistry/v1beta1/vcs/${encodeURIComponent(vcId)}`,
+    getVC: (vcId: string) => `/aura/vcregistry/v1beta1/vc/${encodeURIComponent(vcId)}`,
     /** Check VC status - maps to Query.CheckVCStatus */
-    checkVCStatus: (vcId: string) => `/aura/vcregistry/v1beta1/vcs/${encodeURIComponent(vcId)}/status`,
+    getVCStatus: (vcId: string) => `/aura/vcregistry/v1beta1/vc/${encodeURIComponent(vcId)}/status`,
     /** Batch check VC status - maps to Query.BatchVCStatus (POST) */
     batchVCStatus: '/aura/vcregistry/v1beta1/vcs/batch_status',
     /** List VCs by holder - maps to Query.ListUserVCs */
-    listUserVCs: (holderAddress: string) => `/aura/vcregistry/v1beta1/vcs/user/${encodeURIComponent(holderAddress)}`,
+    listVCsByHolder: (holderDid: string) =>
+      `/aura/vcregistry/v1beta1/vcs/holder/${encodeURIComponent(holderDid)}`,
+    /** List VCs by issuer - maps to Query.ListVCsByIssuer */
+    listVCsByIssuer: (issuerDid: string) =>
+      `/aura/vcregistry/v1beta1/vcs/issuer/${encodeURIComponent(issuerDid)}`,
+    /** Backwards compatible alias */
+    listUserVCs: (holderAddress: string) =>
+      `/aura/vcregistry/v1beta1/vcs/user/${encodeURIComponent(holderAddress)}`,
     /** Get VC policy - maps to Query.GetVCPolicy */
     getVCPolicy: (vcTypeName: string) => `/aura/vcregistry/v1beta1/policies/${encodeURIComponent(vcTypeName)}`,
     /** List VC policies - maps to Query.ListVCPolicies */
@@ -107,6 +116,11 @@ export const API_PATHS = {
    * Identity module endpoints (aura.identity.v1beta1.Query)
    */
   identity: {
+    /** Resolve DID document - maps to Query.ResolveDID */
+    resolveDID: (did: string) => `/aura/identity/v1beta1/dids/${encodeURIComponent(did)}`,
+    /** Get verification methods for DID - maps to Query.VerificationMethods */
+    getVerificationMethods: (did: string) =>
+      `/aura/identity/v1beta1/dids/${encodeURIComponent(did)}/verification_methods`,
     /** Get identity by DID - maps to Query.IdentityRecord */
     getIdentity: (did: string) => `/aura/identity/v1beta1/identities/${encodeURIComponent(did)}`,
     /** Get identity by address - maps to Query.IdentityRecordByAddress */

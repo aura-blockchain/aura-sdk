@@ -249,7 +249,7 @@ describe('VerifierSDK', () => {
 
     it('should return chain ID', async () => {
       const mockClient = {
-        getChainId: vi.fn().mockResolvedValue('aura-mainnet-1'),
+        getChainId: vi.fn().mockResolvedValue('aura-mvp-1'),
         disconnect: vi.fn(),
       };
       (StargateClient.connect as any).mockResolvedValue(mockClient);
@@ -260,7 +260,7 @@ describe('VerifierSDK', () => {
 
       const chainId = await sdk.getChainId();
 
-      expect(chainId).toBe('aura-mainnet-1');
+      expect(chainId).toBe('aura-mvp-1');
       expect(mockClient.getChainId).toHaveBeenCalled();
 
       await sdk.disconnect();

@@ -1,0 +1,42 @@
+{
+  "name": "@aura-network/react-native-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Aura React Native SDK for wallets and credential verification",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aura-network/verifier-sdk": "workspace:^",
+    "@noble/ed25519": "^2.1.0",
+    "@noble/hashes": "^1.5.0",
+    "@scure/base": "^1.1.5",
+    "@scure/bip39": "^1.2.2",
+    "react": "^18.2.0",
+    "react-native": "0.73.6"
+  },
+  "devDependencies": {
+    "@testing-library/react-hooks": "^8.0.1",
+    "@testing-library/react-native": "^12.4.0",
+    "@types/react": "^18.2.45",
+    "@types/react-native": "^0.73.0",
+    "@types/node": "^20.11.5",
+    "eslint": "^8.56.0",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^14.2.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0",
+    "react-test-renderer": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.2.0",
+    "jsdom": "^23.0.1"
+  }
+}

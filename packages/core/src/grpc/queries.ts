@@ -154,6 +154,9 @@ export class QueryExecutor {
     if (response.ok) {
       try {
         const data = await response.json();
+        if (data && typeof data === 'object' && 'data' in data) {
+          return (data as { data: T }).data;
+        }
         return data as T;
       } catch (error) {
         throw NetworkError.invalidResponse(
@@ -265,19 +268,45 @@ export class VCRegistryQueries {
   constructor(private readonly executor: QueryExecutor) {}
 
   /**
+   * Verify presentation - maps to Query.VerifyPresentation
+   */
+  async verifyPresentation(
+    qrCodeData: string,
+    verifierAddress?: string
+  ): Promise<VerificationResult> {
+    const body: VerifyPresentationRequest = {
+      qr_code_data: qrCodeData,
+      verifier_address: verifierAddress,
+    };
+
+    return this.executor.post<VerificationResult>(
+      API_PATHS.vcregistry.verifyPresentation,
+      body
+    );
+  }
+
+  /**
    * Get VC by ID - maps to Query.GetVC
    */
   async getVC(vcId: string): Promise<VCRecord | null> {
     try {
-      const response = await this.executor.get<{ vc: VCRecord; exists: boolean }>(
-        API_PATHS.vcregistry.getVC(vcId)
-      );
+      const response = await this.executor.get<
+        { vc?: VCRecord; exists?: boolean } | VCRecord | null
+      >(API_PATHS.vcregistry.getVC(vcId));
 
-      if (!response.exists) {
-        return null;
+      if (!response) return null;
+
+      if (typeof response === 'object' && 'vc' in response) {
+        const wrapped = response as { vc?: VCRecord; exists?: boolean };
+        if (wrapped.exists === false) return null;
+        return wrapped.vc ?? null;
       }
 
-      return response.vc ?? null;
+      if (typeof response === 'object' && 'vc_id' in response) {
+        return response as VCRecord;
+      }
+
+      return null;
     } catch (error) {
       // Handle 404 gracefully
       if (error instanceof APIError && error.statusCode === 404) {
@@ -332,15 +361,35 @@ export class VCRegistryQueries {
   }
 
   /**
+   * List VCs by holder DID - maps to Query.ListVCsByHolder
+   */
+  async listVCsByHolder(holderDid: string): Promise<{ vcs: VCRecord[] }> {
+    return this.executor.get<{ vcs: VCRecord[] }>(API_PATHS.vcregistry.listVCsByHolder(holderDid));
+  }
+
+  /**
+   * List VCs by issuer DID - maps to Query.ListVCsByIssuer
+   */
+  async listVCsByIssuer(issuerDid: string): Promise<{ vcs: VCRecord[] }> {
+    return this.executor.get<{ vcs: VCRecord[] }>(API_PATHS.vcregistry.listVCsByIssuer(issuerDid));
+  }
+
+  /**
    * Check VC status - maps to Query.CheckVCStatus
    */
   async checkVCStatus(vcId: string): Promise<VCStatusResponse> {
     try {
-      const response = await this.executor.get<VCStatusResponse>(
-        API_PATHS.vcregistry.checkVCStatus(vcId)
+      const response = await this.executor.get<VCStatusResponse & { exists?: boolean; vc_id?: string; revoked?: boolean; expired?: boolean }>(
+        API_PATHS.vcregistry.getVCStatus(vcId)
       );
 
-      return response;
+      return {
+        ...response,
+        exists: response.exists ?? true,
+        vc_id: response.vc_id ?? vcId,
+        revoked: response.revoked ?? false,
+        expired: response.expired ?? false,
+      } as VCStatusResponse;
     } catch (error) {
       // Handle 404 gracefully (VC not found = doesn't exist)
       if (
@@ -350,6 +399,10 @@ export class VCRegistryQueries {
         return {
           status: VCStatus.UNSPECIFIED,
           valid: false,
+          exists: false,
+          vc_id: vcId,
+          revoked: false,
+          expired: false,
         };
       }
       throw error;
@@ -360,48 +413,19 @@ export class VCRegistryQueries {
    * Batch check VC status - maps to Query.BatchVCStatus
    */
   async batchCheckVCStatus(vcIds: string[]): Promise<Map<string, VCStatusResponse>> {
-    try {
-      const response = await this.executor.post<{
-        statuses: Record<string, { vc_id: string; status: VCStatus; valid: boolean; expires_at?: string }>;
-      }>(API_PATHS.vcregistry.batchVCStatus, { vc_ids: vcIds });
+    const results = new Map<string, VCStatusResponse>();
 
-      const results = new Map<string, VCStatusResponse>();
-      for (const [vcId, status] of Object.entries(response.statuses ?? {})) {
-        results.set(vcId, {
-          status: status.status,
-          valid: status.valid,
-          expires_at: status.expires_at,
-        });
+    const tasks = vcIds.map(async (id) => {
+      try {
+        const status = await this.checkVCStatus(id);
+        results.set(id, status);
+      } catch {
+        results.set(id, { status: VCStatus.UNSPECIFIED, valid: false, exists: false, vc_id: id });
       }
+    });
 
-      return results;
-    } catch (error) {
-      // Fallback to individual queries if batch endpoint not available
-      const results = new Map<string, VCStatusResponse>();
-
-      const concurrency = 10;
-      for (let i = 0; i < vcIds.length; i += concurrency) {
-        const batch = vcIds.slice(i, i + concurrency);
-        const promises = batch.map(async (vcId) => {
-          try {
-            const status = await this.checkVCStatus(vcId);
-            return { vcId, status };
-          } catch (err) {
-            return {
-              vcId,
-              status: { status: VCStatus.UNSPECIFIED, valid: false } as VCStatusResponse,
-            };
-          }
-        });
-
-        const batchResults = await Promise.all(promises);
-        batchResults.forEach(({ vcId, status }) => {
-          results.set(vcId, status);
-        });
-      }
-
-      return results;
-    }
+    await Promise.all(tasks);
+    return results;
   }
 
   /**
@@ -647,6 +671,46 @@ export class VCRegistryQueries {
  */
 export class IdentityQueries {
   constructor(private readonly executor: QueryExecutor) {}
+
+  /**
+   * Resolve DID document - maps to Query.ResolveDID
+   */
+  async resolveDID(did: string): Promise<DIDDocument | null> {
+    try {
+      const response = await this.executor.get<{ did_document?: DIDDocument; exists?: boolean } | DIDDocument>(
+        API_PATHS.identity.resolveDID(did)
+      );
+
+      if (response && 'did_document' in (response as Record<string, unknown>)) {
+        const wrapped = response as { did_document?: DIDDocument; exists?: boolean };
+        if (wrapped.exists === false) return null;
+        return wrapped.did_document ?? null;
+      }
+
+      if (response && typeof response === 'object') {
+        return response as DIDDocument;
+      }
+
+      return null;
+    } catch (error) {
+      if (error instanceof APIError && error.statusCode === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Get verification methods for a DID
+   */
+  async getVerificationMethods(did: string): Promise<unknown[]> {
+    const response = await this.executor.get<{ methods?: unknown[] } | unknown[]>(
+      API_PATHS.identity.getVerificationMethods(did)
+    );
+
+    if (Array.isArray(response)) return response;
+    return response.methods ?? [];
+  }
 
   /**
    * Get identity record by DID - maps to Query.IdentityRecord

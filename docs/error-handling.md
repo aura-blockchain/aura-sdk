@@ -131,7 +131,7 @@ VerifierError (base class)
   message: 'Transaction not found',
   details: {
     txHash: 'ABC123...',
-    chainId: 'aura-mainnet'
+    chainId: 'aura-mvp-1'
   }
 }
 ```

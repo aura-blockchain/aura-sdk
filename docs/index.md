@@ -188,7 +188,7 @@ graph TB
 ## Network Information
 
 ### Mainnet
-- **Network ID**: `aura-mainnet-1`
+- **Network ID**: `aura-mvp-1`
 - **gRPC Endpoint**: `rpc.aurablockchain.org:9090`
 - **REST Endpoint**: `https://api.aurablockchain.org`
 - **Explorer**: `https://explorer.aurablockchain.org`

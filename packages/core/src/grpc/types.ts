@@ -285,6 +285,14 @@ export interface VCStatusResponse {
   status: VCStatus;
   /** Whether credential is valid (active and not expired) */
   valid: boolean;
+  /** Whether VC exists */
+  exists?: boolean;
+  /** VC identifier */
+  vc_id?: string;
+  /** Whether revoked (legacy compatibility) */
+  revoked?: boolean;
+  /** Whether expired (legacy compatibility) */
+  expired?: boolean;
   /** Expiration timestamp (ISO 8601) */
   expires_at?: string;
   /** Revocation record (if revoked) */

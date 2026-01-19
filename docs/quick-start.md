@@ -408,7 +408,7 @@ Check out these complete examples:
 {
   grpc: 'rpc.aurablockchain.org:9090',
   rest: 'https://api.aurablockchain.org',
-  chainId: 'aura-mainnet-1'
+  chainId: 'aura-mvp-1'
 }
 ```
 

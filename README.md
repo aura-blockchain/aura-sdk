@@ -170,6 +170,9 @@ pnpm test:watch
 # Run tests with coverage
 pnpm test:coverage
 
+# Mutation testing (core package)
+pnpm test:mutation
+
 # Type checking
 pnpm typecheck
 
@@ -181,6 +184,13 @@ pnpm lint:fix
 pnpm format
 pnpm format:check
 ```
+
+### Testing standards
+
+- Core package tests run via Vitest; aim for **95%+ line coverage** with a hard floor of 90% on PRs. Use `pnpm test:coverage` to verify.
+- Property-based tests live alongside unit tests (see `packages/core/src/types/__tests__`) and rely on `fast-check` to exercise DID parsing and network config invariants.
+- Mutation testing is enforced with Stryker (`pnpm test:mutation`) using Vitest runner and thresholds `high=85`, `low=70`, `break=65`. HTML reports are written to `reports/mutation/html` by default.
+- Keep new tests deterministic and portable—no live network calls in unit/property suites. Prefer fixtures or contract-test mocks for chain interactions.
 
 ### Project Structure
 

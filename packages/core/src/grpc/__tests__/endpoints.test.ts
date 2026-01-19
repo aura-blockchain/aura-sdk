@@ -27,7 +27,7 @@ describe('AURA_NETWORKS', () => {
     expect(AURA_NETWORKS.mainnet).toBeDefined();
     expect(AURA_NETWORKS.mainnet.grpc).toBe('grpcs://mainnet-rpc.aurablockchain.org:443');
     expect(AURA_NETWORKS.mainnet.rest).toBe('https://mainnet-api.aurablockchain.org');
-    expect(AURA_NETWORKS.mainnet.chainId).toBe('aura-mainnet-1');
+    expect(AURA_NETWORKS.mainnet.chainId).toBe('aura-mvp-1');
   });
 
   it('should have testnet configuration with TLS', () => {

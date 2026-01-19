@@ -1,4 +1,9 @@
 import { defineConfig } from 'vitest/config';
+import { fileURLToPath } from 'node:url';
+import { resolve, dirname } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default defineConfig({
   test: {
@@ -15,6 +20,11 @@ export default defineConfig({
         '**/*.test.tsx',
         '**/__tests__/**',
       ],
+    },
+  },
+  resolve: {
+    alias: {
+      '@aura-network/verifier-sdk': resolve(__dirname, '../core/src/index.ts'),
     },
   },
 });

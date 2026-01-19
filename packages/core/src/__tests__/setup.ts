@@ -8,6 +8,13 @@ import * as secp256k1 from '@noble/secp256k1';
 import { sha512 } from '@noble/hashes/sha2';
 import { sha256 } from '@noble/hashes/sha2';
 import { hmac } from '@noble/hashes/hmac';
+import { webcrypto } from 'node:crypto';
+
+// Ensure Web Crypto API is available for @noble/* random key generation
+if (!(globalThis as unknown as { crypto?: Crypto }).crypto) {
+  // @ts-expect-error Node webcrypto is compatible enough for tests
+  (globalThis as unknown as { crypto: Crypto }).crypto = webcrypto as unknown as Crypto;
+}
 
 // Configure sync hash function for Ed25519
 // @noble/ed25519 requires sha512Sync to be set for synchronous operations

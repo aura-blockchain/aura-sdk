@@ -235,7 +235,7 @@ interface AuraClientConfig {
 ### Mainnet
 - REST: `https://api.aurablockchain.org`
 - gRPC: `rpc.aurablockchain.org:9090`
-- Chain ID: `aura-mainnet-1`
+- Chain ID: `aura-mvp-1`
 
 ### Testnet
 - REST: `https://testnet-api.aurablockchain.org`

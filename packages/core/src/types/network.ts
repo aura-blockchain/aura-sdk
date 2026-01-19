@@ -28,7 +28,7 @@ export enum NetworkType {
  */
 export enum ChainID {
   /** Mainnet chain ID */
-  MAINNET = 'aura-mainnet-1',
+  MAINNET = 'aura-mvp-1',
   /** Testnet chain ID (MVP testnet) */
   TESTNET = 'aura-mvp-1',
   /** Local chain ID */

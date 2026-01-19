@@ -46,7 +46,7 @@ describe('AuraClient', () => {
       const info = client.getNetworkInfo();
 
       expect(info.network).toBe('mainnet');
-      expect(info.chain_id).toBe('aura-mainnet-1');
+      expect(info.chain_id).toBe('aura-mvp-1');
       expect(info.rest_endpoint).toBe('https://mainnet-api.aurablockchain.org');
       expect(info.connected).toBe(false);
     });

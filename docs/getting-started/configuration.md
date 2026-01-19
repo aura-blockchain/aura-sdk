@@ -58,7 +58,7 @@ const verifier = new AuraVerifier({
 **Default Endpoints:**
 - gRPC: `rpc.aurablockchain.org:9090`
 - REST: `https://api.aurablockchain.org`
-- Chain ID: `aura-mainnet-1`
+- Chain ID: `aura-mvp-1`
 
 ### Testnet (Development)
 

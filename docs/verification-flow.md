@@ -493,7 +493,7 @@ interface VerificationResult {
   metadata: {
     algorithm: 'ed25519',
     verifiedAt: 1735560000,
-    chainId: 'aura-mainnet'
+    chainId: 'aura-mvp-1'
   }
 }
 ```
