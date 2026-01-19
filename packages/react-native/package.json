@@ -20,13 +20,13 @@
     "@noble/hashes": "^1.5.0",
     "@scure/base": "^1.1.5",
     "@scure/bip39": "^1.2.2",
-    "react": "^18.2.0",
+    "react": "^19.2.3",
     "react-native": "0.73.6"
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/react-native": "^12.4.0",
-    "@types/react": "^18.2.45",
+    "@types/react": "^19.2.8",
     "@types/react-native": "^0.73.0",
     "@types/node": "^20.11.5",
     "eslint": "^8.56.0",
