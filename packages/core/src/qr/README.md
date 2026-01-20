@@ -49,7 +49,8 @@ npm install @aura/verifier-sdk
 import { parseAndValidateQRCode } from '@aura/verifier-sdk/qr';
 
 try {
-  const qrString = "aura://verify?data=eyJ2IjoiMS4wIiwicCI6IjEyMyIsImgiOiJkaWQ6YXVyYTptYWlubmV0OmFiYzEyMyIsInZjcyI6WyJ2YzEiXSwiY3R4Ijp7fSwiZXhwIjoxNzM1NTYwMDAwLCJuIjoxMjM0NTYsInNpZyI6ImFiY2RlZiJ9";
+  const qrString =
+    'aura://verify?data=eyJ2IjoiMS4wIiwicCI6IjEyMyIsImgiOiJkaWQ6YXVyYTptYWlubmV0OmFiYzEyMyIsInZjcyI6WyJ2YzEiXSwiY3R4Ijp7fSwiZXhwIjoxNzM1NTYwMDAwLCJuIjoxMjM0NTYsInNpZyI6ImFiY2RlZiJ9';
 
   const qrData = parseAndValidateQRCode(qrString);
 
@@ -92,6 +93,7 @@ if (result.success) {
 Parse QR code string into structured data.
 
 **Parameters:**
+
 - `qrString` (string): QR code URL or raw base64
 - `options` (QRParserOptions, optional):
   - `strict` (boolean, default: true): Enable strict validation
@@ -115,6 +117,7 @@ Non-throwing version that returns a result object.
 Validate parsed QR code data.
 
 **Parameters:**
+
 - `data` (QRCodeData): Parsed QR code data
 - `options` (QRValidatorOptions, optional):
   - `checkExpiration` (boolean, default: true): Check if expired
@@ -124,6 +127,7 @@ Validate parsed QR code data.
   - `supportedVersions` (string[], default: ["1.0"]): Supported versions
 
 **Returns:** `ValidationResult` with:
+
 - `valid` (boolean): Whether validation passed
 - `errors` (ValidationError[]): List of errors
 - `warnings` (ValidationError[]): List of warnings
@@ -159,6 +163,7 @@ Parse and validate in one step (non-throwing).
 Thrown when QR code parsing fails.
 
 **Static Methods:**
+
 - `invalidFormat(reason)`: Invalid QR code format
 - `invalidBase64(details?)`: Invalid base64 encoding
 - `invalidJSON(details?)`: Invalid JSON structure
@@ -169,10 +174,12 @@ Thrown when QR code parsing fails.
 Thrown when QR code validation fails.
 
 **Properties:**
+
 - `field` (string?): Field that failed validation
 - `message` (string): Error description
 
 **Static Methods:**
+
 - `invalidField(field, reason)`: Invalid field value
 - `unsupportedVersion(version, supported)`: Unsupported protocol version
 - `invalidDID(did, reason?)`: Invalid DID format
@@ -184,11 +191,13 @@ Thrown when QR code validation fails.
 Thrown when QR code has expired.
 
 **Properties:**
+
 - `expirationTime` (number): Expiration timestamp
 - `currentTime` (number): Current timestamp
 - `timeSinceExpiration` (number): Seconds since expiration
 
 **Methods:**
+
 - `isWithinTolerance(toleranceSeconds)`: Check if within tolerance
 
 ### `QRNonceError`
@@ -196,6 +205,7 @@ Thrown when QR code has expired.
 Thrown for nonce-related errors.
 
 **Static Methods:**
+
 - `invalidNonce(nonce)`: Invalid nonce value
 - `reusedNonce(nonce)`: Nonce reuse detected
 
@@ -210,7 +220,9 @@ import { parseQRCode } from '@aura/verifier-sdk/qr';
 const qrData = parseQRCode('aura://verify?data=...');
 
 // From raw base64
-const qrData2 = parseQRCode('eyJ2IjoiMS4wIiwicCI6IjEyMyIsImgiOiJkaWQ6YXVyYTptYWlubmV0OmFiYzEyMyIsInZjcyI6WyJ2YzEiXSwiY3R4Ijp7fSwiZXhwIjoxNzM1NTYwMDAwLCJuIjoxMjM0NTYsInNpZyI6ImFiY2RlZiJ9');
+const qrData2 = parseQRCode(
+  'eyJ2IjoiMS4wIiwicCI6IjEyMyIsImgiOiJkaWQ6YXVyYTptYWlubmV0OmFiYzEyMyIsInZjcyI6WyJ2YzEiXSwiY3R4Ijp7fSwiZXhwIjoxNzM1NTYwMDAwLCJuIjoxMjM0NTYsInNpZyI6ImFiY2RlZiJ9' // pragma: allowlist secret
+);
 ```
 
 ### Custom Validation Options
@@ -220,10 +232,10 @@ import { validateQRCodeData } from '@aura/verifier-sdk/qr';
 
 const result = validateQRCodeData(qrData, {
   checkExpiration: true,
-  expirationTolerance: 60,      // 60 second tolerance
+  expirationTolerance: 60, // 60 second tolerance
   validateDID: true,
   validateSignature: true,
-  supportedVersions: ['1.0', '1.1']
+  supportedVersions: ['1.0', '1.1'],
 });
 
 if (result.valid) {
@@ -280,11 +292,11 @@ import { validateQRCodeData } from '@aura/verifier-sdk/qr';
 const result = validateQRCodeData(qrData);
 
 // Check for specific errors
-const didErrors = result.errors.filter(e => e.field === 'h');
-const expirationErrors = result.errors.filter(e => e.field === 'exp');
+const didErrors = result.errors.filter((e) => e.field === 'h');
+const expirationErrors = result.errors.filter((e) => e.field === 'exp');
 
 // Check warnings
-result.warnings.forEach(warning => {
+result.warnings.forEach((warning) => {
   console.warn(`[${warning.field}] ${warning.message}`);
 });
 ```
@@ -297,14 +309,14 @@ Main QR code data structure.
 
 ```typescript
 interface QRCodeData {
-  v: string;              // Protocol version
-  p: string;              // Presentation ID
-  h: string;              // Holder DID
-  vcs: string[];          // VC IDs
+  v: string; // Protocol version
+  p: string; // Presentation ID
+  h: string; // Holder DID
+  vcs: string[]; // VC IDs
   ctx: DisclosureContext; // Disclosure context
-  exp: number;            // Expiration timestamp
-  n: number;              // Nonce
-  sig: string;            // Signature (hex)
+  exp: number; // Expiration timestamp
+  n: number; // Nonce
+  sig: string; // Signature (hex)
 }
 ```
 
@@ -357,6 +369,7 @@ npm test
 ```
 
 The test suite includes:
+
 - Valid QR code parsing
 - Expired QR code handling
 - Malformed QR code detection
