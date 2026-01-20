@@ -100,16 +100,12 @@ describe('Error Classes', () => {
 
   describe('VerificationError', () => {
     it('should create verification error', () => {
-      const error = new VerificationError(
-        'Signature invalid',
-        'SIGNATURE_VERIFICATION_FAILED'
-      );
+      const error = new VerificationError('Signature invalid', 'SIGNATURE_VERIFICATION_FAILED');
 
       expect(error.name).toBe('VerificationError');
       expect(error).toBeInstanceOf(AuraVerifierError);
     });
   });
-
 
   describe('EncodingError', () => {
     it('should create encoding error', () => {

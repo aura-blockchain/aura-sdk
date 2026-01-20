@@ -69,7 +69,8 @@ describe('parseQRCode', () => {
         n: 12345,
         sig: 'sig123',
       };
-      const base64WithSpaces = Buffer.from(JSON.stringify(data)).toString('base64')
+      const base64WithSpaces = Buffer.from(JSON.stringify(data))
+        .toString('base64')
         .split('')
         .join(' '); // Add spaces between characters
 
@@ -248,31 +249,76 @@ describe('parseQRCode', () => {
     });
 
     it('should throw for non-string items in vcs', () => {
-      const data = { v: '1.0', p: 'test', h: 'did', vcs: ['vc', 123], ctx: {}, exp: 1, n: 1, sig: 'sig' };
+      const data = {
+        v: '1.0',
+        p: 'test',
+        h: 'did',
+        vcs: ['vc', 123],
+        ctx: {},
+        exp: 1,
+        n: 1,
+        sig: 'sig',
+      };
       const base64 = Buffer.from(JSON.stringify(data)).toString('base64');
       expect(() => parseQRCode(base64)).toThrow('All items in "vcs" must be strings');
     });
 
     it('should throw for non-object ctx field', () => {
-      const data = { v: '1.0', p: 'test', h: 'did', vcs: ['vc'], ctx: 'string', exp: 1, n: 1, sig: 'sig' };
+      const data = {
+        v: '1.0',
+        p: 'test',
+        h: 'did',
+        vcs: ['vc'],
+        ctx: 'string',
+        exp: 1,
+        n: 1,
+        sig: 'sig',
+      };
       const base64 = Buffer.from(JSON.stringify(data)).toString('base64');
       expect(() => parseQRCode(base64)).toThrow('Field "ctx" must be an object');
     });
 
     it('should throw for array ctx field', () => {
-      const data = { v: '1.0', p: 'test', h: 'did', vcs: ['vc'], ctx: [], exp: 1, n: 1, sig: 'sig' };
+      const data = {
+        v: '1.0',
+        p: 'test',
+        h: 'did',
+        vcs: ['vc'],
+        ctx: [],
+        exp: 1,
+        n: 1,
+        sig: 'sig',
+      };
       const base64 = Buffer.from(JSON.stringify(data)).toString('base64');
       expect(() => parseQRCode(base64)).toThrow('Field "ctx" must be an object');
     });
 
     it('should throw for non-number exp field', () => {
-      const data = { v: '1.0', p: 'test', h: 'did', vcs: ['vc'], ctx: {}, exp: 'soon', n: 1, sig: 'sig' };
+      const data = {
+        v: '1.0',
+        p: 'test',
+        h: 'did',
+        vcs: ['vc'],
+        ctx: {},
+        exp: 'soon',
+        n: 1,
+        sig: 'sig',
+      };
       const base64 = Buffer.from(JSON.stringify(data)).toString('base64');
       expect(() => parseQRCode(base64)).toThrow('Field "exp" must be a number');
     });
 
     it('should throw for non-number n field', () => {
-      const data = { v: '1.0', p: 'test', h: 'did', vcs: ['vc'], ctx: {}, exp: 1, n: 'nonce', sig: 'sig' };
+      const data = {
+        v: '1.0',
+        p: 'test',
+        h: 'did',
+        vcs: ['vc'],
+        ctx: {},
+        exp: 1,
+        n: 'nonce',
+        sig: 'sig',
+      };
       const base64 = Buffer.from(JSON.stringify(data)).toString('base64');
       expect(() => parseQRCode(base64)).toThrow('Field "n" must be a number');
     });
@@ -285,9 +331,14 @@ describe('parseQRCode', () => {
 
     it('should throw for non-boolean context values', () => {
       const data = {
-        v: '1.0', p: 'test', h: 'did', vcs: ['vc'],
+        v: '1.0',
+        p: 'test',
+        h: 'did',
+        vcs: ['vc'],
         ctx: { show_name: 'yes' }, // should be boolean
-        exp: Math.floor(Date.now() / 1000) + 3600, n: 1, sig: 'sig'
+        exp: Math.floor(Date.now() / 1000) + 3600,
+        n: 1,
+        sig: 'sig',
       };
       const base64 = Buffer.from(JSON.stringify(data)).toString('base64');
       expect(() => parseQRCode(base64)).toThrow('must be boolean');
@@ -343,13 +394,13 @@ describe('parseQRCode', () => {
     });
 
     it('should throw for expiration too far in the past', () => {
-      const twoYearsAgo = now - (2 * 365 * 24 * 60 * 60);
+      const twoYearsAgo = now - 2 * 365 * 24 * 60 * 60;
       const base64 = createValidBase64({ exp: twoYearsAgo });
       expect(() => parseQRCode(base64)).toThrow('too far in the past');
     });
 
     it('should throw for expiration too far in the future', () => {
-      const fifteenYears = now + (15 * 365 * 24 * 60 * 60);
+      const fifteenYears = now + 15 * 365 * 24 * 60 * 60;
       const base64 = createValidBase64({ exp: fifteenYears });
       expect(() => parseQRCode(base64)).toThrow('too far in the future');
     });
@@ -358,7 +409,8 @@ describe('parseQRCode', () => {
   describe('security - prototype pollution prevention', () => {
     it('should not allow __proto__ pollution', () => {
       // Create JSON with __proto__ key using string manipulation to bypass serialization
-      const json = '{"v":"1.0","p":"test","h":"did","vcs":["vc"],"ctx":{},"exp":' +
+      const json =
+        '{"v":"1.0","p":"test","h":"did","vcs":["vc"],"ctx":{},"exp":' +
         (Math.floor(Date.now() / 1000) + 3600) +
         ',"n":1,"sig":"sig","__proto__":{"polluted":true}}';
       const base64 = Buffer.from(json).toString('base64');
@@ -391,7 +443,8 @@ describe('parseQRCode', () => {
     });
 
     it('should not include prototype property from JSON', () => {
-      const json = '{"v":"1.0","p":"test","h":"did","vcs":["vc"],"ctx":{},"exp":' +
+      const json =
+        '{"v":"1.0","p":"test","h":"did","vcs":["vc"],"ctx":{},"exp":' +
         (Math.floor(Date.now() / 1000) + 3600) +
         ',"n":1,"sig":"sig","prototype":{"dangerous":true}}';
       const base64 = Buffer.from(json).toString('base64');

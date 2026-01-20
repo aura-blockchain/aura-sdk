@@ -113,21 +113,15 @@ describe('API_PATHS', () => {
 
   describe('chain paths', () => {
     it('should have nodeInfo path', () => {
-      expect(API_PATHS.chain.nodeInfo).toBe(
-        '/cosmos/base/tendermint/v1beta1/node_info'
-      );
+      expect(API_PATHS.chain.nodeInfo).toBe('/cosmos/base/tendermint/v1beta1/node_info');
     });
 
     it('should have latestBlock path', () => {
-      expect(API_PATHS.chain.latestBlock).toBe(
-        '/cosmos/base/tendermint/v1beta1/blocks/latest'
-      );
+      expect(API_PATHS.chain.latestBlock).toBe('/cosmos/base/tendermint/v1beta1/blocks/latest');
     });
 
     it('should have syncing path', () => {
-      expect(API_PATHS.chain.syncing).toBe(
-        '/cosmos/base/tendermint/v1beta1/syncing'
-      );
+      expect(API_PATHS.chain.syncing).toBe('/cosmos/base/tendermint/v1beta1/syncing');
     });
   });
 });
@@ -192,10 +186,7 @@ describe('buildEndpointURL', () => {
   });
 
   it('should handle complex paths', () => {
-    const url = buildEndpointURL(
-      'https://api.example.com',
-      '/api/v1/verify?param=value'
-    );
+    const url = buildEndpointURL('https://api.example.com', '/api/v1/verify?param=value');
     expect(url).toBe('https://api.example.com/api/v1/verify?param=value');
   });
 
@@ -224,21 +215,15 @@ describe('validateTLSEndpoint', () => {
 
   describe('HTTP endpoints - rejected by default', () => {
     it('should reject HTTP endpoints to non-localhost', () => {
-      expect(() => validateTLSEndpoint('http://api.example.com')).toThrow(
-        'Security: TLS required'
-      );
+      expect(() => validateTLSEndpoint('http://api.example.com')).toThrow('Security: TLS required');
     });
 
     it('should reject HTTP to localhost by default', () => {
-      expect(() => validateTLSEndpoint('http://localhost:8080')).toThrow(
-        'Security: TLS required'
-      );
+      expect(() => validateTLSEndpoint('http://localhost:8080')).toThrow('Security: TLS required');
     });
 
     it('should reject HTTP to 127.0.0.1 by default', () => {
-      expect(() => validateTLSEndpoint('http://127.0.0.1:8080')).toThrow(
-        'Security: TLS required'
-      );
+      expect(() => validateTLSEndpoint('http://127.0.0.1:8080')).toThrow('Security: TLS required');
     });
 
     it('should reject HTTP to ::1 by default', () => {
@@ -273,21 +258,15 @@ describe('validateTLSEndpoint', () => {
 
   describe('unsupported protocols', () => {
     it('should reject FTP protocol', () => {
-      expect(() => validateTLSEndpoint('ftp://files.example.com')).toThrow(
-        'Unsupported protocol'
-      );
+      expect(() => validateTLSEndpoint('ftp://files.example.com')).toThrow('Unsupported protocol');
     });
 
     it('should reject file protocol', () => {
-      expect(() => validateTLSEndpoint('file:///path/to/file')).toThrow(
-        'Unsupported protocol'
-      );
+      expect(() => validateTLSEndpoint('file:///path/to/file')).toThrow('Unsupported protocol');
     });
 
     it('should reject ws protocol', () => {
-      expect(() => validateTLSEndpoint('ws://api.example.com')).toThrow(
-        'Unsupported protocol'
-      );
+      expect(() => validateTLSEndpoint('ws://api.example.com')).toThrow('Unsupported protocol');
     });
   });
 
@@ -345,9 +324,7 @@ describe('validateGRPCEndpoint', () => {
 
     it('should allow grpc:// localhost when allowInsecure is true', () => {
       expect(validateGRPCEndpoint('grpc://localhost:9090', 'mainnet', true)).toBe(true);
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('[Security Warning]')
-      );
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('[Security Warning]'));
     });
   });
 
@@ -494,10 +471,10 @@ describe('Edge cases and security', () => {
     const maliciousVcId = "vc'; DROP TABLE vcs;--";
     const path = API_PATHS.vcregistry.getVC(maliciousVcId);
     // Semicolons and spaces should be encoded
-    expect(path).not.toContain(";");
-    expect(path).not.toContain(" ");
-    expect(path).toContain("%3B"); // encoded semicolon
-    expect(path).toContain("%20"); // encoded space
+    expect(path).not.toContain(';');
+    expect(path).not.toContain(' ');
+    expect(path).toContain('%3B'); // encoded semicolon
+    expect(path).toContain('%20'); // encoded space
     expect(path).toContain(encodeURIComponent(maliciousVcId));
   });
 

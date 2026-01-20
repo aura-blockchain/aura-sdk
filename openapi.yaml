@@ -73,13 +73,13 @@ paths:
               ageVerification:
                 summary: Age verification request
                 value:
-                  qr_code_data: "aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXNfMTIzIiwiaCI6ImRpZDphdXJhOm1haW5uZXQ6YWJjMTIzIiwidmNzIjpbInZjXzQ1NiJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTY4OTYwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ=="
+                  qr_code_data: 'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXNfMTIzIiwiaCI6ImRpZDphdXJhOm1haW5uZXQ6YWJjMTIzIiwidmNzIjpbInZjXzQ1NiJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTY4OTYwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ=='
                   required_vc_types:
                     - AGE_OVER_21
               identityVerification:
                 summary: Identity verification request
                 value:
-                  qr_code_data: "aura://verify?data=..."
+                  qr_code_data: 'aura://verify?data=...'
                   required_vc_types:
                     - KYC_VERIFICATION
                     - PROOF_OF_HUMANITY
@@ -95,31 +95,31 @@ paths:
                   summary: Successful verification
                   value:
                     is_valid: true
-                    holder_did: "did:aura:mainnet:abc123def456"
-                    presentation_id: "pres_123"
-                    verified_at: "2025-01-15T10:30:00Z"
-                    expires_at: "2025-01-15T10:35:00Z"
+                    holder_did: 'did:aura:mainnet:abc123def456'
+                    presentation_id: 'pres_123'
+                    verified_at: '2025-01-15T10:30:00Z'
+                    expires_at: '2025-01-15T10:35:00Z'
                     signature_valid: true
-                    verification_method: "online"
+                    verification_method: 'online'
                     network_latency_ms: 145
                     vc_details:
-                      - vc_id: "vc_456"
-                        vc_type: "AGE_OVER_21"
-                        issuer_did: "did:aura:mainnet:issuer789"
-                        status: "ACTIVE"
-                        issued_at: "2024-06-15T00:00:00Z"
+                      - vc_id: 'vc_456'
+                        vc_type: 'AGE_OVER_21'
+                        issuer_did: 'did:aura:mainnet:issuer789'
+                        status: 'ACTIVE'
+                        issued_at: '2024-06-15T00:00:00Z'
                     attributes:
                       age_over_21: true
                       age_over_18: true
-                    audit_id: "audit_abc123"
+                    audit_id: 'audit_abc123'
                 failed:
                   summary: Failed verification
                   value:
                     is_valid: false
-                    holder_did: "did:aura:mainnet:xyz789"
-                    presentation_id: "pres_456"
-                    verification_error: "Credential has been revoked"
-                    error_code: "CREDENTIAL_REVOKED"
+                    holder_did: 'did:aura:mainnet:xyz789'
+                    presentation_id: 'pres_456'
+                    verification_error: 'Credential has been revoked'
+                    error_code: 'CREDENTIAL_REVOKED'
         '400':
           description: Invalid request
           content:
@@ -345,7 +345,7 @@ paths:
             type: string
             pattern: '^did:aura:(mainnet|testnet|local):[a-zA-Z0-9]+$'
           description: DID to resolve
-          example: "did:aura:mainnet:abc123def456"
+          example: 'did:aura:mainnet:abc123def456'
       responses:
         '200':
           description: DID Document

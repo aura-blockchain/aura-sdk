@@ -100,6 +100,7 @@ node --loader ts-node/esm benchmarks/e2e-benchmark.ts
 Tests QR code parsing performance across various scenarios:
 
 **Tests:**
+
 - Small QR parsing (1 VC, minimal context)
 - Medium QR parsing (3 VCs, moderate context)
 - Large QR parsing (10 VCs, full context)
@@ -110,12 +111,14 @@ Tests QR code parsing performance across various scenarios:
 - Memory stress test (10,000 iterations)
 
 **Metrics:**
+
 - Operations per second
 - Average/P95/P99 latency
 - Memory usage
 - Throughput
 
 **Example Output:**
+
 ```
 Small QR Parsing (1 VC, minimal context)
 --------------------------------------------------------------------------------
@@ -132,6 +135,7 @@ Small QR Parsing (1 VC, minimal context)
 Measures signature verification performance for both algorithms:
 
 **Tests:**
+
 - Ed25519 verification (async & sync)
 - Secp256k1 verification (async & sync)
 - Unified signature verification (auto-detect)
@@ -142,12 +146,14 @@ Measures signature verification performance for both algorithms:
 - Concurrent verification test (various concurrency levels)
 
 **Metrics:**
+
 - Operations per second
 - Average/P95/P99 latency
 - Algorithm comparison
 - Concurrent performance
 
 **Example Output:**
+
 ```
 Ed25519 Verification (Async)
 --------------------------------------------------------------------------------
@@ -164,6 +170,7 @@ Ed25519 Verification (Async)
 Tests cache operations and memory efficiency:
 
 **Tests:**
+
 - Cache write (set)
 - Cache read - hit
 - Cache read - miss
@@ -177,6 +184,7 @@ Tests cache operations and memory efficiency:
 - Cache expiration test
 
 **Metrics:**
+
 - Operations per second
 - Average/P95/P99 latency
 - Hit/miss rates
@@ -184,6 +192,7 @@ Tests cache operations and memory efficiency:
 - Eviction performance
 
 **Example Output:**
+
 ```
 Cache Read (get) - Hit
 --------------------------------------------------------------------------------
@@ -201,6 +210,7 @@ Cache Read (get) - Hit
 Measures full verification flow performance:
 
 **Tests:**
+
 - Full verification (parse + validate + verify signature)
 - Full verification with cache hit
 - Full verification with cache miss
@@ -211,6 +221,7 @@ Measures full verification flow performance:
 - Burst load test (10-500 concurrent)
 
 **Metrics:**
+
 - Operations per second
 - Min/P50/P95/P99/Max latency
 - Throughput under load
@@ -218,6 +229,7 @@ Measures full verification flow performance:
 - Latency distribution
 
 **Example Output:**
+
 ```
 Full Verification (Parse + Validate + Verify Signature)
 --------------------------------------------------------------------------------

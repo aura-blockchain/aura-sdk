@@ -8,14 +8,8 @@
  * - Algorithm comparison
  */
 
-import {
-  verifyEd25519Signature,
-  verifyEd25519SignatureSync,
-} from '../src/crypto/ed25519.js';
-import {
-  verifySecp256k1Signature,
-  verifySecp256k1SignatureSync,
-} from '../src/crypto/secp256k1.js';
+import { verifyEd25519Signature, verifyEd25519SignatureSync } from '../src/crypto/ed25519.js';
+import { verifySecp256k1Signature, verifySecp256k1SignatureSync } from '../src/crypto/secp256k1.js';
 import {
   verifySignature,
   verifySignatureSync,
@@ -195,11 +189,7 @@ async function benchmarkEd25519Async(): Promise<BenchmarkResult> {
   return runBenchmark(
     'Ed25519 Verification (Async)',
     async () => {
-      await verifyEd25519Signature(
-        testData.signature,
-        testData.message,
-        testData.publicKey
-      );
+      await verifyEd25519Signature(testData.signature, testData.message, testData.publicKey);
     },
     2000
   );
@@ -211,11 +201,7 @@ async function benchmarkEd25519Sync(): Promise<BenchmarkResult> {
   return runBenchmark(
     'Ed25519 Verification (Sync)',
     () => {
-      verifyEd25519SignatureSync(
-        testData.signature,
-        testData.message,
-        testData.publicKey
-      );
+      verifyEd25519SignatureSync(testData.signature, testData.message, testData.publicKey);
     },
     2000
   );
@@ -244,12 +230,9 @@ async function benchmarkSecp256k1Sync(): Promise<BenchmarkResult> {
   return runBenchmark(
     'Secp256k1 Verification (Sync)',
     () => {
-      verifySecp256k1SignatureSync(
-        testData.signature,
-        testData.message,
-        testData.publicKey,
-        { hashMessage: false }
-      );
+      verifySecp256k1SignatureSync(testData.signature, testData.message, testData.publicKey, {
+        hashMessage: false,
+      });
     },
     2000
   );
@@ -261,11 +244,7 @@ async function benchmarkUnifiedSignatureAsync(): Promise<BenchmarkResult> {
   return runBenchmark(
     'Unified Signature Verification (Auto-detect, Async)',
     async () => {
-      await verifySignature(
-        testData.signature,
-        testData.message,
-        testData.publicKey
-      );
+      await verifySignature(testData.signature, testData.message, testData.publicKey);
     },
     2000
   );
@@ -277,11 +256,7 @@ async function benchmarkUnifiedSignatureSync(): Promise<BenchmarkResult> {
   return runBenchmark(
     'Unified Signature Verification (Auto-detect, Sync)',
     () => {
-      verifySignatureSync(
-        testData.signature,
-        testData.message,
-        testData.publicKey
-      );
+      verifySignatureSync(testData.signature, testData.message, testData.publicKey);
     },
     2000
   );
@@ -294,7 +269,7 @@ async function benchmarkBatchVerification(): Promise<BenchmarkResult> {
     Array.from({ length: batchSize }, () => generateEd25519Signature())
   );
 
-  const verifications = testData.map(data => ({
+  const verifications = testData.map((data) => ({
     signature: data.signature,
     message: data.message,
     publicKey: data.publicKey,
@@ -337,11 +312,7 @@ async function benchmarkObjectMessageVerification(): Promise<BenchmarkResult> {
   return runBenchmark(
     'Object Message Verification (with JSON + hash)',
     async () => {
-      await verifyEd25519Signature(
-        signature,
-        messageBytes,
-        publicKey
-      );
+      await verifyEd25519Signature(signature, messageBytes, publicKey);
     },
     2000
   );
@@ -366,11 +337,7 @@ async function throughputTest(): Promise<void> {
   const ed25519Start = performance.now();
 
   while (performance.now() - ed25519Start < duration) {
-    await verifyEd25519Signature(
-      ed25519Data.signature,
-      ed25519Data.message,
-      ed25519Data.publicKey
-    );
+    await verifyEd25519Signature(ed25519Data.signature, ed25519Data.message, ed25519Data.publicKey);
     ed25519Count++;
   }
 
@@ -418,7 +385,9 @@ async function concurrentVerificationTest(): Promise<void> {
   const concurrencyLevels = [1, 5, 10, 25, 50, 100];
   const verificationsPerLevel = 100;
 
-  console.log(`${'Concurrency'.padEnd(15)} ${'Total Time'.padStart(15)} ${'Throughput'.padStart(15)}`);
+  console.log(
+    `${'Concurrency'.padEnd(15)} ${'Total Time'.padStart(15)} ${'Throughput'.padStart(15)}`
+  );
   console.log('-'.repeat(80));
 
   for (const concurrency of concurrencyLevels) {
@@ -432,9 +401,7 @@ async function concurrentVerificationTest(): Promise<void> {
     for (let i = 0; i < verificationsPerLevel; i += concurrency) {
       const chunk = testData.slice(i, i + concurrency);
       await Promise.all(
-        chunk.map(data =>
-          verifyEd25519Signature(data.signature, data.message, data.publicKey)
-        )
+        chunk.map((data) => verifyEd25519Signature(data.signature, data.message, data.publicKey))
       );
     }
 
@@ -485,8 +452,10 @@ async function main(): Promise<void> {
   console.log('PERFORMANCE SUMMARY');
   console.log('='.repeat(80) + '\n');
 
-  const ed25519Result = results.find(r => r.name.includes('Ed25519') && r.name.includes('Async'));
-  const secp256k1Result = results.find(r => r.name.includes('Secp256k1') && r.name.includes('Async'));
+  const ed25519Result = results.find((r) => r.name.includes('Ed25519') && r.name.includes('Async'));
+  const secp256k1Result = results.find(
+    (r) => r.name.includes('Secp256k1') && r.name.includes('Async')
+  );
 
   if (ed25519Result) {
     console.log(`Ed25519 Throughput:     ${formatNumber(ed25519Result.opsPerSecond)} ops/sec`);

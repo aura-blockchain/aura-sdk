@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 #### Core Features
+
 - Express.js server with webhook endpoints
 - POST `/webhooks/verification` - Receive verification events
 - POST `/webhooks/revocation` - Receive revocation notifications
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Zod schema validation for webhook payloads
 
 #### Event Types
+
 - VERIFICATION_SUCCESS event handling
 - VERIFICATION_FAILED event handling
 - CREDENTIAL_REVOKED event handling
@@ -26,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AGE_VERIFICATION_FAILED event handling
 
 #### Database
+
 - SQLite database integration with better-sqlite3
 - Event persistence with full audit trail
 - Automatic schema initialization
@@ -34,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Analytics endpoints for event statistics
 
 #### Security
+
 - Request signature validation middleware
 - IP allowlisting support
 - Rate limiting with express-rate-limit
@@ -43,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Secure secret generation utilities
 
 #### Analytics
+
 - GET `/analytics` - Overall statistics
 - GET `/analytics/events/:id` - Get specific event
 - GET `/analytics/events/type/:eventType` - Get events by type
@@ -52,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Average processing time metrics
 
 #### Docker Support
+
 - Production-ready Dockerfile
 - Multi-stage build optimization
 - docker-compose.yml for easy deployment
@@ -60,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Volume management for data and logs
 
 #### Logging
+
 - Winston-based structured logging
 - Multiple log levels (debug, info, warn, error)
 - File rotation support
@@ -68,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Error tracking and stack traces
 
 #### Documentation
+
 - Comprehensive README.md
 - Quick start guide (QUICKSTART.md)
 - Security best practices (SECURITY.md)
@@ -76,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Example configurations
 
 #### DevOps
+
 - Kubernetes deployment manifests
 - Nginx configuration example
 - Example environment variables
@@ -84,6 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Backup scripts
 
 #### Testing
+
 - Webhook test script
 - Example payloads for all event types
 - Signature generation examples
@@ -108,6 +118,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Dependencies
 
 Production:
+
 - express ^4.18.2
 - express-rate-limit ^7.1.5
 - helmet ^7.1.0
@@ -117,6 +128,7 @@ Production:
 - winston ^3.11.0
 
 Development:
+
 - typescript ^5.3.0
 - tsx ^4.6.0
 - vitest ^1.0.0
@@ -168,5 +180,6 @@ See [CONTRIBUTING.md](../../CONTRIBUTING.md) for details on how to contribute to
 ## Support
 
 For issues and questions:
+
 - GitHub Issues: https://github.com/aura-network/aura-verifier-sdk/issues
 - Documentation: https://docs.aurablockchain.org

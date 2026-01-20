@@ -225,10 +225,7 @@ export class RateLimiter {
   private readonly disableJitter: boolean;
   private cleanupTimer?: NodeJS.Timeout;
 
-  constructor(
-    config: RateLimiterConfig = {},
-    storage?: RateLimiterStorage
-  ) {
+  constructor(config: RateLimiterConfig = {}, storage?: RateLimiterStorage) {
     this.maxRequests = config.maxRequests ?? 100;
     this.windowMs = config.windowMs ?? 60000;
     this.burstCapacity = config.burstCapacity ?? this.maxRequests;
@@ -520,8 +517,6 @@ export class MultiTierRateLimiter {
    * Clear all rate limit data
    */
   async clear(): Promise<void> {
-    await Promise.all(
-      Array.from(this.limiters.values()).map(limiter => limiter.clear())
-    );
+    await Promise.all(Array.from(this.limiters.values()).map((limiter) => limiter.clear()));
   }
 }

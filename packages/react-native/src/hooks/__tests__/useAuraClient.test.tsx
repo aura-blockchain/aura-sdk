@@ -27,7 +27,9 @@ describe('useAuraClient', () => {
   });
 
   it('should handle connection errors gracefully', async () => {
-    const spy = vi.spyOn(AuraClient.prototype, 'connect').mockRejectedValue(new Error('Connection failed'));
+    const spy = vi
+      .spyOn(AuraClient.prototype, 'connect')
+      .mockRejectedValue(new Error('Connection failed'));
 
     const { result } = renderHook(() => useAuraClient(), { wrapper });
 

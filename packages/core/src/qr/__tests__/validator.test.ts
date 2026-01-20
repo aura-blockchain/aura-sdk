@@ -57,7 +57,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.field === 'v')).toBe(true);
+      expect(result.errors.some((e) => e.field === 'v')).toBe(true);
     });
 
     it('should reject unsupported version', () => {
@@ -65,7 +65,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('Unsupported'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('Unsupported'))).toBe(true);
     });
 
     it('should accept custom supported versions', () => {
@@ -89,7 +89,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.field === 'p')).toBe(true);
+      expect(result.errors.some((e) => e.field === 'p')).toBe(true);
     });
 
     it('should reject whitespace-only presentation ID', () => {
@@ -104,7 +104,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('maximum length'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('maximum length'))).toBe(true);
     });
 
     it('should accept 256 character presentation ID', () => {
@@ -128,7 +128,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('aura'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('aura'))).toBe(true);
     });
 
     it('should reject DID without network', () => {
@@ -164,7 +164,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data, { validateDID: false });
 
       // Should not have DID validation error (may have other validation issues)
-      const didErrors = result.errors.filter(e => e.field === 'h');
+      const didErrors = result.errors.filter((e) => e.field === 'h');
       expect(didErrors.length).toBe(0);
     });
   });
@@ -175,7 +175,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('array'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('array'))).toBe(true);
     });
 
     it('should reject empty VCs array', () => {
@@ -190,7 +190,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.field?.includes('vcs[1]'))).toBe(true);
+      expect(result.errors.some((e) => e.field?.includes('vcs[1]'))).toBe(true);
     });
 
     it('should reject empty string VC IDs', () => {
@@ -204,7 +204,7 @@ describe('validateQRCodeData', () => {
       const data = createValidQRData({ vcs: ['vc-1', 'vc-1', 'vc-2'] });
       const result = validateQRCodeData(data);
 
-      expect(result.warnings.some(w => w.message.includes('duplicate'))).toBe(true);
+      expect(result.warnings.some((w) => w.message.includes('duplicate'))).toBe(true);
     });
 
     it('should warn about large number of VCs', () => {
@@ -212,7 +212,7 @@ describe('validateQRCodeData', () => {
       const data = createValidQRData({ vcs });
       const result = validateQRCodeData(data);
 
-      expect(result.warnings.some(w => w.message.includes('performance'))).toBe(true);
+      expect(result.warnings.some((w) => w.message.includes('performance'))).toBe(true);
     });
   });
 
@@ -229,7 +229,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('not an array'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('not an array'))).toBe(true);
     });
 
     it('should reject non-boolean values in context', () => {
@@ -243,14 +243,14 @@ describe('validateQRCodeData', () => {
       const data = createValidQRData({ ctx: {} });
       const result = validateQRCodeData(data);
 
-      expect(result.warnings.some(w => w.message.includes('No disclosure'))).toBe(true);
+      expect(result.warnings.some((w) => w.message.includes('No disclosure'))).toBe(true);
     });
 
     it('should warn when all disclosures are false', () => {
       const data = createValidQRData({ ctx: { fullName: false, age: false } });
       const result = validateQRCodeData(data);
 
-      expect(result.warnings.some(w => w.message.includes('No disclosure'))).toBe(true);
+      expect(result.warnings.some((w) => w.message.includes('No disclosure'))).toBe(true);
     });
   });
 
@@ -261,7 +261,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.field === 'exp')).toBe(true);
+      expect(result.errors.some((e) => e.field === 'exp')).toBe(true);
     });
 
     it('should accept QR code with expiration tolerance', () => {
@@ -294,12 +294,12 @@ describe('validateQRCodeData', () => {
     });
 
     it('should reject expiration too far in the future', () => {
-      const farFuture = Math.floor(Date.now() / 1000) + (15 * 365 * 24 * 60 * 60); // 15 years
+      const farFuture = Math.floor(Date.now() / 1000) + 15 * 365 * 24 * 60 * 60; // 15 years
       const data = createValidQRData({ exp: farFuture });
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('too far'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('too far'))).toBe(true);
     });
 
     it('should skip expiration check when disabled', () => {
@@ -307,7 +307,9 @@ describe('validateQRCodeData', () => {
       const data = createValidQRData({ exp: pastExp });
       const result = validateQRCodeData(data, { checkExpiration: false });
 
-      const expErrors = result.errors.filter(e => e.field === 'exp' && e.message.includes('expired'));
+      const expErrors = result.errors.filter(
+        (e) => e.field === 'exp' && e.message.includes('expired')
+      );
       expect(expErrors.length).toBe(0);
     });
   });
@@ -369,7 +371,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('too short'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('too short'))).toBe(true);
     });
 
     it('should reject signature that is too long', () => {
@@ -377,7 +379,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('too long'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('too long'))).toBe(true);
     });
 
     it('should reject odd-length signature', () => {
@@ -385,7 +387,7 @@ describe('validateQRCodeData', () => {
       const result = validateQRCodeData(data);
 
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('even number'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('even number'))).toBe(true);
     });
 
     it('should accept 128 character hex signature (64 bytes)', () => {
@@ -399,7 +401,7 @@ describe('validateQRCodeData', () => {
       const data = createValidQRData({ sig: 'invalid!' });
       const result = validateQRCodeData(data, { validateSignature: false });
 
-      const sigErrors = result.errors.filter(e => e.field === 'sig');
+      const sigErrors = result.errors.filter((e) => e.field === 'sig');
       expect(sigErrors.length).toBe(0);
     });
   });
@@ -445,7 +447,7 @@ describe('validateQRCodeDataAsync', () => {
     const result = await validateQRCodeDataAsync(data, { nonceValidator: mockValidator });
 
     expect(result.valid).toBe(false);
-    expect(result.errors.some(e => e.field === 'n')).toBe(true);
+    expect(result.errors.some((e) => e.field === 'n')).toBe(true);
   });
 
   it('should fail when nonce validator throws', async () => {
@@ -457,7 +459,7 @@ describe('validateQRCodeDataAsync', () => {
     const result = await validateQRCodeDataAsync(data, { nonceValidator: mockValidator });
 
     expect(result.valid).toBe(false);
-    expect(result.errors.some(e => e.field === 'n')).toBe(true);
+    expect(result.errors.some((e) => e.field === 'n')).toBe(true);
   });
 
   it('should return early if sync validation fails', async () => {

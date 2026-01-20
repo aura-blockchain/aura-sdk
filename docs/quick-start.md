@@ -51,9 +51,9 @@ import { AuraVerifier } from '@aura-network/verifier-sdk';
 
 // Initialize the verifier
 const verifier = new AuraVerifier({
-  network: 'mainnet',  // or 'testnet', 'local'
+  network: 'mainnet', // or 'testnet', 'local'
   timeout: 10000,
-  verbose: true  // Enable logging during development
+  verbose: true, // Enable logging during development
 });
 
 // Initialize connection
@@ -70,7 +70,7 @@ import { VerifierSDK } from '@aura-network/verifier-sdk';
 const sdk = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
   timeout: 30000,
-  debug: false
+  debug: false,
 });
 ```
 
@@ -84,7 +84,8 @@ Users present QR codes containing their credential presentations. Use a QR code 
 
 ```typescript
 // Example QR code string (scanned from user's device)
-const qrString = "aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXMyMzQiLCJoIjoiZGlkOmF1cmE6bWFpbm5ldDphdXJhMXh5ejEyMyIsInZjcyI6WyJ2YzEyMyJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTU2MDAwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ==";
+const qrString =
+  'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXMyMzQiLCJoIjoiZGlkOmF1cmE6bWFpbm5ldDphdXJhMXh5ejEyMyIsInZjcyI6WyJ2YzEyMyJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTU2MDAwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ==';
 ```
 
 ### Step 2: Verify the Presentation
@@ -92,7 +93,7 @@ const qrString = "aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXMyMzQiLCJoIjoiZGl
 ```typescript
 const result = await verifier.verify({
   qrCodeData: qrString,
-  verifierAddress: 'your-verifier-id',  // Optional: for audit trail
+  verifierAddress: 'your-verifier-id', // Optional: for audit trail
 });
 
 // Check the result
@@ -163,17 +164,14 @@ import { AuraVerifier, VCType } from '@aura-network/verifier-sdk';
 async function verifyMarketplaceSeller(qrCode: string) {
   const verifier = new AuraVerifier({
     network: 'mainnet',
-    timeout: 15000
+    timeout: 15000,
   });
   await verifier.initialize();
 
   const result = await verifier.verify({
     qrCodeData: qrCode,
-    requiredVCTypes: [
-      VCType.PROOF_OF_HUMANITY,
-      VCType.GOVERNMENT_ID
-    ],
-    maxCredentialAge: 86400 * 30  // 30 days
+    requiredVCTypes: [VCType.PROOF_OF_HUMANITY, VCType.GOVERNMENT_ID],
+    maxCredentialAge: 86400 * 30, // 30 days
   });
 
   if (result.isValid) {
@@ -183,13 +181,13 @@ async function verifyMarketplaceSeller(qrCode: string) {
       verified: true,
       trustScore: score,
       holderDID: result.holderDID,
-      credentials: result.vcDetails
+      credentials: result.vcDetails,
     };
   }
 
   return {
     verified: false,
-    reason: result.verificationError
+    reason: result.verificationError,
   };
 }
 ```
@@ -221,7 +219,7 @@ async function verifyBatch(qrCodes: string[]) {
   const verifier = new AuraVerifier({ network: 'mainnet' });
   await verifier.initialize();
 
-  const requests = qrCodes.map(qr => ({ qrCodeData: qr }));
+  const requests = qrCodes.map((qr) => ({ qrCodeData: qr }));
   const results = await verifier.verifyBatch(requests);
 
   results.forEach((result, index) => {
@@ -243,13 +241,13 @@ import { AuraVerifier } from '@aura-network/verifier-sdk';
 // Setup with offline support
 const verifier = new AuraVerifier({
   network: 'mainnet',
-  offlineMode: false,  // Start online
+  offlineMode: false, // Start online
   cacheConfig: {
     enableDIDCache: true,
     enableVCCache: true,
-    ttl: 3600,  // Cache for 1 hour
-    maxSize: 100
-  }
+    ttl: 3600, // Cache for 1 hour
+    maxSize: 100,
+  },
 });
 
 await verifier.initialize();
@@ -258,7 +256,7 @@ await verifier.initialize();
 setInterval(async () => {
   const syncResult = await verifier.syncCache();
   console.log('Cache synced:', syncResult.didsSynced, 'DIDs');
-}, 300000);  // Every 5 minutes
+}, 300000); // Every 5 minutes
 
 // Enable offline mode when disconnected
 await verifier.enableOfflineMode();
@@ -305,7 +303,7 @@ import {
   QRExpiredError,
   CredentialRevokedError,
   NetworkError,
-  VerificationError
+  VerificationError,
 } from '@aura-network/verifier-sdk';
 
 try {
@@ -404,6 +402,7 @@ Check out these complete examples:
 ### Network Endpoints
 
 **Mainnet:**
+
 ```typescript
 {
   grpc: 'rpc.aurablockchain.org:9090',
@@ -413,6 +412,7 @@ Check out these complete examples:
 ```
 
 **Testnet:**
+
 ```typescript
 {
   grpc: 'testnet-grpc.aurablockchain.org:443',
@@ -431,7 +431,7 @@ import { AuraVerifier, VerifierSDK } from '@aura-network/verifier-sdk';
 import type {
   VerificationRequest,
   VerificationResult,
-  AuraVerifierConfig
+  AuraVerifierConfig,
 } from '@aura-network/verifier-sdk';
 
 // Enums
@@ -442,30 +442,22 @@ import {
   VerificationError,
   QRExpiredError,
   CredentialRevokedError,
-  NetworkError
+  NetworkError,
 } from '@aura-network/verifier-sdk';
 
 // QR Code utilities
-import {
-  parseQRCode,
-  parseQRCodeSafe,
-  validateQRCodeData
-} from '@aura-network/verifier-sdk';
+import { parseQRCode, parseQRCodeSafe, validateQRCodeData } from '@aura-network/verifier-sdk';
 
 // Security
 import {
   NonceManager,
   RateLimiter,
   AuditLogger,
-  createSecureVerifier
+  createSecureVerifier,
 } from '@aura-network/verifier-sdk';
 
 // Offline support
-import {
-  createOfflineVerifier,
-  CredentialCache,
-  CacheSync
-} from '@aura-network/verifier-sdk';
+import { createOfflineVerifier, CredentialCache, CacheSync } from '@aura-network/verifier-sdk';
 ```
 
 ### Minimal Working Example

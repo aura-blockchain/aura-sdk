@@ -6,10 +6,7 @@
  */
 
 import { sha256Hash, sha256HashHex } from '../crypto/hash.js';
-import {
-  RevocationList,
-  MerkleProof
-} from './types.js';
+import { RevocationList, MerkleProof } from './types.js';
 import type { RevocationBitmap } from './types.js';
 
 /**
@@ -35,16 +32,18 @@ export function createRevocationBitmap(
 
       const byteIndex = Math.floor(index / 8);
       const bitIndex = index % 8;
-      data[byteIndex] |= (1 << bitIndex);
+      data[byteIndex] |= 1 << bitIndex;
     }
 
     return {
       data,
       length: totalSize,
-      setBits: revokedIndices.length
+      setBits: revokedIndices.length,
     };
   } catch (error) {
-    throw new Error(`Failed to create revocation bitmap: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to create revocation bitmap: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -69,7 +68,9 @@ export function isRevokedInBitmap(bitmap: RevocationBitmap, index: number): bool
 
     return (bitmap.data[byteIndex] & (1 << bitIndex)) !== 0;
   } catch (error) {
-    throw new Error(`Failed to check revocation status: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to check revocation status: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -131,16 +132,14 @@ export function calculateMerkleRoot(hashes: string[]): string {
   }
 
   // Convert hex hashes to Uint8Array
-  let currentLevel = hashes.map(h => hexToBytes(h));
+  let currentLevel = hashes.map((h) => hexToBytes(h));
 
   while (currentLevel.length > 1) {
     const nextLevel: Uint8Array[] = [];
 
     for (let i = 0; i < currentLevel.length; i += 2) {
       const left = currentLevel[i];
-      const right = i + 1 < currentLevel.length
-        ? currentLevel[i + 1]
-        : left; // Duplicate last node if odd
+      const right = i + 1 < currentLevel.length ? currentLevel[i + 1] : left; // Duplicate last node if odd
 
       // Concatenate and hash
       const combined = new Uint8Array(left.length + right.length);
@@ -164,18 +163,14 @@ export function calculateMerkleRoot(hashes: string[]): string {
  * @param index - Index of the credential in the array
  * @returns MerkleProof
  */
-export function generateMerkleProof(
-  vcId: string,
-  allHashes: string[],
-  index: number
-): MerkleProof {
+export function generateMerkleProof(vcId: string, allHashes: string[], index: number): MerkleProof {
   try {
     if (index < 0 || index >= allHashes.length) {
       throw new Error(`Invalid index ${index}. Must be between 0 and ${allHashes.length - 1}`);
     }
 
     const siblings: string[] = [];
-    let currentLevel = allHashes.map(h => hexToBytes(h));
+    let currentLevel = allHashes.map((h) => hexToBytes(h));
     let currentIndex = index;
 
     while (currentLevel.length > 1) {
@@ -183,13 +178,11 @@ export function generateMerkleProof(
 
       for (let i = 0; i < currentLevel.length; i += 2) {
         const left = currentLevel[i];
-        const right = i + 1 < currentLevel.length
-          ? currentLevel[i + 1]
-          : left;
+        const right = i + 1 < currentLevel.length ? currentLevel[i + 1] : left;
 
         // Store sibling if this is our node
         if (i === currentIndex || i + 1 === currentIndex) {
-          const siblingIndex = (i === currentIndex) ? i + 1 : i;
+          const siblingIndex = i === currentIndex ? i + 1 : i;
           if (siblingIndex < currentLevel.length) {
             siblings.push(bytesToHex(currentLevel[siblingIndex]));
           }
@@ -215,10 +208,12 @@ export function generateMerkleProof(
       index,
       siblings,
       root,
-      isRevoked: false // Set by caller based on bitmap
+      isRevoked: false, // Set by caller based on bitmap
     };
   } catch (error) {
-    throw new Error(`Failed to generate Merkle proof: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to generate Merkle proof: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -257,7 +252,9 @@ export function verifyMerkleProof(proof: MerkleProof, vcHash: string): boolean {
     const calculatedRoot = bytesToHex(currentHash);
     return calculatedRoot === proof.root;
   } catch (error) {
-    throw new Error(`Failed to verify Merkle proof: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to verify Merkle proof: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -282,7 +279,7 @@ export function createRevocationList(
 ): RevocationList {
   try {
     // Hash all credential IDs
-    const hashes = credentialIds.map(id => hashCredentialId(id));
+    const hashes = credentialIds.map((id) => hashCredentialId(id));
 
     // Calculate Merkle root
     const merkleRoot = calculateMerkleRoot(hashes);
@@ -295,10 +292,12 @@ export function createRevocationList(
       bitmap: bitmap.data,
       totalCredentials: credentialIds.length,
       revokedCount: revokedIndices.length,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
   } catch (error) {
-    throw new Error(`Failed to create revocation list: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to create revocation list: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -309,21 +308,19 @@ export function createRevocationList(
  * @param revocationList - RevocationList to check
  * @returns true if revoked
  */
-export function isRevoked(
-  vcId: string,
-  index: number,
-  revocationList: RevocationList
-): boolean {
+export function isRevoked(vcId: string, index: number, revocationList: RevocationList): boolean {
   try {
     const bitmap: RevocationBitmap = {
       data: revocationList.bitmap,
       length: revocationList.totalCredentials,
-      setBits: revocationList.revokedCount
+      setBits: revocationList.revokedCount,
     };
 
     return isRevokedInBitmap(bitmap, index);
   } catch (error) {
-    throw new Error(`Failed to check revocation status: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to check revocation status: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -342,7 +339,7 @@ export function getRevocationStats(bitmap: RevocationBitmap): {
     totalCredentials: bitmap.length,
     revokedCount: bitmap.setBits,
     revokedPercentage: (bitmap.setBits / bitmap.length) * 100,
-    bitmapSizeBytes: bitmap.data.length
+    bitmapSizeBytes: bitmap.data.length,
   };
 }
 
@@ -361,7 +358,7 @@ function hexToBytes(hex: string): Uint8Array {
 
 function bytesToHex(bytes: Uint8Array): string {
   return Array.from(bytes)
-    .map(b => b.toString(16).padStart(2, '0'))
+    .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
 }
 

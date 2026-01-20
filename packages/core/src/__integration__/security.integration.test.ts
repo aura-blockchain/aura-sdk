@@ -51,12 +51,12 @@ describe('Security Integration Tests', () => {
       verbose: false,
     });
 
-    vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-      async (did: string) => mockServer.queryDIDDocument(did)
+    vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+      mockServer.queryDIDDocument(did)
     );
 
-    vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-      async (vcId: string) => mockServer.queryVCStatus(vcId)
+    vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+      mockServer.queryVCStatus(vcId)
     );
 
     await verifier.initialize();
@@ -168,11 +168,11 @@ describe('Security Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(freshVerifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(freshVerifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
-      vi.spyOn(freshVerifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(freshVerifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await freshVerifier.initialize();
@@ -606,12 +606,12 @@ describe('Security Integration Tests', () => {
       // Use fast mock server
       mockServer.updateConfig({ latency: 50 });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();

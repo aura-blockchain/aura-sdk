@@ -11,6 +11,7 @@ This directory contains practical examples demonstrating how to use the Aura Ver
 A straightforward Node.js application showing the fundamental features of the SDK.
 
 **What you'll learn:**
+
 - How to initialize the verifier
 - Parse QR codes
 - Verify credentials
@@ -36,6 +37,7 @@ pnpm start
 A production-ready REST API server for credential verification.
 
 **What you'll learn:**
+
 - Building a verification API service
 - REST endpoint design
 - Batch verification
@@ -46,6 +48,7 @@ A production-ready REST API server for credential verification.
 **Best for:** Integration with existing web applications, microservices architecture
 
 **Endpoints:**
+
 - `POST /verify` - Main verification endpoint
 - `POST /verify/age-21` - Quick age 21+ check
 - `POST /verify/age-18` - Quick age 18+ check
@@ -71,6 +74,7 @@ pnpm start
 A command-line interface tool for terminal-based verification.
 
 **What you'll learn:**
+
 - Building CLI tools with Commander
 - Colored terminal output with Chalk
 - Progress indicators with Ora
@@ -81,6 +85,7 @@ A command-line interface tool for terminal-based verification.
 **Best for:** System administration, automation scripts, testing, CI/CD pipelines
 
 **Commands:**
+
 ```bash
 aura-verify verify <qr-code>     # Verify a credential
 aura-verify parse <qr-code>      # Parse QR without verification
@@ -106,6 +111,7 @@ pnpm start verify "aura://verify?data=..."
 Demonstrates offline credential verification with caching.
 
 **What you'll learn:**
+
 - Credential caching strategies
 - Synchronization when online
 - Revocation list caching
@@ -117,6 +123,7 @@ Demonstrates offline credential verification with caching.
 **Best for:** Remote locations, high-traffic events, unreliable connectivity, cost optimization
 
 **Modes:**
+
 ```bash
 pnpm start           # Online with caching
 pnpm run offline     # Offline mode
@@ -165,18 +172,18 @@ pnpm start
 
 Choose the right example for your needs:
 
-| Use Case | Recommended Example | Why |
-|----------|-------------------|-----|
-| Learning the SDK | Basic Node.js | Simple, focused on core concepts |
-| Web Integration | Express API | REST API ready for integration |
-| Mobile Backend | Express API | RESTful service for mobile apps |
-| Automation/Scripts | CLI Tool | Easy to script and automate |
-| Testing/QA | CLI Tool | Quick manual testing |
-| Remote Locations | Offline Mode | Works without connectivity |
-| High-Traffic Events | Offline Mode | Reduced network load |
-| Cost Optimization | Offline Mode | Fewer blockchain queries |
-| Desktop App | Basic Node.js | Simple integration pattern |
-| IoT Devices | Offline Mode | Limited connectivity scenarios |
+| Use Case            | Recommended Example | Why                              |
+| ------------------- | ------------------- | -------------------------------- |
+| Learning the SDK    | Basic Node.js       | Simple, focused on core concepts |
+| Web Integration     | Express API         | REST API ready for integration   |
+| Mobile Backend      | Express API         | RESTful service for mobile apps  |
+| Automation/Scripts  | CLI Tool            | Easy to script and automate      |
+| Testing/QA          | CLI Tool            | Quick manual testing             |
+| Remote Locations    | Offline Mode        | Works without connectivity       |
+| High-Traffic Events | Offline Mode        | Reduced network load             |
+| Cost Optimization   | Offline Mode        | Fewer blockchain queries         |
+| Desktop App         | Basic Node.js       | Simple integration pattern       |
+| IoT Devices         | Offline Mode        | Limited connectivity scenarios   |
 
 ## Common Integration Patterns
 

@@ -22,6 +22,7 @@ curl http://localhost:3000/health
 ```
 
 Response:
+
 ```json
 {
   "status": "healthy",
@@ -37,7 +38,7 @@ Docker Compose includes automatic health checks:
 
 ```yaml
 healthcheck:
-  test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', ...)"]
+  test: ['CMD', 'node', '-e', "require('http').get('http://localhost:3000/health', ...)"]
   interval: 30s
   timeout: 3s
   retries: 3
@@ -45,6 +46,7 @@ healthcheck:
 ```
 
 Check container health:
+
 ```bash
 docker ps
 # Look for "healthy" in STATUS column
@@ -75,20 +77,24 @@ readinessProbe:
 #### Application Metrics
 
 1. **Request Rate**
+
    - Webhook requests per second
    - Analytics requests per second
 
 2. **Error Rate**
+
    - HTTP 4xx errors (client errors)
    - HTTP 5xx errors (server errors)
    - Signature verification failures
 
 3. **Latency**
+
    - Request processing time
    - Database query time
    - Event handling time
 
 4. **Event Metrics**
+
    - Events received by type
    - Events processed successfully
    - Events failed to process
@@ -199,6 +205,7 @@ The server uses Winston with the following levels:
 - `debug`: Detailed debug information
 
 Configure via environment variable:
+
 ```env
 LOG_LEVEL=info
 ```
@@ -220,7 +227,7 @@ logger.info('Webhook event received', {
   eventType: 'VERIFICATION_SUCCESS',
   eventId: '123e4567-e89b-12d3-a456-426614174000',
   holderDid: 'did:aura:holder123',
-  sourceIp: '192.168.1.100'
+  sourceIp: '192.168.1.100',
 });
 ```
 
@@ -233,11 +240,11 @@ logger.info('Webhook event received', {
 services:
   webhook-server:
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
-        labels: "service=webhook-server"
+        max-size: '10m'
+        max-file: '3'
+        labels: 'service=webhook-server'
 
   logstash:
     image: logstash:8.11.0
@@ -279,7 +286,7 @@ output {
 #### CloudWatch Logs
 
 ```typescript
-import { CloudWatchLogsClient, PutLogEventsCommand } from "@aws-sdk/client-cloudwatch-logs";
+import { CloudWatchLogsClient, PutLogEventsCommand } from '@aws-sdk/client-cloudwatch-logs';
 
 const cloudwatchTransport = new CloudWatchTransport({
   logGroupName: '/aws/webhook-server',
@@ -335,8 +342,8 @@ Configure alerts for critical conditions:
   expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.05
   for: 5m
   annotations:
-    summary: "High error rate detected"
-    description: "Error rate is {{ $value }} errors/sec"
+    summary: 'High error rate detected'
+    description: 'Error rate is {{ $value }} errors/sec'
 ```
 
 #### 2. Signature Verification Failures
@@ -346,8 +353,8 @@ Configure alerts for critical conditions:
   expr: rate(webhook_signature_failures_total[5m]) > 10
   for: 2m
   annotations:
-    summary: "High rate of signature verification failures"
-    description: "{{ $value }} failures/sec detected"
+    summary: 'High rate of signature verification failures'
+    description: '{{ $value }} failures/sec detected'
 ```
 
 #### 3. Database Issues
@@ -357,7 +364,7 @@ Configure alerts for critical conditions:
   expr: rate(database_operations_total{status="error"}[5m]) > 1
   for: 5m
   annotations:
-    summary: "Database errors detected"
+    summary: 'Database errors detected'
 ```
 
 #### 4. High Memory Usage
@@ -367,8 +374,8 @@ Configure alerts for critical conditions:
   expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) < 0.1
   for: 5m
   annotations:
-    summary: "High memory usage"
-    description: "Less than 10% memory available"
+    summary: 'High memory usage'
+    description: 'Less than 10% memory available'
 ```
 
 ### Notification Channels
@@ -437,10 +444,12 @@ Example dashboard panels:
 ```json
 {
   "title": "Webhook Request Rate",
-  "targets": [{
-    "expr": "rate(webhook_requests_total[5m])",
-    "legendFormat": "{{event_type}}"
-  }],
+  "targets": [
+    {
+      "expr": "rate(webhook_requests_total[5m])",
+      "legendFormat": "{{event_type}}"
+    }
+  ],
   "type": "graph"
 }
 ```
@@ -450,10 +459,12 @@ Example dashboard panels:
 ```json
 {
   "title": "Error Rate",
-  "targets": [{
-    "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
-    "legendFormat": "5xx errors"
-  }],
+  "targets": [
+    {
+      "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
+      "legendFormat": "5xx errors"
+    }
+  ],
   "type": "graph"
 }
 ```
@@ -486,10 +497,12 @@ Example dashboard panels:
 ```json
 {
   "title": "Events by Type",
-  "targets": [{
-    "expr": "webhook_requests_total",
-    "legendFormat": "{{event_type}}"
-  }],
+  "targets": [
+    {
+      "expr": "webhook_requests_total",
+      "legendFormat": "{{event_type}}"
+    }
+  ],
   "type": "piechart"
 }
 ```
@@ -505,32 +518,34 @@ curl http://localhost:3000/analytics | jq
 Create a simple dashboard:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Webhook Analytics</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-  <canvas id="eventChart"></canvas>
+  <head>
+    <title>Webhook Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="eventChart"></canvas>
 
-  <script>
-    fetch('/analytics')
-      .then(r => r.json())
-      .then(data => {
-        new Chart(document.getElementById('eventChart'), {
-          type: 'bar',
-          data: {
-            labels: Object.keys(data.eventsByType),
-            datasets: [{
-              label: 'Events by Type',
-              data: Object.values(data.eventsByType)
-            }]
-          }
+    <script>
+      fetch('/analytics')
+        .then((r) => r.json())
+        .then((data) => {
+          new Chart(document.getElementById('eventChart'), {
+            type: 'bar',
+            data: {
+              labels: Object.keys(data.eventsByType),
+              datasets: [
+                {
+                  label: 'Events by Type',
+                  data: Object.values(data.eventsByType),
+                },
+              ],
+            },
+          });
         });
-      });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
 ```
 

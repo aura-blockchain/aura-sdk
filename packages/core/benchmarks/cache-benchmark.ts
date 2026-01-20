@@ -362,7 +362,9 @@ async function hitRateTest(): Promise<void> {
   const hitRatios = [0.9, 0.7, 0.5, 0.3, 0.1]; // 90%, 70%, 50%, 30%, 10% hit rate
   const totalOperations = 5000;
 
-  console.log(`${'Hit Ratio'.padEnd(15)} ${'Hits'.padStart(10)} ${'Misses'.padStart(10)} ${'Avg Latency'.padStart(15)}`);
+  console.log(
+    `${'Hit Ratio'.padEnd(15)} ${'Hits'.padStart(10)} ${'Misses'.padStart(10)} ${'Avg Latency'.padStart(15)}`
+  );
   console.log('-'.repeat(80));
 
   for (const hitRatio of hitRatios) {
@@ -389,9 +391,7 @@ async function hitRateTest(): Promise<void> {
 
     for (let i = 0; i < totalOperations; i++) {
       const shouldHit = Math.random() < hitRatio;
-      const vcId = shouldHit
-        ? vcIds[Math.floor(Math.random() * vcIds.length)]
-        : `nonexistent-${i}`;
+      const vcId = shouldHit ? vcIds[Math.floor(Math.random() * vcIds.length)] : `nonexistent-${i}`;
 
       const iterStart = performance.now();
       const result = await cache.get(vcId);
@@ -412,7 +412,7 @@ async function hitRateTest(): Promise<void> {
 
     console.log(
       `${(actualHitRate * 100).toFixed(1).padStart(5)}%`.padEnd(15) +
-      `${hits.toString().padStart(10)} ${misses.toString().padStart(10)} ${avgLatency.toFixed(3).padStart(15)} ms`
+        `${hits.toString().padStart(10)} ${misses.toString().padStart(10)} ${avgLatency.toFixed(3).padStart(15)} ms`
     );
   }
 
@@ -430,7 +430,9 @@ async function memoryUsageTest(): Promise<void> {
 
   const cacheSizes = [100, 500, 1000, 5000, 10000];
 
-  console.log(`${'Cache Size'.padEnd(15)} ${'Memory Used'.padStart(20)} ${'Per Entry'.padStart(20)}`);
+  console.log(
+    `${'Cache Size'.padEnd(15)} ${'Memory Used'.padStart(20)} ${'Per Entry'.padStart(20)}`
+  );
   console.log('-'.repeat(80));
 
   for (const size of cacheSizes) {
@@ -485,7 +487,9 @@ async function concurrentAccessTest(): Promise<void> {
   const concurrencyLevels = [1, 5, 10, 25, 50, 100];
   const operationsPerLevel = 1000;
 
-  console.log(`${'Concurrency'.padEnd(15)} ${'Total Time'.padStart(15)} ${'Throughput'.padStart(20)}`);
+  console.log(
+    `${'Concurrency'.padEnd(15)} ${'Total Time'.padStart(15)} ${'Throughput'.padStart(20)}`
+  );
   console.log('-'.repeat(80));
 
   for (const concurrency of concurrencyLevels) {
@@ -537,7 +541,7 @@ async function expirationTest(): Promise<void> {
   }
 
   console.log('Waiting 2 seconds for entries to expire...');
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
   console.log('Checking cache (should trigger expiration cleanup)...');
   const startTime = performance.now();
@@ -596,8 +600,8 @@ async function main(): Promise<void> {
   console.log('PERFORMANCE SUMMARY');
   console.log('='.repeat(80) + '\n');
 
-  const readResult = results.find(r => r.name.includes('Read') && r.name.includes('Hit'));
-  const writeResult = results.find(r => r.name.includes('Write'));
+  const readResult = results.find((r) => r.name.includes('Read') && r.name.includes('Hit'));
+  const writeResult = results.find((r) => r.name.includes('Write'));
 
   if (readResult) {
     console.log(`Cache Read Throughput:  ${formatNumber(readResult.opsPerSecond)} ops/sec`);

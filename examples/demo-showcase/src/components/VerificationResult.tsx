@@ -122,16 +122,17 @@ export function VerificationResult({ result, onClose }: VerificationResultProps)
                   Disclosed Attributes
                 </h4>
                 <div className="space-y-2">
-                  {Object.entries(result.qrData.ctx).map(([key, value]) => (
-                    value && (
-                      <div key={key} className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">
-                          {key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
-                        </span>
-                      </div>
-                    )
-                  ))}
+                  {Object.entries(result.qrData.ctx).map(
+                    ([key, value]) =>
+                      value && (
+                        <div key={key} className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-500" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                            {key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+                          </span>
+                        </div>
+                      )
+                  )}
                 </div>
               </div>
             )}

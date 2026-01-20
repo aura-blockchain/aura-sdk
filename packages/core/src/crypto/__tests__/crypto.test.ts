@@ -300,14 +300,22 @@ describe('secp256k1 Signature Verification', () => {
   it('should verify valid secp256k1 signature with compressed key', async () => {
     const signature = await secp256k1.sign(messageHash, privateKey);
     const signatureBytes = signature.toCompactRawBytes();
-    const isValid = await verifySecp256k1Signature(signatureBytes, testMessage, publicKeyCompressed);
+    const isValid = await verifySecp256k1Signature(
+      signatureBytes,
+      testMessage,
+      publicKeyCompressed
+    );
     expect(isValid).toBe(true);
   });
 
   it('should verify valid secp256k1 signature with uncompressed key', async () => {
     const signature = await secp256k1.sign(messageHash, privateKey);
     const signatureBytes = signature.toCompactRawBytes();
-    const isValid = await verifySecp256k1Signature(signatureBytes, testMessage, publicKeyUncompressed);
+    const isValid = await verifySecp256k1Signature(
+      signatureBytes,
+      testMessage,
+      publicKeyUncompressed
+    );
     expect(isValid).toBe(true);
   });
 
@@ -315,7 +323,11 @@ describe('secp256k1 Signature Verification', () => {
     const signature = await secp256k1.sign(messageHash, privateKey);
     const signatureBytes = signature.toCompactRawBytes();
     const signatureHex = uint8ArrayToHex(signatureBytes);
-    const isValid = await verifySecp256k1Signature(signatureHex, testMessage, publicKeyCompressedHex);
+    const isValid = await verifySecp256k1Signature(
+      signatureHex,
+      testMessage,
+      publicKeyCompressedHex
+    );
     expect(isValid).toBe(true);
   });
 
@@ -348,7 +360,11 @@ describe('secp256k1 Signature Verification', () => {
     const signature = await secp256k1.sign(messageHash, privateKey);
     const signatureBytes = signature.toCompactRawBytes();
     const wrongMessage = 'Wrong message';
-    const isValid = await verifySecp256k1Signature(signatureBytes, wrongMessage, publicKeyCompressed);
+    const isValid = await verifySecp256k1Signature(
+      signatureBytes,
+      wrongMessage,
+      publicKeyCompressed
+    );
     expect(isValid).toBe(false);
   });
 
@@ -394,7 +410,11 @@ describe('secp256k1 Signature Verification', () => {
 
   it('should handle malformed signature gracefully', async () => {
     const malformedSignature = new Uint8Array(64); // All zeros
-    const isValid = await verifySecp256k1Signature(malformedSignature, testMessage, publicKeyCompressed);
+    const isValid = await verifySecp256k1Signature(
+      malformedSignature,
+      testMessage,
+      publicKeyCompressed
+    );
     expect(isValid).toBe(false);
   });
 
@@ -404,9 +424,14 @@ describe('secp256k1 Signature Verification', () => {
     const signatureBytes = signature.toCompactRawBytes();
 
     // Verify with hashMessage: false
-    const isValid = await verifySecp256k1Signature(signatureBytes, messageHash, publicKeyCompressed, {
-      hashMessage: false,
-    });
+    const isValid = await verifySecp256k1Signature(
+      signatureBytes,
+      messageHash,
+      publicKeyCompressed,
+      {
+        hashMessage: false,
+      }
+    );
     expect(isValid).toBe(true);
   });
 });
@@ -548,12 +573,12 @@ describe('Unified Signature Verification', () => {
     const algorithms = getSupportedAlgorithms();
     expect(algorithms).toHaveLength(2);
 
-    const ed25519Info = algorithms.find(a => a.algorithm === SignatureAlgorithm.ED25519);
+    const ed25519Info = algorithms.find((a) => a.algorithm === SignatureAlgorithm.ED25519);
     expect(ed25519Info).toBeDefined();
     expect(ed25519Info?.publicKeyLengths).toEqual([ED25519_PUBLIC_KEY_LENGTH]);
     expect(ed25519Info?.signatureLengths).toEqual([ED25519_SIGNATURE_LENGTH]);
 
-    const secp256k1Info = algorithms.find(a => a.algorithm === SignatureAlgorithm.SECP256K1);
+    const secp256k1Info = algorithms.find((a) => a.algorithm === SignatureAlgorithm.SECP256K1);
     expect(secp256k1Info).toBeDefined();
     expect(secp256k1Info?.publicKeyLengths).toContain(SECP256K1_COMPRESSED_PUBLIC_KEY_LENGTH);
     expect(secp256k1Info?.publicKeyLengths).toContain(SECP256K1_UNCOMPRESSED_PUBLIC_KEY_LENGTH);
@@ -575,7 +600,7 @@ describe('Edge Cases and Error Handling', () => {
     const result = await verifySignature(
       new Uint8Array(64),
       'test',
-      new Uint8Array(31)  // Invalid length
+      new Uint8Array(31) // Invalid length
     );
     expect(result.valid).toBe(false);
     expect(result.error).toBeDefined();

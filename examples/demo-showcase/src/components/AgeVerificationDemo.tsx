@@ -40,9 +40,11 @@ export function AgeVerificationDemo() {
                 : 'border-gray-200 dark:border-gray-700 hover:border-aura-300'
             }`}
           >
-            <Beer className={`w-8 h-8 mx-auto mb-2 ${
-              ageRequirement === '18+' ? 'text-aura-600 dark:text-aura-400' : 'text-gray-400'
-            }`} />
+            <Beer
+              className={`w-8 h-8 mx-auto mb-2 ${
+                ageRequirement === '18+' ? 'text-aura-600 dark:text-aura-400' : 'text-gray-400'
+              }`}
+            />
             <div className="text-center">
               <div className="font-bold text-lg">18+</div>
               <div className="text-xs text-gray-600 dark:text-gray-400">Age 18 or older</div>
@@ -57,9 +59,11 @@ export function AgeVerificationDemo() {
                 : 'border-gray-200 dark:border-gray-700 hover:border-aura-300'
             }`}
           >
-            <Wine className={`w-8 h-8 mx-auto mb-2 ${
-              ageRequirement === '21+' ? 'text-aura-600 dark:text-aura-400' : 'text-gray-400'
-            }`} />
+            <Wine
+              className={`w-8 h-8 mx-auto mb-2 ${
+                ageRequirement === '21+' ? 'text-aura-600 dark:text-aura-400' : 'text-gray-400'
+              }`}
+            />
             <div className="text-center">
               <div className="font-bold text-lg">21+</div>
               <div className="text-xs text-gray-600 dark:text-gray-400">Age 21 or older</div>
@@ -93,7 +97,10 @@ export function AgeVerificationDemo() {
                 <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-blue-700 dark:text-blue-300">
                   <strong>Sample QR Code Generated</strong>
-                  <p className="mt-1">This is a mock QR code for {ageRequirement} age verification. Scan or copy the data below to test.</p>
+                  <p className="mt-1">
+                    This is a mock QR code for {ageRequirement} age verification. Scan or copy the
+                    data below to test.
+                  </p>
                 </div>
               </div>
             </div>

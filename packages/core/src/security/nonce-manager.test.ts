@@ -3,11 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import {
-  NonceManager,
-  InMemoryNonceStorage,
-  BloomFilterNonceStorage,
-} from './nonce-manager.js';
+import { NonceManager, InMemoryNonceStorage, BloomFilterNonceStorage } from './nonce-manager.js';
 import { QRNonceError } from '../errors.js';
 
 describe('NonceManager', () => {
@@ -105,7 +101,7 @@ describe('NonceManager', () => {
         await shortWindowManager.validateNonce(nonce1, Date.now());
 
         // Wait for it to expire
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 200));
 
         // Add second nonce (should still be valid)
         await shortWindowManager.validateNonce(nonce2, Date.now());

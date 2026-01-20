@@ -115,7 +115,6 @@ async function main() {
         console.log(`  Is Verified Human: Unable to determine`);
       }
       console.log();
-
     } else {
       console.log('Verification failed!');
       if (result.verificationError) {
@@ -127,7 +126,6 @@ async function main() {
     console.log('='.repeat(60));
     console.log('Example completed successfully!');
     console.log('='.repeat(60));
-
   } catch (error) {
     console.error();
     console.error('Error occurred during verification:');

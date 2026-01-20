@@ -8,7 +8,10 @@
  * Base error class for all QR code related errors
  */
 export class QRCodeError extends Error {
-  constructor(message: string, public readonly code: string) {
+  constructor(
+    message: string,
+    public readonly code: string
+  ) {
     super(message);
     this.name = 'QRCodeError';
     Object.setPrototypeOf(this, QRCodeError.prototype);
@@ -19,7 +22,10 @@ export class QRCodeError extends Error {
  * Error thrown when QR code parsing fails
  */
 export class QRParseError extends QRCodeError {
-  constructor(message: string, public readonly details?: unknown) {
+  constructor(
+    message: string,
+    public readonly details?: unknown
+  ) {
     super(message, 'QR_PARSE_ERROR');
     this.name = 'QRParseError';
     Object.setPrototypeOf(this, QRParseError.prototype);
@@ -50,9 +56,7 @@ export class QRParseError extends QRCodeError {
    * Create error for missing required fields
    */
   static missingFields(fields: string[]): QRParseError {
-    return new QRParseError(
-      `Missing required fields: ${fields.join(', ')}`
-    );
+    return new QRParseError(`Missing required fields: ${fields.join(', ')}`);
   }
 }
 
@@ -74,10 +78,7 @@ export class QRValidationError extends QRCodeError {
    * Create error for invalid field value
    */
   static invalidField(field: string, reason: string): QRValidationError {
-    return new QRValidationError(
-      `Invalid ${field}: ${reason}`,
-      field
-    );
+    return new QRValidationError(`Invalid ${field}: ${reason}`, field);
   }
 
   /**
@@ -94,9 +95,7 @@ export class QRValidationError extends QRCodeError {
    * Create error for invalid DID format
    */
   static invalidDID(did: string, reason?: string): QRValidationError {
-    const message = reason
-      ? `Invalid DID format: ${reason}`
-      : `Invalid DID format: ${did}`;
+    const message = reason ? `Invalid DID format: ${reason}` : `Invalid DID format: ${did}`;
     return new QRValidationError(message, 'h');
   }
 
@@ -104,20 +103,14 @@ export class QRValidationError extends QRCodeError {
    * Create error for invalid signature format
    */
   static invalidSignature(reason: string): QRValidationError {
-    return new QRValidationError(
-      `Invalid signature format: ${reason}`,
-      'sig'
-    );
+    return new QRValidationError(`Invalid signature format: ${reason}`, 'sig');
   }
 
   /**
    * Create error for invalid array field
    */
   static invalidArray(field: string, reason: string): QRValidationError {
-    return new QRValidationError(
-      `Invalid ${field} array: ${reason}`,
-      field
-    );
+    return new QRValidationError(`Invalid ${field} array: ${reason}`, field);
   }
 }
 
@@ -131,10 +124,7 @@ export class QRExpiredError extends QRCodeError {
   ) {
     const expDate = new Date(expirationTime * 1000).toISOString();
     const currDate = new Date(currentTime * 1000).toISOString();
-    super(
-      `QR code expired at ${expDate} (current time: ${currDate})`,
-      'QR_EXPIRED'
-    );
+    super(`QR code expired at ${expDate} (current time: ${currDate})`, 'QR_EXPIRED');
     this.name = 'QRExpiredError';
     Object.setPrototypeOf(this, QRExpiredError.prototype);
   }
@@ -158,7 +148,10 @@ export class QRExpiredError extends QRCodeError {
  * Error thrown when QR code nonce is invalid or reused
  */
 export class QRNonceError extends QRCodeError {
-  constructor(message: string, public readonly nonce?: number) {
+  constructor(
+    message: string,
+    public readonly nonce?: number
+  ) {
     super(message, 'QR_NONCE_ERROR');
     this.name = 'QRNonceError';
     Object.setPrototypeOf(this, QRNonceError.prototype);
@@ -178,9 +171,6 @@ export class QRNonceError extends QRCodeError {
    * Create error for reused nonce
    */
   static reusedNonce(nonce: number): QRNonceError {
-    return new QRNonceError(
-      `Nonce ${nonce} has already been used (replay attack detected)`,
-      nonce
-    );
+    return new QRNonceError(`Nonce ${nonce} has already been used (replay attack detected)`, nonce);
   }
 }

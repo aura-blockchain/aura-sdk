@@ -32,10 +32,7 @@ const DEFAULT_OPTIONS: Required<QRParserOptions> = {
  * console.log(data.p); // "123"
  * ```
  */
-export function parseQRCode(
-  qrString: string,
-  options?: QRParserOptions
-): QRCodeData {
+export function parseQRCode(qrString: string, options?: QRParserOptions): QRCodeData {
   const opts = { ...DEFAULT_OPTIONS, ...options };
 
   // Validate input
@@ -80,10 +77,7 @@ export function parseQRCode(
  * }
  * ```
  */
-export function parseQRCodeSafe(
-  qrString: string,
-  options?: QRParserOptions
-): ParseResult {
+export function parseQRCodeSafe(qrString: string, options?: QRParserOptions): ParseResult {
   try {
     const data = parseQRCode(qrString, options);
     return {
@@ -110,9 +104,7 @@ function extractBase64Data(qrString: string): string {
 
   // Check if it's a full URL with scheme
   if (qrString.startsWith('aura://')) {
-    throw QRParseError.invalidFormat(
-      'URL must be in format: aura://verify?data=<base64>'
-    );
+    throw QRParseError.invalidFormat('URL must be in format: aura://verify?data=<base64>');
   }
 
   // Assume it's raw base64 data
@@ -335,10 +327,7 @@ function validateAndConstructQRData(
 /**
  * Perform strict validation checks
  */
-function validateStrictConstraints(
-  data: QRCodeData,
-  options: Required<QRParserOptions>
-): void {
+function validateStrictConstraints(data: QRCodeData, options: Required<QRParserOptions>): void {
   // Check protocol version
   if (!options.supportedVersions.includes(data.v)) {
     throw QRParseError.invalidFormat(
@@ -383,14 +372,10 @@ function validateStrictConstraints(
   const yearInSeconds = 365 * 24 * 60 * 60;
 
   if (data.exp < now - yearInSeconds) {
-    throw QRParseError.invalidFormat(
-      'Expiration timestamp is too far in the past (>1 year)'
-    );
+    throw QRParseError.invalidFormat('Expiration timestamp is too far in the past (>1 year)');
   }
 
   if (data.exp > now + 10 * yearInSeconds) {
-    throw QRParseError.invalidFormat(
-      'Expiration timestamp is too far in the future (>10 years)'
-    );
+    throw QRParseError.invalidFormat('Expiration timestamp is too far in the future (>10 years)');
   }
 }

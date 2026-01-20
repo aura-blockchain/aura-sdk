@@ -18,7 +18,11 @@ interface AuraProviderProps {
   rpcEndpoint?: string;
 }
 
-export const AuraProvider: React.FC<AuraProviderProps> = ({ children, network = NetworkType.TESTNET, rpcEndpoint }) => {
+export const AuraProvider: React.FC<AuraProviderProps> = ({
+  children,
+  network = NetworkType.TESTNET,
+  rpcEndpoint,
+}) => {
   const [currentNetwork, setCurrentNetwork] = useState<NetworkType>(network);
   const [client, setClient] = useState<AuraClient | null>(null);
   const [connected, setConnected] = useState(false);

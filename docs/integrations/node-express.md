@@ -254,12 +254,7 @@ import {
   NetworkError,
 } from '@aura-network/verifier-sdk';
 
-export function errorHandler(
-  error: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function errorHandler(error: Error, req: Request, res: Response, next: NextFunction) {
   console.error('[ERROR]', error);
 
   if (error instanceof QRExpiredError) {
@@ -318,11 +313,7 @@ export function apiKeyAuth(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
-export function rateLimiter(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function rateLimiter(req: Request, res: Response, next: NextFunction) {
   // Implement rate limiting logic
   next();
 }

@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { SecureStorage } from '../storage/SecureStorage';
-import { generateMnemonicWords, mnemonicToSeed, deriveKeyPair, addressFromPublicKey, sign } from '../utils/crypto';
+import {
+  generateMnemonicWords,
+  mnemonicToSeed,
+  deriveKeyPair,
+  addressFromPublicKey,
+  sign,
+} from '../utils/crypto';
 import { WalletData } from '../types';
 
 interface Options {
@@ -23,7 +29,7 @@ export function useWallet(options?: Options) {
   useEffect(() => {
     const checkStored = async () => {
       setHasStoredWallet(await SecureStorage.hasItem(STORAGE_KEY));
-      if (options?.autoRestore && await SecureStorage.hasItem(STORAGE_KEY)) {
+      if (options?.autoRestore && (await SecureStorage.hasItem(STORAGE_KEY))) {
         const raw = await SecureStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw) as WalletData;
@@ -92,25 +98,31 @@ export function useWallet(options?: Options) {
     return unlock();
   }, [unlock]);
 
-  const signTransaction = useCallback(async (tx: Record<string, unknown>) => {
-    if (!wallet || !isUnlocked) {
-      setError(new Error('Wallet locked'));
-      return;
-    }
-    const bytes = new TextEncoder().encode(JSON.stringify(tx));
-    const sig = await sign(bytes, wallet.privateKey);
-    setSignature(sig);
-    setSignedTx({ ...tx, signature: Buffer.from(sig).toString('hex') });
-  }, [wallet, isUnlocked]);
+  const signTransaction = useCallback(
+    async (tx: Record<string, unknown>) => {
+      if (!wallet || !isUnlocked) {
+        setError(new Error('Wallet locked'));
+        return;
+      }
+      const bytes = new TextEncoder().encode(JSON.stringify(tx));
+      const sig = await sign(bytes, wallet.privateKey);
+      setSignature(sig);
+      setSignedTx({ ...tx, signature: Buffer.from(sig).toString('hex') });
+    },
+    [wallet, isUnlocked]
+  );
 
-  const signData = useCallback(async (data: Uint8Array) => {
-    if (!wallet || !isUnlocked) {
-      setError(new Error('Wallet locked'));
-      return;
-    }
-    const sig = await sign(data, wallet.privateKey);
-    setSignature(sig);
-  }, [wallet, isUnlocked]);
+  const signData = useCallback(
+    async (data: Uint8Array) => {
+      if (!wallet || !isUnlocked) {
+        setError(new Error('Wallet locked'));
+        return;
+      }
+      const sig = await sign(data, wallet.privateKey);
+      setSignature(sig);
+    },
+    [wallet, isUnlocked]
+  );
 
   const deleteWallet = useCallback(async () => {
     await SecureStorage.removeItem(STORAGE_KEY);

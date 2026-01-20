@@ -47,8 +47,12 @@ async function executeWithConcurrency<T>(
 
     // Create a wrapper that removes itself from the set when done
     const wrapped = p.then(
-      () => { executing.delete(wrapped); },
-      () => { executing.delete(wrapped); }
+      () => {
+        executing.delete(wrapped);
+      },
+      () => {
+        executing.delete(wrapped);
+      }
     );
     executing.add(wrapped);
 
@@ -192,8 +196,7 @@ export function getSuccessfulResults(
   results: (VerificationResult | Error)[]
 ): VerificationResult[] {
   return results.filter(
-    (result): result is VerificationResult =>
-      !(result instanceof Error) && result.isValid
+    (result): result is VerificationResult => !(result instanceof Error) && result.isValid
   );
 }
 

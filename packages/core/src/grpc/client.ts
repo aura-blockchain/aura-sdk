@@ -4,11 +4,7 @@
  * Provides high-level interface for communicating with Aura blockchain nodes.
  */
 
-import {
-  NetworkError,
-  NodeUnavailableError,
-  ConfigurationError,
-} from './errors.js';
+import { NetworkError, NodeUnavailableError, ConfigurationError } from './errors.js';
 import {
   VerificationResult,
   VCStatusResponse,
@@ -28,12 +24,7 @@ import {
   validateTLSEndpoint,
   validateGRPCEndpoint,
 } from './endpoints.js';
-import {
-  QueryExecutor,
-  VCRegistryQueries,
-  IdentityQueries,
-  HealthQueries,
-} from './queries.js';
+import { QueryExecutor, VCRegistryQueries, IdentityQueries, HealthQueries } from './queries.js';
 
 /**
  * Aura client configuration
@@ -85,10 +76,7 @@ export class AuraClient {
   constructor(config: AuraClientConfig) {
     // Validate network
     if (!isValidNetwork(config.network)) {
-      throw ConfigurationError.invalidValue(
-        'network',
-        `Must be one of: mainnet, testnet, local`
-      );
+      throw ConfigurationError.invalidValue('network', `Must be one of: mainnet, testnet, local`);
     }
 
     this.network = config.network;
@@ -140,17 +128,10 @@ export class AuraClient {
   private validateEndpointSecurity(allowInsecureLocal: boolean): void {
     try {
       // Validate REST endpoint (HTTPS required for non-local)
-      validateTLSEndpoint(
-        this.restEndpoint,
-        this.network === 'local' && allowInsecureLocal
-      );
+      validateTLSEndpoint(this.restEndpoint, this.network === 'local' && allowInsecureLocal);
 
       // Validate gRPC endpoint (grpcs:// required for non-local)
-      validateGRPCEndpoint(
-        this.grpcEndpoint,
-        this.network,
-        allowInsecureLocal
-      );
+      validateGRPCEndpoint(this.grpcEndpoint, this.network, allowInsecureLocal);
     } catch (error) {
       throw ConfigurationError.invalidValue(
         'endpoint',
@@ -169,11 +150,7 @@ export class AuraClient {
 
     try {
       // Initialize query executor
-      this.queryExecutor = new QueryExecutor(
-        this.restEndpoint,
-        this.timeout,
-        this.retryConfig
-      );
+      this.queryExecutor = new QueryExecutor(this.restEndpoint, this.timeout, this.retryConfig);
 
       // Initialize query modules
       this.vcRegistryQueries = new VCRegistryQueries(this.queryExecutor);
@@ -203,11 +180,7 @@ export class AuraClient {
         throw error;
       }
 
-      throw new NodeUnavailableError(
-        this.restEndpoint,
-        [this.restEndpoint],
-        error
-      );
+      throw new NodeUnavailableError(this.restEndpoint, [this.restEndpoint], error);
     }
   }
 
@@ -325,10 +298,7 @@ export class AuraClient {
    */
   private ensureConnected(): void {
     if (!this.connected || !this.queryExecutor) {
-      throw new NetworkError(
-        'Client is not connected. Call connect() first.',
-        'NOT_CONNECTED'
-      );
+      throw new NetworkError('Client is not connected. Call connect() first.', 'NOT_CONNECTED');
     }
   }
 

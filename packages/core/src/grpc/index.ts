@@ -5,20 +5,11 @@
  */
 
 // Client exports
-export {
-  AuraClient,
-  createAuraClient,
-  connectAuraClient,
-} from './client.js';
+export { AuraClient, createAuraClient, connectAuraClient } from './client.js';
 export type { AuraClientConfig } from './client.js';
 
 // Query executor and modules
-export {
-  QueryExecutor,
-  VCRegistryQueries,
-  IdentityQueries,
-  HealthQueries,
-} from './queries.js';
+export { QueryExecutor, VCRegistryQueries, IdentityQueries, HealthQueries } from './queries.js';
 
 // Network configuration
 export {

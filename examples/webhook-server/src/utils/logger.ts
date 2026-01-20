@@ -3,9 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 // Ensure logs directory exists
-const logsDir = process.env.LOG_FILE_PATH
-  ? path.dirname(process.env.LOG_FILE_PATH)
-  : './logs';
+const logsDir = process.env.LOG_FILE_PATH ? path.dirname(process.env.LOG_FILE_PATH) : './logs';
 
 if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true });
@@ -82,11 +80,7 @@ export function logWebhookEvent(
 /**
  * Log webhook verification result
  */
-export function logWebhookVerification(
-  eventId: string,
-  verified: boolean,
-  reason?: string
-): void {
+export function logWebhookVerification(eventId: string, verified: boolean, reason?: string): void {
   if (verified) {
     logger.info('Webhook signature verified', { eventId });
   } else {

@@ -24,14 +24,15 @@ export function ManualQRInput({ onSubmit }: ManualQRInputProps) {
     >
       <div className="flex items-center gap-2 mb-4">
         <FileText className="w-6 h-6 text-aura-600 dark:text-aura-400" />
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-          Manual Input
-        </h3>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Manual Input</h3>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="qr-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            htmlFor="qr-input"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Paste QR Code Data
           </label>
           <textarea
@@ -55,7 +56,8 @@ export function ManualQRInput({ onSubmit }: ManualQRInputProps) {
       </form>
 
       <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
-        Enter or paste the QR code data string starting with <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded">aura://verify</code>
+        Enter or paste the QR code data string starting with{' '}
+        <code className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded">aura://verify</code>
       </p>
     </motion.div>
   );

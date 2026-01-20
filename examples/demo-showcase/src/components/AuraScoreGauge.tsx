@@ -33,9 +33,7 @@ export function AuraScoreGauge({ score, maxScore = 850 }: AuraScoreGaugeProps) {
     >
       <div className="flex items-center gap-2 mb-6">
         <TrendingUp className="w-6 h-6 text-aura-600 dark:text-aura-400" />
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-          Aura Trust Score
-        </h3>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Aura Trust Score</h3>
       </div>
 
       <div className="flex flex-col items-center">
@@ -92,9 +90,7 @@ export function AuraScoreGauge({ score, maxScore = 850 }: AuraScoreGaugeProps) {
           transition={{ delay: 1 }}
           className="mt-6 text-center"
         >
-          <div className={`text-xl font-semibold ${getScoreColor()}`}>
-            {getScoreLabel()}
-          </div>
+          <div className={`text-xl font-semibold ${getScoreColor()}`}>{getScoreLabel()}</div>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
             Your trust score is based on verification history and credential quality
           </p>

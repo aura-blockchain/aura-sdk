@@ -83,10 +83,7 @@ export function getStatusColor(
 /**
  * Get VCStatus color
  */
-export function getVCStatusColor(
-  status: string,
-  theme: AuraTheme = defaultTheme
-): string {
+export function getVCStatusColor(status: string, theme: AuraTheme = defaultTheme): string {
   switch (status.toLowerCase()) {
     case 'active':
       return theme.colors.success;

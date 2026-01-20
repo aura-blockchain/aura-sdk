@@ -81,7 +81,7 @@ The SDK requires minimal configuration to get started. At minimum, you need to p
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aurablockchain.org'
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
 });
 ```
 
@@ -101,7 +101,7 @@ const config: VerifierConfig = {
   timeout: 30000,
 
   // Optional: Enable debug logging (default: false)
-  debug: false
+  debug: false,
 };
 
 const verifier = new VerifierSDK(config);
@@ -130,7 +130,7 @@ const verifier = new VerifierSDK({
   rpcEndpoint: process.env.AURA_RPC_ENDPOINT!,
   restEndpoint: process.env.AURA_REST_ENDPOINT,
   timeout: parseInt(process.env.AURA_SDK_TIMEOUT || '30000'),
-  debug: process.env.AURA_SDK_DEBUG === 'true'
+  debug: process.env.AURA_SDK_DEBUG === 'true',
 });
 ```
 
@@ -144,7 +144,8 @@ Let's perform a complete credential verification using a QR code.
 import { parseQRCode } from '@aura-network/verifier-sdk';
 
 // This would come from a QR code scanner in a real app
-const qrString = 'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXMyMzQiLCJoIjoiZGlkOmF1cmE6bWFpbm5ldDphdXJhMXh5ejEyMyIsInZjcyI6WyJ2YzEyMyJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTU2MDAwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ==';
+const qrString =
+  'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXMyMzQiLCJoIjoiZGlkOmF1cmE6bWFpbm5ldDphdXJhMXh5ejEyMyIsInZjcyI6WyJ2YzEyMyJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTU2MDAwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ==';
 
 try {
   const qrData = parseQRCode(qrString);
@@ -164,7 +165,7 @@ try {
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aurablockchain.org'
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
 });
 
 // Construct the message that was signed
@@ -173,7 +174,7 @@ const message = JSON.stringify({
   vcs: qrData.vcs,
   ctx: qrData.ctx,
   exp: qrData.exp,
-  n: qrData.n
+  n: qrData.n,
 });
 
 // Verify the signature
@@ -181,7 +182,7 @@ const result = await verifier.verifySignature({
   publicKey: qrData.h, // Holder's DID contains public key
   message: message,
   signature: qrData.sig,
-  algorithm: 'ed25519' // Aura Network uses Ed25519
+  algorithm: 'ed25519', // Aura Network uses Ed25519
 });
 
 if (result.valid) {
@@ -214,7 +215,7 @@ import { VerifierSDK, parseQRCode } from '@aura-network/verifier-sdk';
 async function verifyCredential(qrString: string): Promise<boolean> {
   const verifier = new VerifierSDK({
     rpcEndpoint: 'https://rpc.aurablockchain.org',
-    timeout: 30000
+    timeout: 30000,
   });
 
   try {
@@ -235,14 +236,14 @@ async function verifyCredential(qrString: string): Promise<boolean> {
       vcs: qrData.vcs,
       ctx: qrData.ctx,
       exp: qrData.exp,
-      n: qrData.n
+      n: qrData.n,
     });
 
     const result = await verifier.verifySignature({
       publicKey: qrData.h,
       message: message,
       signature: qrData.sig,
-      algorithm: 'ed25519'
+      algorithm: 'ed25519',
     });
 
     if (!result.valid) {
@@ -258,7 +259,6 @@ async function verifyCredential(qrString: string): Promise<boolean> {
 
     console.log('Verification successful!');
     return true;
-
   } catch (error) {
     console.error('Verification failed:', error);
     return false;
@@ -288,11 +288,12 @@ Use mainnet for production applications:
 ```typescript
 const verifier = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
-  restEndpoint: 'https://api.aurablockchain.org'
+  restEndpoint: 'https://api.aurablockchain.org',
 });
 ```
 
 **Mainnet Characteristics:**
+
 - Real credentials and blockchain data
 - Production-level security and reliability
 - Real transaction costs (if writing to blockchain)
@@ -306,11 +307,12 @@ Use testnet (testnet) for development and testing:
 const verifier = new VerifierSDK({
   rpcEndpoint: 'https://testnet-rpc.aurablockchain.org',
   restEndpoint: 'https://testnet-api.aurablockchain.org',
-  debug: true // Enable debug logging during development
+  debug: true, // Enable debug logging during development
 });
 ```
 
 **Testnet Characteristics:**
+
 - Test credentials and data
 - Free test tokens for transactions
 - May be reset periodically
@@ -324,7 +326,7 @@ For advanced development, you can run a local Aura node:
 const verifier = new VerifierSDK({
   rpcEndpoint: 'http://localhost:26657',
   restEndpoint: 'http://localhost:1317',
-  debug: true
+  debug: true,
 });
 ```
 
@@ -348,23 +350,27 @@ Now that you've completed your first verification, explore these topics:
 ### Common Issues
 
 **Issue: "RPC connection failed"**
+
 ```
 Solution: Check that the RPC endpoint is accessible and correct. Try pinging the endpoint:
 curl https://rpc.aurablockchain.org/status
 ```
 
 **Issue: "Invalid signature" errors**
+
 ```
 Solution: Ensure the message construction matches exactly what was signed. The order of JSON fields matters.
 ```
 
 **Issue: "Module not found" errors**
+
 ```
 Solution: Ensure you're using Node.js 18+ and have installed the SDK correctly:
 npm install @aura-network/verifier-sdk --save
 ```
 
 **Issue: QR code parsing fails**
+
 ```
 Solution: Verify the QR code format is correct. The SDK expects either:
 - Full URL: aura://verify?data=<base64>

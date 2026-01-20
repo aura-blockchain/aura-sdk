@@ -249,8 +249,13 @@ const StatusIndicator = styled.div<{ status: string }>`
   animation: pulse 2s infinite;
 
   @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
 `;
 
@@ -302,9 +307,7 @@ function MultiStepVerification() {
 
   return (
     <div>
-      {step === 'scan' && (
-        <QRScanner onScan={handleScan} />
-      )}
+      {step === 'scan' && <QRScanner onScan={handleScan} />}
       {step === 'verify' && (
         <div>
           <p>QR Code scanned. Ready to verify?</p>
@@ -338,14 +341,7 @@ const OfflineBanner = styled.div<{ isOffline: boolean }>`
 `;
 
 function OfflineModeControl() {
-  const {
-    isOffline,
-    toggleOffline,
-    hasCachedData,
-    lastSync,
-    sync,
-    syncing,
-  } = useOfflineMode();
+  const { isOffline, toggleOffline, hasCachedData, lastSync, sync, syncing } = useOfflineMode();
 
   return (
     <div>
@@ -353,9 +349,7 @@ function OfflineModeControl() {
         {isOffline ? '📴 Offline Mode' : '🌐 Online Mode'}
       </OfflineBanner>
       <div>
-        <button onClick={toggleOffline}>
-          Switch to {isOffline ? 'Online' : 'Offline'} Mode
-        </button>
+        <button onClick={toggleOffline}>Switch to {isOffline ? 'Online' : 'Offline'} Mode</button>
         {hasCachedData && <span>✓ Cached data available</span>}
         {lastSync && <div>Last sync: {lastSync.toLocaleString()}</div>}
         <button onClick={sync} disabled={syncing}>
@@ -516,12 +510,8 @@ function KYCPortal() {
               <ul>
                 <li>DID: {result.holderDID}</li>
                 <li>Credentials: {result.vcDetails.length}</li>
-                {result.attributes.fullName && (
-                  <li>Name: {result.attributes.fullName}</li>
-                )}
-                {result.attributes.cityState && (
-                  <li>Location: {result.attributes.cityState}</li>
-                )}
+                {result.attributes.fullName && <li>Name: {result.attributes.fullName}</li>}
+                {result.attributes.cityState && <li>Location: {result.attributes.cityState}</li>}
               </ul>
             </div>
           )}
@@ -538,10 +528,7 @@ function KYCPortal() {
 
 ```tsx
 import { useVerification } from '@aura-network/verifier-sdk-react';
-import type {
-  VerificationResult,
-  VCType,
-} from '@aura-network/verifier-sdk';
+import type { VerificationResult, VCType } from '@aura-network/verifier-sdk';
 
 interface UseTypedVerificationOptions {
   requiredTypes: VCType[];

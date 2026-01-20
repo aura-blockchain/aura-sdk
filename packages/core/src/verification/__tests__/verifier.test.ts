@@ -6,12 +6,7 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { AuraVerifier } from '../verifier.js';
-import {
-  AuraVerifierConfig,
-  VerificationRequest,
-  VCType,
-  VCStatus,
-} from '../types.js';
+import { AuraVerifierConfig, VerificationRequest, VCType, VCStatus } from '../types.js';
 import { formatVerificationResult, calculateVerificationScore } from '../result.js';
 import { BatchVerifier } from '../batch.js';
 
@@ -42,9 +37,10 @@ function createMockQRCode(options: {
     },
     exp,
     n: Math.floor(Math.random() * 1000000),
-    sig: options.validSignature !== false
-      ? '1234567890abcdef'.repeat(8) // 128 hex chars (64 bytes)
-      : 'invalid',
+    sig:
+      options.validSignature !== false
+        ? '1234567890abcdef'.repeat(8) // 128 hex chars (64 bytes)
+        : 'invalid',
   };
 
   const jsonString = JSON.stringify(qrData);
@@ -126,9 +122,9 @@ describe('AuraVerifier - Initialization', () => {
     await verifier.destroy();
 
     // Subsequent verification should fail
-    await expect(
-      verifier.verify({ qrCodeData: createMockQRCode({}) })
-    ).rejects.toThrow('not initialized');
+    await expect(verifier.verify({ qrCodeData: createMockQRCode({}) })).rejects.toThrow(
+      'not initialized'
+    );
   });
 });
 
@@ -581,10 +577,7 @@ describe('Batch Verification Utilities', () => {
     const verifier = new AuraVerifier(config);
     await verifier.initialize();
 
-    const batchVerifier = new BatchVerifier(
-      (req) => verifier.verify(req),
-      { concurrency: 2 }
-    );
+    const batchVerifier = new BatchVerifier((req) => verifier.verify(req), { concurrency: 2 });
 
     const requests = Array(5)
       .fill(null)

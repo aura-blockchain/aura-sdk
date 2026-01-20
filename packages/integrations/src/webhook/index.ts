@@ -44,14 +44,14 @@ export class WebhookIntegration {
   private defaultRetryPolicy: RetryPolicy = {
     maxRetries: 3,
     retryDelay: 1000,
-    backoffMultiplier: 2
+    backoffMultiplier: 2,
   };
 
   constructor(config: WebhookConfig) {
     this.config = {
       ...config,
       retryPolicy: config.retryPolicy || this.defaultRetryPolicy,
-      timeout: config.timeout || 30000
+      timeout: config.timeout || 30000,
     };
 
     this.validateConfig();
@@ -81,7 +81,7 @@ export class WebhookIntegration {
     if (!this.config.events.includes(eventType)) {
       return {
         success: true,
-        attempts: 0
+        attempts: 0,
       };
     }
 
@@ -94,8 +94,8 @@ export class WebhookIntegration {
         holderDID: result.holderDID,
         verifierAddress: result.verifierAddress,
         attributes: result.attributes,
-        error: result.error
-      }
+        error: result.error,
+      },
     };
 
     return this.sendEvent(event);
@@ -105,7 +105,7 @@ export class WebhookIntegration {
     if (!this.config.events.includes(event.type)) {
       return {
         success: true,
-        attempts: 0
+        attempts: 0,
       };
     }
 
@@ -126,7 +126,7 @@ export class WebhookIntegration {
           return {
             success: true,
             attempts,
-            deliveredAt: new Date()
+            deliveredAt: new Date(),
           };
         }
 
@@ -142,8 +142,8 @@ export class WebhookIntegration {
 
       // Wait before retry (except on last attempt)
       if (attempt < retryPolicy.maxRetries) {
-        const delay = retryPolicy.retryDelay *
-          Math.pow(retryPolicy.backoffMultiplier || 1, attempt);
+        const delay =
+          retryPolicy.retryDelay * Math.pow(retryPolicy.backoffMultiplier || 1, attempt);
         await this.sleep(delay);
       }
     }
@@ -151,7 +151,7 @@ export class WebhookIntegration {
     return {
       success: false,
       attempts,
-      lastError
+      lastError,
     };
   }
 
@@ -166,10 +166,10 @@ export class WebhookIntegration {
           'Content-Type': 'application/json',
           'X-Aura-Signature': signature,
           'X-Aura-Timestamp': Date.now().toString(),
-          'User-Agent': 'Aura-Webhook/1.0'
+          'User-Agent': 'Aura-Webhook/1.0',
         },
         body: payload,
-        signal: controller.signal
+        signal: controller.signal,
       });
 
       return response;
@@ -205,15 +205,15 @@ export class WebhookIntegration {
       timestamp: new Date(),
       data: {
         test: true,
-        message: 'Webhook connection test'
-      }
+        message: 'Webhook connection test',
+      },
     };
 
     const result = await this.sendEvent(testEvent);
 
     return {
       success: result.success,
-      error: result.lastError
+      error: result.lastError,
     };
   }
 
@@ -223,6 +223,6 @@ export class WebhookIntegration {
   }
 
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

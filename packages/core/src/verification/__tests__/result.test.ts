@@ -77,8 +77,16 @@ describe('generateAuditId', () => {
   });
 
   it('should generate different IDs for different timestamps', () => {
-    const id1 = generateAuditId('did:aura:mainnet:holder', 'pres-123', new Date('2024-06-15T10:00:00Z'));
-    const id2 = generateAuditId('did:aura:mainnet:holder', 'pres-123', new Date('2024-06-15T11:00:00Z'));
+    const id1 = generateAuditId(
+      'did:aura:mainnet:holder',
+      'pres-123',
+      new Date('2024-06-15T10:00:00Z')
+    );
+    const id2 = generateAuditId(
+      'did:aura:mainnet:holder',
+      'pres-123',
+      new Date('2024-06-15T11:00:00Z')
+    );
     expect(id1).not.toBe(id2);
   });
 
@@ -413,12 +421,7 @@ describe('createFailedResult', () => {
   });
 
   it('should set holder DID correctly', () => {
-    const result = createFailedResult(
-      'did:aura:mainnet:holder',
-      'pres-123',
-      'Error',
-      new Date()
-    );
+    const result = createFailedResult('did:aura:mainnet:holder', 'pres-123', 'Error', new Date());
     expect(result.holderDID).toBe('did:aura:mainnet:holder');
   });
 
@@ -666,7 +669,8 @@ describe('calculateVerificationScore', () => {
       vcDetails: [],
     });
 
-    const diff = calculateVerificationScore(resultWithSig) - calculateVerificationScore(resultWithoutSig);
+    const diff =
+      calculateVerificationScore(resultWithSig) - calculateVerificationScore(resultWithoutSig);
     expect(diff).toBe(20);
   });
 
@@ -685,7 +689,9 @@ describe('calculateVerificationScore', () => {
       ],
     });
 
-    expect(calculateVerificationScore(resultWithVCs)).toBeGreaterThan(calculateVerificationScore(resultNoVCs));
+    expect(calculateVerificationScore(resultWithVCs)).toBeGreaterThan(
+      calculateVerificationScore(resultNoVCs)
+    );
   });
 
   it('should give higher score for on-chain VCs', () => {
@@ -700,7 +706,9 @@ describe('calculateVerificationScore', () => {
       vcDetails: [createMockVCDetail({ onChain: true, signatureValid: true, status: 'active' })],
     });
 
-    expect(calculateVerificationScore(onChainResult)).toBeGreaterThan(calculateVerificationScore(offChainResult));
+    expect(calculateVerificationScore(onChainResult)).toBeGreaterThan(
+      calculateVerificationScore(offChainResult)
+    );
   });
 
   it('should return max 100', () => {
@@ -735,9 +743,7 @@ describe('isTrustedIdentity', () => {
     const result = createMockResult({
       isValid: true,
       signatureValid: true,
-      vcDetails: [
-        createMockVCDetail({ signatureValid: true, status: 'active', onChain: true }),
-      ],
+      vcDetails: [createMockVCDetail({ signatureValid: true, status: 'active', onChain: true })],
     });
     expect(isTrustedIdentity(result)).toBe(true);
   });
@@ -782,9 +788,7 @@ describe('isTrustedIdentity', () => {
     const result = createMockResult({
       isValid: true,
       signatureValid: true,
-      vcDetails: [
-        createMockVCDetail({ signatureValid: true, status: 'active', onChain: true }),
-      ],
+      vcDetails: [createMockVCDetail({ signatureValid: true, status: 'active', onChain: true })],
     });
     const score = calculateVerificationScore(result);
     expect(isTrustedIdentity(result, score)).toBe(true);
@@ -794,11 +798,7 @@ describe('isTrustedIdentity', () => {
 describe('getVerificationSummary', () => {
   it('should count total credentials', () => {
     const result = createMockResult({
-      vcDetails: [
-        createMockVCDetail(),
-        createMockVCDetail(),
-        createMockVCDetail(),
-      ],
+      vcDetails: [createMockVCDetail(), createMockVCDetail(), createMockVCDetail()],
     });
     const summary = getVerificationSummary(result);
     expect(summary.totalCredentials).toBe(3);

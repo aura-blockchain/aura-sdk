@@ -148,7 +148,7 @@ describe('QR Code Integration Tests', () => {
       const validation = validateQRCodeData(qrData);
 
       expect(validation.valid).toBe(false);
-      const didError = validation.errors.find(e => e.field === 'h');
+      const didError = validation.errors.find((e) => e.field === 'h');
       expect(didError).toBeDefined();
       expect(didError?.message).toContain('DID');
     });
@@ -158,7 +158,7 @@ describe('QR Code Integration Tests', () => {
       const validation = validateQRCodeData(qrData);
 
       expect(validation.valid).toBe(false);
-      const sigError = validation.errors.find(e => e.field === 'sig');
+      const sigError = validation.errors.find((e) => e.field === 'sig');
       expect(sigError).toBeDefined();
     });
 
@@ -182,7 +182,7 @@ describe('QR Code Integration Tests', () => {
       const validation = validateQRCodeData(qrData);
 
       expect(validation.warnings.length).toBeGreaterThan(0);
-      const dupWarning = validation.warnings.find(w => w.field === 'vcs');
+      const dupWarning = validation.warnings.find((w) => w.field === 'vcs');
       expect(dupWarning).toBeDefined();
       expect(dupWarning?.message).toContain('duplicate');
     });
@@ -196,7 +196,7 @@ describe('QR Code Integration Tests', () => {
       const qrData = parseQRCode(noDisclosureQR);
       const validation = validateQRCodeData(qrData);
 
-      const ctxWarning = validation.warnings.find(w => w.field === 'ctx');
+      const ctxWarning = validation.warnings.find((w) => w.field === 'ctx');
       expect(ctxWarning).toBeDefined();
       expect(ctxWarning?.message).toContain('disclosure');
     });
@@ -289,7 +289,7 @@ describe('QR Code Integration Tests', () => {
       const validation = validateQRCodeData(qrData);
 
       expect(validation.valid).toBe(false);
-      const sigError = validation.errors.find(e => e.field === 'sig');
+      const sigError = validation.errors.find((e) => e.field === 'sig');
       expect(sigError).toBeDefined();
     });
 
@@ -311,7 +311,7 @@ describe('QR Code Integration Tests', () => {
       const validation = validateQRCodeData(qrData);
 
       expect(validation.valid).toBe(false);
-      const sigError = validation.errors.find(e => e.field === 'sig');
+      const sigError = validation.errors.find((e) => e.field === 'sig');
       expect(sigError).toBeDefined();
       expect(sigError?.message).toContain('short');
     });
@@ -326,7 +326,7 @@ describe('QR Code Integration Tests', () => {
       const validation = validateQRCodeData(qrData);
 
       expect(validation.valid).toBe(false);
-      const sigError = validation.errors.find(e => e.field === 'sig');
+      const sigError = validation.errors.find((e) => e.field === 'sig');
       expect(sigError).toBeDefined();
       expect(sigError?.message).toContain('hex');
     });
@@ -342,7 +342,7 @@ describe('QR Code Integration Tests', () => {
       const validation = validateQRCodeData(qrData);
 
       expect(validation.valid).toBe(false);
-      const sigError = validation.errors.find(e => e.field === 'sig');
+      const sigError = validation.errors.find((e) => e.field === 'sig');
       expect(sigError).toBeDefined();
       expect(sigError?.message).toContain('even');
     });
@@ -356,7 +356,7 @@ describe('QR Code Integration Tests', () => {
       expect(typeof qrData.ctx).toBe('object');
 
       const ctxValues = Object.values(qrData.ctx);
-      ctxValues.forEach(value => {
+      ctxValues.forEach((value) => {
         expect(typeof value === 'boolean' || value === undefined).toBe(true);
       });
     });
@@ -383,19 +383,22 @@ describe('QR Code Integration Tests', () => {
     });
 
     it('should reject non-boolean disclosure values', () => {
-      const invalidCtxQR = 'aura://verify?data=' +
-        Buffer.from(JSON.stringify({
-          v: '1.0',
-          p: 'test',
-          h: 'did:aura:mainnet:test',
-          vcs: ['test'],
-          ctx: {
-            show_age: 'yes', // Invalid: string instead of boolean
-          },
-          exp: Math.floor(Date.now() / 1000) + 300,
-          n: 12345,
-          sig: generateMockEd25519Signature(),
-        })).toString('base64');
+      const invalidCtxQR =
+        'aura://verify?data=' +
+        Buffer.from(
+          JSON.stringify({
+            v: '1.0',
+            p: 'test',
+            h: 'did:aura:mainnet:test',
+            vcs: ['test'],
+            ctx: {
+              show_age: 'yes', // Invalid: string instead of boolean
+            },
+            exp: Math.floor(Date.now() / 1000) + 300,
+            n: 12345,
+            sig: generateMockEd25519Signature(),
+          })
+        ).toString('base64');
 
       expect(() => parseQRCode(invalidCtxQR)).toThrow();
     });
@@ -403,17 +406,20 @@ describe('QR Code Integration Tests', () => {
 
   describe('Edge Cases and Error Handling', () => {
     it('should handle QR with empty VCs array', () => {
-      const emptyVCsQR = 'aura://verify?data=' +
-        Buffer.from(JSON.stringify({
-          v: '1.0',
-          p: 'test',
-          h: 'did:aura:mainnet:test',
-          vcs: [],
-          ctx: {},
-          exp: Math.floor(Date.now() / 1000) + 300,
-          n: 12345,
-          sig: generateMockEd25519Signature(),
-        })).toString('base64');
+      const emptyVCsQR =
+        'aura://verify?data=' +
+        Buffer.from(
+          JSON.stringify({
+            v: '1.0',
+            p: 'test',
+            h: 'did:aura:mainnet:test',
+            vcs: [],
+            ctx: {},
+            exp: Math.floor(Date.now() / 1000) + 300,
+            n: 12345,
+            sig: generateMockEd25519Signature(),
+          })
+        ).toString('base64');
 
       expect(() => parseQRCode(emptyVCsQR)).toThrow();
     });
@@ -535,7 +541,7 @@ describe('QR Code Integration Tests', () => {
 
       const validation = validateQRCodeData(qrData);
       // Should warn about large number of VCs
-      const vcWarning = validation.warnings.find(w => w.field === 'vcs');
+      const vcWarning = validation.warnings.find((w) => w.field === 'vcs');
       expect(vcWarning).toBeDefined();
     });
   });

@@ -143,7 +143,8 @@ if (result.expiresAt < now) {
 
 // Check if expiring soon
 const expiresIn = result.expiresAt.getTime() - now.getTime();
-if (expiresIn < 60000) { // Less than 1 minute
+if (expiresIn < 60000) {
+  // Less than 1 minute
   console.warn('QR code expiring soon');
 }
 ```
@@ -533,6 +534,7 @@ Before deploying to production:
 ## Security Contacts
 
 Report security vulnerabilities to:
+
 - Email: security@aurablockchain.org
 - Bug Bounty: https://docs.aurablockchain.org/security
 

@@ -17,7 +17,9 @@ vi.mock('@aura-network/verifier-sdk', () => {
 });
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <AuraVerifierProvider config={{ network: 'testnet', grpcEndpoint: 'grpc', restEndpoint: 'rest' } as any}>
+  <AuraVerifierProvider
+    config={{ network: 'testnet', grpcEndpoint: 'grpc', restEndpoint: 'rest' } as any}
+  >
     {children}
   </AuraVerifierProvider>
 );

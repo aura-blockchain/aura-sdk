@@ -57,7 +57,7 @@ describe('RateLimiter', () => {
       }
 
       // Wait for token refill
-      await new Promise(resolve => setTimeout(resolve, 600));
+      await new Promise((resolve) => setTimeout(resolve, 600));
 
       // Should be able to make more requests
       await expect(limiter.checkLimit(identifier)).resolves.not.toThrow();
@@ -327,7 +327,7 @@ describe('InMemoryRateLimiterStorage', () => {
     expect(await storage.get('test')).not.toBeNull();
 
     // Wait for expiration
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await new Promise((resolve) => setTimeout(resolve, 150));
 
     // Should be expired
     expect(await storage.get('test')).toBeNull();
@@ -376,7 +376,7 @@ describe('InMemoryRateLimiterStorage', () => {
     expect(await storage.size()).toBe(2);
 
     // Wait for expiration
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await new Promise((resolve) => setTimeout(resolve, 150));
 
     // Size should clean up and return 1
     expect(await storage.size()).toBe(1);

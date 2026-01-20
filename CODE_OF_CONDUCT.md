@@ -7,6 +7,7 @@ We as members, contributors, and leaders pledge to make participation in the AUR
 ## Our Standards
 
 **Positive behavior includes:**
+
 - Using welcoming and inclusive language
 - Being respectful of differing viewpoints and experiences
 - Gracefully accepting constructive criticism
@@ -14,6 +15,7 @@ We as members, contributors, and leaders pledge to make participation in the AUR
 - Showing empathy toward other community members
 
 **Unacceptable behavior includes:**
+
 - Trolling, insulting/derogatory comments, and personal or political attacks
 - Public or private harassment
 - Publishing others' private information without explicit permission

@@ -61,12 +61,14 @@ const used = await manager.hasBeenUsed('12345');
 ```
 
 **Features:**
+
 - Time-based nonce expiration
 - Clock skew tolerance
 - Memory-efficient bloom filter option
 - Distributed storage support (Redis, etc.)
 
 **Storage Backends:**
+
 - `InMemoryNonceStorage`: Fast, single-instance storage
 - `BloomFilterNonceStorage`: Memory-efficient probabilistic storage
 - Custom storage via `NonceStorage` interface
@@ -155,6 +157,7 @@ const isValid = await logger.verifyIntegrity(logs);
 ```
 
 **Features:**
+
 - Tamper-evident hash chains
 - Automatic log rotation
 - Structured logging (JSON)
@@ -205,6 +208,7 @@ const data = sanitizer.sanitizeJSON('{"key":"value"}');
 ```
 
 **Security Features:**
+
 - XSS prevention (HTML/script tag detection)
 - SQL injection detection
 - Path traversal detection
@@ -253,6 +257,7 @@ const stats = detector.getStatistics();
 ```
 
 **Threat Types:**
+
 - Rapid request patterns
 - Brute force attacks
 - Geographic anomalies
@@ -285,15 +290,9 @@ const encrypted = await utils.encrypt('sensitive data', key);
 const decrypted = await utils.decrypt(encrypted, key);
 
 // Encrypt with password (combines key derivation + encryption)
-const encryptedWithPassword = await utils.encryptWithPassword(
-  'sensitive data',
-  'password123'
-);
+const encryptedWithPassword = await utils.encryptWithPassword('sensitive data', 'password123');
 
-const decryptedWithPassword = await utils.decryptWithPassword(
-  encryptedWithPassword,
-  'password123'
-);
+const decryptedWithPassword = await utils.decryptWithPassword(encryptedWithPassword, 'password123');
 
 // Constant-time comparison (prevents timing attacks)
 const equal = utils.constantTimeEqual(secret1, secret2);
@@ -477,22 +476,26 @@ const developmentConfig = {
 ## Security Considerations
 
 1. **Nonce Management**:
+
    - Use distributed storage (Redis) in multi-instance deployments
    - Configure appropriate nonce window based on network latency
    - Consider clock skew in distributed systems
 
 2. **Rate Limiting**:
+
    - Set limits based on legitimate usage patterns
    - Use multi-tier limiting (global, per-verifier, per-DID)
    - Monitor and adjust based on actual traffic
 
 3. **Audit Logging**:
+
    - Implement log rotation to prevent disk overflow
    - Regularly backup audit logs to secure storage
    - Verify log integrity periodically
    - Configure appropriate retention periods for compliance
 
 4. **Threat Detection**:
+
    - Tune thresholds to minimize false positives
    - Implement human review for auto-blocked entities
    - Integrate with SIEM systems for centralized monitoring

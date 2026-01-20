@@ -83,11 +83,8 @@ const StatusBadge = styled.span<{ isValid: boolean }>`
   font-size: ${defaultTheme.fontSize.xs};
   font-weight: ${defaultTheme.fontWeight.medium};
   background-color: ${(props) =>
-    props.isValid
-      ? `${defaultTheme.colors.success}20`
-      : `${defaultTheme.colors.error}20`};
-  color: ${(props) =>
-    props.isValid ? defaultTheme.colors.success : defaultTheme.colors.error};
+    props.isValid ? `${defaultTheme.colors.success}20` : `${defaultTheme.colors.error}20`};
+  color: ${(props) => (props.isValid ? defaultTheme.colors.success : defaultTheme.colors.error)};
 `;
 
 const DID = styled.div`
@@ -152,11 +149,7 @@ export function VerificationHistory({
       <Title>Verification History</Title>
       <List>
         {displayItems.map((item) => (
-          <Item
-            key={item.id}
-            clickable={!!onItemClick}
-            onClick={() => onItemClick?.(item)}
-          >
+          <Item key={item.id} clickable={!!onItemClick} onClick={() => onItemClick?.(item)}>
             <ItemContent>
               <ItemHeader>
                 <StatusBadge isValid={item.result.isValid}>
@@ -167,9 +160,7 @@ export function VerificationHistory({
               <ItemDetails>
                 <span>Method: {item.verificationMethod}</span>
                 <span>VCs: {item.result.vcDetails.length}</span>
-                <span>
-                  Latency: {item.result.networkLatency}ms
-                </span>
+                <span>Latency: {item.result.networkLatency}ms</span>
               </ItemDetails>
             </ItemContent>
             <Timestamp>{formatTimestamp(item.timestamp)}</Timestamp>

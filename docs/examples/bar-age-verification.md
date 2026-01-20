@@ -23,6 +23,7 @@ This example demonstrates how to implement age verification for a bar or nightcl
 - **Audit Trail**: Log verification events for compliance
 
 **User Flow:**
+
 1. Customer approaches door
 2. Bouncer requests ID
 3. Customer opens Aura app and generates age-verification QR code
@@ -33,17 +34,20 @@ This example demonstrates how to implement age verification for a bar or nightcl
 ## Requirements
 
 ### Hardware
+
 - **Scanner Device**: Tablet or smartphone with camera
 - **Network**: WiFi or cellular (optional with offline mode)
 - **Optional**: Dedicated QR code scanner hardware
 
 ### Software
+
 - Node.js 18+ or modern web browser
 - Aura Verifier SDK
 - QR code scanner library
 - (Optional) React/Vue/Angular for UI
 
 ### Legal
+
 - Compliance with local age verification laws
 - GDPR/privacy law compliance for data handling
 - Proper consent and disclosure
@@ -91,18 +95,18 @@ import { VerifierSDK, CacheManager } from '@aura-network/verifier-sdk';
 
 // Setup cache for offline mode
 const cache = new CacheManager({
-  maxAge: 3600,              // 1 hour
-  maxEntries: 2000,          // 2000 credentials
+  maxAge: 3600, // 1 hour
+  maxEntries: 2000, // 2000 credentials
   persistToDisk: true,
-  storageAdapter: 'browser'  // Use localStorage
+  storageAdapter: 'browser', // Use localStorage
 });
 
 // Initialize SDK
 export const verifier = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
-  offlineMode: false,        // Try online first
-  timeout: 10000             // 10 second timeout
+  offlineMode: false, // Try online first
+  timeout: 10000, // 10 second timeout
 });
 ```
 
@@ -124,9 +128,7 @@ interface AgeVerificationResult {
   };
 }
 
-export async function verifyAge21Plus(
-  qrString: string
-): Promise<AgeVerificationResult> {
+export async function verifyAge21Plus(qrString: string): Promise<AgeVerificationResult> {
   try {
     // Step 1: Parse QR code
     const qrData = parseQRCode(qrString);
@@ -137,7 +139,7 @@ export async function verifyAge21Plus(
       return {
         allowed: false,
         reason: 'EXPIRED',
-        userMessage: 'QR code expired. Please generate a new one.'
+        userMessage: 'QR code expired. Please generate a new one.',
       };
     }
 
@@ -146,7 +148,7 @@ export async function verifyAge21Plus(
       return {
         allowed: false,
         reason: 'INVALID_EXPIRATION',
-        userMessage: 'Invalid QR code expiration time.'
+        userMessage: 'Invalid QR code expiration time.',
       };
     }
 
@@ -155,7 +157,7 @@ export async function verifyAge21Plus(
       return {
         allowed: false,
         reason: 'MISSING_AGE_VERIFICATION',
-        userMessage: 'Please share age verification to enter.'
+        userMessage: 'Please share age verification to enter.',
       };
     }
 
@@ -165,21 +167,21 @@ export async function verifyAge21Plus(
       vcs: qrData.vcs,
       ctx: qrData.ctx,
       exp: qrData.exp,
-      n: qrData.n
+      n: qrData.n,
     });
 
     const sigResult = await verifier.verifySignature({
       publicKey: qrData.h,
       message: message,
       signature: qrData.sig,
-      algorithm: 'ed25519'
+      algorithm: 'ed25519',
     });
 
     if (!sigResult.valid) {
       return {
         allowed: false,
         reason: 'INVALID_SIGNATURE',
-        userMessage: 'Could not verify credential. Please try again.'
+        userMessage: 'Could not verify credential. Please try again.',
       };
     }
 
@@ -191,17 +193,16 @@ export async function verifyAge21Plus(
       metadata: {
         holderDid: qrData.h,
         verificationType: 'age_over_21',
-        timestamp: new Date()
-      }
+        timestamp: new Date(),
+      },
     };
-
   } catch (error) {
     console.error('Age verification error:', error);
 
     return {
       allowed: false,
       reason: 'VERIFICATION_ERROR',
-      userMessage: 'Verification failed. Please try again or see staff.'
+      userMessage: 'Verification failed. Please try again or see staff.',
     };
   }
 }
@@ -234,7 +235,7 @@ class AuditLogger {
       reason: result.reason,
       holderDid: result.metadata?.holderDid,
       deviceId: deviceId,
-      location: location
+      location: location,
     };
 
     // Store in memory
@@ -265,7 +266,7 @@ class AuditLogger {
       await fetch('/api/audit-logs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(entry)
+        body: JSON.stringify(entry),
       });
     } catch (error) {
       console.error('Failed to send audit log to backend:', error);
@@ -274,12 +275,12 @@ class AuditLogger {
 
   private cleanOldEntries() {
     const keys = Object.keys(localStorage)
-      .filter(k => k.startsWith('audit_'))
+      .filter((k) => k.startsWith('audit_'))
       .sort();
 
     if (keys.length > 1000) {
       const toDelete = keys.slice(0, keys.length - 1000);
-      toDelete.forEach(k => localStorage.removeItem(k));
+      toDelete.forEach((k) => localStorage.removeItem(k));
     }
   }
 
@@ -289,14 +290,14 @@ class AuditLogger {
 
   getStats() {
     const total = this.logs.length;
-    const allowed = this.logs.filter(l => l.result === 'allowed').length;
-    const denied = this.logs.filter(l => l.result === 'denied').length;
+    const allowed = this.logs.filter((l) => l.result === 'allowed').length;
+    const denied = this.logs.filter((l) => l.result === 'denied').length;
 
     return {
       total,
       allowed,
       denied,
-      allowedPercent: total > 0 ? (allowed / total * 100).toFixed(1) : '0'
+      allowedPercent: total > 0 ? ((allowed / total) * 100).toFixed(1) : '0',
     };
   }
 }
@@ -420,6 +421,7 @@ export function AgeVerificationScanner() {
 ### Visual Feedback
 
 **Large, Clear Results:**
+
 ```css
 .result {
   font-size: 48px;
@@ -430,7 +432,7 @@ export function AgeVerificationScanner() {
 }
 
 .result.allowed {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -446,6 +448,7 @@ export function AgeVerificationScanner() {
 ```
 
 **Loading State:**
+
 ```css
 .loading {
   display: flex;
@@ -464,8 +467,12 @@ export function AgeVerificationScanner() {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 ```
 
@@ -545,13 +552,13 @@ const cache = new CacheManager({
   maxEntries: 2000,
   persistToDisk: true,
   storageAdapter: 'file',
-  storagePath: './cache'
+  storagePath: './cache',
 });
 
 const verifier = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
-  timeout: 10000
+  timeout: 10000,
 });
 
 // In-memory audit log
@@ -571,7 +578,7 @@ app.post('/api/verify-age', async (req, res) => {
       return res.json({
         allowed: false,
         reason: 'EXPIRED',
-        userMessage: 'QR code expired'
+        userMessage: 'QR code expired',
       });
     }
 
@@ -580,7 +587,7 @@ app.post('/api/verify-age', async (req, res) => {
       return res.json({
         allowed: false,
         reason: 'MISSING_AGE_VERIFICATION',
-        userMessage: 'Age verification not provided'
+        userMessage: 'Age verification not provided',
       });
     }
 
@@ -590,21 +597,21 @@ app.post('/api/verify-age', async (req, res) => {
       vcs: qrData.vcs,
       ctx: qrData.ctx,
       exp: qrData.exp,
-      n: qrData.n
+      n: qrData.n,
     });
 
     const sigResult = await verifier.verifySignature({
       publicKey: qrData.h,
       message: message,
       signature: qrData.sig,
-      algorithm: 'ed25519'
+      algorithm: 'ed25519',
     });
 
     const allowed = sigResult.valid;
     const result = {
       allowed,
       reason: allowed ? 'VERIFIED' : 'INVALID_SIGNATURE',
-      userMessage: allowed ? 'Age verified!' : 'Verification failed'
+      userMessage: allowed ? 'Age verified!' : 'Verification failed',
     };
 
     // Audit log
@@ -613,17 +620,16 @@ app.post('/api/verify-age', async (req, res) => {
       deviceId,
       location,
       result: allowed ? 'allowed' : 'denied',
-      holderDid: qrData.h
+      holderDid: qrData.h,
     });
 
     res.json(result);
-
   } catch (error) {
     console.error('Verification error:', error);
     res.status(500).json({
       allowed: false,
       reason: 'ERROR',
-      userMessage: 'Verification error'
+      userMessage: 'Verification error',
     });
   }
 });
@@ -631,14 +637,14 @@ app.post('/api/verify-age', async (req, res) => {
 // API endpoint for stats
 app.get('/api/stats', (req, res) => {
   const total = auditLog.length;
-  const allowed = auditLog.filter(l => l.result === 'allowed').length;
-  const denied = auditLog.filter(l => l.result === 'denied').length;
+  const allowed = auditLog.filter((l) => l.result === 'allowed').length;
+  const denied = auditLog.filter((l) => l.result === 'denied').length;
 
   res.json({
     total,
     allowed,
     denied,
-    allowedPercent: total > 0 ? (allowed / total * 100).toFixed(1) : '0'
+    allowedPercent: total > 0 ? ((allowed / total) * 100).toFixed(1) : '0',
   });
 });
 
@@ -657,13 +663,13 @@ app.listen(PORT, () => {
 // Use short timeout for quick response
 const verifier = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
-  timeout: 5000  // 5 seconds max
+  timeout: 5000, // 5 seconds max
 });
 
 // Cache aggressively for speed
 const cache = new CacheManager({
-  maxAge: 7200,      // 2 hours
-  maxEntries: 5000   // More entries = more hits
+  maxAge: 7200, // 2 hours
+  maxEntries: 5000, // More entries = more hits
 });
 ```
 
@@ -696,10 +702,13 @@ auditLogger.log({
 });
 
 // Auto-delete old logs
-setInterval(() => {
-  const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000); // 30 days
-  auditLog = auditLog.filter(log => log.timestamp > cutoff);
-}, 24 * 60 * 60 * 1000); // Daily cleanup
+setInterval(
+  () => {
+    const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000; // 30 days
+    auditLog = auditLog.filter((log) => log.timestamp > cutoff);
+  },
+  24 * 60 * 60 * 1000
+); // Daily cleanup
 ```
 
 ### 4. Security
@@ -717,9 +726,7 @@ function checkReplayAttack(qrData: QRCodeData): boolean {
   usedNonces.add(qrData.n);
 
   // Clean up after expiration
-  setTimeout(() => usedNonces.delete(qrData.n),
-    (qrData.exp - Date.now() / 1000 + 60) * 1000
-  );
+  setTimeout(() => usedNonces.delete(qrData.n), (qrData.exp - Date.now() / 1000 + 60) * 1000);
 
   return false;
 }
@@ -752,6 +759,7 @@ async function verifyWithFallback(qrString: string) {
 **Symptoms:** Takes > 5 seconds to verify
 
 **Solutions:**
+
 1. Enable offline mode and sync regularly
 2. Use faster RPC endpoint (check latency)
 3. Increase cache size and duration
@@ -762,6 +770,7 @@ async function verifyWithFallback(qrString: string) {
 **Symptoms:** Valid credentials being rejected
 
 **Solutions:**
+
 1. Check message construction matches holder's app
 2. Verify algorithm is 'ed25519'
 3. Ensure clock is synchronized
@@ -772,6 +781,7 @@ async function verifyWithFallback(qrString: string) {
 **Symptoms:** Scanner can't read QR code
 
 **Solutions:**
+
 1. Adjust camera focus and lighting
 2. Increase QR code size on customer's phone
 3. Clean camera lens
@@ -782,6 +792,7 @@ async function verifyWithFallback(qrString: string) {
 **Symptoms:** Questions about data storage
 
 **Solutions:**
+
 1. Implement auto-delete for audit logs
 2. Don't log PII
 3. Use encryption for cached data

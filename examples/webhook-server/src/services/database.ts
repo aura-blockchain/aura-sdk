@@ -1,11 +1,7 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
-import {
-  WebhookEvent,
-  WebhookEventType,
-  WebhookAnalytics,
-} from '../types/webhook.js';
+import { WebhookEvent, WebhookEventType, WebhookAnalytics } from '../types/webhook.js';
 import { logger } from '../utils/logger.js';
 
 /**
@@ -124,10 +120,7 @@ export class DatabaseService {
   /**
    * Get events by type
    */
-  getEventsByType(
-    eventType: WebhookEventType,
-    limit: number = 100
-  ): WebhookEvent[] {
+  getEventsByType(eventType: WebhookEventType, limit: number = 100): WebhookEvent[] {
     const stmt = this.db.prepare(`
       SELECT
         id,
@@ -234,9 +227,7 @@ export class DatabaseService {
       total: number;
     };
     const successRate =
-      successResult.total > 0
-        ? (successResult.verified / successResult.total) * 100
-        : 0;
+      successResult.total > 0 ? (successResult.verified / successResult.total) * 100 : 0;
 
     // Average processing time
     const avgTimeStmt = this.db.prepare(`

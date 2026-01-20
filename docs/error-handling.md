@@ -29,6 +29,7 @@ class VerifierError extends Error {
 ```
 
 **Properties:**
+
 - `message`: Human-readable error description
 - `code`: Machine-readable error code for programmatic handling
 - `details`: Additional context about the error
@@ -52,11 +53,12 @@ VerifierError (base class)
 
 ### Configuration Errors
 
-| Code | Error Class | Description |
-|------|-------------|-------------|
+| Code             | Error Class        | Description                  |
+| ---------------- | ------------------ | ---------------------------- |
 | `INVALID_CONFIG` | InvalidConfigError | SDK configuration is invalid |
 
 **Example:**
+
 ```typescript
 {
   code: 'INVALID_CONFIG',
@@ -69,11 +71,12 @@ VerifierError (base class)
 
 ### Connection Errors
 
-| Code | Error Class | Description |
-|------|-------------|-------------|
+| Code                    | Error Class        | Description                       |
+| ----------------------- | ------------------ | --------------------------------- |
 | `RPC_CONNECTION_FAILED` | RpcConnectionError | Failed to connect to RPC endpoint |
 
 **Example:**
+
 ```typescript
 {
   code: 'RPC_CONNECTION_FAILED',
@@ -87,13 +90,14 @@ VerifierError (base class)
 
 ### Signature Verification Errors
 
-| Code | Error Class | Description |
-|------|-------------|-------------|
+| Code                            | Error Class                | Description                   |
+| ------------------------------- | -------------------------- | ----------------------------- |
 | `SIGNATURE_VERIFICATION_FAILED` | SignatureVerificationError | Signature verification failed |
-| `INVALID_PUBLIC_KEY` | InvalidPublicKeyError | Public key format is invalid |
-| `INVALID_SIGNATURE` | InvalidSignatureError | Signature format is invalid |
+| `INVALID_PUBLIC_KEY`            | InvalidPublicKeyError      | Public key format is invalid  |
+| `INVALID_SIGNATURE`             | InvalidSignatureError      | Signature format is invalid   |
 
 **Examples:**
+
 ```typescript
 // Signature verification failed
 {
@@ -120,11 +124,12 @@ VerifierError (base class)
 
 ### Transaction Verification Errors
 
-| Code | Error Class | Description |
-|------|-------------|-------------|
+| Code                              | Error Class                  | Description                     |
+| --------------------------------- | ---------------------------- | ------------------------------- |
 | `TRANSACTION_VERIFICATION_FAILED` | TransactionVerificationError | Transaction verification failed |
 
 **Example:**
+
 ```typescript
 {
   code: 'TRANSACTION_VERIFICATION_FAILED',
@@ -138,14 +143,15 @@ VerifierError (base class)
 
 ### QR Code Parsing Errors
 
-| Code | Error Class | Description |
-|------|-------------|-------------|
-| `QR_PARSE_INVALID_FORMAT` | QRParseError | QR code format is invalid |
-| `QR_PARSE_INVALID_BASE64` | QRParseError | Base64 decoding failed |
-| `QR_PARSE_INVALID_JSON` | QRParseError | JSON parsing failed |
+| Code                      | Error Class  | Description                 |
+| ------------------------- | ------------ | --------------------------- |
+| `QR_PARSE_INVALID_FORMAT` | QRParseError | QR code format is invalid   |
+| `QR_PARSE_INVALID_BASE64` | QRParseError | Base64 decoding failed      |
+| `QR_PARSE_INVALID_JSON`   | QRParseError | JSON parsing failed         |
 | `QR_PARSE_MISSING_FIELDS` | QRParseError | Required fields are missing |
 
 **Examples:**
+
 ```typescript
 // Invalid format
 {
@@ -169,11 +175,12 @@ VerifierError (base class)
 
 ### Encoding Errors
 
-| Code | Error Class | Description |
-|------|-------------|-------------|
+| Code             | Error Class   | Description                        |
+| ---------------- | ------------- | ---------------------------------- |
 | `ENCODING_ERROR` | EncodingError | Encoding/decoding operation failed |
 
 **Example:**
+
 ```typescript
 {
   code: 'ENCODING_ERROR',
@@ -195,7 +202,7 @@ Basic error handling with try-catch:
 import { VerifierSDK, VerifierError } from '@aura-network/verifier-sdk';
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aurablockchain.org'
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
 });
 
 try {
@@ -203,7 +210,7 @@ try {
     publicKey: publicKey,
     message: message,
     signature: signature,
-    algorithm: 'ed25519'
+    algorithm: 'ed25519',
   });
 
   if (result.valid) {
@@ -230,7 +237,7 @@ import {
   VerifierError,
   SignatureVerificationError,
   RpcConnectionError,
-  InvalidConfigError
+  InvalidConfigError,
 } from '@aura-network/verifier-sdk';
 
 try {
@@ -241,23 +248,19 @@ try {
     console.error('Signature verification failed');
     logSecurityEvent('invalid_signature', error.details);
     return { valid: false, reason: 'invalid_signature' };
-
   } else if (error instanceof RpcConnectionError) {
     // Handle connection errors
     console.error('Network error - retrying...');
     return await retryWithBackoff(() => verify());
-
   } else if (error instanceof InvalidConfigError) {
     // Handle config errors
     console.error('Configuration error:', error.message);
     alertAdministrator(error);
     throw error; // Re-throw config errors
-
   } else if (error instanceof VerifierError) {
     // Handle other SDK errors
     console.error('SDK error:', error.code, error.message);
     return { valid: false, reason: error.code };
-
   } else {
     // Handle unexpected errors
     console.error('Unexpected error:', error);
@@ -319,6 +322,7 @@ if (result.success) {
 **Cause:** Cannot connect to blockchain RPC endpoint
 
 **Solutions:**
+
 ```typescript
 try {
   await verifier.verifyTransaction(request);
@@ -333,15 +337,15 @@ try {
 
     // Solution 2: Try alternative endpoint
     const alternativeVerifier = new VerifierSDK({
-      rpcEndpoint: 'https://rpc-backup.aurablockchain.org'
+      rpcEndpoint: 'https://rpc-backup.aurablockchain.org',
     });
     return await alternativeVerifier.verifyTransaction(request);
 
     // Solution 3: Retry with exponential backoff
-    return await retryWithBackoff(
-      () => verifier.verifyTransaction(request),
-      { maxRetries: 3, initialDelay: 1000 }
-    );
+    return await retryWithBackoff(() => verifier.verifyTransaction(request), {
+      maxRetries: 3,
+      initialDelay: 1000,
+    });
   }
 }
 ```
@@ -351,19 +355,21 @@ try {
 **Cause:** Signature verification failed
 
 **Common Reasons:**
+
 - Message construction mismatch
 - Wrong public key
 - Corrupted signature data
 - Wrong algorithm
 
 **Debug:**
+
 ```typescript
 try {
   const result = await verifier.verifySignature({
     publicKey: qrData.h,
     message: message,
     signature: qrData.sig,
-    algorithm: 'ed25519'
+    algorithm: 'ed25519',
   });
 } catch (error) {
   if (error instanceof SignatureVerificationError) {
@@ -388,7 +394,7 @@ try {
       vcs: qrData.vcs,
       ctx: qrData.ctx,
       exp: qrData.exp,
-      n: qrData.n
+      n: qrData.n,
     });
 
     if (message !== canonicalMessage) {
@@ -403,6 +409,7 @@ try {
 **Cause:** Invalid QR code format
 
 **Solutions:**
+
 ```typescript
 import { parseQRCodeSafe, QRParseError } from '@aura-network/verifier-sdk';
 
@@ -431,7 +438,7 @@ if (!result.success) {
   try {
     const decoded = JSON.parse(atob(qrString.split('data=')[1]));
     const requiredFields = ['v', 'p', 'h', 'vcs', 'ctx', 'exp', 'n', 'sig'];
-    const missing = requiredFields.filter(f => !(f in decoded));
+    const missing = requiredFields.filter((f) => !(f in decoded));
     if (missing.length > 0) {
       console.error('Missing fields:', missing);
     }
@@ -448,6 +455,7 @@ if (!result.success) {
 **Cause:** QR code presentation has expired
 
 **Solution:**
+
 ```typescript
 import { parseQRCode } from '@aura-network/verifier-sdk';
 
@@ -471,8 +479,8 @@ if (qrData.exp < now) {
     error: 'PRESENTATION_EXPIRED',
     details: {
       expiredAt: new Date(qrData.exp * 1000),
-      expiredAgo: expiredAgo
-    }
+      expiredAgo: expiredAgo,
+    },
   };
 }
 ```
@@ -482,6 +490,7 @@ if (qrData.exp < now) {
 **Cause:** Transaction doesn't exist on blockchain
 
 **Solution:**
+
 ```typescript
 try {
   const result = await verifier.verifyTransaction(request);
@@ -522,12 +531,7 @@ async function retryWithBackoff<T>(
     backoffMultiplier?: number;
   } = {}
 ): Promise<T> {
-  const {
-    maxRetries = 3,
-    initialDelay = 1000,
-    maxDelay = 30000,
-    backoffMultiplier = 2
-  } = options;
+  const { maxRetries = 3, initialDelay = 1000, maxDelay = 30000, backoffMultiplier = 2 } = options;
 
   let lastError: Error;
   let delay = initialDelay;
@@ -559,10 +563,10 @@ async function retryWithBackoff<T>(
 
 // Usage
 try {
-  const result = await retryWithBackoff(
-    () => verifier.verifyTransaction(request),
-    { maxRetries: 3, initialDelay: 1000 }
-  );
+  const result = await retryWithBackoff(() => verifier.verifyTransaction(request), {
+    maxRetries: 3,
+    initialDelay: 1000,
+  });
 } catch (error) {
   console.error('All retries failed:', error);
 }
@@ -573,10 +577,7 @@ try {
 Only retry specific error types:
 
 ```typescript
-async function retryOnNetworkError<T>(
-  fn: () => Promise<T>,
-  maxRetries: number = 3
-): Promise<T> {
+async function retryOnNetworkError<T>(fn: () => Promise<T>, maxRetries: number = 3): Promise<T> {
   for (let i = 0; i < maxRetries; i++) {
     try {
       return await fn();
@@ -651,9 +652,7 @@ class CircuitBreaker {
 const breaker = new CircuitBreaker(5, 60000);
 
 try {
-  const result = await breaker.execute(() =>
-    verifier.verifyTransaction(request)
-  );
+  const result = await breaker.execute(() => verifier.verifyTransaction(request));
 } catch (error) {
   if (error.message === 'Circuit breaker is open') {
     console.error('Too many failures - circuit breaker activated');
@@ -673,7 +672,7 @@ import {
   RpcConnectionError,
   SignatureVerificationError,
   QRParseError,
-  parseQRCode
+  parseQRCode,
 } from '@aura-network/verifier-sdk';
 
 class ProductionVerifier {
@@ -693,16 +692,15 @@ class ProductionVerifier {
           valid: false,
           error: 'PRESENTATION_EXPIRED',
           message: 'Please generate a new QR code',
-          userMessage: 'QR code has expired. Please try again.'
+          userMessage: 'QR code has expired. Please try again.',
         };
       }
 
       // Step 3: Verify signature with retry
       const sigResult = await this.circuitBreaker.execute(async () => {
-        return await retryWithBackoff(
-          () => this.verifySignatureWithLogging(qrData),
-          { maxRetries: 3 }
-        );
+        return await retryWithBackoff(() => this.verifySignatureWithLogging(qrData), {
+          maxRetries: 3,
+        });
       });
 
       if (!sigResult.valid) {
@@ -710,7 +708,7 @@ class ProductionVerifier {
           valid: false,
           error: 'INVALID_SIGNATURE',
           message: 'Signature verification failed',
-          userMessage: 'Unable to verify credential. Please try again.'
+          userMessage: 'Unable to verify credential. Please try again.',
         };
       }
 
@@ -720,7 +718,7 @@ class ProductionVerifier {
           valid: false,
           error: 'INSUFFICIENT_DISCLOSURE',
           message: 'Required information not disclosed',
-          userMessage: 'Please allow access to required information.'
+          userMessage: 'Please allow access to required information.',
         };
       }
 
@@ -732,10 +730,9 @@ class ProductionVerifier {
         metadata: {
           holderDid: qrData.h,
           credentials: qrData.vcs,
-          disclosure: qrData.ctx
-        }
+          disclosure: qrData.ctx,
+        },
       };
-
     } catch (error) {
       return this.handleVerificationError(error);
     }
@@ -747,7 +744,7 @@ class ProductionVerifier {
       vcs: qrData.vcs,
       ctx: qrData.ctx,
       exp: qrData.exp,
-      n: qrData.n
+      n: qrData.n,
     });
 
     try {
@@ -755,13 +752,13 @@ class ProductionVerifier {
         publicKey: qrData.h,
         message: message,
         signature: qrData.sig,
-        algorithm: 'ed25519'
+        algorithm: 'ed25519',
       });
     } catch (error) {
       this.errorLogger.log('signature_verification_failed', {
         error: error,
         holderDid: qrData.h,
-        presentationId: qrData.p
+        presentationId: qrData.p,
       });
       throw error;
     }
@@ -774,36 +771,32 @@ class ProductionVerifier {
         valid: false,
         error: error.code,
         message: error.message,
-        userMessage: 'Invalid QR code. Please scan again.'
+        userMessage: 'Invalid QR code. Please scan again.',
       };
-
     } else if (error instanceof SignatureVerificationError) {
       this.errorLogger.log('signature_error', { error });
       return {
         valid: false,
         error: error.code,
         message: error.message,
-        userMessage: 'Unable to verify credential. Please try again.'
+        userMessage: 'Unable to verify credential. Please try again.',
       };
-
     } else if (error instanceof RpcConnectionError) {
       this.errorLogger.log('network_error', { error });
       return {
         valid: false,
         error: error.code,
         message: error.message,
-        userMessage: 'Network error. Please check your connection.'
+        userMessage: 'Network error. Please check your connection.',
       };
-
     } else if (error instanceof VerifierError) {
       this.errorLogger.log('sdk_error', { error });
       return {
         valid: false,
         error: error.code,
         message: error.message,
-        userMessage: 'Verification failed. Please try again.'
+        userMessage: 'Verification failed. Please try again.',
       };
-
     } else {
       // Unexpected error
       this.errorLogger.log('unexpected_error', { error });
@@ -811,7 +804,7 @@ class ProductionVerifier {
         valid: false,
         error: 'UNKNOWN_ERROR',
         message: 'An unexpected error occurred',
-        userMessage: 'Something went wrong. Please try again later.'
+        userMessage: 'Something went wrong. Please try again later.',
       };
     }
   }
@@ -842,7 +835,7 @@ class ErrorLogger {
       timestamp: new Date().toISOString(),
       eventType: eventType,
       data: this.sanitizeData(data),
-      environment: process.env.NODE_ENV
+      environment: process.env.NODE_ENV,
     };
 
     // Log to console (development)

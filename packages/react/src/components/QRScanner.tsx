@@ -157,8 +157,7 @@ export function QRScanner({
           scanQRCode();
         }, 500);
       } catch (err) {
-        const error =
-          err instanceof Error ? err : new Error('Failed to access camera');
+        const error = err instanceof Error ? err : new Error('Failed to access camera');
         setError(error);
         if (onError) {
           onError(error);
@@ -210,17 +209,12 @@ export function QRScanner({
   }, [facingMode, width, height, onScan, onError]);
 
   return (
-    <Container
-      className={className}
-      style={{ width, height, ...style }}
-    >
+    <Container className={className} style={{ width, height, ...style }}>
       <Video ref={videoRef} />
       <Canvas ref={canvasRef} />
       {showFrame && scanning && <ScanFrame />}
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
-      {scanning && !error && (
-        <StatusText>Position QR code within frame</StatusText>
-      )}
+      {scanning && !error && <StatusText>Position QR code within frame</StatusText>}
     </Container>
   );
 }

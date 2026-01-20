@@ -7,7 +7,7 @@ export {
   type WebhookEvent,
   type WebhookDeliveryResult,
   type VerificationResult,
-  type RetryPolicy
+  type RetryPolicy,
 } from './webhook/index.js';
 
 // POS system integration
@@ -16,7 +16,7 @@ export {
   type POSIntegrationConfig,
   type VerificationRequirement,
   type TransactionLink,
-  type ItemVerificationRule
+  type ItemVerificationRule,
 } from './pos/index.js';
 
 // Audit logging
@@ -26,7 +26,7 @@ export {
   type AuditEvent,
   type AuditFilter,
   type AuditSummary,
-  type GeoLocation
+  type GeoLocation,
 } from './audit/index.js';
 
 // Compliance reporting
@@ -35,7 +35,7 @@ export {
   type ComplianceConfig,
   type ComplianceReport,
   type DataSubjectReport,
-  type DateRange
+  type DateRange,
 } from './compliance/index.js';
 
 // Fallback verification
@@ -44,16 +44,11 @@ export {
   type FallbackConfig,
   type ManualVerificationRecord,
   type DocumentScanResult,
-  type AuraVerifierError
+  type AuraVerifierError,
 } from './fallback/index.js';
 
 // Re-export common types
-export type IntegrationModule =
-  | 'webhook'
-  | 'pos'
-  | 'audit'
-  | 'compliance'
-  | 'fallback';
+export type IntegrationModule = 'webhook' | 'pos' | 'audit' | 'compliance' | 'fallback';
 
 // Version information
 export const VERSION = '1.0.0';
@@ -62,14 +57,11 @@ export const INTEGRATION_MODULES: IntegrationModule[] = [
   'pos',
   'audit',
   'compliance',
-  'fallback'
+  'fallback',
 ];
 
 // Helper function to validate integration configurations
-export function validateIntegrationConfig(
-  module: IntegrationModule,
-  config: unknown
-): boolean {
+export function validateIntegrationConfig(module: IntegrationModule, config: unknown): boolean {
   switch (module) {
     case 'webhook':
       return validateWebhookConfig(config);

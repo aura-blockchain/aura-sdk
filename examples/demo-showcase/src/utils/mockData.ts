@@ -14,9 +14,7 @@ export function generateMockSignature(): string {
     .join('');
 }
 
-export function createMockQRCodeData(
-  ageRequirement: '18+' | '21+' = '21+'
-): QRCodeData {
+export function createMockQRCodeData(ageRequirement: '18+' | '21+' = '21+'): QRCodeData {
   const now = Math.floor(Date.now() / 1000);
 
   return {
@@ -60,11 +58,12 @@ export function decodeQRCodeData(qrString: string): QRCodeData | null {
 export function calculateAuraScore(verificationHistory: any[]): number {
   // Mock calculation based on history
   const baseScore = 650;
-  const verificationBonus = verificationHistory.filter(v => v.status === 'success').length * 10;
-  const recentBonus = verificationHistory.filter(v => {
-    const daysSince = (Date.now() - new Date(v.timestamp).getTime()) / (1000 * 60 * 60 * 24);
-    return daysSince < 30 && v.status === 'success';
-  }).length * 5;
+  const verificationBonus = verificationHistory.filter((v) => v.status === 'success').length * 10;
+  const recentBonus =
+    verificationHistory.filter((v) => {
+      const daysSince = (Date.now() - new Date(v.timestamp).getTime()) / (1000 * 60 * 60 * 24);
+      return daysSince < 30 && v.status === 'success';
+    }).length * 5;
 
   return Math.min(850, baseScore + verificationBonus + recentBonus);
 }

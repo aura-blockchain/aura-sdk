@@ -5,6 +5,7 @@ Complete implementation guide for age verification at bars and nightclubs.
 ## Scenario
 
 **The Blue Moon Nightclub** needs to:
+
 - Verify customers are 21+ at the door
 - Track entry for capacity management
 - Maintain compliance logs
@@ -158,9 +159,7 @@ export class EntryLogService {
 
   getStatistics() {
     const now = Date.now();
-    const lastHour = this.logs.filter(
-      (l) => now - l.timestamp.getTime() < 3600000
-    );
+    const lastHour = this.logs.filter((l) => now - l.timestamp.getTime() < 3600000);
 
     return {
       total: this.logs.length,
@@ -172,9 +171,7 @@ export class EntryLogService {
   }
 
   async getComplianceReport(startDate: Date, endDate: Date) {
-    const filtered = this.logs.filter(
-      (l) => l.timestamp >= startDate && l.timestamp <= endDate
-    );
+    const filtered = this.logs.filter((l) => l.timestamp >= startDate && l.timestamp <= endDate);
 
     return {
       period: { start: startDate, end: endDate },
@@ -549,6 +546,7 @@ describe('Venue Verifier', () => {
 ## Results
 
 After implementing this system, Blue Moon Nightclub achieved:
+
 - **99.8% uptime** with offline mode fallback
 - **< 1 second** average verification time
 - **Zero false positives** in 6 months of operation

@@ -5,17 +5,20 @@ Welcome to the Aura Webhook Server! This is a production-ready webhook server fo
 ## Quick Navigation
 
 ### Getting Started
+
 - **[Quick Start Guide](QUICKSTART.md)** - Get up and running in 5 minutes
 - **[README](README.md)** - Complete feature overview and API documentation
 - **[.env.example](.env.example)** - Environment configuration template
 
 ### Deployment
+
 - **[Deployment Guide](DEPLOYMENT.md)** - Docker, Kubernetes, and cloud deployment options
 - **[docker-compose.yml](docker-compose.yml)** - Docker Compose configuration
 - **[Dockerfile](Dockerfile)** - Container build instructions
 - **[nginx.conf.example](nginx.conf.example)** - Reverse proxy configuration
 
 ### Security
+
 - **[Security Best Practices](SECURITY.md)** - Comprehensive security guide
   - Webhook signature verification
   - Secret management
@@ -24,6 +27,7 @@ Welcome to the Aura Webhook Server! This is a production-ready webhook server fo
   - Access control
 
 ### Operations
+
 - **[Monitoring Guide](MONITORING.md)** - Observability and monitoring
   - Metrics and dashboards
   - Logging strategies
@@ -31,10 +35,12 @@ Welcome to the Aura Webhook Server! This is a production-ready webhook server fo
   - Troubleshooting
 
 ### Development
+
 - **[CHANGELOG](CHANGELOG.md)** - Version history and updates
 - **[Package.json](package.json)** - Dependencies and scripts
 
 ### Utilities
+
 - **[scripts/test-webhook.ts](scripts/test-webhook.ts)** - Webhook testing script
 - **[scripts/generate-secret.ts](scripts/generate-secret.ts)** - Secret generation utility
 
@@ -77,10 +83,12 @@ Documentation Files:
 ## Key Features
 
 ### Webhook Endpoints
+
 - `POST /webhooks/verification` - Verification and age verification events
 - `POST /webhooks/revocation` - Revocation and expiration events
 
 ### Event Types Supported
+
 1. **VERIFICATION_SUCCESS** - Credential verified successfully
 2. **VERIFICATION_FAILED** - Credential verification failed
 3. **CREDENTIAL_REVOKED** - Credential was revoked
@@ -89,6 +97,7 @@ Documentation Files:
 6. **AGE_VERIFICATION_FAILED** - Age verification failed
 
 ### Analytics Endpoints
+
 - `GET /analytics` - Overall statistics
 - `GET /analytics/events/:id` - Get specific event
 - `GET /analytics/events/type/:eventType` - Events by type
@@ -96,6 +105,7 @@ Documentation Files:
 - `DELETE /analytics/events/old` - Delete old events (admin)
 
 ### Security Features
+
 - HMAC-SHA256 signature verification
 - IP allowlisting
 - Rate limiting
@@ -104,6 +114,7 @@ Documentation Files:
 - Constant-time signature comparison
 
 ### Database
+
 - SQLite with WAL mode
 - Event persistence and querying
 - Analytics and reporting
@@ -111,6 +122,7 @@ Documentation Files:
 - Event cleanup utilities
 
 ### Production Ready
+
 - Docker and Docker Compose support
 - Kubernetes manifests
 - Health check endpoints
@@ -237,17 +249,18 @@ ADMIN_API_KEY=<strong-random-key>
 
 ## Troubleshooting Quick Reference
 
-| Issue | Solution | Documentation |
-|-------|----------|---------------|
-| Signature verification fails | Check WEBHOOK_SECRET matches | [SECURITY.md](SECURITY.md#webhook-signature-verification) |
-| High memory usage | Delete old events | [MONITORING.md](MONITORING.md#troubleshooting) |
-| Rate limit errors | Adjust RATE_LIMIT_MAX_REQUESTS | [README.md](README.md#configuration) |
-| Database locked | Enable WAL mode (default) | [README.md](README.md#database-integration-example-sqlite-for-simplicity) |
-| Container won't start | Check logs and environment | [DEPLOYMENT.md](DEPLOYMENT.md#docker-deployment) |
+| Issue                        | Solution                       | Documentation                                                             |
+| ---------------------------- | ------------------------------ | ------------------------------------------------------------------------- |
+| Signature verification fails | Check WEBHOOK_SECRET matches   | [SECURITY.md](SECURITY.md#webhook-signature-verification)                 |
+| High memory usage            | Delete old events              | [MONITORING.md](MONITORING.md#troubleshooting)                            |
+| Rate limit errors            | Adjust RATE_LIMIT_MAX_REQUESTS | [README.md](README.md#configuration)                                      |
+| Database locked              | Enable WAL mode (default)      | [README.md](README.md#database-integration-example-sqlite-for-simplicity) |
+| Container won't start        | Check logs and environment     | [DEPLOYMENT.md](DEPLOYMENT.md#docker-deployment)                          |
 
 ## Support and Resources
 
 ### Documentation
+
 - **Main README**: Comprehensive feature and API documentation
 - **Quick Start**: Get running in minutes
 - **Security Guide**: Production security best practices
@@ -255,11 +268,13 @@ ADMIN_API_KEY=<strong-random-key>
 - **Deployment Guide**: Deploy to any platform
 
 ### Getting Help
+
 - **GitHub Issues**: https://github.com/aura-network/aura-verifier-sdk/issues
 - **Documentation**: https://docs.aurablockchain.org
 - **Security Issues**: security@aurablockchain.org
 
 ### Additional Resources
+
 - [Aura Network Website](https://aurablockchain.org)
 - [Webhook Best Practices](https://webhooks.fyi/)
 - [Express.js Documentation](https://expressjs.com/)

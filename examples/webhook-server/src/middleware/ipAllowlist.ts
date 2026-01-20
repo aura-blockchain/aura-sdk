@@ -4,11 +4,7 @@ import { logger } from '../utils/logger.js';
 /**
  * Express middleware to validate IP allowlist
  */
-export function ipAllowlist(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+export function ipAllowlist(req: Request, res: Response, next: NextFunction): void {
   const allowedIps = process.env.ALLOWED_IPS?.split(',')
     .map((ip) => ip.trim())
     .filter(Boolean);
@@ -56,9 +52,7 @@ function getClientIp(req: Request): string | undefined {
 
   if (forwardedFor) {
     // X-Forwarded-For can contain multiple IPs, get the first one
-    const ips = Array.isArray(forwardedFor)
-      ? forwardedFor[0]
-      : forwardedFor;
+    const ips = Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor;
     return ips.split(',')[0].trim();
   }
 

@@ -9,6 +9,7 @@ This directory contains comprehensive integration tests for the Aura Verifier SD
 Tests the complete credential verification workflow from QR code parsing to result generation.
 
 **Coverage:**
+
 - QR code parsing and validation
 - Valid credential verification (age 21+, 18+, human, government ID, KYC)
 - Multiple credential verification
@@ -21,6 +22,7 @@ Tests the complete credential verification workflow from QR code parsing to resu
 - Convenience methods (isAge21Plus, isAge18Plus, etc.)
 
 **Key Scenarios:**
+
 - ✅ Valid credentials are verified successfully
 - ✅ Expired credentials are rejected
 - ✅ Revoked credentials are rejected
@@ -33,6 +35,7 @@ Tests the complete credential verification workflow from QR code parsing to resu
 Tests offline verification capabilities using cached data.
 
 **Coverage:**
+
 - Cache population during online verification
 - Cache retrieval in offline mode
 - Revocation list synchronization
@@ -42,6 +45,7 @@ Tests offline verification capabilities using cached data.
 - Mode switching (online ↔ offline)
 
 **Key Scenarios:**
+
 - ✅ Cache is populated during online verification
 - ✅ Cached data is used in offline mode
 - ✅ Expired cache entries are cleaned up
@@ -54,6 +58,7 @@ Tests offline verification capabilities using cached data.
 Tests network configuration and endpoint management.
 
 **Coverage:**
+
 - Mainnet configuration and endpoints
 - Testnet configuration and endpoints
 - Local network configuration
@@ -63,6 +68,7 @@ Tests network configuration and endpoint management.
 - Network detection from DIDs
 
 **Key Scenarios:**
+
 - ✅ Correct endpoints are used for each network
 - ✅ Custom endpoints can be configured
 - ✅ Network failover works on primary endpoint failure
@@ -74,6 +80,7 @@ Tests network configuration and endpoint management.
 Tests parallel verification of multiple credentials.
 
 **Coverage:**
+
 - Parallel verification of valid credentials
 - Mixed result handling (valid/invalid)
 - Partial failure scenarios
@@ -83,6 +90,7 @@ Tests parallel verification of multiple credentials.
 - Empty batch handling
 
 **Key Scenarios:**
+
 - ✅ Multiple credentials verified in parallel
 - ✅ Batch processing is faster than sequential
 - ✅ Mixed results (valid/invalid) are handled correctly
@@ -95,6 +103,7 @@ Tests parallel verification of multiple credentials.
 Tests security features and attack prevention mechanisms.
 
 **Coverage:**
+
 - Replay attack prevention (nonce validation)
 - Expired credential rejection
 - Revoked credential handling
@@ -107,6 +116,7 @@ Tests security features and attack prevention mechanisms.
 - Resource exhaustion prevention
 
 **Key Scenarios:**
+
 - ✅ Duplicate nonces are detected (replay attacks)
 - ✅ Expired credentials are rejected
 - ✅ Revoked credentials are rejected
@@ -120,6 +130,7 @@ Tests security features and attack prevention mechanisms.
 ### Test Credentials (`__fixtures__/test-credentials.ts`)
 
 Provides comprehensive test data including:
+
 - **Valid QR codes:** Age 21+, 18+, human, government ID, KYC
 - **Expired QR codes:** Various expiration times
 - **Revoked credentials:** Single and partial revocation
@@ -131,6 +142,7 @@ Provides comprehensive test data including:
 ### Mock Server (`__fixtures__/mock-server.ts`)
 
 Provides configurable mock blockchain server:
+
 - **Latency simulation:** Configurable network delay
 - **Error simulation:** Configurable error rate
 - **Timeout simulation:** Simulate request timeouts
@@ -141,11 +153,13 @@ Provides configurable mock blockchain server:
 ## Running the Tests
 
 ### Run all integration tests:
+
 ```bash
 npm test -- __integration__
 ```
 
 ### Run specific test suite:
+
 ```bash
 npm test -- verification-flow.integration.test.ts
 npm test -- offline-mode.integration.test.ts
@@ -155,11 +169,13 @@ npm test -- security.integration.test.ts
 ```
 
 ### Run with coverage:
+
 ```bash
 npm test -- --coverage __integration__
 ```
 
 ### Run in watch mode:
+
 ```bash
 npm test -- --watch __integration__
 ```
@@ -167,6 +183,7 @@ npm test -- --watch __integration__
 ## Test Configuration
 
 Tests use the following configuration:
+
 - **Test framework:** Vitest
 - **Network:** Testnet (by default)
 - **Timeout:** 10 seconds per test (extended for long-running tests)
@@ -186,6 +203,7 @@ When adding new integration tests:
 7. **Restore mocks** after each test
 
 ### Example:
+
 ```typescript
 describe('My New Feature', () => {
   let verifier: AuraVerifier;
@@ -198,8 +216,8 @@ describe('My New Feature', () => {
       verbose: false,
     });
 
-    vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-      async (did: string) => mockServer.queryDIDDocument(did)
+    vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+      mockServer.queryDIDDocument(did)
     );
 
     await verifier.initialize();
@@ -220,6 +238,7 @@ describe('My New Feature', () => {
 ## Test Coverage Goals
 
 Integration tests aim for:
+
 - **95%+ coverage** of main verification flows
 - **100% coverage** of security-critical paths
 - **Edge case coverage** for error handling
@@ -228,16 +247,19 @@ Integration tests aim for:
 ## Troubleshooting
 
 ### Tests timing out
+
 - Increase timeout for specific tests using `{ timeout: 30000 }`
 - Check mock server latency settings
 - Ensure cleanup is happening in `afterEach`
 
 ### Flaky tests
+
 - Check for race conditions in parallel tests
 - Ensure proper cleanup between tests
 - Use deterministic test data (avoid random values)
 
 ### Mock not working
+
 - Verify mock is applied before `initialize()`
 - Check that mock is restored in `afterEach`
 - Ensure correct method name in spy

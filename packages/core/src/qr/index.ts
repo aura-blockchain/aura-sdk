@@ -103,19 +103,25 @@ export function parseAndValidateQRCode(
   // Build parser options, filtering out undefined values to use defaults
   const parserOpts: import('./types.js').QRParserOptions = {};
   if (options?.strict !== undefined) parserOpts.strict = options.strict;
-  if (options?.expirationTolerance !== undefined) parserOpts.expirationTolerance = options.expirationTolerance;
-  if (options?.supportedVersions !== undefined) parserOpts.supportedVersions = options.supportedVersions;
+  if (options?.expirationTolerance !== undefined)
+    parserOpts.expirationTolerance = options.expirationTolerance;
+  if (options?.supportedVersions !== undefined)
+    parserOpts.supportedVersions = options.supportedVersions;
 
   // Parse QR code
   const qrData = parseQRCode(qrString, parserOpts);
 
   // Build validator options, filtering out undefined values to use defaults
   const validatorOpts: import('./types.js').QRValidatorOptions = {};
-  if (options?.checkExpiration !== undefined) validatorOpts.checkExpiration = options.checkExpiration;
-  if (options?.expirationTolerance !== undefined) validatorOpts.expirationTolerance = options.expirationTolerance;
+  if (options?.checkExpiration !== undefined)
+    validatorOpts.checkExpiration = options.checkExpiration;
+  if (options?.expirationTolerance !== undefined)
+    validatorOpts.expirationTolerance = options.expirationTolerance;
   if (options?.validateDID !== undefined) validatorOpts.validateDID = options.validateDID;
-  if (options?.validateSignature !== undefined) validatorOpts.validateSignature = options.validateSignature;
-  if (options?.supportedVersions !== undefined) validatorOpts.supportedVersions = options.supportedVersions;
+  if (options?.validateSignature !== undefined)
+    validatorOpts.validateSignature = options.validateSignature;
+  if (options?.supportedVersions !== undefined)
+    validatorOpts.supportedVersions = options.supportedVersions;
 
   // Validate QR code data
   validateQRCodeDataStrict(qrData, validatorOpts);

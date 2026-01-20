@@ -61,8 +61,12 @@ export function useCredential(id: string, options?: Options) {
     }
   }, [options?.autoVerify, credential, verify]);
 
-  const isExpired = credential?.expirationDate ? new Date(credential.expirationDate) < new Date() : false;
-  const isValid = (status ?? credential?.status ?? CredentialStatus.VALID) === CredentialStatus.VALID && !isExpired;
+  const isExpired = credential?.expirationDate
+    ? new Date(credential.expirationDate) < new Date()
+    : false;
+  const isValid =
+    (status ?? credential?.status ?? CredentialStatus.VALID) === CredentialStatus.VALID &&
+    !isExpired;
 
   return {
     credential,

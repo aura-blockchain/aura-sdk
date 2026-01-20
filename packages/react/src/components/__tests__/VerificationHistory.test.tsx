@@ -14,7 +14,16 @@ const baseItem: VerificationHistoryItem = {
     isValid: true,
     holderDID: 'did:aura:holder123456789',
     verifiedAt: new Date(),
-    vcDetails: [{ vcId: 'vc:aura:1', vcType: 'Test', issuerDID: 'did:aura:issuer', status: 'valid', signatureValid: true, onChain: true }],
+    vcDetails: [
+      {
+        vcId: 'vc:aura:1',
+        vcType: 'Test',
+        issuerDID: 'did:aura:issuer',
+        status: 'valid',
+        signatureValid: true,
+        onChain: true,
+      },
+    ],
     attributes: {},
     verificationMethod: 'online',
     auditId: 'audit-1',

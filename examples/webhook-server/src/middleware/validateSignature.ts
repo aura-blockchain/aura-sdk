@@ -5,11 +5,7 @@ import { logger, logWebhookVerification } from '../utils/logger.js';
 /**
  * Express middleware to validate webhook signatures
  */
-export function validateSignature(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+export function validateSignature(req: Request, res: Response, next: NextFunction): void {
   try {
     const signature = req.headers['x-webhook-signature'] as string;
     const webhookSecret = process.env.WEBHOOK_SECRET;

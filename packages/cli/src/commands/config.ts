@@ -46,7 +46,13 @@ export function createConfigCommand(): Command {
         }
 
         // If options are provided, set them directly
-        if (options.network || options.grpc || options.rest || options.verbose !== undefined || options.json !== undefined) {
+        if (
+          options.network ||
+          options.grpc ||
+          options.rest ||
+          options.verbose !== undefined ||
+          options.json !== undefined
+        ) {
           if (options.network) {
             configManager.set('network', options.network);
           }
@@ -75,7 +81,7 @@ export function createConfigCommand(): Command {
         console.log();
 
         // Select network
-        const network = await selectPrompt({
+        const network = (await selectPrompt({
           message: 'Select network:',
           choices: [
             { name: 'mainnet', message: 'Mainnet (Production)' },
@@ -83,7 +89,7 @@ export function createConfigCommand(): Command {
             { name: 'local', message: 'Local (Development)' },
           ],
           initial: configManager.get('network') || 'mainnet',
-        }) as NetworkType;
+        })) as NetworkType;
 
         configManager.set('network', network);
 

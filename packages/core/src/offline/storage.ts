@@ -89,7 +89,9 @@ export class BrowserStorage implements StorageAdapter {
       const value = localStorage.getItem(this.getKey(key));
       return value;
     } catch (error) {
-      throw new Error(`Failed to get from localStorage: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to get from localStorage: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -98,9 +100,13 @@ export class BrowserStorage implements StorageAdapter {
       localStorage.setItem(this.getKey(key), value);
     } catch (error) {
       if (error instanceof Error && error.name === 'QuotaExceededError') {
-        throw new Error('localStorage quota exceeded. Consider reducing cache size or clearing old entries.');
+        throw new Error(
+          'localStorage quota exceeded. Consider reducing cache size or clearing old entries.'
+        );
       }
-      throw new Error(`Failed to set in localStorage: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to set in localStorage: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -108,7 +114,9 @@ export class BrowserStorage implements StorageAdapter {
     try {
       localStorage.removeItem(this.getKey(key));
     } catch (error) {
-      throw new Error(`Failed to delete from localStorage: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to delete from localStorage: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -121,9 +129,11 @@ export class BrowserStorage implements StorageAdapter {
           keysToRemove.push(key);
         }
       }
-      keysToRemove.forEach(key => localStorage.removeItem(key));
+      keysToRemove.forEach((key) => localStorage.removeItem(key));
     } catch (error) {
-      throw new Error(`Failed to clear localStorage: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to clear localStorage: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -138,7 +148,9 @@ export class BrowserStorage implements StorageAdapter {
       }
       return keys;
     } catch (error) {
-      throw new Error(`Failed to get keys from localStorage: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to get keys from localStorage: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -156,7 +168,9 @@ export class BrowserStorage implements StorageAdapter {
       }
       return totalSize;
     } catch (error) {
-      throw new Error(`Failed to calculate localStorage size: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to calculate localStorage size: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -164,12 +178,16 @@ export class BrowserStorage implements StorageAdapter {
    * Check available quota (browser-specific)
    */
   async getQuotaInfo(): Promise<{ used: number; quota: number } | null> {
-    if (typeof navigator !== 'undefined' && 'storage' in navigator && 'estimate' in navigator.storage) {
+    if (
+      typeof navigator !== 'undefined' &&
+      'storage' in navigator &&
+      'estimate' in navigator.storage
+    ) {
       try {
         const estimate = await navigator.storage.estimate();
         return {
           used: estimate.usage ?? 0,
-          quota: estimate.quota ?? 0
+          quota: estimate.quota ?? 0,
         };
       } catch {
         return null;
@@ -199,7 +217,9 @@ export class FileStorage implements StorageAdapter {
       this.fs = require('fs');
       this.path = require('path');
     } catch {
-      throw new Error('File system modules not available. FileStorage only works in Node.js environment.');
+      throw new Error(
+        'File system modules not available. FileStorage only works in Node.js environment.'
+      );
     }
 
     // Create base directory if it doesn't exist
@@ -232,7 +252,9 @@ export class FileStorage implements StorageAdapter {
       if ((error as any)?.code === 'ENOENT') {
         return null;
       }
-      throw new Error(`Failed to read from file storage: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to read from file storage: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -242,7 +264,9 @@ export class FileStorage implements StorageAdapter {
       const filePath = this.getFilePath(key);
       this.fs.writeFileSync(filePath, value, 'utf8');
     } catch (error) {
-      throw new Error(`Failed to write to file storage: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to write to file storage: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -253,7 +277,9 @@ export class FileStorage implements StorageAdapter {
         this.fs.unlinkSync(filePath);
       }
     } catch (error) {
-      throw new Error(`Failed to delete from file storage: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to delete from file storage: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -270,7 +296,9 @@ export class FileStorage implements StorageAdapter {
         }
       }
     } catch (error) {
-      throw new Error(`Failed to clear file storage: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to clear file storage: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -293,7 +321,9 @@ export class FileStorage implements StorageAdapter {
 
       return keys;
     } catch (error) {
-      throw new Error(`Failed to get keys from file storage: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to get keys from file storage: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -316,7 +346,9 @@ export class FileStorage implements StorageAdapter {
 
       return totalSize;
     } catch (error) {
-      throw new Error(`Failed to calculate file storage size: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to calculate file storage size: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 

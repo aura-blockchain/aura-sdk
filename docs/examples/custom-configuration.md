@@ -22,20 +22,20 @@ async function createProductionVerifier() {
     enableThreatDetection: true,
 
     nonceConfig: {
-      nonceWindow: 300000,      // 5 minutes
-      cleanupInterval: 60000    // Cleanup every minute
+      nonceWindow: 300000, // 5 minutes
+      cleanupInterval: 60000, // Cleanup every minute
     },
 
     rateLimitConfig: {
       maxRequests: 100,
       windowMs: 60000,
-      burstCapacity: 120
+      burstCapacity: 120,
     },
 
     auditConfig: {
       enableChaining: true,
       bufferSize: 1000,
-      flushInterval: 5000
+      flushInterval: 5000,
     },
 
     threatConfig: {
@@ -45,27 +45,27 @@ async function createProductionVerifier() {
       onThreatDetected: async (event) => {
         await alertSecurityTeam(event);
         await blockIdentifier(event.identifier);
-      }
-    }
+      },
+    },
   });
 
   // Main verifier configuration
   const verifier = new AuraVerifier({
     network: 'mainnet',
     timeout: 10000,
-    verbose: false,  // Disable in production
+    verbose: false, // Disable in production
 
     cacheConfig: {
       enableDIDCache: true,
       enableVCCache: true,
       ttl: 300,
       maxSize: 100,
-      storageLocation: process.env.CACHE_DIR
+      storageLocation: process.env.CACHE_DIR,
     },
 
     // Use environment variables for sensitive config
     grpcEndpoint: process.env.AURA_GRPC_ENDPOINT,
-    restEndpoint: process.env.AURA_REST_ENDPOINT
+    restEndpoint: process.env.AURA_REST_ENDPOINT,
   });
 
   await verifier.initialize();
@@ -90,23 +90,23 @@ import { AuraVerifier } from '@aura-network/verifier-sdk';
 
 const highPerformanceVerifier = new AuraVerifier({
   network: 'mainnet',
-  timeout: 5000,  // Shorter timeout
+  timeout: 5000, // Shorter timeout
   verbose: false,
 
   cacheConfig: {
     enableDIDCache: true,
     enableVCCache: true,
-    ttl: 7200,      // Longer TTL for better cache hits
-    maxSize: 500,   // Larger cache
-    maxEntries: 10000
-  }
+    ttl: 7200, // Longer TTL for better cache hits
+    maxSize: 500, // Larger cache
+    maxEntries: 10000,
+  },
 });
 
 await highPerformanceVerifier.initialize();
 
 // Use batch verification for best performance
 const results = await highPerformanceVerifier.verifyBatch(
-  qrCodes.map(qr => ({ qrCodeData: qr }))
+  qrCodes.map((qr) => ({ qrCodeData: qr }))
 );
 ```
 
@@ -130,8 +130,8 @@ class MultiNetworkVerifier {
         timeout: 10000,
         cacheConfig: {
           enableVCCache: true,
-          ttl: 3600
-        }
+          ttl: 3600,
+        },
       });
 
       await verifier.initialize();
@@ -173,11 +173,11 @@ Use custom or self-hosted endpoints:
 import { AuraVerifier } from '@aura-network/verifier-sdk';
 
 const customVerifier = new AuraVerifier({
-  network: 'local',  // Use 'local' for custom endpoints
+  network: 'local', // Use 'local' for custom endpoints
   grpcEndpoint: 'grpcs://your-custom-grpc.example.com:9090',
   restEndpoint: 'https://your-custom-rest.example.com',
   chainId: 'aura-custom-1',
-  timeout: 15000
+  timeout: 15000,
 });
 
 await customVerifier.initialize();
@@ -200,7 +200,7 @@ class LoadBalancedVerifier {
         network: 'mainnet',
         grpcEndpoint: endpoint.grpc,
         restEndpoint: endpoint.rest,
-        timeout: 10000
+        timeout: 10000,
       });
 
       await verifier.initialize();
@@ -220,7 +220,7 @@ class LoadBalancedVerifier {
   }
 
   async destroy() {
-    await Promise.all(this.verifiers.map(v => v.destroy()));
+    await Promise.all(this.verifiers.map((v) => v.destroy()));
   }
 }
 
@@ -229,7 +229,7 @@ const lb = new LoadBalancedVerifier();
 await lb.initialize([
   { grpc: 'rpc1.aurablockchain.org:9090', rest: 'https://api1.aurablockchain.org' },
   { grpc: 'rpc2.aurablockchain.org:9090', rest: 'https://api2.aurablockchain.org' },
-  { grpc: 'rpc3.aurablockchain.org:9090', rest: 'https://api3.aurablockchain.org' }
+  { grpc: 'rpc3.aurablockchain.org:9090', rest: 'https://api3.aurablockchain.org' },
 ]);
 ```
 
@@ -243,14 +243,14 @@ import { AuraVerifier, NetworkError } from '@aura-network/verifier-sdk';
 async function createResilientVerifier() {
   const primaryVerifier = new AuraVerifier({
     network: 'mainnet',
-    timeout: 5000
+    timeout: 5000,
   });
 
   const fallbackVerifier = new AuraVerifier({
     network: 'mainnet',
     grpcEndpoint: 'rpc-backup.aurablockchain.org:9090',
     restEndpoint: 'https://api-backup.aurablockchain.org',
-    timeout: 10000
+    timeout: 10000,
   });
 
   await primaryVerifier.initialize();
@@ -271,9 +271,7 @@ async function createResilientVerifier() {
 
           if (attempt < maxRetries) {
             // Wait before retry
-            await new Promise(resolve =>
-              setTimeout(resolve, Math.pow(2, attempt) * 1000)
-            );
+            await new Promise((resolve) => setTimeout(resolve, Math.pow(2, attempt) * 1000));
           } else {
             throw error;
           }
@@ -286,7 +284,7 @@ async function createResilientVerifier() {
     async destroy() {
       await primaryVerifier.destroy();
       await fallbackVerifier.destroy();
-    }
+    },
   };
 }
 ```
@@ -305,10 +303,10 @@ function getConfig(env: Environment): AuraVerifierConfig {
     development: {
       network: 'testnet',
       timeout: 30000,
-      verbose: true,  // Debug logging in dev
+      verbose: true, // Debug logging in dev
       cacheConfig: {
-        enableVCCache: false  // Disable cache in dev
-      }
+        enableVCCache: false, // Disable cache in dev
+      },
     },
 
     staging: {
@@ -317,21 +315,21 @@ function getConfig(env: Environment): AuraVerifierConfig {
       verbose: true,
       cacheConfig: {
         enableVCCache: true,
-        ttl: 300
-      }
+        ttl: 300,
+      },
     },
 
     production: {
       network: 'mainnet',
       timeout: 10000,
-      verbose: false,  // No debug logs in production
+      verbose: false, // No debug logs in production
       cacheConfig: {
         enableDIDCache: true,
         enableVCCache: true,
         ttl: 3600,
-        maxSize: 100
-      }
-    }
+        maxSize: 100,
+      },
+    },
   };
 
   return configs[env];
@@ -356,13 +354,13 @@ import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 async function createMonitoredVerifier() {
   // Initialize metrics
   const metricsExporter = new PrometheusExporter({
-    port: 9464
+    port: 9464,
   });
 
   const verifier = new AuraVerifier({
     network: 'mainnet',
     timeout: 10000,
-    verbose: false
+    verbose: false,
   });
 
   await verifier.initialize();
@@ -374,17 +372,17 @@ async function createMonitoredVerifier() {
     // Record metrics
     metricsExporter.recordMetric('verification_total', 1, {
       status: data.result.isValid ? 'success' : 'failure',
-      method: data.result.verificationMethod
+      method: data.result.verificationMethod,
     });
 
     metricsExporter.recordMetric('verification_duration_ms', duration, {
-      method: data.result.verificationMethod
+      method: data.result.verificationMethod,
     });
   });
 
   verifier.on('error', (data) => {
     metricsExporter.recordMetric('verification_errors_total', 1, {
-      error_type: data.error.name
+      error_type: data.error.name,
     });
   });
 

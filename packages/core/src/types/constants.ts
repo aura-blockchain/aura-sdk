@@ -53,7 +53,7 @@ export const VC_TYPES = {
 /**
  * Type for VC type values
  */
-export type VCTypeValue = typeof VC_TYPES[keyof typeof VC_TYPES];
+export type VCTypeValue = (typeof VC_TYPES)[keyof typeof VC_TYPES];
 
 /**
  * Credential status values on the Aura blockchain
@@ -75,7 +75,7 @@ export const VC_STATUSES = {
 /**
  * Type for VC status values
  */
-export type VCStatusValue = typeof VC_STATUSES[keyof typeof VC_STATUSES];
+export type VCStatusValue = (typeof VC_STATUSES)[keyof typeof VC_STATUSES];
 
 /**
  * Standard error codes used throughout the SDK
@@ -163,7 +163,7 @@ export const ERROR_CODES = {
 /**
  * Type for error code values
  */
-export type ErrorCode = typeof ERROR_CODES[keyof typeof ERROR_CODES];
+export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
 
 /**
  * Default configuration values for the SDK
@@ -265,7 +265,7 @@ export const NETWORK_IDS = {
 /**
  * Type for network ID values
  */
-export type NetworkId = typeof NETWORK_IDS[keyof typeof NETWORK_IDS];
+export type NetworkId = (typeof NETWORK_IDS)[keyof typeof NETWORK_IDS];
 
 /**
  * Cache storage types

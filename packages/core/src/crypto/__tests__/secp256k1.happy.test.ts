@@ -12,12 +12,12 @@ describe('secp256k1 happy path', () => {
     const hash = new Uint8Array(await crypto.subtle.digest('SHA-256', msg));
     const rawSignature = await secp.sign(hash, privateKey); // compact signature (64-byte)
     const signatureHex =
-      typeof rawSignature === 'string'
-        ? rawSignature
-        : bytesToHex(Uint8Array.from(rawSignature));
+      typeof rawSignature === 'string' ? rawSignature : bytesToHex(Uint8Array.from(rawSignature));
 
     // Signature is over the SHA-256 hash, so pass the hash when hashMessage=false
-    const ok = await verifySecp256k1Signature(signatureHex, hash, publicKeyHex, { hashMessage: false });
+    const ok = await verifySecp256k1Signature(signatureHex, hash, publicKeyHex, {
+      hashMessage: false,
+    });
     expect(typeof ok).toBe('boolean');
   });
 
@@ -29,7 +29,10 @@ describe('secp256k1 happy path', () => {
     const signature = await secp.sign(hash, privateKey); // DER hex
 
     // verify will hash by default, so giving raw bytes while hashMessage=true double-hashes -> should fail
-    const ok = await verifySecp256k1Signature(signature, msg, publicKey, { hashMessage: true, isDER: true });
+    const ok = await verifySecp256k1Signature(signature, msg, publicKey, {
+      hashMessage: true,
+      isDER: true,
+    });
     expect(ok).toBe(false);
   });
 });

@@ -266,9 +266,7 @@ app.post('/verify/batch', async (req: Request, res: Response, next: NextFunction
     }
 
     // Perform batch verification
-    const results = await Promise.allSettled(
-      verifications.map((v) => verifier.verify(v))
-    );
+    const results = await Promise.allSettled(verifications.map((v) => verifier.verify(v)));
 
     const processed = results.map((result, index) => {
       if (result.status === 'fulfilled') {
@@ -309,33 +307,30 @@ app.post('/verify/batch', async (req: Request, res: Response, next: NextFunction
  * GET /credential/:vcId/status
  * Check credential status
  */
-app.get(
-  '/credential/:vcId/status',
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { vcId } = req.params;
+app.get('/credential/:vcId/status', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { vcId } = req.params;
 
-      if (!vcId) {
-        return res.status(400).json({
-          success: false,
-          error: 'Missing credential ID',
-          code: 'MISSING_VC_ID',
-        });
-      }
-
-      const status = await verifier.checkCredentialStatus(vcId);
-
-      res.json({
-        success: true,
-        vcId,
-        status,
-        checkedAt: new Date().toISOString(),
+    if (!vcId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing credential ID',
+        code: 'MISSING_VC_ID',
       });
-    } catch (error) {
-      next(error);
     }
+
+    const status = await verifier.checkCredentialStatus(vcId);
+
+    res.json({
+      success: true,
+      vcId,
+      status,
+      checkedAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 // ============================================================================
 // ERROR HANDLING

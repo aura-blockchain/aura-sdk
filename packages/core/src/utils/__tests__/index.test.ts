@@ -71,7 +71,7 @@ describe('ID Generation', () => {
       const nonce = generateNonce();
       expect(typeof nonce).toBe('number');
       expect(nonce).toBeGreaterThanOrEqual(0);
-      expect(nonce).toBeLessThanOrEqual(0xFFFFFFFF);
+      expect(nonce).toBeLessThanOrEqual(0xffffffff);
     });
 
     it('should generate different nonces', () => {
@@ -434,9 +434,9 @@ describe('Hex Functions', () => {
     });
 
     it('should validate expected byte length', () => {
-      expect(isValidHex('abc123', 3)).toBe(true);  // 3 bytes = 6 chars
+      expect(isValidHex('abc123', 3)).toBe(true); // 3 bytes = 6 chars
       expect(isValidHex('abc123', 2)).toBe(false); // 3 bytes != 2 bytes
-      expect(isValidHex('abcd', 2)).toBe(true);    // 2 bytes = 4 chars
+      expect(isValidHex('abcd', 2)).toBe(true); // 2 bytes = 4 chars
     });
   });
 
@@ -550,7 +550,8 @@ describe('Async Functions', () => {
     });
 
     it('should retry on failure and succeed', async () => {
-      const fn = vi.fn()
+      const fn = vi
+        .fn()
         .mockRejectedValueOnce(new Error('fail 1'))
         .mockRejectedValueOnce(new Error('fail 2'))
         .mockResolvedValue('success');
@@ -564,17 +565,13 @@ describe('Async Functions', () => {
     it('should throw after max attempts exceeded', async () => {
       const fn = vi.fn().mockRejectedValue(new Error('always fail'));
 
-      await expect(
-        retry(fn, { maxAttempts: 3, delayMs: 10 })
-      ).rejects.toThrow('always fail');
+      await expect(retry(fn, { maxAttempts: 3, delayMs: 10 })).rejects.toThrow('always fail');
 
       expect(fn).toHaveBeenCalledTimes(3);
     });
 
     it('should use exponential backoff', async () => {
-      const fn = vi.fn()
-        .mockRejectedValueOnce(new Error('fail'))
-        .mockResolvedValue('success');
+      const fn = vi.fn().mockRejectedValueOnce(new Error('fail')).mockResolvedValue('success');
 
       const start = Date.now();
       await retry(fn, { maxAttempts: 2, delayMs: 20, backoff: 2 });
@@ -594,9 +591,7 @@ describe('Async Functions', () => {
     it('should handle non-Error rejections', async () => {
       const fn = vi.fn().mockRejectedValue('string error');
 
-      await expect(
-        retry(fn, { maxAttempts: 1, delayMs: 1 })
-      ).rejects.toThrow('string error');
+      await expect(retry(fn, { maxAttempts: 1, delayMs: 1 })).rejects.toThrow('string error');
     });
   });
 });

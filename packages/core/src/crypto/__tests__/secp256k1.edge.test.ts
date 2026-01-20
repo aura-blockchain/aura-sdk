@@ -9,7 +9,9 @@ describe('secp256k1 edge cases', () => {
 
   it('returns false for DER shorter than minimum', async () => {
     const derTooShort = new Uint8Array([0x30, 0x00]); // invalid
-    const ok = await verifySecp256k1Signature(derTooShort, 'msg', pubkeyCompressed, { isDER: true });
+    const ok = await verifySecp256k1Signature(derTooShort, 'msg', pubkeyCompressed, {
+      isDER: true,
+    });
     expect(ok).toBe(false);
   });
 

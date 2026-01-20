@@ -10,10 +10,7 @@ import { keccak_256 } from '@noble/hashes/sha3';
 import { toBech32, fromBech32, toBase64 } from '@cosmjs/encoding';
 import { ripemd160 } from '@cosmjs/crypto';
 
-import {
-  PublicKeyError,
-  SignatureError,
-} from './errors';
+import { PublicKeyError, SignatureError } from './errors';
 import type {
   SignatureAlgorithm,
   HashAlgorithm,
@@ -179,11 +176,7 @@ export function deriveAddress(request: AddressDerivationRequest): string {
     throw new PublicKeyError('Ed25519 public key must be 32 bytes');
   }
 
-  if (
-    request.algorithm === 'secp256k1' &&
-    pubKeyBytes.length !== 33 &&
-    pubKeyBytes.length !== 65
-  ) {
+  if (request.algorithm === 'secp256k1' && pubKeyBytes.length !== 33 && pubKeyBytes.length !== 65) {
     throw new PublicKeyError(
       'secp256k1 public key must be 33 (compressed) or 65 (uncompressed) bytes'
     );

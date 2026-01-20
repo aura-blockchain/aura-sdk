@@ -17,7 +17,10 @@ import {
 import type { VerificationRequest, VerificationResult, BatchVerificationResult } from '../types.js';
 
 // Helper to create mock verification result
-function createMockResult(isValid: boolean, overrides?: Partial<VerificationResult>): VerificationResult {
+function createMockResult(
+  isValid: boolean,
+  overrides?: Partial<VerificationResult>
+): VerificationResult {
   return {
     isValid,
     holderDID: 'did:aura:mainnet:test123',
@@ -102,12 +105,14 @@ describe('BatchVerifier', () => {
     it('should verify multiple requests concurrently', async () => {
       const mockResult = createMockResult(true);
       const verifyFn = vi.fn().mockImplementation(async () => {
-        await new Promise(r => setTimeout(r, 10));
+        await new Promise((r) => setTimeout(r, 10));
         return mockResult;
       });
       const verifier = new BatchVerifier(verifyFn, { concurrency: 5 });
 
-      const requests = Array(10).fill(null).map(() => createMockRequest());
+      const requests = Array(10)
+        .fill(null)
+        .map(() => createMockRequest());
       const result = await verifier.verifyBatch(requests);
 
       expect(verifyFn).toHaveBeenCalledTimes(10);
@@ -123,7 +128,9 @@ describe('BatchVerifier', () => {
       });
       const verifier = new BatchVerifier(verifyFn);
 
-      const requests = Array(6).fill(null).map(() => createMockRequest());
+      const requests = Array(6)
+        .fill(null)
+        .map(() => createMockRequest());
       const result = await verifier.verifyBatch(requests);
 
       expect(result.successCount).toBe(3);
@@ -151,7 +158,9 @@ describe('BatchVerifier', () => {
       });
       const verifier = new BatchVerifier(verifyFn, { stopOnError: true, concurrency: 1 });
 
-      const requests = Array(5).fill(null).map(() => createMockRequest());
+      const requests = Array(5)
+        .fill(null)
+        .map(() => createMockRequest());
       const result = await verifier.verifyBatch(requests);
 
       // With stopOnError=true and concurrency=1, should stop after first failure
@@ -167,13 +176,15 @@ describe('BatchVerifier', () => {
       const verifyFn = vi.fn().mockImplementation(async () => {
         concurrent++;
         maxConcurrent = Math.max(maxConcurrent, concurrent);
-        await new Promise(r => setTimeout(r, 20));
+        await new Promise((r) => setTimeout(r, 20));
         concurrent--;
         return createMockResult(true);
       });
 
       const verifier = new BatchVerifier(verifyFn, { concurrency: 3 });
-      const requests = Array(10).fill(null).map(() => createMockRequest());
+      const requests = Array(10)
+        .fill(null)
+        .map(() => createMockRequest());
 
       await verifier.verifyBatch(requests);
 
@@ -182,12 +193,14 @@ describe('BatchVerifier', () => {
 
     it('should calculate timing correctly', async () => {
       const verifyFn = vi.fn().mockImplementation(async () => {
-        await new Promise(r => setTimeout(r, 10));
+        await new Promise((r) => setTimeout(r, 10));
         return createMockResult(true);
       });
       const verifier = new BatchVerifier(verifyFn);
 
-      const requests = Array(3).fill(null).map(() => createMockRequest());
+      const requests = Array(3)
+        .fill(null)
+        .map(() => createMockRequest());
       const result = await verifier.verifyBatch(requests);
 
       expect(result.totalTime).toBeGreaterThan(0);
@@ -208,12 +221,14 @@ describe('BatchVerifier', () => {
       verifyFn.mockImplementation(async () => {
         concurrent++;
         maxConcurrent = Math.max(maxConcurrent, concurrent);
-        await new Promise(r => setTimeout(r, 10));
+        await new Promise((r) => setTimeout(r, 10));
         concurrent--;
         return createMockResult(true);
       });
 
-      const requests = Array(10).fill(null).map(() => createMockRequest());
+      const requests = Array(10)
+        .fill(null)
+        .map(() => createMockRequest());
       await verifier.verifyBatch(requests);
 
       // With higher concurrency, should be able to run more in parallel
@@ -233,7 +248,7 @@ describe('getSuccessfulResults', () => {
     const successful = getSuccessfulResults(results);
 
     expect(successful).toHaveLength(2);
-    expect(successful.every(r => r.isValid)).toBe(true);
+    expect(successful.every((r) => r.isValid)).toBe(true);
   });
 
   it('should filter out invalid results', () => {
@@ -249,10 +264,7 @@ describe('getSuccessfulResults', () => {
   });
 
   it('should return empty array for all failures', () => {
-    const results: (VerificationResult | Error)[] = [
-      createMockResult(false),
-      new Error('Failed'),
-    ];
+    const results: (VerificationResult | Error)[] = [createMockResult(false), new Error('Failed')];
 
     const successful = getSuccessfulResults(results);
 
@@ -547,7 +559,9 @@ describe('verifyLargeBatch', () => {
 
   it('should process large batch in chunks', async () => {
     const verifyFn = vi.fn().mockResolvedValue(createMockResult(true));
-    const requests = Array(250).fill(null).map(() => createMockRequest());
+    const requests = Array(250)
+      .fill(null)
+      .map(() => createMockRequest());
 
     const result = await verifyLargeBatch(requests, verifyFn, {}, 100);
 
@@ -558,10 +572,12 @@ describe('verifyLargeBatch', () => {
 
   it('should accumulate timing correctly', async () => {
     const verifyFn = vi.fn().mockImplementation(async () => {
-      await new Promise(r => setTimeout(r, 5));
+      await new Promise((r) => setTimeout(r, 5));
       return createMockResult(true);
     });
-    const requests = Array(20).fill(null).map(() => createMockRequest());
+    const requests = Array(20)
+      .fill(null)
+      .map(() => createMockRequest());
 
     const result = await verifyLargeBatch(requests, verifyFn, {}, 10);
 
@@ -575,7 +591,9 @@ describe('verifyLargeBatch', () => {
       callCount++;
       return createMockResult(callCount % 3 !== 0);
     });
-    const requests = Array(30).fill(null).map(() => createMockRequest());
+    const requests = Array(30)
+      .fill(null)
+      .map(() => createMockRequest());
 
     const result = await verifyLargeBatch(requests, verifyFn, {}, 10);
 
@@ -589,11 +607,13 @@ describe('verifyLargeBatch', () => {
     const verifyFn = vi.fn().mockImplementation(async () => {
       concurrent++;
       maxConcurrent = Math.max(maxConcurrent, concurrent);
-      await new Promise(r => setTimeout(r, 10));
+      await new Promise((r) => setTimeout(r, 10));
       concurrent--;
       return createMockResult(true);
     });
-    const requests = Array(20).fill(null).map(() => createMockRequest());
+    const requests = Array(20)
+      .fill(null)
+      .map(() => createMockRequest());
 
     await verifyLargeBatch(requests, verifyFn, { concurrency: 2 }, 10);
 

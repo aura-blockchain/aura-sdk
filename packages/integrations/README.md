@@ -24,8 +24,8 @@ const webhook = new WebhookIntegration({
   retryPolicy: {
     maxRetries: 3,
     retryDelay: 1000,
-    backoffMultiplier: 2
-  }
+    backoffMultiplier: 2,
+  },
 });
 
 // Send verification result
@@ -35,7 +35,7 @@ await webhook.sendVerificationResult({
   success: true,
   holderDID: 'did:aura:holder123',
   verifierAddress: 'aura1verifier...',
-  attributes: { age: 25, verified: true }
+  attributes: { age: 25, verified: true },
 });
 
 // Verify incoming webhooks (for bi-directional communication)
@@ -53,15 +53,14 @@ const pos = new POSIntegration({
   system: 'square', // or 'clover', 'toast', 'generic'
   apiKey: 'your-pos-api-key',
   merchantId: 'your-merchant-id',
-  environment: 'production'
+  environment: 'production',
 });
 
 // Link verification to transaction
-await pos.linkToTransaction(
-  'verification-123',
-  'transaction-456',
-  { location: 'Store #42', register: '3' }
-);
+await pos.linkToTransaction('verification-123', 'transaction-456', {
+  location: 'Store #42',
+  register: '3',
+});
 
 // Check if item requires verification
 const requiresAge = pos.requiresAgeVerification('alcohol:beer:001');
@@ -72,12 +71,14 @@ const requirements = await pos.getItemRequirements('tobacco:cigarettes:001');
 // Add custom verification rules
 pos.addItemRule({
   itemId: 'rx:prescription:*',
-  requirements: [{
-    type: 'identity',
-    attributes: ['full_name', 'date_of_birth'],
-    required: true
-  }],
-  category: 'prescription_medication'
+  requirements: [
+    {
+      type: 'identity',
+      attributes: ['full_name', 'date_of_birth'],
+      required: true,
+    },
+  ],
+  category: 'prescription_medication',
 });
 ```
 
@@ -93,7 +94,7 @@ const audit = new AuditLogger({
   localStoragePath: './audit-logs',
   encryptLogs: true,
   encryptionKey: 'your-64-character-hex-encryption-key', // 32 bytes
-  retentionDays: 90
+  retentionDays: 90,
 });
 
 // Log verification event
@@ -111,12 +112,12 @@ await audit.log({
     latitude: 37.7749,
     longitude: -122.4194,
     city: 'San Francisco',
-    country: 'US'
+    country: 'US',
   },
   metadata: {
     transaction_id: 'tx-123',
-    store_id: '42'
-  }
+    store_id: '42',
+  },
 });
 
 // Query audit logs
@@ -125,13 +126,13 @@ const events = await audit.query({
   endDate: new Date('2025-12-31'),
   type: 'verification',
   result: 'success',
-  limit: 100
+  limit: 100,
 });
 
 // Export audit logs
 const csvReport = await audit.export('csv', {
   startDate: new Date('2025-01-01'),
-  endDate: new Date('2025-01-31')
+  endDate: new Date('2025-01-31'),
 });
 
 // Auto-purge old logs
@@ -152,7 +153,7 @@ const compliance = new ComplianceReporter(
     organizationName: 'Your Business Inc.',
     regulatoryId: 'REG-123456',
     autoExport: true,
-    exportPath: './compliance-reports'
+    exportPath: './compliance-reports',
   },
   auditLogger // Pass your AuditLogger instance
 );
@@ -160,16 +161,14 @@ const compliance = new ComplianceReporter(
 // Generate compliance report
 const report = await compliance.generateReport({
   start: new Date('2025-01-01'),
-  end: new Date('2025-01-31')
+  end: new Date('2025-01-31'),
 });
 
 // Export report
 const pdfReport = await compliance.exportReport(report, 'pdf');
 
 // GDPR: Generate data subject report (right to access)
-const subjectReport = await compliance.generateDataSubjectReport(
-  'did:aura:holder123'
-);
+const subjectReport = await compliance.generateDataSubjectReport('did:aura:holder123');
 
 // GDPR: Delete data subject records (right to be forgotten)
 await compliance.deleteDataSubjectRecords('did:aura:holder123');
@@ -192,7 +191,7 @@ const fallback = new FallbackVerification({
   requireApproval: true,
   approverRoles: ['manager', 'supervisor'],
   photoRequired: true,
-  notesRequired: true
+  notesRequired: true,
 });
 
 // Check if fallback should be used
@@ -200,7 +199,7 @@ const error = {
   code: 'NO_CREDENTIALS',
   message: 'User does not have Aura credentials',
   type: 'user',
-  recoverable: false
+  recoverable: false,
 };
 
 if (fallback.shouldUseFallback(error)) {
@@ -236,7 +235,7 @@ if (scanResult.success && scanResult.confidence > 0.8) {
 
 // Query fallback records
 const pendingApprovals = await fallback.queryRecords({
-  pendingApproval: true
+  pendingApproval: true,
 });
 
 // Export records
@@ -251,7 +250,7 @@ import { validateIntegrationConfig } from '@aura-network/verifier-integrations';
 const isValid = validateIntegrationConfig('webhook', {
   url: 'https://example.com/webhook',
   secret: 'my-secret-key-min-16',
-  events: ['verification_success']
+  events: ['verification_success'],
 });
 ```
 
@@ -263,7 +262,7 @@ import {
   POSIntegration,
   AuditLogger,
   ComplianceReporter,
-  FallbackVerification
+  FallbackVerification,
 } from '@aura-network/verifier-integrations';
 
 // Initialize integrations
@@ -271,32 +270,32 @@ const audit = new AuditLogger({
   storage: 'local',
   encryptLogs: true,
   encryptionKey: process.env.AUDIT_ENCRYPTION_KEY,
-  retentionDays: 90
+  retentionDays: 90,
 });
 
 const webhook = new WebhookIntegration({
   url: process.env.WEBHOOK_URL,
   secret: process.env.WEBHOOK_SECRET,
-  events: ['verification_success', 'verification_failure']
+  events: ['verification_success', 'verification_failure'],
 });
 
 const pos = new POSIntegration({
   system: 'square',
   apiKey: process.env.SQUARE_API_KEY,
-  merchantId: process.env.SQUARE_MERCHANT_ID
+  merchantId: process.env.SQUARE_MERCHANT_ID,
 });
 
 const fallback = new FallbackVerification({
   provider: 'manual',
   enabled: true,
-  triggerConditions: ['user_no_aura', 'network_error']
+  triggerConditions: ['user_no_aura', 'network_error'],
 });
 
 const compliance = new ComplianceReporter(
   {
     jurisdiction: 'us',
     reportingPeriod: 'monthly',
-    organizationName: 'Acme Retail'
+    organizationName: 'Acme Retail',
   },
   audit
 );
@@ -314,7 +313,7 @@ async function verifyCustomer(customerId: string, transactionId: string) {
       type: 'verification',
       verificationId: result.id,
       result: 'success',
-      deviceId: 'device-001'
+      deviceId: 'device-001',
     });
 
     // Send webhook
@@ -339,7 +338,7 @@ async function verifyCustomer(customerId: string, transactionId: string) {
         type: 'verification',
         result: 'success',
         deviceId: 'device-001',
-        metadata: { fallback: 'true', method: 'manual' }
+        metadata: { fallback: 'true', method: 'manual' },
       });
 
       return manualRecord;
@@ -372,17 +371,20 @@ async function generateMonthlyReport() {
 ## Compliance Features
 
 ### GDPR (EU)
+
 - Right to access (data subject reports)
 - Right to be forgotten (data deletion)
 - Data minimization (attribute tracking)
 - Retention policies (auto-purge old logs)
 
 ### CCPA (California, US)
+
 - Consumer data access
 - Data deletion requests
 - Disclosure tracking
 
 ### Other Jurisdictions
+
 - UK GDPR, PIPEDA (Canada), Privacy Act (Australia)
 - Customizable retention periods
 - Jurisdiction-specific recommendations

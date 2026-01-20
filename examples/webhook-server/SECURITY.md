@@ -20,7 +20,7 @@ This document outlines security best practices for deploying and operating the A
 All webhook requests must include a valid signature in the `X-Webhook-Signature` header. The signature is calculated using HMAC-SHA256:
 
 ```typescript
-signature = HMAC-SHA256(webhook_secret, request_body)
+signature = HMAC - SHA256(webhook_secret, request_body);
 ```
 
 ### Implementation
@@ -31,10 +31,7 @@ The server automatically verifies signatures using constant-time comparison to p
 import crypto from 'crypto';
 
 function verifySignature(payload: string, signature: string, secret: string): boolean {
-  const expectedSignature = crypto
-    .createHmac('sha256', secret)
-    .update(payload)
-    .digest('hex');
+  const expectedSignature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
 
   return crypto.timingSafeEqual(
     Buffer.from(signature.replace('sha256=', ''), 'hex'),
@@ -99,12 +96,14 @@ When rotating secrets:
 #### AWS Secrets Manager
 
 ```typescript
-import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
+import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 
-const client = new SecretsManagerClient({ region: "us-east-1" });
-const secret = await client.send(new GetSecretValueCommand({
-  SecretId: "webhook/secret"
-}));
+const client = new SecretsManagerClient({ region: 'us-east-1' });
+const secret = await client.send(
+  new GetSecretValueCommand({
+    SecretId: 'webhook/secret',
+  })
+);
 
 process.env.WEBHOOK_SECRET = secret.SecretString;
 ```
@@ -169,7 +168,7 @@ The middleware will reject requests from other IPs:
 if (!allowedIps.includes(clientIp)) {
   return res.status(403).json({
     error: 'Forbidden',
-    message: 'IP address not allowed'
+    message: 'IP address not allowed',
   });
 }
 ```
@@ -326,14 +325,14 @@ Track all security-relevant events:
 logger.warn('Signature verification failed', {
   eventId,
   sourceIp,
-  timestamp: new Date().toISOString()
+  timestamp: new Date().toISOString(),
 });
 
 // Unauthorized access attempt
 logger.warn('Unauthorized access attempt', {
   path: req.path,
   sourceIp: req.ip,
-  headers: req.headers
+  headers: req.headers,
 });
 ```
 
@@ -355,12 +354,12 @@ groups:
       - alert: HighFailureRate
         expr: rate(webhook_signature_failures[5m]) > 10
         annotations:
-          summary: "High rate of signature verification failures"
+          summary: 'High rate of signature verification failures'
 
       - alert: UnauthorizedAccess
         expr: rate(webhook_unauthorized_requests[5m]) > 5
         annotations:
-          summary: "High rate of unauthorized access attempts"
+          summary: 'High rate of unauthorized access attempts'
 ```
 
 ## Data Protection

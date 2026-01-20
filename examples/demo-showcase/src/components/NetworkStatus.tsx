@@ -9,7 +9,12 @@ interface NetworkStatusProps {
   onOfflineModeToggle: (offline: boolean) => void;
 }
 
-export function NetworkStatus({ network, isOnline, onNetworkChange, onOfflineModeToggle }: NetworkStatusProps) {
+export function NetworkStatus({
+  network,
+  isOnline,
+  onNetworkChange,
+  onOfflineModeToggle,
+}: NetworkStatusProps) {
   const [latency, setLatency] = useState<number>(0);
 
   useEffect(() => {
@@ -26,9 +31,7 @@ export function NetworkStatus({ network, isOnline, onNetworkChange, onOfflineMod
     >
       <div className="flex items-center gap-2 mb-6">
         <Activity className="w-6 h-6 text-aura-600 dark:text-aura-400" />
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-          Network Status
-        </h3>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Network Status</h3>
       </div>
 
       <div className="space-y-4">
@@ -73,9 +76,11 @@ export function NetworkStatus({ network, isOnline, onNetworkChange, onOfflineMod
                   : 'border-gray-200 dark:border-gray-700 hover:border-aura-300'
               }`}
             >
-              <Globe className={`w-5 h-5 mx-auto mb-1 ${
-                network === 'mainnet' ? 'text-aura-600 dark:text-aura-400' : 'text-gray-400'
-              }`} />
+              <Globe
+                className={`w-5 h-5 mx-auto mb-1 ${
+                  network === 'mainnet' ? 'text-aura-600 dark:text-aura-400' : 'text-gray-400'
+                }`}
+              />
               <div className="text-sm font-semibold">Mainnet</div>
             </button>
             <button
@@ -86,9 +91,11 @@ export function NetworkStatus({ network, isOnline, onNetworkChange, onOfflineMod
                   : 'border-gray-200 dark:border-gray-700 hover:border-aura-300'
               }`}
             >
-              <Globe className={`w-5 h-5 mx-auto mb-1 ${
-                network === 'testnet' ? 'text-aura-600 dark:text-aura-400' : 'text-gray-400'
-              }`} />
+              <Globe
+                className={`w-5 h-5 mx-auto mb-1 ${
+                  network === 'testnet' ? 'text-aura-600 dark:text-aura-400' : 'text-gray-400'
+                }`}
+              />
               <div className="text-sm font-semibold">Testnet</div>
             </button>
           </div>
@@ -104,15 +111,19 @@ export function NetworkStatus({ network, isOnline, onNetworkChange, onOfflineMod
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600 dark:text-gray-400">RPC Endpoint</span>
               <code className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
-                {network === 'mainnet' ? 'rpc.aurablockchain.org' : 'testnet-rpc.aurablockchain.org'}
+                {network === 'mainnet'
+                  ? 'rpc.aurablockchain.org'
+                  : 'testnet-rpc.aurablockchain.org'}
               </code>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600 dark:text-gray-400">Latency</span>
               <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${
-                  latency < 100 ? 'bg-green-500 animate-pulse' : 'bg-yellow-500 animate-pulse'
-                }`}></div>
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    latency < 100 ? 'bg-green-500 animate-pulse' : 'bg-yellow-500 animate-pulse'
+                  }`}
+                ></div>
                 <span className="text-sm font-semibold text-gray-900 dark:text-white">
                   {latency}ms
                 </span>

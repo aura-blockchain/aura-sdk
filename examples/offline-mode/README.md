@@ -49,6 +49,7 @@ pnpm start
 ```
 
 This will:
+
 - Initialize the verifier with caching enabled
 - Verify sample credentials
 - Cache credentials and revocation data
@@ -64,6 +65,7 @@ pnpm run offline
 ```
 
 This will:
+
 - Initialize the verifier in offline mode
 - Verify credentials using only cached data
 - Show that verification works without network access
@@ -77,6 +79,7 @@ pnpm run sync
 ```
 
 This will:
+
 - Connect to the network
 - Sync cached credentials
 - Update revocation lists
@@ -306,7 +309,9 @@ await cache.initialize();
 // Cache a credential
 await cache.set('vc_123', {
   vcId: 'vc_123',
-  credential: { /* ... */ },
+  credential: {
+    /* ... */
+  },
   holderDid: 'did:aura:mainnet:abc',
   issuerDid: 'did:aura:mainnet:xyz',
   revocationStatus: {
@@ -377,7 +382,8 @@ const lowRiskConfig = {
 // Monitor cache size
 const stats = await verifier.getCacheStats();
 
-if (stats.sizeBytes > 100 * 1024 * 1024) { // 100 MB
+if (stats.sizeBytes > 100 * 1024 * 1024) {
+  // 100 MB
   // Cache is too large, prune it
   await verifier.pruneCache();
 }

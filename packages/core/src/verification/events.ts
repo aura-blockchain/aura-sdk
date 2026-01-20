@@ -76,7 +76,9 @@ export class VerificationEventEmitter {
     }
 
     if (this.verbose) {
-      console.log(`[VerificationEventEmitter] Emitting event: ${event} to ${eventHandlers.size} handlers`);
+      console.log(
+        `[VerificationEventEmitter] Emitting event: ${event} to ${eventHandlers.size} handlers`
+      );
     }
 
     // Execute all handlers in parallel

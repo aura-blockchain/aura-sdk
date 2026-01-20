@@ -71,11 +71,7 @@ export class QueryExecutor {
     } catch (error) {
       // Check if we should retry
       if (attempt >= this.retryConfig.maxAttempts) {
-        throw new RetryExhaustedError(
-          `${method} ${url}`,
-          attempt,
-          error as Error
-        );
+        throw new RetryExhaustedError(`${method} ${url}`, attempt, error as Error);
       }
 
       // Check if error is retryable
@@ -97,11 +93,7 @@ export class QueryExecutor {
   /**
    * Execute single HTTP request with timeout
    */
-  private async executeRequest<T>(
-    method: string,
-    url: string,
-    body?: unknown
-  ): Promise<T> {
+  private async executeRequest<T>(method: string, url: string, body?: unknown): Promise<T> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
@@ -110,7 +102,7 @@ export class QueryExecutor {
         method,
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          Accept: 'application/json',
         },
         signal: controller.signal,
       };
@@ -136,10 +128,7 @@ export class QueryExecutor {
 
       // Handle network errors
       if (error instanceof TypeError) {
-        throw NetworkError.connectionFailed(
-          error.message,
-          { url, method }
-        );
+        throw NetworkError.connectionFailed(error.message, { url, method });
       }
 
       throw error;
@@ -159,10 +148,7 @@ export class QueryExecutor {
         }
         return data as T;
       } catch (error) {
-        throw NetworkError.invalidResponse(
-          'Failed to parse JSON response',
-          { url, error }
-        );
+        throw NetworkError.invalidResponse('Failed to parse JSON response', { url, error });
       }
     }
 
@@ -198,11 +184,7 @@ export class QueryExecutor {
     }
 
     // Generic HTTP error
-    throw NetworkError.fromResponse(
-      response.status,
-      response.statusText,
-      errorBody
-    );
+    throw NetworkError.fromResponse(response.status, response.statusText, errorBody);
   }
 
   /**
@@ -220,10 +202,7 @@ export class QueryExecutor {
     }
 
     // Retry on connection failures
-    if (
-      error instanceof NetworkError &&
-      error.code === 'CONNECTION_FAILED'
-    ) {
+    if (error instanceof NetworkError && error.code === 'CONNECTION_FAILED') {
       return true;
     }
 
@@ -247,7 +226,7 @@ export class QueryExecutor {
    * Sleep for specified milliseconds
    */
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -279,10 +258,7 @@ export class VCRegistryQueries {
       verifier_address: verifierAddress,
     };
 
-    return this.executor.post<VerificationResult>(
-      API_PATHS.vcregistry.verifyPresentation,
-      body
-    );
+    return this.executor.post<VerificationResult>(API_PATHS.vcregistry.verifyPresentation, body);
   }
 
   /**
@@ -379,9 +355,14 @@ export class VCRegistryQueries {
    */
   async checkVCStatus(vcId: string): Promise<VCStatusResponse> {
     try {
-      const response = await this.executor.get<VCStatusResponse & { exists?: boolean; vc_id?: string; revoked?: boolean; expired?: boolean }>(
-        API_PATHS.vcregistry.getVCStatus(vcId)
-      );
+      const response = await this.executor.get<
+        VCStatusResponse & {
+          exists?: boolean;
+          vc_id?: string;
+          revoked?: boolean;
+          expired?: boolean;
+        }
+      >(API_PATHS.vcregistry.getVCStatus(vcId));
 
       return {
         ...response,
@@ -604,10 +585,7 @@ export class VCRegistryQueries {
   /**
    * List attribute VCs for a user - maps to Query.ListAttributeVCs
    */
-  async listAttributeVCs(
-    holderAddress: string,
-    filterTypes?: number[]
-  ): Promise<AttributeVC[]> {
+  async listAttributeVCs(holderAddress: string, filterTypes?: number[]): Promise<AttributeVC[]> {
     let path = API_PATHS.vcregistry.listAttributeVCs(holderAddress);
 
     if (filterTypes && filterTypes.length > 0) {
@@ -677,9 +655,9 @@ export class IdentityQueries {
    */
   async resolveDID(did: string): Promise<DIDDocument | null> {
     try {
-      const response = await this.executor.get<{ did_document?: DIDDocument; exists?: boolean } | DIDDocument>(
-        API_PATHS.identity.resolveDID(did)
-      );
+      const response = await this.executor.get<
+        { did_document?: DIDDocument; exists?: boolean } | DIDDocument
+      >(API_PATHS.identity.resolveDID(did));
 
       if (response && 'did_document' in (response as Record<string, unknown>)) {
         const wrapped = response as { did_document?: DIDDocument; exists?: boolean };
@@ -794,10 +772,13 @@ export class IdentityQueries {
   /**
    * Get change history for a DID - maps to Query.ChangeHistory
    */
-  async getChangeHistory(did: string, pagination?: {
-    key?: string;
-    limit?: number;
-  }): Promise<{ entries: unknown[]; pagination?: { nextKey?: string } }> {
+  async getChangeHistory(
+    did: string,
+    pagination?: {
+      key?: string;
+      limit?: number;
+    }
+  ): Promise<{ entries: unknown[]; pagination?: { nextKey?: string } }> {
     let path = API_PATHS.identity.getChangeHistory(did);
 
     if (pagination) {
@@ -822,7 +803,10 @@ export class IdentityQueries {
   /**
    * Check if address has permission - maps to Query.HasPermission
    */
-  async hasPermission(address: string, permission: string): Promise<{
+  async hasPermission(
+    address: string,
+    permission: string
+  ): Promise<{
     hasPermission: boolean;
     roles: string[];
   }> {
@@ -867,10 +851,13 @@ export class IdentityQueries {
   /**
    * Get sessions by address - maps to Query.SessionsByAddress
    */
-  async getSessionsByAddress(address: string, pagination?: {
-    key?: string;
-    limit?: number;
-  }): Promise<{ sessions: unknown[]; pagination?: { nextKey?: string } }> {
+  async getSessionsByAddress(
+    address: string,
+    pagination?: {
+      key?: string;
+      limit?: number;
+    }
+  ): Promise<{ sessions: unknown[]; pagination?: { nextKey?: string } }> {
     let path = API_PATHS.identity.getSessionsByAddress(address);
 
     if (pagination) {
@@ -953,9 +940,7 @@ export class HealthQueries {
    * Get node info
    */
   async getNodeInfo(): Promise<unknown> {
-    const response = await this.executor.get<APIResponse<unknown>>(
-      API_PATHS.chain.nodeInfo
-    );
+    const response = await this.executor.get<APIResponse<unknown>>(API_PATHS.chain.nodeInfo);
 
     if (response.error) {
       throw new APIError(

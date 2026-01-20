@@ -155,7 +155,7 @@ async function runBenchmarks(options: BenchmarkOptions): Promise<void> {
   console.log('-'.repeat(80));
   console.log(`${'TOTAL'.padEnd(20)} ${(totalDuration / 1000).toFixed(2).padStart(15)}s`);
 
-  const allSuccess = results.every(r => r.success);
+  const allSuccess = results.every((r) => r.success);
   const overallStatus = allSuccess ? '✓ ALL PASSED' : '✗ SOME FAILED';
   console.log(`\nOverall Status: ${overallStatus}\n`);
 

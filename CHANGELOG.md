@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
+
 - Enhanced offline mode with background sync
 - WebAssembly support for browser optimization
 - GraphQL API support
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 #### Core SDK Features
+
 - **VerifierSDK Class**: Main SDK class for credential verification
 - **Signature Verification**: Support for Ed25519 and secp256k1 signature algorithms
 - **Transaction Verification**: Verify Cosmos SDK transactions on Aura Network
@@ -28,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Address Derivation**: Derive blockchain addresses from public keys
 
 #### Cryptography
+
 - Ed25519 signature verification using @noble/ed25519
 - secp256k1 signature verification using @noble/secp256k1
 - Multiple hash algorithm support (SHA256, SHA512, Keccak256)
@@ -35,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Time-constant comparison utilities
 
 #### Network Integration
+
 - Cosmos SDK integration via CosmJS
 - Connection to Aura Network mainnet and testnet
 - Automatic retry logic with exponential backoff
@@ -42,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - RPC and REST endpoint support
 
 #### Offline Capabilities
+
 - Local credential caching with configurable TTL
 - Revocation list synchronization
 - Automatic and manual sync modes
@@ -50,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cache statistics and monitoring
 
 #### QR Code Support
+
 - Parse QR codes in URL format (`aura://verify?data=...`)
 - Parse raw base64-encoded QR data
 - Strict and lenient parsing modes
@@ -58,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Disclosure context validation
 
 #### Error Handling
+
 - Custom error hierarchy with specific error types
 - Structured error codes for programmatic handling
 - Detailed error messages and context
@@ -65,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Error recovery utilities
 
 #### Type Safety
+
 - Full TypeScript support with strict type checking
 - Comprehensive type definitions
 - Type guards and validators
@@ -72,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Well-documented interfaces
 
 #### Documentation
+
 - Complete getting started guide
 - Detailed API reference
 - Security best practices
@@ -82,6 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Contributing guidelines
 
 #### Testing
+
 - Comprehensive unit test suite using Vitest
 - Integration tests for network operations
 - Mock implementations for testing
@@ -89,6 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Continuous integration setup
 
 #### Developer Experience
+
 - ESM and CommonJS module support
 - Tree-shaking support for smaller bundles
 - Source maps for debugging
@@ -97,6 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ESLint rules for code quality
 
 ### Security
+
 - Implemented secure signature verification
 - Added replay attack prevention with nonce tracking
 - Enforced short expiration times for presentations
@@ -117,15 +129,18 @@ This project follows [Semantic Versioning](https://semver.org/):
 ## Compatibility
 
 ### Node.js
+
 - **Minimum**: Node.js 18.0.0
 - **Recommended**: Node.js 20.x LTS or 22.x
 
 ### Browsers
+
 - Chrome/Edge: Last 2 versions
 - Firefox: Last 2 versions
 - Safari: Last 2 versions
 
 ### Platforms
+
 - Node.js (18+)
 - Modern browsers
 - React Native (via companion package)
@@ -134,6 +149,7 @@ This project follows [Semantic Versioning](https://semver.org/):
 ## Dependencies
 
 ### Production Dependencies
+
 - `@noble/ed25519`: ^2.0.0 - Ed25519 signature verification
 - `@noble/secp256k1`: ^2.0.0 - secp256k1 signature verification
 - `@noble/hashes`: ^1.3.3 - Cryptographic hash functions

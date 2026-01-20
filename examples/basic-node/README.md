@@ -44,6 +44,7 @@ pnpm dev
 ## Expected Output
 
 The example will:
+
 1. Initialize the Aura Verifier SDK
 2. Parse a sample QR code
 3. Verify the credential presentation
@@ -144,7 +145,7 @@ import {
   AuraVerifierError,
   QRParseError,
   VerificationError,
-  NetworkError
+  NetworkError,
 } from '@aura-network/verifier-sdk';
 
 try {

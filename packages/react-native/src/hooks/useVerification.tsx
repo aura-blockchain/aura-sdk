@@ -6,7 +6,9 @@ export function useVerification() {
   const { client } = useAuraClient();
   const [presentation, setPresentation] = useState<Record<string, unknown> | null>(null);
   const [pendingRequest, setPendingRequest] = useState<PresentationRequest | null>(null);
-  const [submissionResult, setSubmissionResult] = useState<PresentationSubmissionResult | null>(null);
+  const [submissionResult, setSubmissionResult] = useState<PresentationSubmissionResult | null>(
+    null
+  );
   const [verificationResult, setVerificationResult] = useState<{ verified: boolean } | null>(null);
   const [availabilityCheck, setAvailabilityCheck] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -27,7 +29,10 @@ export function useVerification() {
   );
 
   const createSelectivePresentation = useCallback(
-    async (selective: { credentialId: string; disclosedFields: string[] }[], request: PresentationRequest) => {
+    async (
+      selective: { credentialId: string; disclosedFields: string[] }[],
+      request: PresentationRequest
+    ) => {
       const ids = selective.map((s) => s.credentialId);
       await createPresentation(ids, request);
     },
@@ -45,16 +50,19 @@ export function useVerification() {
     }
   }, [client, presentation]);
 
-  const verifyPresentation = useCallback(async (pres: unknown) => {
-    if (!client) return;
-    try {
-      const res = await client.verifyPresentation(pres);
-      setVerificationResult(res);
-      setError(null);
-    } catch (err) {
-      setError(err as Error);
-    }
-  }, [client]);
+  const verifyPresentation = useCallback(
+    async (pres: unknown) => {
+      if (!client) return;
+      try {
+        const res = await client.verifyPresentation(pres);
+        setVerificationResult(res);
+        setError(null);
+      } catch (err) {
+        setError(err as Error);
+      }
+    },
+    [client]
+  );
 
   const parseVerificationRequest = useCallback((qrData: string) => {
     try {
@@ -68,7 +76,10 @@ export function useVerification() {
 
   const checkCredentialAvailability = useCallback((request: PresentationRequest) => {
     // For now, mark all requested credentials as available
-    const availability = request.requestedCredentials.map((rc) => ({ type: rc.type, available: true }));
+    const availability = request.requestedCredentials.map((rc) => ({
+      type: rc.type,
+      available: true,
+    }));
     setAvailabilityCheck({ availability });
   }, []);
 

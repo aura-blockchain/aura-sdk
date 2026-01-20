@@ -119,11 +119,7 @@ export {
 // ============================================================================
 
 // Aura client for advanced usage
-export {
-  AuraClient,
-  createAuraClient,
-  connectAuraClient,
-} from './grpc/client.js';
+export { AuraClient, createAuraClient, connectAuraClient } from './grpc/client.js';
 
 // Client configuration
 export type { AuraClientConfig } from './grpc/client.js';
@@ -164,11 +160,7 @@ export type { NetworkConfig } from './grpc/endpoints.js';
 // ============================================================================
 
 // Cache and synchronization
-export {
-  CredentialCache,
-  CacheSync,
-  createOfflineVerifier,
-} from './offline/index.js';
+export { CredentialCache, CacheSync, createOfflineVerifier } from './offline/index.js';
 
 // Storage adapters
 export {
@@ -284,10 +276,7 @@ export {
 } from './errors.js';
 
 // Cryptographic errors
-export {
-  SignatureError,
-  PublicKeyError,
-} from './errors.js';
+export { SignatureError, PublicKeyError } from './errors.js';
 
 // Network errors
 export {
@@ -308,48 +297,28 @@ export {
 } from './errors.js';
 
 // DID errors
-export {
-  DIDResolutionError,
-  InvalidDIDError,
-  DIDNotFoundError,
-} from './errors.js';
+export { DIDResolutionError, InvalidDIDError, DIDNotFoundError } from './errors.js';
 
 // Verification errors
-export {
-  VerificationError,
-} from './errors.js';
+export { VerificationError } from './errors.js';
 
 // Cache errors
-export {
-  CacheError,
-  SyncError,
-  OfflineModeUnavailableError,
-} from './errors.js';
+export { CacheError, SyncError, OfflineModeUnavailableError } from './errors.js';
 
 // Configuration errors
-export {
-  ConfigurationError,
-} from './errors.js';
+export { ConfigurationError } from './errors.js';
 
 // ============================================================================
 // Constants
 // ============================================================================
 
 // VC types and statuses
-export {
-  VC_TYPES,
-  VC_STATUSES,
-} from './types/constants.js';
+export { VC_TYPES, VC_STATUSES } from './types/constants.js';
 
-export type {
-  VCTypeValue,
-  VCStatusValue,
-} from './types/constants.js';
+export type { VCTypeValue, VCStatusValue } from './types/constants.js';
 
 // Error codes
-export {
-  ERROR_CODES,
-} from './types/constants.js';
+export { ERROR_CODES } from './types/constants.js';
 
 export type { ErrorCode } from './types/constants.js';
 
@@ -407,10 +376,7 @@ export {
 // ============================================================================
 
 // Legacy type exports (for backwards compatibility)
-export type {
-  VCRecord as VCRegistryRecord,
-  Proof as CredentialProof,
-} from './grpc/types.js';
+export type { VCRecord as VCRegistryRecord, Proof as CredentialProof } from './grpc/types.js';
 
 // ============================================================================
 // Default Export

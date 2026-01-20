@@ -207,9 +207,7 @@ export class EncryptionUtils {
 
     // Convert plaintext to bytes
     const plaintextBytes =
-      typeof plaintext === 'string'
-        ? new TextEncoder().encode(plaintext)
-        : plaintext;
+      typeof plaintext === 'string' ? new TextEncoder().encode(plaintext) : plaintext;
 
     // Generate IV (12 bytes for GCM)
     const iv = options.iv || this.generateRandomBytes(12);
@@ -230,13 +228,19 @@ export class EncryptionUtils {
     };
 
     if (options.aad) {
-      encryptParams.additionalData = options.aad.buffer.slice(options.aad.byteOffset, options.aad.byteOffset + options.aad.byteLength) as ArrayBuffer;
+      encryptParams.additionalData = options.aad.buffer.slice(
+        options.aad.byteOffset,
+        options.aad.byteOffset + options.aad.byteLength
+      ) as ArrayBuffer;
     }
 
     const ciphertext = await crypto.subtle.encrypt(
       encryptParams,
       cryptoKey,
-      plaintextBytes.buffer.slice(plaintextBytes.byteOffset, plaintextBytes.byteOffset + plaintextBytes.byteLength) as ArrayBuffer
+      plaintextBytes.buffer.slice(
+        plaintextBytes.byteOffset,
+        plaintextBytes.byteOffset + plaintextBytes.byteLength
+      ) as ArrayBuffer
     );
 
     // Split ciphertext and tag (last 16 bytes)
@@ -302,14 +306,20 @@ export class EncryptionUtils {
     };
 
     if (options.aad) {
-      decryptParams.additionalData = options.aad.buffer.slice(options.aad.byteOffset, options.aad.byteOffset + options.aad.byteLength) as ArrayBuffer;
+      decryptParams.additionalData = options.aad.buffer.slice(
+        options.aad.byteOffset,
+        options.aad.byteOffset + options.aad.byteLength
+      ) as ArrayBuffer;
     }
 
     try {
       const plaintext = await crypto.subtle.decrypt(
         decryptParams,
         cryptoKey,
-        combined.buffer.slice(combined.byteOffset, combined.byteOffset + combined.byteLength) as ArrayBuffer
+        combined.buffer.slice(
+          combined.byteOffset,
+          combined.byteOffset + combined.byteLength
+        ) as ArrayBuffer
       );
 
       const plaintextBytes = new Uint8Array(plaintext);
@@ -430,7 +440,7 @@ export class EncryptionUtils {
    */
   bytesToHex(bytes: Uint8Array): string {
     return Array.from(bytes)
-      .map(b => b.toString(16).padStart(2, '0'))
+      .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
   }
 
@@ -469,7 +479,7 @@ export class EncryptionUtils {
     // Use browser's atob if available, otherwise implement manually
     if (typeof atob !== 'undefined') {
       const binary = atob(base64);
-      return new Uint8Array(Array.from(binary).map(c => c.charCodeAt(0)));
+      return new Uint8Array(Array.from(binary).map((c) => c.charCodeAt(0)));
     }
 
     // Manual base64 decoding for Node.js

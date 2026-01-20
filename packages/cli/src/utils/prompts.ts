@@ -35,13 +35,13 @@ interface ConfirmPromptOptions {
 export async function selectPrompt<T extends string = string>(
   options: SelectPromptOptions
 ): Promise<T> {
-  const result = await enquirer.prompt({
+  const result = (await enquirer.prompt({
     type: 'select',
     name: 'value',
     message: options.message,
     choices: options.choices,
     initial: options.initial,
-  }) as { value: T };
+  })) as { value: T };
   return result.value;
 }
 
@@ -57,7 +57,7 @@ export async function inputPrompt(options: InputPromptOptions): Promise<string> 
     validate: options.validate,
   };
 
-  const result = await enquirer.prompt(promptConfig) as { value: string };
+  const result = (await enquirer.prompt(promptConfig)) as { value: string };
   return result.value;
 }
 
@@ -65,11 +65,11 @@ export async function inputPrompt(options: InputPromptOptions): Promise<string> 
  * Display a confirm prompt and return the boolean result
  */
 export async function confirmPrompt(options: ConfirmPromptOptions): Promise<boolean> {
-  const result = await enquirer.prompt({
+  const result = (await enquirer.prompt({
     type: 'confirm',
     name: 'value',
     message: options.message,
     initial: options.initial,
-  }) as { value: boolean };
+  })) as { value: boolean };
   return result.value;
 }

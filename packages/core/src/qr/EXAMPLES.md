@@ -17,7 +17,8 @@ Practical examples for using the Aura Verifier SDK QR code module.
 ```typescript
 import { parseAndValidateQRCode } from '@aura/verifier-sdk/qr';
 
-const qrString = "aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXNlbnRhdGlvbi0xMjMiLCJoIjoiZGlkOmF1cmE6bWFpbm5ldDphYmMxMjMiLCJ2Y3MiOlsidmMtMSIsInZjLTIiXSwiY3R4Ijp7InNob3dfZnVsbF9uYW1lIjp0cnVlLCJzaG93X2FnZV9vdmVyXzE4Ijp0cnVlfSwiZXhwIjoxNzM1NTYwMDAwLCJuIjoxMjM0NTY3ODksInNpZyI6ImFiY2RlZjEyMzQ1Njc4OTBhYmNkZWYxMjM0NTY3ODkwYWJjZGVmMTIzNDU2Nzg5MGFiY2RlZjEyMzQ1Njc4OTBhYmNkZWYxMjM0NTY3ODkwYWJjZGVmMTIzNDU2Nzg5MCJ9";
+const qrString =
+  'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXNlbnRhdGlvbi0xMjMiLCJoIjoiZGlkOmF1cmE6bWFpbm5ldDphYmMxMjMiLCJ2Y3MiOlsidmMtMSIsInZjLTIiXSwiY3R4Ijp7InNob3dfZnVsbF9uYW1lIjp0cnVlLCJzaG93X2FnZV9vdmVyXzE4Ijp0cnVlfSwiZXhwIjoxNzM1NTYwMDAwLCJuIjoxMjM0NTY3ODksInNpZyI6ImFiY2RlZjEyMzQ1Njc4OTBhYmNkZWYxMjM0NTY3ODkwYWJjZGVmMTIzNDU2Nzg5MGFiY2RlZjEyMzQ1Njc4OTBhYmNkZWYxMjM0NTY3ODkwYWJjZGVmMTIzNDU2Nzg5MCJ9';
 
 try {
   const qrData = parseAndValidateQRCode(qrString);
@@ -106,7 +107,7 @@ if (result.valid) {
   console.error('✗ QR code validation failed:');
 
   // Show all errors
-  result.errors.forEach(error => {
+  result.errors.forEach((error) => {
     console.error(`  [${error.field}] ${error.message}`);
   });
 }
@@ -114,7 +115,7 @@ if (result.valid) {
 // Check warnings (non-blocking issues)
 if (result.warnings.length > 0) {
   console.warn('Warnings:');
-  result.warnings.forEach(warning => {
+  result.warnings.forEach((warning) => {
     console.warn(`  [${warning.field}] ${warning.message}`);
   });
 }
@@ -297,10 +298,7 @@ const verificationAttempts = new Map<string, number>();
 const MAX_ATTEMPTS = 5;
 const RATE_LIMIT_WINDOW = 60000; // 1 minute
 
-async function verifyWithRateLimit(
-  qrString: string,
-  userIP: string
-): Promise<any> {
+async function verifyWithRateLimit(qrString: string, userIP: string): Promise<any> {
   // Check rate limit
   const attempts = verificationAttempts.get(userIP) || 0;
   if (attempts >= MAX_ATTEMPTS) {
@@ -336,11 +334,7 @@ async function verifyWithRateLimit(
 
 ```typescript
 import express from 'express';
-import {
-  parseAndValidateQRCode,
-  QRExpiredError,
-  QRValidationError,
-} from '@aura/verifier-sdk/qr';
+import { parseAndValidateQRCode, QRExpiredError, QRValidationError } from '@aura/verifier-sdk/qr';
 
 const app = express();
 app.use(express.json());

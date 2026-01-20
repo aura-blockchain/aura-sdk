@@ -9,6 +9,7 @@ Comprehensive integration tests for the Aura Verifier SDK that test the interact
 Tests the integration between QR code parsing, validation, and signature verification.
 
 **Test Coverage:**
+
 - QR code parsing from various formats (aura:// protocol, raw base64)
 - QR code validation with strict and lenient modes
 - Expiration logic and time-based validation
@@ -18,6 +19,7 @@ Tests the integration between QR code parsing, validation, and signature verific
 - Performance benchmarks
 
 **Key Scenarios:**
+
 - Valid QR codes with different credential types
 - Expired QR codes at various time intervals
 - Malformed QR codes (invalid base64, JSON, missing fields)
@@ -30,6 +32,7 @@ Tests the integration between QR code parsing, validation, and signature verific
 Tests the complete end-to-end verification workflow.
 
 **Test Coverage:**
+
 - Complete verification pipeline (parse → validate → verify → result)
 - Mock network responses for blockchain queries
 - Offline mode fallback behavior
@@ -39,6 +42,7 @@ Tests the complete end-to-end verification workflow.
 - Event emission
 
 **Key Scenarios:**
+
 - Valid credential verification flow
 - Required VC types validation
 - Credential age validation
@@ -53,6 +57,7 @@ Tests the complete end-to-end verification workflow.
 Tests the integration between security components.
 
 **Test Coverage:**
+
 - Nonce manager with rate limiter coordination
 - Audit logging during verification
 - Threat detection patterns
@@ -60,6 +65,7 @@ Tests the integration between security components.
 - Complete security workflow
 
 **Key Scenarios:**
+
 - Replay attack prevention with nonce tracking
 - Rate limiting enforcement
 - Audit log chain integrity (tamper-evident)
@@ -75,6 +81,7 @@ Tests the integration between security components.
 Tests the integration of cryptographic operations.
 
 **Test Coverage:**
+
 - Ed25519 signature generation and verification
 - Secp256k1 signature verification
 - Hash operations (SHA-256, double SHA-256)
@@ -82,6 +89,7 @@ Tests the integration of cryptographic operations.
 - Cross-algorithm compatibility
 
 **Key Scenarios:**
+
 - Ed25519 async and sync verification
 - Secp256k1 compressed and uncompressed keys
 - Public key compression/decompression
@@ -95,11 +103,13 @@ Tests the integration of cryptographic operations.
 ## Running Tests
 
 ### Run All Integration Tests
+
 ```bash
 npm test -- __tests__/integration
 ```
 
 ### Run Specific Test File
+
 ```bash
 npm test -- __tests__/integration/qr-integration.test.ts
 npm test -- __tests__/integration/verification-flow.test.ts
@@ -108,11 +118,13 @@ npm test -- __tests__/integration/crypto-integration.test.ts
 ```
 
 ### Run Tests in Watch Mode
+
 ```bash
 npm run test:watch -- __tests__/integration
 ```
 
 ### Generate Coverage Report
+
 ```bash
 npm run test:coverage -- __tests__/integration
 ```
@@ -122,12 +134,14 @@ npm run test:coverage -- __tests__/integration
 ### Fixtures and Mocks
 
 The tests use fixtures from `../../__integration__/__fixtures__/`:
+
 - `test-credentials.ts`: Mock QR codes and credential data
 - `mock-server.ts`: Mock blockchain server responses
 
 ### Test Isolation
 
 Each test file:
+
 - Uses `beforeEach` to set up fresh instances
 - Uses `afterEach` to clean up and restore mocks
 - Maintains test isolation with separate state
@@ -135,11 +149,13 @@ Each test file:
 ### Mocking Strategy
 
 Tests mock:
+
 - Blockchain queries (DID resolution, VC status)
 - Network latency and errors
 - Time-based operations (for expiration testing)
 
 Real implementations used:
+
 - Cryptographic operations (Ed25519, secp256k1)
 - Hash functions (SHA-256)
 - Parsing and validation logic
@@ -158,6 +174,7 @@ All tests follow these standards:
 ## Coverage Goals
 
 Integration tests aim for:
+
 - **Module Integration**: 100% coverage of module interactions
 - **Critical Paths**: 100% coverage of main verification flows
 - **Security Features**: 100% coverage of security components
@@ -177,6 +194,7 @@ When adding new integration tests:
 ## Common Test Patterns
 
 ### Testing Async Operations
+
 ```typescript
 it('should handle async operation', async () => {
   const result = await someAsyncFunction();
@@ -185,26 +203,25 @@ it('should handle async operation', async () => {
 ```
 
 ### Mocking Blockchain Queries
+
 ```typescript
-vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-  async (did: string) => ({
-    id: did,
-    verificationMethod: [],
-    authentication: [],
-  })
-);
+vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) => ({
+  id: did,
+  verificationMethod: [],
+  authentication: [],
+}));
 ```
 
 ### Testing Error Scenarios
+
 ```typescript
 it('should handle errors gracefully', async () => {
-  await expect(
-    functionThatShouldFail()
-  ).rejects.toThrow('Expected error message');
+  await expect(functionThatShouldFail()).rejects.toThrow('Expected error message');
 });
 ```
 
 ### Performance Testing
+
 ```typescript
 it('should complete operation efficiently', () => {
   const startTime = Date.now();
@@ -222,12 +239,15 @@ it('should complete operation efficiently', () => {
 ## Debugging Tests
 
 ### Run Tests with Verbose Output
+
 ```bash
 npm test -- __tests__/integration --reporter=verbose
 ```
 
 ### Debug Single Test
+
 Add `.only` to focus on a specific test:
+
 ```typescript
 it.only('should test specific scenario', () => {
   // This test will run in isolation
@@ -235,7 +255,9 @@ it.only('should test specific scenario', () => {
 ```
 
 ### Debug with Console Logs
+
 Use `console.log` in tests, but remove before committing:
+
 ```typescript
 it('should debug', () => {
   const result = someFunction();
@@ -247,6 +269,7 @@ it('should debug', () => {
 ## CI/CD Integration
 
 These tests are designed to run in CI/CD pipelines:
+
 - Fast execution (< 30 seconds total)
 - No external dependencies
 - Deterministic results
@@ -255,12 +278,14 @@ These tests are designed to run in CI/CD pipelines:
 ## Maintenance
 
 ### Regular Updates
+
 - Update fixtures when QR format changes
 - Add tests for new features
 - Update mocks when blockchain queries change
 - Maintain performance benchmarks
 
 ### Deprecation
+
 - Mark deprecated tests with comments
 - Remove tests for removed features
 - Update documentation when test coverage changes

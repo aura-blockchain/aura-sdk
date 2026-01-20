@@ -108,7 +108,8 @@ const PATTERNS = {
   SCRIPT_TAG: /<script[^>]*>.*?<\/script>/gi,
 
   // SQL injection patterns
-  SQL_INJECTION: /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE)\b)|(-{2})|\/\*|\*\/|;|xp_/gi,
+  SQL_INJECTION:
+    /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE)\b)|(-{2})|\/\*|\*\/|;|xp_/gi,
 
   // Path traversal
   PATH_TRAVERSAL: /\.\.[\/\\]/,
@@ -251,11 +252,7 @@ export class InputSanitizer {
 
     // Type check
     if (typeof input !== 'string') {
-      throw new ValidationError(
-        `${fieldName} must be a string`,
-        fieldName,
-        typeof input
-      );
+      throw new ValidationError(`${fieldName} must be a string`, fieldName, typeof input);
     }
 
     const str = input.trim();
@@ -277,11 +274,7 @@ export class InputSanitizer {
 
     // Pattern validation
     if (options.pattern && !options.pattern.test(str)) {
-      throw new ValidationError(
-        `${fieldName} does not match required pattern`,
-        fieldName,
-        str
-      );
+      throw new ValidationError(`${fieldName} does not match required pattern`, fieldName, str);
     }
 
     // HTML check
@@ -304,10 +297,7 @@ export class InputSanitizer {
 
     // Path traversal check
     if (PATTERNS.PATH_TRAVERSAL.test(str)) {
-      throw new ValidationError(
-        `${fieldName} contains path traversal patterns`,
-        fieldName
-      );
+      throw new ValidationError(`${fieldName} contains path traversal patterns`, fieldName);
     }
 
     return str;
@@ -321,17 +311,11 @@ export class InputSanitizer {
    * @param fieldName - Field name for error messages
    * @returns Validated hex string (without 0x prefix)
    */
-  validateHex(
-    input: string,
-    exactLength?: number,
-    fieldName: string = 'hex'
-  ): string {
+  validateHex(input: string, exactLength?: number, fieldName: string = 'hex'): string {
     const sanitized = this.sanitizeString(input, { fieldName });
 
     // Remove 0x prefix if present
-    const hex = sanitized.startsWith('0x')
-      ? sanitized.substring(2)
-      : sanitized;
+    const hex = sanitized.startsWith('0x') ? sanitized.substring(2) : sanitized;
 
     // Validate hex format
     if (!/^[0-9a-fA-F]*$/.test(hex)) {
@@ -344,11 +328,7 @@ export class InputSanitizer {
 
     // Check even length (hex strings represent bytes)
     if (hex.length % 2 !== 0) {
-      throw new ValidationError(
-        `${fieldName} must have even length`,
-        fieldName,
-        hex.length
-      );
+      throw new ValidationError(`${fieldName} must have even length`, fieldName, hex.length);
     }
 
     // Check exact length if specified
@@ -377,10 +357,7 @@ export class InputSanitizer {
     const sanitized = this.sanitizeString(input, { fieldName });
 
     if (!PATTERNS.BASE64.test(sanitized)) {
-      throw new ValidationError(
-        `${fieldName} is not valid base64`,
-        fieldName
-      );
+      throw new ValidationError(`${fieldName} is not valid base64`, fieldName);
     }
 
     return sanitized;
@@ -394,27 +371,15 @@ export class InputSanitizer {
    * @param fieldName - Field name for error messages
    * @returns Validated URL
    */
-  validateURL(
-    input: string,
-    requireHttps: boolean = false,
-    fieldName: string = 'url'
-  ): string {
+  validateURL(input: string, requireHttps: boolean = false, fieldName: string = 'url'): string {
     const sanitized = this.sanitizeString(input, { fieldName });
 
     if (!PATTERNS.URL.test(sanitized)) {
-      throw new ValidationError(
-        `${fieldName} is not a valid URL`,
-        fieldName,
-        sanitized
-      );
+      throw new ValidationError(`${fieldName} is not a valid URL`, fieldName, sanitized);
     }
 
     if (requireHttps && !sanitized.startsWith('https://')) {
-      throw new ValidationError(
-        `${fieldName} must use HTTPS protocol`,
-        fieldName,
-        sanitized
-      );
+      throw new ValidationError(`${fieldName} must use HTTPS protocol`, fieldName, sanitized);
     }
 
     return sanitized;
@@ -431,11 +396,7 @@ export class InputSanitizer {
     const sanitized = this.sanitizeString(input, { fieldName });
 
     if (!PATTERNS.EMAIL.test(sanitized)) {
-      throw new ValidationError(
-        `${fieldName} is not a valid email address`,
-        fieldName,
-        sanitized
-      );
+      throw new ValidationError(`${fieldName} is not a valid email address`, fieldName, sanitized);
     }
 
     return sanitized.toLowerCase();
@@ -461,35 +422,19 @@ export class InputSanitizer {
     const num = typeof input === 'string' ? parseFloat(input) : Number(input);
 
     if (isNaN(num) || !isFinite(num)) {
-      throw new ValidationError(
-        `${fieldName} must be a valid number`,
-        fieldName,
-        input
-      );
+      throw new ValidationError(`${fieldName} must be a valid number`, fieldName, input);
     }
 
     if (options.integer && !Number.isInteger(num)) {
-      throw new ValidationError(
-        `${fieldName} must be an integer`,
-        fieldName,
-        num
-      );
+      throw new ValidationError(`${fieldName} must be an integer`, fieldName, num);
     }
 
     if (options.min !== undefined && num < options.min) {
-      throw new ValidationError(
-        `${fieldName} must be at least ${options.min}`,
-        fieldName,
-        num
-      );
+      throw new ValidationError(`${fieldName} must be at least ${options.min}`, fieldName, num);
     }
 
     if (options.max !== undefined && num > options.max) {
-      throw new ValidationError(
-        `${fieldName} must be at most ${options.max}`,
-        fieldName,
-        num
-      );
+      throw new ValidationError(`${fieldName} must be at most ${options.max}`, fieldName, num);
     }
 
     return num;
@@ -506,11 +451,7 @@ export class InputSanitizer {
     if (typeof input === 'number') {
       // Unix timestamp (seconds or milliseconds)
       if (input < 0) {
-        throw new ValidationError(
-          `${fieldName} cannot be negative`,
-          fieldName,
-          input
-        );
+        throw new ValidationError(`${fieldName} cannot be negative`, fieldName, input);
       }
 
       // Convert seconds to milliseconds if needed
@@ -521,11 +462,7 @@ export class InputSanitizer {
       const max = new Date('2100-01-01').getTime();
 
       if (timestamp < min || timestamp > max) {
-        throw new ValidationError(
-          `${fieldName} is out of reasonable range`,
-          fieldName,
-          timestamp
-        );
+        throw new ValidationError(`${fieldName} is out of reasonable range`, fieldName, timestamp);
       }
 
       return timestamp;
@@ -536,11 +473,7 @@ export class InputSanitizer {
     const timestamp = Date.parse(str);
 
     if (isNaN(timestamp)) {
-      throw new ValidationError(
-        `${fieldName} is not a valid timestamp`,
-        fieldName,
-        str
-      );
+      throw new ValidationError(`${fieldName} is not a valid timestamp`, fieldName, str);
     }
 
     return timestamp;
@@ -580,11 +513,7 @@ export class InputSanitizer {
 
     // Validate it's an object
     if (typeof obj !== 'object' || obj === null) {
-      throw new ValidationError(
-        `${fieldName} must be a JSON object`,
-        fieldName,
-        typeof obj
-      );
+      throw new ValidationError(`${fieldName} must be a JSON object`, fieldName, typeof obj);
     }
 
     return obj as T;

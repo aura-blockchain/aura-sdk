@@ -84,17 +84,20 @@ export const API_PATHS = {
     listUserVCs: (holderAddress: string) =>
       `/aura/vcregistry/v1beta1/vcs/user/${encodeURIComponent(holderAddress)}`,
     /** Get VC policy - maps to Query.GetVCPolicy */
-    getVCPolicy: (vcTypeName: string) => `/aura/vcregistry/v1beta1/policies/${encodeURIComponent(vcTypeName)}`,
+    getVCPolicy: (vcTypeName: string) =>
+      `/aura/vcregistry/v1beta1/policies/${encodeURIComponent(vcTypeName)}`,
     /** List VC policies - maps to Query.ListVCPolicies */
     listVCPolicies: '/aura/vcregistry/v1beta1/policies',
     /** Get revocation list - maps to Query.GetRevocationList */
     getRevocationList: '/aura/vcregistry/v1beta1/revocations',
     /** Check revocation - maps to Query.CheckRevocation */
-    checkRevocation: (vcId: string) => `/aura/vcregistry/v1beta1/revocations/${encodeURIComponent(vcId)}`,
+    checkRevocation: (vcId: string) =>
+      `/aura/vcregistry/v1beta1/revocations/${encodeURIComponent(vcId)}`,
     /** Resolve DID - maps to Query.ResolveDID */
     resolveDID: (did: string) => `/aura/vcregistry/v1beta1/dids/${encodeURIComponent(did)}`,
     /** Get DID by address - maps to Query.GetDIDByAddress */
-    getDIDByAddress: (controller: string) => `/aura/vcregistry/v1beta1/dids/address/${encodeURIComponent(controller)}`,
+    getDIDByAddress: (controller: string) =>
+      `/aura/vcregistry/v1beta1/dids/address/${encodeURIComponent(controller)}`,
     /** Validate mint eligibility - maps to Query.ValidateMintEligibility */
     validateMintEligibility: (holderAddress: string, vcType: number) =>
       `/aura/vcregistry/v1beta1/eligibility/${encodeURIComponent(holderAddress)}/${vcType}`,
@@ -103,13 +106,17 @@ export const API_PATHS = {
     /** Get module params - maps to Query.Params */
     params: '/aura/vcregistry/v1beta1/params',
     /** Get attribute VC - maps to Query.GetAttributeVC */
-    getAttributeVC: (attributeVcId: string) => `/aura/vcregistry/v1beta1/attributes/${encodeURIComponent(attributeVcId)}`,
+    getAttributeVC: (attributeVcId: string) =>
+      `/aura/vcregistry/v1beta1/attributes/${encodeURIComponent(attributeVcId)}`,
     /** List attribute VCs - maps to Query.ListAttributeVCs */
-    listAttributeVCs: (holderAddress: string) => `/aura/vcregistry/v1beta1/attributes/user/${encodeURIComponent(holderAddress)}`,
+    listAttributeVCs: (holderAddress: string) =>
+      `/aura/vcregistry/v1beta1/attributes/user/${encodeURIComponent(holderAddress)}`,
     /** Get disclosure policy - maps to Query.GetDisclosurePolicy */
-    getDisclosurePolicy: (holderAddress: string) => `/aura/vcregistry/v1beta1/disclosure/policy/${encodeURIComponent(holderAddress)}`,
+    getDisclosurePolicy: (holderAddress: string) =>
+      `/aura/vcregistry/v1beta1/disclosure/policy/${encodeURIComponent(holderAddress)}`,
     /** Get disclosure request - maps to Query.GetDisclosureRequest */
-    getDisclosureRequest: (requestId: string) => `/aura/vcregistry/v1beta1/disclosure/requests/${encodeURIComponent(requestId)}`,
+    getDisclosureRequest: (requestId: string) =>
+      `/aura/vcregistry/v1beta1/disclosure/requests/${encodeURIComponent(requestId)}`,
   },
 
   /**
@@ -124,32 +131,40 @@ export const API_PATHS = {
     /** Get identity by DID - maps to Query.IdentityRecord */
     getIdentity: (did: string) => `/aura/identity/v1beta1/identities/${encodeURIComponent(did)}`,
     /** Get identity by address - maps to Query.IdentityRecordByAddress */
-    getIdentityByAddress: (address: string) => `/aura/identity/v1beta1/identities/address/${encodeURIComponent(address)}`,
+    getIdentityByAddress: (address: string) =>
+      `/aura/identity/v1beta1/identities/address/${encodeURIComponent(address)}`,
     /** List all identities - maps to Query.AllIdentityRecords */
     listIdentities: '/aura/identity/v1beta1/identities',
     /** Get change request - maps to Query.ChangeRequest */
-    getChangeRequest: (requestId: string) => `/aura/identity/v1beta1/change-requests/${encodeURIComponent(requestId)}`,
+    getChangeRequest: (requestId: string) =>
+      `/aura/identity/v1beta1/change-requests/${encodeURIComponent(requestId)}`,
     /** Get change requests by DID - maps to Query.ChangeRequestsByDID */
-    getChangeRequestsByDID: (did: string) => `/aura/identity/v1beta1/change-requests/did/${encodeURIComponent(did)}`,
+    getChangeRequestsByDID: (did: string) =>
+      `/aura/identity/v1beta1/change-requests/did/${encodeURIComponent(did)}`,
     /** Get change history - maps to Query.ChangeHistory */
-    getChangeHistory: (did: string) => `/aura/identity/v1beta1/change-history/${encodeURIComponent(did)}`,
+    getChangeHistory: (did: string) =>
+      `/aura/identity/v1beta1/change-history/${encodeURIComponent(did)}`,
     /** Get role - maps to Query.Role */
     getRole: (roleName: string) => `/aura/identity/v1beta1/roles/${encodeURIComponent(roleName)}`,
     /** List all roles - maps to Query.AllRoles */
     listRoles: '/aura/identity/v1beta1/roles',
     /** Get role assignments - maps to Query.RoleAssignments */
-    getRoleAssignments: (address: string) => `/aura/identity/v1beta1/role-assignments/${encodeURIComponent(address)}`,
+    getRoleAssignments: (address: string) =>
+      `/aura/identity/v1beta1/role-assignments/${encodeURIComponent(address)}`,
     /** Check permission - maps to Query.HasPermission */
     hasPermission: (address: string, permission: string) =>
       `/aura/identity/v1beta1/permissions/${encodeURIComponent(address)}/${encodeURIComponent(permission)}`,
     /** Get session - maps to Query.Session */
-    getSession: (sessionId: string) => `/aura/identity/v1beta1/sessions/${encodeURIComponent(sessionId)}`,
+    getSession: (sessionId: string) =>
+      `/aura/identity/v1beta1/sessions/${encodeURIComponent(sessionId)}`,
     /** Get sessions by address - maps to Query.SessionsByAddress */
-    getSessionsByAddress: (address: string) => `/aura/identity/v1beta1/sessions/address/${encodeURIComponent(address)}`,
+    getSessionsByAddress: (address: string) =>
+      `/aura/identity/v1beta1/sessions/address/${encodeURIComponent(address)}`,
     /** Get audit logs - maps to Query.AuditLogs */
     getAuditLogs: '/aura/identity/v1beta1/audit-logs',
     /** Get audit logs by actor - maps to Query.AuditLogsByActor */
-    getAuditLogsByActor: (actor: string) => `/aura/identity/v1beta1/audit-logs/actor/${encodeURIComponent(actor)}`,
+    getAuditLogsByActor: (actor: string) =>
+      `/aura/identity/v1beta1/audit-logs/actor/${encodeURIComponent(actor)}`,
     /** Get module params - maps to Query.Params */
     params: '/aura/identity/v1beta1/params',
   },
@@ -213,9 +228,8 @@ export function validateTLSEndpoint(
 
   // HTTP only allowed for localhost in development
   if (url.protocol === 'http:') {
-    const isLocalhost = url.hostname === 'localhost' ||
-                        url.hostname === '127.0.0.1' ||
-                        url.hostname === '::1';
+    const isLocalhost =
+      url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.hostname === '::1';
 
     if (isLocalhost && allowInsecureLocal) {
       return true;
@@ -223,7 +237,7 @@ export function validateTLSEndpoint(
 
     throw new Error(
       `Security: TLS required. Endpoint "${endpoint}" must use HTTPS. ` +
-      `HTTP is only allowed for localhost in development mode.`
+        `HTTP is only allowed for localhost in development mode.`
     );
   }
 
@@ -266,14 +280,14 @@ export function validateGRPCEndpoint(
     if (allowInsecure && isLocalhost) {
       console.warn(
         `[Security Warning] Allowing insecure gRPC connection to ${endpoint}. ` +
-        `This should only be used for local development.`
+          `This should only be used for local development.`
       );
       return true;
     }
 
     throw new Error(
       `Security: TLS required for gRPC. Endpoint "${endpoint}" uses insecure grpc:// protocol. ` +
-      `Use grpcs:// for secure connections to non-local networks.`
+        `Use grpcs:// for secure connections to non-local networks.`
     );
   }
 
@@ -287,7 +301,7 @@ export function validateGRPCEndpoint(
     if (network === 'local' && isLocalhost) {
       console.warn(
         `[Security] Legacy gRPC endpoint format "${endpoint}". ` +
-        `Consider using grpc://localhost:${port} for clarity.`
+          `Consider using grpc://localhost:${port} for clarity.`
       );
       return true;
     }
@@ -295,14 +309,14 @@ export function validateGRPCEndpoint(
     // For non-local networks, require explicit protocol
     throw new Error(
       `Security: Ambiguous gRPC endpoint "${endpoint}". ` +
-      `Use grpcs://${host}:${port} for TLS-secured connections, ` +
-      `or grpc://${host}:${port} for insecure (local only).`
+        `Use grpcs://${host}:${port} for TLS-secured connections, ` +
+        `or grpc://${host}:${port} for insecure (local only).`
     );
   }
 
   throw new Error(
     `Invalid gRPC endpoint format: "${endpoint}". ` +
-    `Expected format: grpcs://host:port or grpc://host:port`
+      `Expected format: grpcs://host:port or grpc://host:port`
   );
 }
 

@@ -13,9 +13,9 @@ class MockAuraClient implements AuraClient {
   private revokedCredentials: Set<string> = new Set();
   private revocationList = {
     merkleRoot: 'a'.repeat(64),
-    bitmap: new Uint8Array([0xFF, 0x00]),
+    bitmap: new Uint8Array([0xff, 0x00]),
     totalCredentials: 16,
-    revokedCount: 8
+    revokedCount: 8,
   };
 
   async getCredential(vcId: string): Promise<any> {
@@ -39,7 +39,7 @@ class MockAuraClient implements AuraClient {
     const isRevoked = await this.isCredentialRevoked(vcId);
     return {
       verified: !isRevoked,
-      errors: isRevoked ? ['Credential is revoked'] : []
+      errors: isRevoked ? ['Credential is revoked'] : [],
     };
   }
 
@@ -68,7 +68,7 @@ describe('CacheSync', () => {
       maxAge: 3600,
       maxEntries: 100,
       persistToDisk: false,
-      storageAdapter: 'memory'
+      storageAdapter: 'memory',
     });
     sync = new CacheSync(client, cache);
   });
@@ -232,7 +232,7 @@ describe('CacheSync', () => {
       sync.startAutoSync(10000, { syncOnStartup: true });
 
       // Wait a bit for startup sync to complete
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const status = sync.getAutoSyncStatus();
       expect(status.lastSyncCount).toBeGreaterThan(0);
@@ -387,7 +387,7 @@ function createMockCredential(vcId: string): VerifiableCredential {
   return {
     '@context': [
       'https://www.w3.org/2018/credentials/v1',
-      'https://testnet-api.aurablockchain.org/aura/vcregistry/v1beta1'
+      'https://testnet-api.aurablockchain.org/aura/vcregistry/v1beta1',
     ],
     id: vcId,
     type: ['VerifiableCredential', 'AuraIdentityCredential'],
@@ -396,15 +396,15 @@ function createMockCredential(vcId: string): VerifiableCredential {
     credentialSubject: {
       id: 'did:aura:holder456',
       name: 'Test User',
-      age: 25
+      age: 25,
     },
     proof: {
       type: 'Ed25519Signature2020',
       created: new Date().toISOString(),
       proofPurpose: 'assertionMethod',
       verificationMethod: 'did:aura:issuer123#key-1',
-      signature: 'z' + 'a'.repeat(86)
-    }
+      signature: 'z' + 'a'.repeat(86),
+    },
   };
 }
 
@@ -418,13 +418,15 @@ function createCachedCredential(vcId: string, credential: VerifiableCredential):
     issuerDid: credential.issuer,
     revocationStatus: {
       isRevoked: false,
-      checkedAt: now
+      checkedAt: now,
     },
     metadata: {
       cachedAt: now,
       expiresAt: new Date(now.getTime() + 3600000),
       issuedAt: new Date(credential.issuanceDate),
-      credentialExpiresAt: credential.expirationDate ? new Date(credential.expirationDate) : undefined
-    }
+      credentialExpiresAt: credential.expirationDate
+        ? new Date(credential.expirationDate)
+        : undefined,
+    },
   };
 }

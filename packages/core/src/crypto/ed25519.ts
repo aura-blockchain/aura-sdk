@@ -33,7 +33,9 @@ export async function verifyEd25519Signature(
     let signatureBytes: Uint8Array;
     if (typeof signature === 'string') {
       if (!isValidHex(signature, ED25519_SIGNATURE_LENGTH)) {
-        throw new Error(`Invalid Ed25519 signature hex string. Expected ${ED25519_SIGNATURE_LENGTH * 2} hex characters`);
+        throw new Error(
+          `Invalid Ed25519 signature hex string. Expected ${ED25519_SIGNATURE_LENGTH * 2} hex characters`
+        );
       }
       signatureBytes = hexToUint8Array(signature);
     } else {
@@ -42,14 +44,18 @@ export async function verifyEd25519Signature(
 
     // Validate signature length
     if (signatureBytes.length !== ED25519_SIGNATURE_LENGTH) {
-      throw new Error(`Invalid Ed25519 signature length. Expected ${ED25519_SIGNATURE_LENGTH} bytes, got ${signatureBytes.length}`);
+      throw new Error(
+        `Invalid Ed25519 signature length. Expected ${ED25519_SIGNATURE_LENGTH} bytes, got ${signatureBytes.length}`
+      );
     }
 
     // Convert public key to Uint8Array
     let publicKeyBytes: Uint8Array;
     if (typeof publicKey === 'string') {
       if (!isValidHex(publicKey, ED25519_PUBLIC_KEY_LENGTH)) {
-        throw new Error(`Invalid Ed25519 public key hex string. Expected ${ED25519_PUBLIC_KEY_LENGTH * 2} hex characters`);
+        throw new Error(
+          `Invalid Ed25519 public key hex string. Expected ${ED25519_PUBLIC_KEY_LENGTH * 2} hex characters`
+        );
       }
       publicKeyBytes = hexToUint8Array(publicKey);
     } else {
@@ -58,7 +64,9 @@ export async function verifyEd25519Signature(
 
     // Validate public key length
     if (publicKeyBytes.length !== ED25519_PUBLIC_KEY_LENGTH) {
-      throw new Error(`Invalid Ed25519 public key length. Expected ${ED25519_PUBLIC_KEY_LENGTH} bytes, got ${publicKeyBytes.length}`);
+      throw new Error(
+        `Invalid Ed25519 public key length. Expected ${ED25519_PUBLIC_KEY_LENGTH} bytes, got ${publicKeyBytes.length}`
+      );
     }
 
     // Convert message to bytes
@@ -99,7 +107,9 @@ export function verifyEd25519SignatureSync(
     let signatureBytes: Uint8Array;
     if (typeof signature === 'string') {
       if (!isValidHex(signature, ED25519_SIGNATURE_LENGTH)) {
-        throw new Error(`Invalid Ed25519 signature hex string. Expected ${ED25519_SIGNATURE_LENGTH * 2} hex characters`);
+        throw new Error(
+          `Invalid Ed25519 signature hex string. Expected ${ED25519_SIGNATURE_LENGTH * 2} hex characters`
+        );
       }
       signatureBytes = hexToUint8Array(signature);
     } else {
@@ -108,14 +118,18 @@ export function verifyEd25519SignatureSync(
 
     // Validate signature length
     if (signatureBytes.length !== ED25519_SIGNATURE_LENGTH) {
-      throw new Error(`Invalid Ed25519 signature length. Expected ${ED25519_SIGNATURE_LENGTH} bytes, got ${signatureBytes.length}`);
+      throw new Error(
+        `Invalid Ed25519 signature length. Expected ${ED25519_SIGNATURE_LENGTH} bytes, got ${signatureBytes.length}`
+      );
     }
 
     // Convert public key to Uint8Array
     let publicKeyBytes: Uint8Array;
     if (typeof publicKey === 'string') {
       if (!isValidHex(publicKey, ED25519_PUBLIC_KEY_LENGTH)) {
-        throw new Error(`Invalid Ed25519 public key hex string. Expected ${ED25519_PUBLIC_KEY_LENGTH * 2} hex characters`);
+        throw new Error(
+          `Invalid Ed25519 public key hex string. Expected ${ED25519_PUBLIC_KEY_LENGTH * 2} hex characters`
+        );
       }
       publicKeyBytes = hexToUint8Array(publicKey);
     } else {
@@ -124,7 +138,9 @@ export function verifyEd25519SignatureSync(
 
     // Validate public key length
     if (publicKeyBytes.length !== ED25519_PUBLIC_KEY_LENGTH) {
-      throw new Error(`Invalid Ed25519 public key length. Expected ${ED25519_PUBLIC_KEY_LENGTH} bytes, got ${publicKeyBytes.length}`);
+      throw new Error(
+        `Invalid Ed25519 public key length. Expected ${ED25519_PUBLIC_KEY_LENGTH} bytes, got ${publicKeyBytes.length}`
+      );
     }
 
     // Convert message to bytes

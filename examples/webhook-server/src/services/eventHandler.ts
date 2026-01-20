@@ -56,8 +56,7 @@ export class EventHandlerService {
         eventId: payload.id,
       });
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
 
       logger.error('Failed to process webhook event', {
         eventId: payload.id,
@@ -75,9 +74,7 @@ export class EventHandlerService {
   /**
    * Handle verification success
    */
-  private async handleVerificationSuccess(
-    payload: VerificationSuccessPayload
-  ): Promise<void> {
+  private async handleVerificationSuccess(payload: VerificationSuccessPayload): Promise<void> {
     logger.info('Verification successful', {
       credentialId: payload.data.credentialId,
       holderDid: payload.data.holderDid,
@@ -96,9 +93,7 @@ export class EventHandlerService {
   /**
    * Handle verification failed
    */
-  private async handleVerificationFailed(
-    payload: VerificationFailedPayload
-  ): Promise<void> {
+  private async handleVerificationFailed(payload: VerificationFailedPayload): Promise<void> {
     logger.warn('Verification failed', {
       reason: payload.data.reason,
       errorCode: payload.data.errorCode,
@@ -116,9 +111,7 @@ export class EventHandlerService {
   /**
    * Handle credential revoked
    */
-  private async handleCredentialRevoked(
-    payload: CredentialRevokedPayload
-  ): Promise<void> {
+  private async handleCredentialRevoked(payload: CredentialRevokedPayload): Promise<void> {
     logger.info('Credential revoked', {
       credentialId: payload.data.credentialId,
       holderDid: payload.data.holderDid,
@@ -138,9 +131,7 @@ export class EventHandlerService {
   /**
    * Handle credential expired
    */
-  private async handleCredentialExpired(
-    payload: CredentialExpiredPayload
-  ): Promise<void> {
+  private async handleCredentialExpired(payload: CredentialExpiredPayload): Promise<void> {
     logger.info('Credential expired', {
       credentialId: payload.data.credentialId,
       holderDid: payload.data.holderDid,
@@ -158,9 +149,7 @@ export class EventHandlerService {
   /**
    * Handle age verification passed
    */
-  private async handleAgeVerificationPassed(
-    payload: AgeVerificationPassedPayload
-  ): Promise<void> {
+  private async handleAgeVerificationPassed(payload: AgeVerificationPassedPayload): Promise<void> {
     logger.info('Age verification passed', {
       credentialId: payload.data.credentialId,
       holderDid: payload.data.holderDid,
@@ -178,9 +167,7 @@ export class EventHandlerService {
   /**
    * Handle age verification failed
    */
-  private async handleAgeVerificationFailed(
-    payload: AgeVerificationFailedPayload
-  ): Promise<void> {
+  private async handleAgeVerificationFailed(payload: AgeVerificationFailedPayload): Promise<void> {
     logger.warn('Age verification failed', {
       reason: payload.data.reason,
       minimumAge: payload.data.minimumAge,

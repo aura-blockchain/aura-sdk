@@ -11,11 +11,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { AuraVerifier } from '../verification/verifier.js';
 import { NETWORK_ENDPOINTS } from '../verification/types.js';
-import {
-  VALID_AGE_21_QR,
-  TESTNET_QR,
-  LOCAL_NETWORK_QR,
-} from './__fixtures__/test-credentials.js';
+import { VALID_AGE_21_QR, TESTNET_QR, LOCAL_NETWORK_QR } from './__fixtures__/test-credentials.js';
 import { createMockServer, createUnstableServer } from './__fixtures__/mock-server.js';
 
 describe('Network Switching Integration Tests', () => {
@@ -48,12 +44,12 @@ describe('Network Switching Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();
@@ -74,12 +70,12 @@ describe('Network Switching Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();
@@ -119,12 +115,12 @@ describe('Network Switching Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();
@@ -145,12 +141,12 @@ describe('Network Switching Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();
@@ -190,12 +186,12 @@ describe('Network Switching Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();
@@ -285,12 +281,12 @@ describe('Network Switching Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();
@@ -412,12 +408,12 @@ describe('Network Switching Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();
@@ -455,12 +451,12 @@ describe('Network Switching Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();
@@ -495,12 +491,12 @@ describe('Network Switching Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();
@@ -521,12 +517,12 @@ describe('Network Switching Integration Tests', () => {
         verbose: false,
       });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();

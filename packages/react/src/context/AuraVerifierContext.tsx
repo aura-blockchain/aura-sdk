@@ -89,13 +89,16 @@ export function AuraVerifierProvider({
   }, [config, onError]);
 
   // Handle offline mode changes
-  const setOffline = useCallback((offline: boolean) => {
-    setIsOfflineState(offline);
-    if (verifier) {
-      // Update verifier offline mode if it has a method for it
-      // This would depend on the core SDK implementation
-    }
-  }, [verifier]);
+  const setOffline = useCallback(
+    (offline: boolean) => {
+      setIsOfflineState(offline);
+      if (verifier) {
+        // Update verifier offline mode if it has a method for it
+        // This would depend on the core SDK implementation
+      }
+    },
+    [verifier]
+  );
 
   const contextValue: AuraVerifierContextValue = {
     verifier,
@@ -107,9 +110,7 @@ export function AuraVerifierProvider({
   };
 
   return (
-    <AuraVerifierContext.Provider value={contextValue}>
-      {children}
-    </AuraVerifierContext.Provider>
+    <AuraVerifierContext.Provider value={contextValue}>{children}</AuraVerifierContext.Provider>
   );
 }
 

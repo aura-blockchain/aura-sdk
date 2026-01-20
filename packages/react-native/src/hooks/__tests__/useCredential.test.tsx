@@ -41,7 +41,10 @@ describe('useCredential', () => {
   });
 
   it('handles missing client gracefully', async () => {
-    (clientHook.useAuraClient as unknown as vi.Mock).mockReturnValue({ client: null, isConnected: false } as any);
+    (clientHook.useAuraClient as unknown as vi.Mock).mockReturnValue({
+      client: null,
+      isConnected: false,
+    } as any);
     const { result } = renderHook(() => useCredential('vc:aura:123'), { wrapper });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
@@ -76,14 +79,18 @@ describe('useCredential', () => {
   it('should handle revoked credential', async () => {
     (clientHook.useAuraClient as unknown as vi.Mock).mockReturnValue({
       client: {
-        queryCredential: vi.fn().mockResolvedValue({ ...mockCredential, status: CredentialStatus.REVOKED }),
+        queryCredential: vi
+          .fn()
+          .mockResolvedValue({ ...mockCredential, status: CredentialStatus.REVOKED }),
         verifyCredential: vi.fn().mockResolvedValue({ verified: false, checks: [] }),
         getCredentialStatus: vi.fn().mockResolvedValue(CredentialStatus.REVOKED),
       },
       isConnected: true,
     } as any);
 
-    const { result } = renderHook(() => useCredential('vc:aura:revoked', { checkStatus: true }), { wrapper });
+    const { result } = renderHook(() => useCredential('vc:aura:revoked', { checkStatus: true }), {
+      wrapper,
+    });
 
     await waitFor(() => expect(result.current.status).toBe(CredentialStatus.REVOKED));
     expect(result.current.isValid).toBe(false);
@@ -103,7 +110,9 @@ describe('useCredential', () => {
       isConnected: true,
     } as any);
 
-    const { result } = renderHook(() => useCredential('vc:aura:expired', { checkStatus: true }), { wrapper });
+    const { result } = renderHook(() => useCredential('vc:aura:expired', { checkStatus: true }), {
+      wrapper,
+    });
     await waitFor(() => expect(result.current.status).toBe(CredentialStatus.EXPIRED));
     expect(result.current.isExpired).toBe(true);
     expect(result.current.isValid).toBe(false);

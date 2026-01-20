@@ -11,7 +11,7 @@ import {
   CacheStats,
   RevocationList,
   StorageAdapter,
-  EncryptionConfig
+  EncryptionConfig,
 } from './types.js';
 import { createStorageAdapter } from './storage.js';
 import {
@@ -20,11 +20,9 @@ import {
   encryptObject,
   decryptObject,
   hexToKey,
-  isValidEncryptionKey
+  isValidEncryptionKey,
 } from './encryption.js';
-import {
-  isRevokedInBitmap
-} from './revocation.js';
+import { isRevokedInBitmap } from './revocation.js';
 import type { RevocationBitmap } from './types.js';
 import { safeJSONReviver } from '../utils/index.js';
 
@@ -32,7 +30,7 @@ const DEFAULT_CONFIG: CacheConfig = {
   maxAge: 3600, // 1 hour
   maxEntries: 1000,
   persistToDisk: true,
-  storageAdapter: 'memory'
+  storageAdapter: 'memory',
 };
 
 /**
@@ -51,7 +49,7 @@ export class CredentialCache {
     hits: 0,
     misses: 0,
     sets: 0,
-    deletes: 0
+    deletes: 0,
   };
 
   /**
@@ -62,20 +60,19 @@ export class CredentialCache {
     this.config = { ...DEFAULT_CONFIG, ...config };
 
     // Initialize storage adapter
-    this.storage = createStorageAdapter(
-      this.config.storageAdapter,
-      {
-        prefix: 'aura_vc_',
-        basePath: this.config.storagePath
-      }
-    );
+    this.storage = createStorageAdapter(this.config.storageAdapter, {
+      prefix: 'aura_vc_',
+      basePath: this.config.storagePath,
+    });
 
     // Initialize encryption key if provided
     if (this.config.encryptionKey) {
       try {
         this.encryptionKey = hexToKey(this.config.encryptionKey);
       } catch (error) {
-        throw new Error(`Invalid encryption key: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        throw new Error(
+          `Invalid encryption key: ${error instanceof Error ? error.message : 'Unknown error'}`
+        );
       }
     }
   }
@@ -89,7 +86,7 @@ export class CredentialCache {
     try {
       // Check max entries limit
       const keys = await this.storage.keys();
-      const credentialKeys = keys.filter(k => k.startsWith('credential:'));
+      const credentialKeys = keys.filter((k) => k.startsWith('credential:'));
 
       if (credentialKeys.length >= this.config.maxEntries) {
         // Remove oldest entry
@@ -124,7 +121,9 @@ export class CredentialCache {
 
       this.stats.sets++;
     } catch (error) {
-      throw new Error(`Failed to cache credential: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to cache credential: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -178,7 +177,9 @@ export class CredentialCache {
       this.stats.hits++;
       return data;
     } catch (error) {
-      throw new Error(`Failed to retrieve credential from cache: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to retrieve credential from cache: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -202,7 +203,9 @@ export class CredentialCache {
       await this.storage.delete(key);
       this.stats.deletes++;
     } catch (error) {
-      throw new Error(`Failed to delete credential from cache: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to delete credential from cache: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -212,7 +215,7 @@ export class CredentialCache {
   async clear(): Promise<void> {
     try {
       const keys = await this.storage.keys();
-      const credentialKeys = keys.filter(k => k.startsWith('credential:'));
+      const credentialKeys = keys.filter((k) => k.startsWith('credential:'));
 
       for (const key of credentialKeys) {
         await this.storage.delete(key);
@@ -222,10 +225,12 @@ export class CredentialCache {
         hits: 0,
         misses: 0,
         sets: 0,
-        deletes: 0
+        deletes: 0,
       };
     } catch (error) {
-      throw new Error(`Failed to clear cache: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to clear cache: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -236,7 +241,7 @@ export class CredentialCache {
   async getStats(): Promise<CacheStats> {
     try {
       const keys = await this.storage.keys();
-      const credentialKeys = keys.filter(k => k.startsWith('credential:'));
+      const credentialKeys = keys.filter((k) => k.startsWith('credential:'));
 
       let expiredCount = 0;
       let revokedCount = 0;
@@ -282,10 +287,12 @@ export class CredentialCache {
         sizeBytes,
         hitRate,
         lastSyncTime,
-        storageBackend
+        storageBackend,
       };
     } catch (error) {
-      throw new Error(`Failed to get cache stats: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to get cache stats: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -299,7 +306,7 @@ export class CredentialCache {
       const key = `revocation:${merkleRoot}`;
       const data = {
         bitmap: Array.from(bitmap), // Convert to array for JSON serialization
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       let serialized = JSON.stringify(data);
@@ -312,7 +319,9 @@ export class CredentialCache {
 
       await this.storage.set(key, serialized);
     } catch (error) {
-      throw new Error(`Failed to cache revocation list: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to cache revocation list: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -359,7 +368,9 @@ export class CredentialCache {
 
       return credential.revocationStatus.isRevoked;
     } catch (error) {
-      throw new Error(`Failed to check revocation status: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to check revocation status: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -370,7 +381,9 @@ export class CredentialCache {
     try {
       await this.storage.set('meta:lastSyncTime', JSON.stringify(new Date()));
     } catch (error) {
-      throw new Error(`Failed to update sync time: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to update sync time: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -381,7 +394,7 @@ export class CredentialCache {
   async cleanExpired(): Promise<number> {
     try {
       const keys = await this.storage.keys();
-      const credentialKeys = keys.filter(k => k.startsWith('credential:'));
+      const credentialKeys = keys.filter((k) => k.startsWith('credential:'));
       let removed = 0;
 
       for (const key of credentialKeys) {
@@ -396,7 +409,9 @@ export class CredentialCache {
 
       return removed;
     } catch (error) {
-      throw new Error(`Failed to clean expired entries: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to clean expired entries: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -406,7 +421,7 @@ export class CredentialCache {
   private async evictOldest(): Promise<void> {
     try {
       const keys = await this.storage.keys();
-      const credentialKeys = keys.filter(k => k.startsWith('credential:'));
+      const credentialKeys = keys.filter((k) => k.startsWith('credential:'));
 
       if (credentialKeys.length === 0) {
         return;
@@ -446,7 +461,9 @@ export class CredentialCache {
         await this.storage.delete(oldestKey);
       }
     } catch (error) {
-      throw new Error(`Failed to evict oldest entry: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to evict oldest entry: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -457,10 +474,12 @@ export class CredentialCache {
   async getAllCredentialIds(): Promise<string[]> {
     try {
       const keys = await this.storage.keys();
-      const credentialKeys = keys.filter(k => k.startsWith('credential:'));
-      return credentialKeys.map(k => k.replace('credential:', ''));
+      const credentialKeys = keys.filter((k) => k.startsWith('credential:'));
+      return credentialKeys.map((k) => k.replace('credential:', ''));
     } catch (error) {
-      throw new Error(`Failed to get credential IDs: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to get credential IDs: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -482,7 +501,9 @@ export class CredentialCache {
 
       return JSON.stringify(data);
     } catch (error) {
-      throw new Error(`Failed to export cache: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to export cache: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -498,7 +519,9 @@ export class CredentialCache {
         await this.storage.set(key, value as string);
       }
     } catch (error) {
-      throw new Error(`Failed to import cache: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to import cache: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 

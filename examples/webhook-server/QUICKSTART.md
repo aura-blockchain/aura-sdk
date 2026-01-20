@@ -52,6 +52,7 @@ curl http://localhost:3000/health
 ```
 
 Expected response:
+
 ```json
 {
   "status": "healthy",
@@ -156,6 +157,7 @@ PORT=3001 npm run dev
 ### Webhooks return 401
 
 This means signature verification failed. Make sure:
+
 - The `WEBHOOK_SECRET` in your `.env` matches what Aura Network uses
 - The signature is calculated correctly (see README.md for details)
 

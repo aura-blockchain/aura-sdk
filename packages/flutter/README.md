@@ -245,9 +245,11 @@ print('Expires: ${qrData.isExpired ? "Yes" : "No"}');
 ### Classes
 
 #### `AuraVerifier`
+
 Basic verifier with essential functionality.
 
 **Constructor:**
+
 ```dart
 AuraVerifier({
   AuraNetwork network = AuraNetwork.mainnet,
@@ -257,6 +259,7 @@ AuraVerifier({
 ```
 
 **Methods:**
+
 - `Future<void> initialize()` - Initialize the verifier
 - `Future<VerificationResult> verify(String qrCodeData, {String? verifierAddress})` - Verify a credential
 - `Future<bool> isAge21Plus(String qrCodeData)` - Quick 21+ check
@@ -267,9 +270,11 @@ AuraVerifier({
 - `void dispose()` - Clean up resources
 
 #### `AuraVerifierEnhanced`
+
 Enhanced verifier with caching, offline mode, and events.
 
 Extends `AuraVerifier` with additional features:
+
 - `Stream<VerifierEvent> events` - Event stream
 - `Future<BatchVerificationResult> verifyBatch(List<String> qrCodeDataList, {BatchVerificationOptions options})` - Batch verification
 - `Future<void> syncCache()` - Sync cache with network
@@ -278,9 +283,11 @@ Extends `AuraVerifier` with additional features:
 - `Future<void> setOfflineMode(bool enabled)` - Toggle offline mode
 
 #### `AuraQRScanner`
+
 Widget for scanning QR codes with camera.
 
 **Constructor:**
+
 ```dart
 AuraQRScanner({
   required AuraVerifier verifier,
@@ -295,9 +302,11 @@ AuraQRScanner({
 ```
 
 #### `AuraQRScannerPage`
+
 Full-screen QR scanner page.
 
 **Constructor:**
+
 ```dart
 AuraQRScannerPage({
   required AuraVerifier verifier,
@@ -310,9 +319,11 @@ AuraQRScannerPage({
 ### Types
 
 #### `VerificationResult`
+
 Result of a verification operation.
 
 **Properties:**
+
 - `bool isValid` - Whether credential is valid
 - `String holderDID` - DID of credential holder
 - `DateTime verifiedAt` - Verification timestamp
@@ -324,9 +335,11 @@ Result of a verification operation.
 - `VerificationMethod method` - Verification method used
 
 #### `VCDetail`
+
 Details of a single verifiable credential.
 
 **Properties:**
+
 - `String vcId` - Credential ID
 - `VCType vcType` - Credential type
 - `VCStatus status` - Current status
@@ -337,9 +350,11 @@ Details of a single verifiable credential.
 - `DateTime? expiresAt` - Expiration date
 
 #### `DiscloseableAttributes`
+
 Attributes disclosed by the holder.
 
 **Properties:**
+
 - `String? fullName` - Full name (if disclosed)
 - `int? age` - Age (if disclosed)
 - `bool isOver18` - Whether over 18
@@ -349,9 +364,11 @@ Attributes disclosed by the holder.
 - `Map<String, String> customAttributes` - Custom attributes
 
 #### `QRCodeData`
+
 Parsed QR code data.
 
 **Properties:**
+
 - `String version` - Protocol version
 - `String presentationId` - Presentation ID
 - `String holderDID` - Holder DID
@@ -365,11 +382,13 @@ Parsed QR code data.
 ### Enums
 
 #### `AuraNetwork`
+
 - `mainnet` - Production network
 - `testnet` - Test network
 - `local` - Local development network
 
 #### `VCType`
+
 - `unspecified` - Unknown type
 - `verifiedHuman` - Verified human credential
 - `ageOver18` - Age 18+ credential
@@ -381,6 +400,7 @@ Parsed QR code data.
 - `professionalLicense` - Professional license
 
 #### `VCStatus`
+
 - `unspecified` - Unknown status
 - `pending` - Pending issuance
 - `active` - Active and valid
@@ -389,6 +409,7 @@ Parsed QR code data.
 - `suspended` - Temporarily suspended
 
 #### `VerificationMethod`
+
 - `online` - Verified against blockchain
 - `offline` - Verified using cache
 - `cached` - Retrieved from cache
@@ -419,6 +440,7 @@ try {
 ```
 
 **Error Codes:**
+
 - `UNKNOWN` - Unknown error
 - `NOT_INITIALIZED` - Verifier not initialized
 - `QR_PARSE_ERROR` - Failed to parse QR code
@@ -449,6 +471,7 @@ flutter run
 ## Example App
 
 The example app demonstrates:
+
 - Basic verification flow
 - QR code scanning
 - Cache management
@@ -462,6 +485,7 @@ See [example/lib/main.dart](example/lib/main.dart) for the complete implementati
 The SDK consists of several layers:
 
 1. **Dart API Layer** (`lib/src/`)
+
    - `verifier.dart` - Basic verifier
    - `verifier_enhanced.dart` - Enhanced verifier with caching
    - `types.dart` - Type definitions
@@ -470,6 +494,7 @@ The SDK consists of several layers:
    - `qr_scanner.dart` - QR scanning widgets
 
 2. **Native Platform Layer**
+
    - iOS: Swift implementation (`ios/Classes/`)
    - Android: Kotlin implementation (`android/src/`)
 

@@ -28,7 +28,7 @@ async function main() {
   const verifier = new AuraVerifier({
     network: 'mainnet',
     timeout: 10000,
-    verbose: true  // Enable logging for development
+    verbose: true, // Enable logging for development
   });
 
   // 2. Connect to the network
@@ -36,12 +36,13 @@ async function main() {
   console.log('Verifier initialized successfully');
 
   // 3. QR code data (typically scanned from user's device)
-  const qrCodeString = "aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXMyMzQiLCJoIjoiZGlkOmF1cmE6bWFpbm5ldDphdXJhMXh5ejEyMyIsInZjcyI6WyJ2YzEyMyJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTU2MDAwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ==";
+  const qrCodeString =
+    'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXMyMzQiLCJoIjoiZGlkOmF1cmE6bWFpbm5ldDphdXJhMXh5ejEyMyIsInZjcyI6WyJ2YzEyMyJdLCJjdHgiOnsic2hvd19hZ2Vfb3Zlcl8yMSI6dHJ1ZX0sImV4cCI6MTczNTU2MDAwMCwibiI6MTIzNDU2LCJzaWciOiJhYmNkZWYxMjM0NTYifQ==';
 
   try {
     // 4. Verify the credential
     const result = await verifier.verify({
-      qrCodeData: qrCodeString
+      qrCodeData: qrCodeString,
     });
 
     // 5. Check result
@@ -100,9 +101,9 @@ Verifier destroyed
 import { AuraVerifier } from '@aura-network/verifier-sdk';
 
 const verifier = new AuraVerifier({
-  network: 'mainnet',  // or 'testnet' for testing
-  timeout: 10000,      // 10 second timeout
-  verbose: true        // Show debug logs
+  network: 'mainnet', // or 'testnet' for testing
+  timeout: 10000, // 10 second timeout
+  verbose: true, // Show debug logs
 });
 
 await verifier.initialize();
@@ -117,21 +118,17 @@ In a real application, you would use a QR code scanner library:
 import { Html5Qrcode } from 'html5-qrcode';
 
 const scanner = new Html5Qrcode('reader');
-scanner.start(
-  { facingMode: 'environment' },
-  { fps: 10, qrbox: 250 },
-  (decodedText) => {
-    // Use decodedText as qrCodeString
-    verifyCredential(decodedText);
-  }
-);
+scanner.start({ facingMode: 'environment' }, { fps: 10, qrbox: 250 }, (decodedText) => {
+  // Use decodedText as qrCodeString
+  verifyCredential(decodedText);
+});
 ```
 
 ### Step 3: Verify Credential
 
 ```typescript
 const result = await verifier.verify({
-  qrCodeData: qrCodeString
+  qrCodeData: qrCodeString,
 });
 ```
 
@@ -150,12 +147,7 @@ if (result.isValid) {
 ### Step 5: Access Attributes
 
 ```typescript
-const {
-  holderDID,
-  vcDetails,
-  attributes,
-  verifiedAt
-} = result;
+const { holderDID, vcDetails, attributes, verifiedAt } = result;
 
 // Check disclosed attributes
 if (attributes.ageOver21) {
@@ -196,10 +188,11 @@ try {
 ## Common Pitfalls
 
 1. **Forgetting to initialize**
+
    ```typescript
    // Wrong
    const verifier = new AuraVerifier(config);
-   await verifier.verify({ qrCodeData });  // Error!
+   await verifier.verify({ qrCodeData }); // Error!
 
    // Correct
    const verifier = new AuraVerifier(config);
@@ -208,6 +201,7 @@ try {
    ```
 
 2. **Not handling errors**
+
    ```typescript
    // Wrong - errors crash the app
    const result = await verifier.verify({ qrCodeData });
@@ -221,6 +215,7 @@ try {
    ```
 
 3. **Not cleaning up**
+
    ```typescript
    // Wrong - resources leak
    const verifier = new AuraVerifier(config);

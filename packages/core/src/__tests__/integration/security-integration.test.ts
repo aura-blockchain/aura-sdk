@@ -11,7 +11,11 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { NonceManager, InMemoryNonceStorage } from '../../security/nonce-manager.js';
-import { RateLimiter, RateLimitError, InMemoryRateLimiterStorage } from '../../security/rate-limiter.js';
+import {
+  RateLimiter,
+  RateLimitError,
+  InMemoryRateLimiterStorage,
+} from '../../security/rate-limiter.js';
 import {
   AuditLogger,
   AuditCategory,
@@ -19,11 +23,7 @@ import {
   AuditSeverity,
   InMemoryAuditLogStorage,
 } from '../../security/audit-logger.js';
-import {
-  ThreatDetector,
-  ThreatLevel,
-  ThreatType,
-} from '../../security/threat-detector.js';
+import { ThreatDetector, ThreatLevel, ThreatType } from '../../security/threat-detector.js';
 import { QRNonceError } from '../../errors.js';
 import {
   createMockQRCodeData,

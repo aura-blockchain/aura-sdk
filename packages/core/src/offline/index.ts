@@ -15,12 +15,7 @@ export { CacheSync } from './sync.js';
 export type { AuraClient } from './sync.js';
 
 // Storage adapters
-export {
-  MemoryStorage,
-  BrowserStorage,
-  FileStorage,
-  createStorageAdapter
-} from './storage.js';
+export { MemoryStorage, BrowserStorage, FileStorage, createStorageAdapter } from './storage.js';
 
 // Encryption utilities
 export {
@@ -34,7 +29,7 @@ export {
   decryptObject,
   isValidEncryptionKey,
   hexToKey,
-  keyToHex
+  keyToHex,
 } from './encryption.js';
 
 // Revocation handling
@@ -50,7 +45,7 @@ export {
   createRevocationList,
   isRevoked,
   getRevocationStats,
-  validateRevocationList
+  validateRevocationList,
 } from './revocation.js';
 
 // Types
@@ -70,7 +65,7 @@ export type {
   StorageAdapter,
   EncryptionConfig,
   EncryptedData,
-  AutoSyncConfig
+  AutoSyncConfig,
 } from './types.js';
 
 /**
@@ -116,7 +111,7 @@ export function createOfflineVerifier(options: {
   if (options.autoSync?.enabled) {
     sync.startAutoSync(options.autoSync.intervalMs, {
       syncOnStartup: options.autoSync.syncOnStartup,
-      wifiOnly: options.autoSync.wifiOnly
+      wifiOnly: options.autoSync.wifiOnly,
     });
   }
 
@@ -158,11 +153,11 @@ export function createOfflineVerifier(options: {
               checked: true,
               isRevoked: cached.revocationStatus.isRevoked,
               lastChecked: cached.revocationStatus.checkedAt,
-              source: 'cache'
+              source: 'cache',
             },
             errors,
             warnings,
-            timestamp
+            timestamp,
           };
         }
 
@@ -179,14 +174,18 @@ export function createOfflineVerifier(options: {
             issuerDid: credential.issuer,
             revocationStatus: {
               isRevoked,
-              checkedAt: timestamp
+              checkedAt: timestamp,
             },
             metadata: {
               cachedAt: timestamp,
-              expiresAt: new Date(timestamp.getTime() + (options.cacheConfig?.maxAge ?? 3600) * 1000),
+              expiresAt: new Date(
+                timestamp.getTime() + (options.cacheConfig?.maxAge ?? 3600) * 1000
+              ),
               issuedAt: credential.issuanceDate ? new Date(credential.issuanceDate) : undefined,
-              credentialExpiresAt: credential.expirationDate ? new Date(credential.expirationDate) : undefined
-            }
+              credentialExpiresAt: credential.expirationDate
+                ? new Date(credential.expirationDate)
+                : undefined,
+            },
           };
 
           await cache.set(vcId, cachedCredential);
@@ -203,14 +202,16 @@ export function createOfflineVerifier(options: {
               checked: true,
               isRevoked,
               lastChecked: timestamp,
-              source: 'online'
+              source: 'online',
             },
             errors,
             warnings,
-            timestamp
+            timestamp,
           };
         } catch (error) {
-          errors.push(`Failed to verify credential: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          errors.push(
+            `Failed to verify credential: ${error instanceof Error ? error.message : 'Unknown error'}`
+          );
 
           return {
             verified: false,
@@ -218,15 +219,17 @@ export function createOfflineVerifier(options: {
             revocationStatus: {
               checked: false,
               isRevoked: false,
-              source: 'not-checked'
+              source: 'not-checked',
             },
             errors,
             warnings,
-            timestamp
+            timestamp,
           };
         }
       } catch (error) {
-        errors.push(`Verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        errors.push(
+          `Verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+        );
 
         return {
           verified: false,
@@ -234,11 +237,11 @@ export function createOfflineVerifier(options: {
           revocationStatus: {
             checked: false,
             isRevoked: false,
-            source: 'not-checked'
+            source: 'not-checked',
           },
           errors,
           warnings,
-          timestamp
+          timestamp,
         };
       }
     },
@@ -269,7 +272,7 @@ export function createOfflineVerifier(options: {
      */
     async destroy() {
       sync.stopAutoSync();
-    }
+    },
   };
 }
 

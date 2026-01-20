@@ -92,8 +92,8 @@ export const INVALID_SIGNATURE_QR = encodeQRCodeData(
 /**
  * QR code with missing required fields
  */
-export const MALFORMED_QR_MISSING_FIELDS = 'aura://verify?data=' +
-  Buffer.from(JSON.stringify({ v: '1.0' })).toString('base64');
+export const MALFORMED_QR_MISSING_FIELDS =
+  'aura://verify?data=' + Buffer.from(JSON.stringify({ v: '1.0' })).toString('base64');
 
 /**
  * Completely invalid QR code
@@ -108,9 +108,7 @@ export const WRONG_PROTOCOL_QR = 'https://example.com/verify?data=abc123';
 /**
  * Raw base64 data (without aura:// prefix)
  */
-export const RAW_BASE64_QR = Buffer.from(
-  JSON.stringify(createMockQRCodeData())
-).toString('base64');
+export const RAW_BASE64_QR = Buffer.from(JSON.stringify(createMockQRCodeData())).toString('base64');
 
 /**
  * QR code for revoked credential (for mocked tests)

@@ -134,9 +134,10 @@ function printComparison(results: BenchmarkResult[]): void {
   console.log('-'.repeat(80));
 
   for (const result of results) {
-    const relative = result === baseline
-      ? '(baseline)'
-      : `${((result.opsPerSecond / baseline.opsPerSecond) * 100).toFixed(1)}%`;
+    const relative =
+      result === baseline
+        ? '(baseline)'
+        : `${((result.opsPerSecond / baseline.opsPerSecond) * 100).toFixed(1)}%`;
 
     console.log(
       `${result.name.padEnd(40)} ${formatNumber(result.opsPerSecond).padStart(12)} ${relative.padStart(15)}`
@@ -210,11 +211,7 @@ function generateQRData(size: 'small' | 'medium' | 'large'): string {
 
 async function benchmarkSmallQRParsing(): Promise<BenchmarkResult> {
   const qrData = generateQRData('small');
-  return runBenchmark(
-    'Small QR Parsing (1 VC, minimal context)',
-    () => parseQRCode(qrData),
-    5000
-  );
+  return runBenchmark('Small QR Parsing (1 VC, minimal context)', () => parseQRCode(qrData), 5000);
 }
 
 async function benchmarkMediumQRParsing(): Promise<BenchmarkResult> {
@@ -228,20 +225,12 @@ async function benchmarkMediumQRParsing(): Promise<BenchmarkResult> {
 
 async function benchmarkLargeQRParsing(): Promise<BenchmarkResult> {
   const qrData = generateQRData('large');
-  return runBenchmark(
-    'Large QR Parsing (10 VCs, full context)',
-    () => parseQRCode(qrData),
-    5000
-  );
+  return runBenchmark('Large QR Parsing (10 VCs, full context)', () => parseQRCode(qrData), 5000);
 }
 
 async function benchmarkSafeParsing(): Promise<BenchmarkResult> {
   const qrData = generateQRData('medium');
-  return runBenchmark(
-    'Safe Parsing (non-throwing version)',
-    () => parseQRCodeSafe(qrData),
-    5000
-  );
+  return runBenchmark('Safe Parsing (non-throwing version)', () => parseQRCodeSafe(qrData), 5000);
 }
 
 async function benchmarkConcurrentParsing(): Promise<BenchmarkResult> {
@@ -250,7 +239,7 @@ async function benchmarkConcurrentParsing(): Promise<BenchmarkResult> {
   return runBenchmark(
     'Concurrent Parsing (10 parallel)',
     async () => {
-      await Promise.all(qrDataSamples.map(qr => Promise.resolve(parseQRCode(qr))));
+      await Promise.all(qrDataSamples.map((qr) => Promise.resolve(parseQRCode(qr))));
     },
     500
   );
@@ -259,11 +248,7 @@ async function benchmarkConcurrentParsing(): Promise<BenchmarkResult> {
 async function benchmarkInvalidQRHandling(): Promise<BenchmarkResult> {
   const invalidQR = 'invalid-qr-data-that-will-fail';
 
-  return runBenchmark(
-    'Invalid QR Error Handling',
-    () => parseQRCodeSafe(invalidQR),
-    5000
-  );
+  return runBenchmark('Invalid QR Error Handling', () => parseQRCodeSafe(invalidQR), 5000);
 }
 
 async function benchmarkRawBase64Parsing(): Promise<BenchmarkResult> {
@@ -281,11 +266,7 @@ async function benchmarkRawBase64Parsing(): Promise<BenchmarkResult> {
   const jsonString = JSON.stringify(baseData);
   const base64Data = Buffer.from(jsonString).toString('base64');
 
-  return runBenchmark(
-    'Raw Base64 Parsing (no URL wrapper)',
-    () => parseQRCode(base64Data),
-    5000
-  );
+  return runBenchmark('Raw Base64 Parsing (no URL wrapper)', () => parseQRCode(base64Data), 5000);
 }
 
 // ============================================================================
@@ -323,7 +304,9 @@ async function memoryStressTest(): Promise<void> {
   console.log(`Memory used:   ${formatBytes(memUsed)}`);
   console.log(`Per operation: ${formatBytes(memUsed / iterations)}`);
   console.log(`Total time:    ${formatNumber(endTime - startTime)} ms`);
-  console.log(`Throughput:    ${formatNumber((iterations / (endTime - startTime)) * 1000)} ops/sec\n`);
+  console.log(
+    `Throughput:    ${formatNumber((iterations / (endTime - startTime)) * 1000)} ops/sec\n`
+  );
 }
 
 // ============================================================================

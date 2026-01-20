@@ -90,9 +90,7 @@ export function QRScanner({ onScan }: QRScannerProps) {
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="text-center">
               <Camera className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">
-                Click start to scan QR codes
-              </p>
+              <p className="text-gray-500 dark:text-gray-400">Click start to scan QR codes</p>
             </div>
           </div>
         )}

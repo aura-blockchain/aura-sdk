@@ -30,6 +30,7 @@ aura-verify config
 ```
 
 Follow the prompts:
+
 - Network: **mainnet** (for production) or **testnet** (for testing)
 - Custom endpoints: **No** (use defaults)
 - Verbose logging: **No**
@@ -42,6 +43,7 @@ aura-verify generate-qr
 ```
 
 The CLI will:
+
 1. Display a QR code in your terminal
 2. Show the QR data string
 3. Provide example commands to verify it
@@ -138,6 +140,7 @@ aura-verify check "$QR_DATA" --json
 ```
 
 Extract specific fields:
+
 ```bash
 # Check if valid
 aura-verify check "$QR_DATA" --json | jq '.isValid'
@@ -180,12 +183,14 @@ aura-verify check "$QR_DATA" --network local
 ### 1. Use Configuration for Repeated Tasks
 
 Instead of:
+
 ```bash
 aura-verify check "$QR_DATA" --network testnet --verbose
 aura-verify status vc_123 --network testnet --verbose
 ```
 
 Do this:
+
 ```bash
 aura-verify config --network testnet --verbose
 aura-verify check "$QR_DATA"
@@ -204,6 +209,7 @@ alias avst='aura-verify status'
 ```
 
 Then use:
+
 ```bash
 av scan
 avc "$QR_DATA"

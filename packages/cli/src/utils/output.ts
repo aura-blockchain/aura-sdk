@@ -5,7 +5,11 @@
 import chalk from 'chalk';
 import boxen from 'boxen';
 import Table from 'cli-table3';
-import type { VerificationResult, VCVerificationDetail, DIDDocument } from '@aura-network/verifier-sdk';
+import type {
+  VerificationResult,
+  VCVerificationDetail,
+  DIDDocument,
+} from '@aura-network/verifier-sdk';
 
 export interface OutputOptions {
   json?: boolean;
@@ -62,7 +66,10 @@ export function json(data: any): void {
 /**
  * Print verification result
  */
-export function printVerificationResult(result: VerificationResult, options: OutputOptions = {}): void {
+export function printVerificationResult(
+  result: VerificationResult,
+  options: OutputOptions = {}
+): void {
   if (options.json) {
     json(result);
     return;
@@ -75,15 +82,12 @@ export function printVerificationResult(result: VerificationResult, options: Out
 
   console.log();
   console.log(
-    boxen(
-      `${statusIcon} ${statusColor.bold(statusText)}`,
-      {
-        padding: 1,
-        margin: 1,
-        borderStyle: 'round',
-        borderColor: borderColor,
-      }
-    )
+    boxen(`${statusIcon} ${statusColor.bold(statusText)}`, {
+      padding: 1,
+      margin: 1,
+      borderStyle: 'round',
+      borderColor: borderColor,
+    })
   );
 
   if (!result.isValid) {
@@ -98,7 +102,9 @@ export function printVerificationResult(result: VerificationResult, options: Out
   console.log(`  Presentation ID:  ${chalk.cyan(result.presentationId)}`);
   console.log(`  Expires At:       ${chalk.yellow(result.expiresAt.toISOString())}`);
   console.log(`  Verification:     ${chalk.green(result.verificationMethod)}`);
-  console.log(`  Signature Valid:  ${result.signatureValid ? chalk.green('Yes') : chalk.red('No')}`);
+  console.log(
+    `  Signature Valid:  ${result.signatureValid ? chalk.green('Yes') : chalk.red('No')}`
+  );
   console.log(`  Network Latency:  ${chalk.gray(`${result.networkLatency}ms`)}`);
   console.log();
 
@@ -122,12 +128,7 @@ export function printVerificationResult(result: VerificationResult, options: Out
  */
 export function printCredentialsTable(credentials: VCVerificationDetail[]): void {
   const table = new Table({
-    head: [
-      chalk.cyan('Type'),
-      chalk.cyan('Status'),
-      chalk.cyan('Issuer'),
-      chalk.cyan('On-Chain'),
-    ],
+    head: [chalk.cyan('Type'), chalk.cyan('Status'), chalk.cyan('Issuer'), chalk.cyan('On-Chain')],
     colWidths: [25, 12, 30, 10],
   });
 
@@ -135,12 +136,7 @@ export function printCredentialsTable(credentials: VCVerificationDetail[]): void
     const statusColor = vc.status === 'active' ? chalk.green : chalk.red;
     const onChainIcon = vc.onChain ? chalk.green('✓') : chalk.gray('-');
 
-    table.push([
-      vc.vcType,
-      statusColor(vc.status),
-      truncate(vc.issuerDID, 28),
-      onChainIcon,
-    ]);
+    table.push([vc.vcType, statusColor(vc.status), truncate(vc.issuerDID, 28), onChainIcon]);
   }
 
   console.log(table.toString());
@@ -176,15 +172,12 @@ export function printDIDDocument(did: string, doc: DIDDocument, options: OutputO
 
   console.log();
   console.log(
-    boxen(
-      chalk.bold('DID Document'),
-      {
-        padding: 1,
-        margin: 1,
-        borderStyle: 'round',
-        borderColor: 'cyan',
-      }
-    )
+    boxen(chalk.bold('DID Document'), {
+      padding: 1,
+      margin: 1,
+      borderStyle: 'round',
+      borderColor: 'cyan',
+    })
   );
 
   console.log(chalk.bold('DID:'), chalk.cyan(doc.id));
@@ -198,11 +191,7 @@ export function printDIDDocument(did: string, doc: DIDDocument, options: OutputO
     });
 
     for (const method of doc.verificationMethod) {
-      table.push([
-        truncate(method.id, 28),
-        method.type,
-        truncate(method.controller, 28),
-      ]);
+      table.push([truncate(method.id, 28), method.type, truncate(method.controller, 28)]);
     }
 
     console.log(table.toString());
@@ -225,11 +214,7 @@ export function printDIDDocument(did: string, doc: DIDDocument, options: OutputO
     });
 
     for (const service of doc.service) {
-      table.push([
-        truncate(service.id, 23),
-        service.type,
-        truncate(service.serviceEndpoint, 33),
-      ]);
+      table.push([truncate(service.id, 23), service.type, truncate(service.serviceEndpoint, 33)]);
     }
 
     console.log(table.toString());
@@ -240,7 +225,11 @@ export function printDIDDocument(did: string, doc: DIDDocument, options: OutputO
 /**
  * Print credential status
  */
-export function printCredentialStatus(vcId: string, status: string, options: OutputOptions = {}): void {
+export function printCredentialStatus(
+  vcId: string,
+  status: string,
+  options: OutputOptions = {}
+): void {
   if (options.json) {
     json({ vcId, status });
     return;
@@ -251,15 +240,12 @@ export function printCredentialStatus(vcId: string, status: string, options: Out
 
   console.log();
   console.log(
-    boxen(
-      `${statusIcon} ${statusColor.bold(status.toUpperCase())}`,
-      {
-        padding: 1,
-        margin: 1,
-        borderStyle: 'round',
-        borderColor: status === 'active' ? 'green' : 'red',
-      }
-    )
+    boxen(`${statusIcon} ${statusColor.bold(status.toUpperCase())}`, {
+      padding: 1,
+      margin: 1,
+      borderStyle: 'round',
+      borderColor: status === 'active' ? 'green' : 'red',
+    })
   );
 
   console.log(chalk.bold('Credential ID:'), chalk.cyan(vcId));
@@ -278,15 +264,12 @@ export function printConfig(config: Record<string, any>, options: OutputOptions 
 
   console.log();
   console.log(
-    boxen(
-      chalk.bold('Aura Verifier Configuration'),
-      {
-        padding: 1,
-        margin: 1,
-        borderStyle: 'round',
-        borderColor: 'cyan',
-      }
-    )
+    boxen(chalk.bold('Aura Verifier Configuration'), {
+      padding: 1,
+      margin: 1,
+      borderStyle: 'round',
+      borderColor: 'cyan',
+    })
   );
 
   const table = new Table({

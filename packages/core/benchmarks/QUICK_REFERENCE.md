@@ -27,23 +27,23 @@ npm run benchmark:e2e       # End-to-end
 
 ## Files
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| qr-benchmark.ts | 377 | QR code parsing performance |
-| crypto-benchmark.ts | 514 | Signature verification speed |
-| cache-benchmark.ts | 625 | Cache hit/miss rates |
-| e2e-benchmark.ts | 600 | Full verification flow |
-| index.ts | 183 | Main benchmark runner |
-| quick-test.ts | 226 | Fast validation |
+| File                | Lines | Purpose                      |
+| ------------------- | ----- | ---------------------------- |
+| qr-benchmark.ts     | 377   | QR code parsing performance  |
+| crypto-benchmark.ts | 514   | Signature verification speed |
+| cache-benchmark.ts  | 625   | Cache hit/miss rates         |
+| e2e-benchmark.ts    | 600   | Full verification flow       |
+| index.ts            | 183   | Main benchmark runner        |
+| quick-test.ts       | 226   | Fast validation              |
 
 ## Performance Targets
 
-| Metric | Target | Critical |
-|--------|--------|----------|
-| E2E P95 | < 200ms | < 500ms |
-| QR Parse | > 15K/s | > 10K/s |
-| Ed25519 Verify | > 8K/s | > 5K/s |
-| Cache Read | > 40K/s | > 20K/s |
+| Metric         | Target  | Critical |
+| -------------- | ------- | -------- |
+| E2E P95        | < 200ms | < 500ms  |
+| QR Parse       | > 15K/s | > 10K/s  |
+| Ed25519 Verify | > 8K/s  | > 5K/s   |
+| Cache Read     | > 40K/s | > 20K/s  |
 
 ## Expected Results
 
@@ -70,33 +70,37 @@ E2E Verification:    ~800 ops/sec, P95 ~1.8ms ✓
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| "Cannot find module" | Run `npm run build` |
-| "tsx not found" | Run `npm install` |
-| Poor performance | Close other apps, check CPU |
-| High memory | Reduce iterations or run individually |
+| Issue                | Solution                              |
+| -------------------- | ------------------------------------- |
+| "Cannot find module" | Run `npm run build`                   |
+| "tsx not found"      | Run `npm install`                     |
+| Poor performance     | Close other apps, check CPU           |
+| High memory          | Reduce iterations or run individually |
 | Inconsistent results | Run multiple times, check system load |
 
 ## Key Benchmarks
 
 ### QR Parsing
+
 - Small (1 VC): 50K ops/sec
 - Medium (3 VCs): 30K ops/sec
 - Large (10 VCs): 20K ops/sec
 - Concurrent (10 parallel): Tests multi-core
 
 ### Signatures
+
 - Ed25519: ~12K ops/sec (2-3x faster)
 - Secp256k1: ~4K ops/sec
 - Batch (10): ~1.5K batches/sec
 
 ### Cache
+
 - Hit: 60K ops/sec, 0.016ms avg
 - Miss: 70K ops/sec, 0.014ms avg
 - Write: 55K ops/sec, 0.018ms avg
 
 ### End-to-End
+
 - Parse + Validate + Verify: ~1.2ms avg
 - P95 latency: ~1.8ms ✓ Well under target
 - Sustained load: 30 seconds continuous
@@ -113,9 +117,10 @@ E2E Verification:    ~800 ops/sec, P95 ~1.8ms ✓
 ## CI/CD
 
 Add to `.github/workflows/benchmark.yml`:
+
 ```yaml
-- run: npm run benchmark:quick  # Fast check
-- run: npm run benchmark        # Full suite
+- run: npm run benchmark:quick # Fast check
+- run: npm run benchmark # Full suite
 ```
 
 ## Need Help?

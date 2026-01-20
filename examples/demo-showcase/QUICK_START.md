@@ -18,6 +18,7 @@ The demo will automatically open at http://localhost:3000
 ## First Verification (1 minute)
 
 1. **Generate a Sample QR Code**
+
    - Scroll to "Age Verification Demo"
    - Click "21+" or "18+"
    - Click "Generate Sample QR Code"
@@ -31,31 +32,37 @@ The demo will automatically open at http://localhost:3000
 ## Key Features to Try
 
 ### Camera Scanner
+
 - Click "Start Camera" in QR Scanner section
 - Allow camera permissions
 - Point at generated QR code (display on phone)
 
 ### Network Toggle
+
 - Switch between Mainnet/Testnet
 - Toggle Online/Offline mode
 - Watch latency changes
 
 ### Aura Score
+
 - Complete verifications to increase score
 - Watch the animated gauge
 - View score breakdown
 
 ### Verification History
+
 - All verifications tracked automatically
 - Success rate calculated
 - Export individual receipts
 
 ### Code Examples
+
 - View 4 different implementation patterns
 - Copy with one click
 - Syntax highlighted
 
 ### Dark/Light Mode
+
 - Click moon/sun icon in navbar
 - Auto-saves preference
 - Smooth transitions
@@ -99,6 +106,7 @@ npm run deploy
 ## Customization
 
 Change colors in `tailwind.config.js`:
+
 ```javascript
 colors: {
   aura: {
@@ -110,11 +118,13 @@ colors: {
 ## Troubleshooting
 
 **Camera not working?**
+
 - Check browser permissions
 - Must be HTTPS in production
 - Try Chrome/Edge
 
 **Build errors?**
+
 ```bash
 rm -rf node_modules package-lock.json
 npm install

@@ -23,9 +23,11 @@ describe('useBalance', () => {
     vi.spyOn(clientHook, 'useAuraClient').mockReturnValue({
       client: {
         queryBalance: vi.fn().mockResolvedValue(mockBalances),
-        queryBalanceByDenom: vi.fn().mockImplementation((addr: string, denom: string) =>
-          Promise.resolve(mockBalances.find((b) => b.denom === denom))
-        ),
+        queryBalanceByDenom: vi
+          .fn()
+          .mockImplementation((addr: string, denom: string) =>
+            Promise.resolve(mockBalances.find((b) => b.denom === denom))
+          ),
       } as any,
       isConnected: true,
       chainId: 'aura-mvp-1',
@@ -57,7 +59,9 @@ describe('useBalance', () => {
   });
 
   it('should format balance with decimals', async () => {
-    const { result } = renderHook(() => useBalance(testAddress, { formatDecimals: 6 }), { wrapper });
+    const { result } = renderHook(() => useBalance(testAddress, { formatDecimals: 6 }), {
+      wrapper,
+    });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 

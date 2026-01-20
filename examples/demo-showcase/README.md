@@ -10,6 +10,7 @@ An impressive, production-ready demo application showcasing all capabilities of 
 ## Features
 
 ### Core Functionality
+
 - **Live QR Code Scanner** - Real-time camera-based QR code scanning
 - **Manual QR Input** - Paste and verify QR code data strings
 - **Instant Verification** - Real-time credential validation with visual feedback
@@ -17,12 +18,14 @@ An impressive, production-ready demo application showcasing all capabilities of 
 - **Sample QR Generator** - Generate mock QR codes for testing
 
 ### Visualizations
+
 - **Aura Score Gauge** - Animated trust score meter (0-850)
 - **Verification Result Display** - Beautiful success/failure animations
 - **Verification History Timeline** - Track all past verifications
 - **Network Status Indicator** - Live connection status and latency
 
 ### Developer Features
+
 - **Code Examples** - Syntax-highlighted TypeScript examples
 - **Multiple Network Support** - Toggle between mainnet/testnet
 - **Offline Mode** - Simulate offline verification with cached data
@@ -30,6 +33,7 @@ An impressive, production-ready demo application showcasing all capabilities of 
 - **Raw Data Viewer** - Inspect credential presentation details
 
 ### Design & UX
+
 - **Dark/Light Mode** - System-aware theme switching
 - **Responsive Design** - Mobile-first, works on all devices
 - **Framer Motion Animations** - Smooth, professional animations
@@ -39,6 +43,7 @@ An impressive, production-ready demo application showcasing all capabilities of 
 ## Quick Start
 
 ### Prerequisites
+
 - Node.js >= 18.0.0
 - npm or pnpm
 
@@ -79,12 +84,14 @@ npm run preview
 ### 2. Verify the QR Code
 
 **Option A: Camera Scanner**
+
 1. Click **Start Camera** in the QR Code Scanner section
 2. Allow camera permissions
 3. Point camera at a QR code
 4. Verification happens automatically
 
 **Option B: Manual Input**
+
 1. Paste the QR code data in the **Manual Input** section
 2. Click **Verify Credential**
 3. View the verification result
@@ -92,6 +99,7 @@ npm run preview
 ### 3. View Verification History
 
 All verifications are tracked in the **Verification History** panel with:
+
 - Success/failure status
 - Timestamp
 - Age verification type (if applicable)
@@ -101,6 +109,7 @@ All verifications are tracked in the **Verification History** panel with:
 ### 4. Explore Code Examples
 
 Navigate to the **Code Examples** section to see:
+
 - Basic verification setup
 - Age verification (21+)
 - Offline mode configuration
@@ -111,6 +120,7 @@ Copy any example to your clipboard with one click.
 ## Network Configuration
 
 ### Mainnet
+
 ```typescript
 {
   rpcEndpoint: 'https://rpc.aurablockchain.org',
@@ -119,6 +129,7 @@ Copy any example to your clipboard with one click.
 ```
 
 ### Testnet (testnet)
+
 ```typescript
 {
   rpcEndpoint: 'https://testnet-rpc.aurablockchain.org',
@@ -137,6 +148,7 @@ cp .env.example .env
 ```
 
 Available variables:
+
 - `VITE_MAINNET_RPC` - Mainnet RPC endpoint
 - `VITE_MAINNET_REST` - Mainnet REST endpoint
 - `VITE_TESTNET_RPC` - Testnet RPC endpoint
@@ -240,7 +252,7 @@ Update `vite.config.ts`:
 export default defineConfig({
   base: '/', // For custom domain
   // ... other config
-})
+});
 ```
 
 ## Development
@@ -294,8 +306,8 @@ export const NETWORKS = {
     name: 'Mainnet',
     rpcEndpoint: 'your-rpc-endpoint',
     restEndpoint: 'your-rest-endpoint',
-  }
-}
+  },
+};
 ```
 
 ## Troubleshooting
@@ -346,6 +358,7 @@ MIT License - see [LICENSE](../../LICENSE) for details.
 ## Acknowledgments
 
 Built with:
+
 - [Aura Verifier SDK](https://github.com/aura-blockchain/aura-verifier-sdk)
 - [React](https://react.dev)
 - [Vite](https://vitejs.dev)

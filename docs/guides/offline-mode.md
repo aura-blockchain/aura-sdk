@@ -7,12 +7,14 @@ Complete guide to enabling and using offline verification mode in the Aura Verif
 Offline mode allows the Aura Verifier SDK to verify credentials without an active internet connection by using cached credential data and revocation lists.
 
 ### Benefits
+
 - **Reliability** - Works during network outages
 - **Performance** - 10-50ms verification (vs 200-500ms online)
 - **Cost** - Reduced blockchain queries
 - **Availability** - 99.9%+ uptime even with network issues
 
 ### Use Cases
+
 - Remote locations with poor connectivity
 - High-volume verification (festivals, stadiums)
 - Critical infrastructure requiring 100% uptime
@@ -59,11 +61,13 @@ const verifier = new AuraVerifier({
 ```
 
 **Pros:**
+
 - Fastest verification
 - No network dependency
 - Predictable performance
 
 **Cons:**
+
 - Must pre-populate cache
 - Stale data if not synced
 - Can't detect new revocations immediately

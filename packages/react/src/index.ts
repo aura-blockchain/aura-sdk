@@ -40,14 +40,9 @@
 // Context and Provider
 // ============================================================================
 
-export {
-  AuraVerifierProvider,
-  useAuraVerifierContext,
-} from './context/AuraVerifierContext.js';
+export { AuraVerifierProvider, useAuraVerifierContext } from './context/AuraVerifierContext.js';
 
-export type {
-  AuraVerifierContextValue,
-} from './context/AuraVerifierContext.js';
+export type { AuraVerifierContextValue } from './context/AuraVerifierContext.js';
 
 // ============================================================================
 // Hooks
@@ -60,10 +55,7 @@ export {
   useOfflineMode,
 } from './hooks/index.js';
 
-export type {
-  UseAuraVerifierResult,
-  UseCredentialStatusOptions,
-} from './hooks/index.js';
+export type { UseAuraVerifierResult, UseCredentialStatusOptions } from './hooks/index.js';
 
 // ============================================================================
 // Components
@@ -125,15 +117,9 @@ export {
 // Re-exports from core SDK
 // ============================================================================
 
-export {
-  VCType,
-  VCStatus,
-  AuraVerifier,
-} from '@aura-network/verifier-sdk';
+export { VCType, VCStatus, AuraVerifier } from '@aura-network/verifier-sdk';
 
-export type {
-  VerificationErrorCode,
-} from '@aura-network/verifier-sdk';
+export type { VerificationErrorCode } from '@aura-network/verifier-sdk';
 
 // ============================================================================
 // Version

@@ -34,7 +34,7 @@ export class POSIntegration {
   constructor(config: POSIntegrationConfig) {
     this.config = {
       ...config,
-      environment: config.environment || 'production'
+      environment: config.environment || 'production',
     };
 
     this.validateConfig();
@@ -56,49 +56,58 @@ export class POSIntegration {
     // Alcohol
     this.addItemRule({
       itemId: 'alcohol:*',
-      requirements: [{
-        type: 'age',
-        minimumAge: 21,
-        required: true
-      }],
-      category: 'alcohol'
+      requirements: [
+        {
+          type: 'age',
+          minimumAge: 21,
+          required: true,
+        },
+      ],
+      category: 'alcohol',
     });
 
     // Tobacco
     this.addItemRule({
       itemId: 'tobacco:*',
-      requirements: [{
-        type: 'age',
-        minimumAge: 21,
-        required: true
-      }],
-      category: 'tobacco'
+      requirements: [
+        {
+          type: 'age',
+          minimumAge: 21,
+          required: true,
+        },
+      ],
+      category: 'tobacco',
     });
 
     // Cannabis
     this.addItemRule({
       itemId: 'cannabis:*',
-      requirements: [{
-        type: 'age',
-        minimumAge: 21,
-        required: true
-      }, {
-        type: 'license',
-        attributes: ['medical_cannabis_card'],
-        required: false
-      }],
-      category: 'cannabis'
+      requirements: [
+        {
+          type: 'age',
+          minimumAge: 21,
+          required: true,
+        },
+        {
+          type: 'license',
+          attributes: ['medical_cannabis_card'],
+          required: false,
+        },
+      ],
+      category: 'cannabis',
     });
 
     // Restricted medications
     this.addItemRule({
       itemId: 'medication:restricted:*',
-      requirements: [{
-        type: 'identity',
-        attributes: ['full_name', 'date_of_birth'],
-        required: true
-      }],
-      category: 'restricted_medication'
+      requirements: [
+        {
+          type: 'identity',
+          attributes: ['full_name', 'date_of_birth'],
+          required: true,
+        },
+      ],
+      category: 'restricted_medication',
     });
   }
 
@@ -111,7 +120,7 @@ export class POSIntegration {
       verificationId,
       transactionId,
       timestamp: new Date(),
-      metadata
+      metadata,
     };
 
     this.verificationLinks.set(transactionId, link);
@@ -139,25 +148,26 @@ export class POSIntegration {
 
   private async syncSquare(link: TransactionLink): Promise<void> {
     // Square API integration
-    const endpoint = this.config.environment === 'production'
-      ? 'https://connect.squareup.com/v2'
-      : 'https://connect.squareupsandbox.com/v2';
+    const endpoint =
+      this.config.environment === 'production'
+        ? 'https://connect.squareup.com/v2'
+        : 'https://connect.squareupsandbox.com/v2';
 
     try {
       const response = await fetch(`${endpoint}/payments/${link.transactionId}/metadata`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${this.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
           'Content-Type': 'application/json',
-          'Square-Version': '2024-01-18'
+          'Square-Version': '2024-01-18',
         },
         body: JSON.stringify({
           metadata: {
             aura_verification_id: link.verificationId,
             aura_verification_timestamp: link.timestamp.toISOString(),
-            ...link.metadata
-          }
-        })
+            ...link.metadata,
+          },
+        }),
       });
 
       if (!response.ok) {
@@ -171,9 +181,10 @@ export class POSIntegration {
 
   private async syncClover(link: TransactionLink): Promise<void> {
     // Clover API integration
-    const endpoint = this.config.environment === 'production'
-      ? 'https://api.clover.com/v3'
-      : 'https://sandbox.dev.clover.com/v3';
+    const endpoint =
+      this.config.environment === 'production'
+        ? 'https://api.clover.com/v3'
+        : 'https://sandbox.dev.clover.com/v3';
 
     try {
       const response = await fetch(
@@ -181,17 +192,17 @@ export class POSIntegration {
         {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${this.config.apiKey}`,
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${this.config.apiKey}`,
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             key: 'aura_verification',
             value: JSON.stringify({
               id: link.verificationId,
               timestamp: link.timestamp.toISOString(),
-              ...link.metadata
-            })
-          })
+              ...link.metadata,
+            }),
+          }),
         }
       );
 
@@ -205,29 +216,27 @@ export class POSIntegration {
 
   private async syncToast(link: TransactionLink): Promise<void> {
     // Toast API integration
-    const endpoint = this.config.environment === 'production'
-      ? 'https://ws-api.toasttab.com'
-      : 'https://ws-sandbox-api.eng.toasttab.com';
+    const endpoint =
+      this.config.environment === 'production'
+        ? 'https://ws-api.toasttab.com'
+        : 'https://ws-sandbox-api.eng.toasttab.com';
 
     try {
-      const response = await fetch(
-        `${endpoint}/orders/v2/${link.transactionId}`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Authorization': `Bearer ${this.config.apiKey}`,
-            'Content-Type': 'application/json',
-            'Toast-Restaurant-External-ID': this.config.merchantId || ''
+      const response = await fetch(`${endpoint}/orders/v2/${link.transactionId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${this.config.apiKey}`,
+          'Content-Type': 'application/json',
+          'Toast-Restaurant-External-ID': this.config.merchantId || '',
+        },
+        body: JSON.stringify({
+          externalData: {
+            aura_verification_id: link.verificationId,
+            aura_verification_timestamp: link.timestamp.toISOString(),
+            ...link.metadata,
           },
-          body: JSON.stringify({
-            externalData: {
-              aura_verification_id: link.verificationId,
-              aura_verification_timestamp: link.timestamp.toISOString(),
-              ...link.metadata
-            }
-          })
-        }
-      );
+        }),
+      });
 
       if (!response.ok) {
         throw new Error(`Toast API error: ${response.status}`);
@@ -273,7 +282,7 @@ export class POSIntegration {
       }
     }
 
-    return requirements.some(req => req.type === 'age' && req.required);
+    return requirements.some((req) => req.type === 'age' && req.required);
   }
 
   addItemRule(rule: ItemVerificationRule): void {
@@ -300,14 +309,14 @@ export class POSIntegration {
       return {
         valid: false,
         hasVerification: false,
-        error: 'No verification linked to transaction'
+        error: 'No verification linked to transaction',
       };
     }
 
     return {
       valid: true,
       hasVerification: true,
-      verificationId: link.verificationId
+      verificationId: link.verificationId,
     };
   }
 

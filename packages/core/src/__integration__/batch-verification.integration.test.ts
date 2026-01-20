@@ -22,7 +22,11 @@ import {
   REVOKED_CREDENTIAL_QR,
   MALFORMED_INVALID_BASE64,
 } from './__fixtures__/test-credentials.js';
-import { createMockServer, createSlowServer, MockBlockchainServer } from './__fixtures__/mock-server.js';
+import {
+  createMockServer,
+  createSlowServer,
+  MockBlockchainServer,
+} from './__fixtures__/mock-server.js';
 import type { VerificationRequest } from '../verification/types.js';
 
 describe('Batch Verification Integration Tests', () => {
@@ -42,12 +46,12 @@ describe('Batch Verification Integration Tests', () => {
       verbose: false,
     });
 
-    vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-      async (did: string) => mockServer.queryDIDDocument(did)
+    vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+      mockServer.queryDIDDocument(did)
     );
 
-    vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-      async (vcId: string) => mockServer.queryVCStatus(vcId)
+    vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+      mockServer.queryVCStatus(vcId)
     );
 
     await verifier.initialize();
@@ -126,12 +130,7 @@ describe('Batch Verification Integration Tests', () => {
 
   describe('Mixed Results', () => {
     it('should handle mix of valid and expired credentials', async () => {
-      const qrCodes = [
-        VALID_AGE_21_QR,
-        EXPIRED_QR_1_HOUR,
-        VALID_AGE_18_QR,
-        VALID_HUMAN_QR,
-      ];
+      const qrCodes = [VALID_AGE_21_QR, EXPIRED_QR_1_HOUR, VALID_AGE_18_QR, VALID_HUMAN_QR];
       const requests: VerificationRequest[] = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
       const results = await verifier.verifyBatch(requests);
@@ -149,11 +148,7 @@ describe('Batch Verification Integration Tests', () => {
     });
 
     it('should handle mix of valid and revoked credentials', async () => {
-      const qrCodes = [
-        VALID_AGE_21_QR,
-        REVOKED_CREDENTIAL_QR,
-        VALID_HUMAN_QR,
-      ];
+      const qrCodes = [VALID_AGE_21_QR, REVOKED_CREDENTIAL_QR, VALID_HUMAN_QR];
       const requests: VerificationRequest[] = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
       const results = await verifier.verifyBatch(requests);
@@ -171,11 +166,7 @@ describe('Batch Verification Integration Tests', () => {
     });
 
     it('should handle mix of valid and malformed credentials', async () => {
-      const qrCodes = [
-        VALID_AGE_21_QR,
-        MALFORMED_INVALID_BASE64,
-        VALID_HUMAN_QR,
-      ];
+      const qrCodes = [VALID_AGE_21_QR, MALFORMED_INVALID_BASE64, VALID_HUMAN_QR];
       const requests: VerificationRequest[] = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
       const results = await verifier.verifyBatch(requests);
@@ -236,11 +227,7 @@ describe('Batch Verification Integration Tests', () => {
     });
 
     it('should collect all error messages', async () => {
-      const qrCodes = [
-        EXPIRED_QR_1_HOUR,
-        REVOKED_CREDENTIAL_QR,
-        MALFORMED_INVALID_BASE64,
-      ];
+      const qrCodes = [EXPIRED_QR_1_HOUR, REVOKED_CREDENTIAL_QR, MALFORMED_INVALID_BASE64];
       const requests: VerificationRequest[] = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
       const results = await verifier.verifyBatch(requests);
@@ -313,10 +300,9 @@ describe('Batch Verification Integration Tests', () => {
       const qrCodes = generateValidQRBatch(20);
       const requests: VerificationRequest[] = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
-      const batchVerifier = new BatchVerifier(
-        async (req) => verifier.verify(req),
-        { concurrency: 5 }
-      );
+      const batchVerifier = new BatchVerifier(async (req) => verifier.verify(req), {
+        concurrency: 5,
+      });
 
       const result = await batchVerifier.verifyBatch(requests);
 
@@ -351,10 +337,9 @@ describe('Batch Verification Integration Tests', () => {
       const qrCodes = generateMixedQRBatch(7, 3); // 70% success rate
       const requests: VerificationRequest[] = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
-      const batchVerifier = new BatchVerifier(
-        async (req) => verifier.verify(req),
-        { concurrency: 5 }
-      );
+      const batchVerifier = new BatchVerifier(async (req) => verifier.verify(req), {
+        concurrency: 5,
+      });
 
       const result = await batchVerifier.verifyBatch(requests);
 
@@ -371,13 +356,10 @@ describe('Batch Verification Integration Tests', () => {
       const qrCodes = generateValidQRBatch(10);
       const requests: VerificationRequest[] = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
-      const batchVerifier = new BatchVerifier(
-        async (req) => verifier.verify(req),
-        {
-          concurrency: 5,
-          batchTimeout: 100, // Very short timeout
-        }
-      );
+      const batchVerifier = new BatchVerifier(async (req) => verifier.verify(req), {
+        concurrency: 5,
+        batchTimeout: 100, // Very short timeout
+      });
 
       // Mock slow responses
       mockServer.updateConfig({ latency: 1000 });
@@ -392,13 +374,10 @@ describe('Batch Verification Integration Tests', () => {
       const qrCodes = generateValidQRBatch(5);
       const requests: VerificationRequest[] = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
-      const batchVerifier = new BatchVerifier(
-        async (req) => verifier.verify(req),
-        {
-          concurrency: 5,
-          batchTimeout: 10000, // Generous timeout
-        }
-      );
+      const batchVerifier = new BatchVerifier(async (req) => verifier.verify(req), {
+        concurrency: 5,
+        batchTimeout: 10000, // Generous timeout
+      });
 
       const result = await batchVerifier.verifyBatch(requests);
 
@@ -412,10 +391,9 @@ describe('Batch Verification Integration Tests', () => {
     it('should handle empty batch gracefully', async () => {
       const requests: VerificationRequest[] = [];
 
-      const batchVerifier = new BatchVerifier(
-        async (req) => verifier.verify(req),
-        { concurrency: 5 }
-      );
+      const batchVerifier = new BatchVerifier(async (req) => verifier.verify(req), {
+        concurrency: 5,
+      });
 
       const result = await batchVerifier.verifyBatch(requests);
 
@@ -429,11 +407,7 @@ describe('Batch Verification Integration Tests', () => {
 
   describe('Error Propagation', () => {
     it('should capture individual verification errors', async () => {
-      const qrCodes = [
-        VALID_AGE_21_QR,
-        MALFORMED_INVALID_BASE64,
-        EXPIRED_QR_1_HOUR,
-      ];
+      const qrCodes = [VALID_AGE_21_QR, MALFORMED_INVALID_BASE64, EXPIRED_QR_1_HOUR];
       const requests: VerificationRequest[] = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
       const results = await verifier.verifyBatch(requests);

@@ -21,7 +21,9 @@ export async function mnemonicToSeed(mnemonic: string): Promise<Uint8Array> {
   return mnemonicToSeedSync(mnemonic);
 }
 
-export async function deriveKeyPair(seed: Uint8Array): Promise<{ publicKey: Uint8Array; privateKey: Uint8Array }> {
+export async function deriveKeyPair(
+  seed: Uint8Array
+): Promise<{ publicKey: Uint8Array; privateKey: Uint8Array }> {
   // Use first 32 bytes as private key for simplicity
   const priv = seed.slice(0, 32);
   const pub = await ed25519.getPublicKey(priv);

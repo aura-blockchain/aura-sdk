@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-01-15
 
 ### Added
+
 - Initial stable release of Aura Verifier SDK
 - Full TypeScript support with comprehensive type definitions
 - `AuraVerifier` main class for credential verification
@@ -31,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Unit and integration tests with > 90% coverage
 
 ### Security
+
 - Cryptographic signature verification using @noble/ed25519 and @noble/secp256k1
 - Nonce validation to prevent replay attacks
 - QR code expiration enforcement
@@ -39,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Input sanitization and validation
 
 ### Performance
+
 - < 500ms verification latency (online mode)
 - < 50ms verification latency (offline mode)
 - Intelligent DID and VC caching
@@ -48,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.9.0-beta] - 2025-01-01
 
 ### Added
+
 - Beta release for testing
 - Core verification functionality
 - Basic QR code parsing
@@ -55,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial documentation
 
 ### Fixed
+
 - Signature verification edge cases
 - Cache invalidation issues
 - Network timeout handling
@@ -62,12 +67,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.8.0-alpha] - 2024-12-15
 
 ### Added
+
 - Alpha release for early adopters
 - Proof of concept implementation
 - Basic offline mode
 - Example applications
 
 ### Known Issues
+
 - Performance optimization needed
 - Documentation incomplete
 - Limited error handling
@@ -81,11 +88,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 1. **Import Path Changes**
 
 **Before:**
+
 ```typescript
 import { Verifier } from '@aura-network/verifier-sdk';
 ```
 
 **After:**
+
 ```typescript
 import { AuraVerifier } from '@aura-network/verifier-sdk';
 ```
@@ -93,6 +102,7 @@ import { AuraVerifier } from '@aura-network/verifier-sdk';
 2. **Configuration Structure**
 
 **Before:**
+
 ```typescript
 const verifier = new Verifier({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
@@ -101,6 +111,7 @@ const verifier = new Verifier({
 ```
 
 **After:**
+
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',
@@ -111,11 +122,13 @@ const verifier = new AuraVerifier({
 3. **Verification Method Signature**
 
 **Before:**
+
 ```typescript
 const result = await verifier.verifyPresentation(qrData);
 ```
 
 **After:**
+
 ```typescript
 const result = await verifier.verify({ qrCodeData: qrData });
 ```
@@ -123,6 +136,7 @@ const result = await verifier.verify({ qrCodeData: qrData });
 4. **Error Handling**
 
 **Before:**
+
 ```typescript
 catch (error) {
   if (error.code === 'QR_EXPIRED') {
@@ -132,6 +146,7 @@ catch (error) {
 ```
 
 **After:**
+
 ```typescript
 import { QRExpiredError } from '@aura-network/verifier-sdk';
 
@@ -236,6 +251,7 @@ None in current version.
 ## Contributing
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md) for details on:
+
 - How to contribute
 - Development setup
 - Testing requirements

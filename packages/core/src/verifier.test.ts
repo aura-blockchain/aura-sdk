@@ -61,8 +61,7 @@ describe('VerifierSDK', () => {
 
     it('should return valid result for correct signature', async () => {
       const result = await sdk.verifySignature({
-        publicKey:
-          'd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a',
+        publicKey: 'd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a',
         message: '',
         signature:
           'e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e06522490155' +
@@ -77,8 +76,7 @@ describe('VerifierSDK', () => {
 
     it('should return invalid result for incorrect signature', async () => {
       const result = await sdk.verifySignature({
-        publicKey:
-          'd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a',
+        publicKey: 'd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a',
         message: '',
         signature: '00'.repeat(64),
         algorithm: 'ed25519',
@@ -116,9 +114,7 @@ describe('VerifierSDK', () => {
         encoding: 'hex',
       });
 
-      expect(result).toBe(
-        'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9'
-      );
+      expect(result).toBe('b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9');
     });
   });
 
@@ -133,8 +129,7 @@ describe('VerifierSDK', () => {
 
     it('should derive address from public key', () => {
       const address = sdk.deriveAddress({
-        publicKey:
-          '0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798',
+        publicKey: '0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798',
         publicKeyFormat: 'hex',
         prefix: 'aura',
         algorithm: 'secp256k1',
@@ -392,9 +387,9 @@ describe('VerifierSDK', () => {
         rpcEndpoint: 'https://rpc.aurablockchain.org',
       });
 
-      await expect(
-        sdk.verifyTransaction({ txHash: 'ABC123' })
-      ).rejects.toThrow(TransactionVerificationError);
+      await expect(sdk.verifyTransaction({ txHash: 'ABC123' })).rejects.toThrow(
+        TransactionVerificationError
+      );
 
       await sdk.disconnect();
     });
@@ -406,9 +401,7 @@ describe('VerifierSDK', () => {
     });
 
     it('should throw RpcConnectionError when connection fails', async () => {
-      (StargateClient.connect as any).mockRejectedValue(
-        new Error('Connection refused')
-      );
+      (StargateClient.connect as any).mockRejectedValue(new Error('Connection refused'));
 
       const sdk = new VerifierSDK({
         rpcEndpoint: 'https://rpc.aurablockchain.org',
@@ -447,21 +440,15 @@ describe('VerifierSDK', () => {
 
   describe('configuration validation', () => {
     it('should throw for null RPC endpoint', () => {
-      expect(() => new VerifierSDK({ rpcEndpoint: null as any })).toThrow(
-        InvalidConfigError
-      );
+      expect(() => new VerifierSDK({ rpcEndpoint: null as any })).toThrow(InvalidConfigError);
     });
 
     it('should throw for undefined RPC endpoint', () => {
-      expect(() => new VerifierSDK({ rpcEndpoint: undefined as any })).toThrow(
-        InvalidConfigError
-      );
+      expect(() => new VerifierSDK({ rpcEndpoint: undefined as any })).toThrow(InvalidConfigError);
     });
 
     it('should throw for non-string RPC endpoint', () => {
-      expect(() => new VerifierSDK({ rpcEndpoint: 123 as any })).toThrow(
-        InvalidConfigError
-      );
+      expect(() => new VerifierSDK({ rpcEndpoint: 123 as any })).toThrow(InvalidConfigError);
     });
 
     it('should use default timeout when not provided', () => {

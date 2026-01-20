@@ -21,10 +21,7 @@ interface TestWebhookOptions {
  * Generate webhook signature
  */
 function generateSignature(payload: string, secret: string): string {
-  const signature = crypto
-    .createHmac('sha256', secret)
-    .update(payload)
-    .digest('hex');
+  const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
   return `sha256=${signature}`;
 }
 

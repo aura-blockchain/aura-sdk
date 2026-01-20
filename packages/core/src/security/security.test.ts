@@ -161,9 +161,7 @@ describe('Complete Security Workflow', () => {
     await context.nonceManager!.validateNonce(nonce, timestamp);
 
     // Second use should fail
-    await expect(
-      context.nonceManager!.validateNonce(nonce, timestamp)
-    ).rejects.toThrow();
+    await expect(context.nonceManager!.validateNonce(nonce, timestamp)).rejects.toThrow();
 
     // Log security event
     await context.auditLogger!.logSecurityEvent({
@@ -232,7 +230,7 @@ describe('Complete Security Workflow', () => {
     }
 
     // Wait for threat detection
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Should have detected rapid requests
     expect(threats.length).toBeGreaterThan(0);

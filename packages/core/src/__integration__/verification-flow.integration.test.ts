@@ -51,12 +51,12 @@ describe('Verification Flow Integration Tests', () => {
     });
 
     // Mock the internal blockchain query methods
-    vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-      async (did: string) => mockServer.queryDIDDocument(did)
+    vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+      mockServer.queryDIDDocument(did)
     );
 
-    vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-      async (vcId: string) => mockServer.queryVCStatus(vcId)
+    vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+      mockServer.queryVCStatus(vcId)
     );
 
     await verifier.initialize();
@@ -237,12 +237,12 @@ describe('Verification Flow Integration Tests', () => {
       // Use fast mock server
       mockServer.updateConfig({ latency: 50 });
 
-      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-        async (did: string) => mockServer.queryDIDDocument(did)
+      vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+        mockServer.queryDIDDocument(did)
       );
 
-      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await verifier.initialize();
@@ -376,8 +376,8 @@ describe('Verification Flow Integration Tests', () => {
       vi.spyOn(protectedVerifier as any, 'queryDIDDocument').mockImplementation(
         async (did: string) => mockServer.queryDIDDocument(did)
       );
-      vi.spyOn(protectedVerifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(protectedVerifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await protectedVerifier.initialize();
@@ -437,8 +437,8 @@ describe('Verification Flow Integration Tests', () => {
       vi.spyOn(protectedVerifier as any, 'queryDIDDocument').mockImplementation(
         async (did: string) => mockServer.queryDIDDocument(did)
       );
-      vi.spyOn(protectedVerifier as any, 'queryVCStatus').mockImplementation(
-        async (vcId: string) => mockServer.queryVCStatus(vcId)
+      vi.spyOn(protectedVerifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+        mockServer.queryVCStatus(vcId)
       );
 
       await protectedVerifier.initialize();

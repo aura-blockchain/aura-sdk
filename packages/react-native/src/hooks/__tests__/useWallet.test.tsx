@@ -23,11 +23,14 @@ describe('useWallet', () => {
       await result.current.createWallet();
     });
 
-    await waitFor(() => {
-      expect(result.current.wallet).toBeDefined();
-      expect(result.current.mnemonic).toBeTruthy();
-      expect(result.current.isUnlocked).toBe(true);
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        expect(result.current.wallet).toBeDefined();
+        expect(result.current.mnemonic).toBeTruthy();
+        expect(result.current.isUnlocked).toBe(true);
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('should import wallet from mnemonic', async () => {
@@ -43,11 +46,14 @@ describe('useWallet', () => {
     await act(async () => {
       await second.result.current.importWallet(mnemonic);
     });
-    await waitFor(() => {
-      expect(second.result.current.wallet).toBeDefined();
-      expect(second.result.current.isImported).toBe(true);
-      expect(second.result.current.isUnlocked).toBe(true);
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        expect(second.result.current.wallet).toBeDefined();
+        expect(second.result.current.isImported).toBe(true);
+        expect(second.result.current.isUnlocked).toBe(true);
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('should lock and unlock wallet', async () => {

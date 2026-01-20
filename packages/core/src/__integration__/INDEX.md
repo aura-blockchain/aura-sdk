@@ -27,9 +27,11 @@ __integration__/
 ### Test Files
 
 #### verification-flow.integration.test.ts (422 lines)
+
 **Purpose:** Tests the complete end-to-end verification workflow
 
 **Key Features:**
+
 - QR code parsing and validation
 - Valid credential verification (multiple types)
 - Expired credential detection
@@ -45,9 +47,11 @@ __integration__/
 ---
 
 #### offline-mode.integration.test.ts (533 lines)
+
 **Purpose:** Tests offline verification using cached data
 
 **Key Features:**
+
 - Cache population during online verification
 - Cache retrieval in offline mode
 - Revocation list synchronization
@@ -62,9 +66,11 @@ __integration__/
 ---
 
 #### network-switching.integration.test.ts (546 lines)
+
 **Purpose:** Tests network configuration and endpoint management
 
 **Key Features:**
+
 - Mainnet/testnet/local network configuration
 - Custom endpoint configuration
 - Network failover mechanisms
@@ -79,9 +85,11 @@ __integration__/
 ---
 
 #### batch-verification.integration.test.ts (496 lines)
+
 **Purpose:** Tests parallel verification of multiple credentials
 
 **Key Features:**
+
 - Parallel verification of valid credentials
 - Mixed result handling (valid/invalid)
 - Partial failure scenarios
@@ -96,9 +104,11 @@ __integration__/
 ---
 
 #### security.integration.test.ts (586 lines)
+
 **Purpose:** Tests security features and attack prevention
 
 **Key Features:**
+
 - Replay attack prevention (nonce validation)
 - Expired credential rejection
 - Revoked credential detection
@@ -116,10 +126,12 @@ __integration__/
 
 ### Fixture Files
 
-#### __fixtures__/test-credentials.ts (403 lines)
+#### **fixtures**/test-credentials.ts (403 lines)
+
 **Purpose:** Provides comprehensive test data for all scenarios
 
 **Contents:**
+
 - QR code generation utilities
 - 8 valid QR code fixtures
 - 3 expired QR code fixtures
@@ -134,10 +146,12 @@ __integration__/
 
 ---
 
-#### __fixtures__/mock-server.ts (187 lines)
+#### **fixtures**/mock-server.ts (187 lines)
+
 **Purpose:** Mock blockchain server for testing
 
 **Features:**
+
 - Configurable network latency
 - Configurable error rate
 - Timeout simulation
@@ -147,6 +161,7 @@ __integration__/
 - 4 pre-configured variants
 
 **Server Variants:**
+
 - Standard (50ms latency)
 - Fast (0ms latency)
 - Slow (2s latency)
@@ -154,10 +169,12 @@ __integration__/
 
 ---
 
-#### __fixtures__/index.ts (6 lines)
+#### **fixtures**/index.ts (6 lines)
+
 **Purpose:** Centralized export of all fixtures
 
 **Exports:**
+
 - All test credentials
 - All mock server utilities
 
@@ -166,9 +183,11 @@ __integration__/
 ### Documentation Files
 
 #### README.md (350+ lines)
+
 **Purpose:** Comprehensive documentation for integration tests
 
 **Sections:**
+
 - Test suite overview
 - Detailed test descriptions
 - Test fixture documentation
@@ -180,9 +199,11 @@ __integration__/
 ---
 
 #### TEST_SUMMARY.md (400+ lines)
+
 **Purpose:** Complete statistics and summary of test suite
 
 **Contents:**
+
 - Test statistics overview
 - File-by-file breakdown
 - Fixture catalog
@@ -195,9 +216,11 @@ __integration__/
 ---
 
 #### QUICK_REFERENCE.md (350+ lines)
+
 **Purpose:** Quick reference guide for common tasks
 
 **Sections:**
+
 - Running tests commands
 - Common test patterns
 - Available fixtures
@@ -211,9 +234,11 @@ __integration__/
 ### Utility Files
 
 #### run-tests.sh (70+ lines)
+
 **Purpose:** Convenient test runner script
 
 **Features:**
+
 - Run all or specific test suites
 - Coverage reporting
 - Watch mode support
@@ -221,6 +246,7 @@ __integration__/
 - Usage help
 
 **Usage:**
+
 ```bash
 ./run-tests.sh [verification|offline|network|batch|security] [--coverage] [--watch]
 ```
@@ -229,16 +255,16 @@ __integration__/
 
 ## Statistics Summary
 
-| Metric | Value |
-|--------|-------|
-| Total Files | 12 |
-| Test Files | 5 |
-| Fixture Files | 3 |
-| Documentation Files | 4 |
-| Total Lines of Code | 3,264 |
-| Test Cases | 141 |
-| Test Suites | 51 |
-| Test Fixtures | 40+ |
+| Metric              | Value  |
+| ------------------- | ------ |
+| Total Files         | 12     |
+| Test Files          | 5      |
+| Fixture Files       | 3      |
+| Documentation Files | 4      |
+| Total Lines of Code | 3,264  |
+| Test Cases          | 141    |
+| Test Suites         | 51     |
+| Test Fixtures       | 40+    |
 | Documentation Lines | 1,100+ |
 
 ## Code Distribution
@@ -268,6 +294,7 @@ Documentation:         1,100+ lines
 ## Test Coverage Areas
 
 ### Functional Coverage
+
 - ✅ QR code parsing and validation
 - ✅ Signature verification (Ed25519, secp256k1)
 - ✅ DID resolution and validation
@@ -280,6 +307,7 @@ Documentation:         1,100+ lines
 - ✅ Cache management
 
 ### Security Coverage
+
 - ✅ Replay attack prevention
 - ✅ Expired credential rejection
 - ✅ Revoked credential detection
@@ -291,6 +319,7 @@ Documentation:         1,100+ lines
 - ✅ Resource limits
 
 ### Error Coverage
+
 - ✅ Network errors
 - ✅ Timeout errors
 - ✅ Parsing errors
@@ -301,6 +330,7 @@ Documentation:         1,100+ lines
 - ✅ Revoked credentials
 
 ### Performance Coverage
+
 - ✅ Batch verification
 - ✅ Concurrent processing
 - ✅ Rate limiting
@@ -310,17 +340,20 @@ Documentation:         1,100+ lines
 ## Quick Navigation
 
 ### For Users
+
 - **Getting Started:** [README.md](./README.md)
 - **Quick Commands:** [QUICK_REFERENCE.md](./QUICK_REFERENCE.md)
 - **Statistics:** [TEST_SUMMARY.md](./TEST_SUMMARY.md)
 
 ### For Developers
+
 - **Test Patterns:** [QUICK_REFERENCE.md](./QUICK_REFERENCE.md)
 - **Writing Tests:** [README.md](./README.md#writing-new-tests)
-- **Fixtures:** [__fixtures__/test-credentials.ts](./__fixtures__/test-credentials.ts)
-- **Mock Server:** [__fixtures__/mock-server.ts](./__fixtures__/mock-server.ts)
+- **Fixtures:** [**fixtures**/test-credentials.ts](./__fixtures__/test-credentials.ts)
+- **Mock Server:** [**fixtures**/mock-server.ts](./__fixtures__/mock-server.ts)
 
 ### For Contributors
+
 - **File Overview:** This document
 - **Test Structure:** [README.md](./README.md)
 - **Best Practices:** [QUICK_REFERENCE.md](./QUICK_REFERENCE.md#best-practices)
@@ -328,6 +361,7 @@ Documentation:         1,100+ lines
 ## Integration Test Quality Metrics
 
 ### Test Quality Indicators
+
 - ✅ Comprehensive fixture coverage (40+ scenarios)
 - ✅ Detailed documentation (1,100+ lines)
 - ✅ Multiple test variants (valid, invalid, edge cases)
@@ -338,6 +372,7 @@ Documentation:         1,100+ lines
 - ✅ Cleanup and resource management tested
 
 ### Maintainability Features
+
 - ✅ Centralized fixture management
 - ✅ Reusable mock server
 - ✅ Consistent test structure

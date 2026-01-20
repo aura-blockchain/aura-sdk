@@ -1,9 +1,11 @@
 # AURA SDK/API Testing Progress
+
 Last updated: 2026-01-15
 
 Progress log for implementing `AURA-SDK-API-TESTING-PLAN.md`. Tasks are checked off once completed in the codebase or verified as already satisfied.
 
 ## Phase 1 — TypeScript SDK (core)
+
 - [x] 1.2 Type definitions covered: added network/constants/DID tests (`packages/core/src/types/__tests__/network.test.ts`, `constants.test.ts`).
 - [x] 1.3 Error class coverage: existing suite already exercises error hierarchy (`packages/core/src/__tests__/errors.test.ts`), no gaps detected.
 - [x] 1.4 Property-based tests: added `network.property.test.ts` using fast-check to stress DID and endpoint invariants.
@@ -12,6 +14,7 @@ Progress log for implementing `AURA-SDK-API-TESTING-PLAN.md`. Tasks are checked 
 - [x] QueryExecutor response/error handling covered: added `queries.handleResponse.test.ts` to assert Aura API error wrapping, invalid JSON, and connection failure mapping (2026-01-16).
 
 ## Phase 2 — Go SDK
+
 - [x] Client coverage: comprehensive tests for config defaults, mnemonic import, balance/all-balances, account query, and sign/broadcast key errors (`aura/sdk/go/client/client_test.go`).
 - [x] Encoding coverage: ensured interface registry and tx config registered (`aura/sdk/go/client/encoding_test.go`).
 - [x] Fixed client encoding setup to populate `TxConfig`/`InterfaceRegistry` for account unpacking (see `client.go`).
@@ -33,6 +36,7 @@ Progress log for implementing `AURA-SDK-API-TESTING-PLAN.md`. Tasks are checked 
 - [x] Remaining module clients validated (economicsecurity, dataregistry, cryptography, privacy, inclusionroutines, etc.); no uncovered Go SDK modules remain.
 
 ## Phase 4 — Faucet
+
 - [x] Abuse detector limits/risk scoring exercised (`faucet/backend/pkg/abuse/detector_test.go`).
 - [x] Captcha generation/validation/TTL tests (`faucet/backend/pkg/captcha/captcha_test.go`).
 - [x] Proof-of-work generation/verification/expiration and adaptive difficulty (`faucet/backend/pkg/pow/proof_of_work_test.go`).
@@ -42,6 +46,7 @@ Progress log for implementing `AURA-SDK-API-TESTING-PLAN.md`. Tasks are checked 
 - [x] API handler unit tests with mocked dependencies for health/info/recent/requests + rate-limit/balance paths (`faucet/backend/pkg/api/handler_test.go`).
 
 ## Upcoming phases
+
 - [x] Phase 2: Go SDK coverage (all module clients validated).
 - [x] Phase 3: Chain modules (identity, vcregistry, compliance) keeper suites.
   - Identity msg_server bech32/signature validation fixed; all identity keeper tests now green (`go test ./x/identity/...`).
@@ -51,6 +56,7 @@ Progress log for implementing `AURA-SDK-API-TESTING-PLAN.md`. Tasks are checked 
 - [ ] Phase 7: React Native SDK hooks/provider/storage tests + CI workflow.
 
 ## How to run
+
 - Core tests with coverage: `pnpm test:coverage`
 - Focused core type tests: `pnpm -C packages/core test src/types/__tests__`
 - Mutation testing (core): `pnpm test:mutation`

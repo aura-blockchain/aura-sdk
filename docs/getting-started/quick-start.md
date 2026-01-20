@@ -29,8 +29,8 @@ Create an instance of `AuraVerifier` with your desired network:
 ```typescript
 const verifier = new AuraVerifier({
   network: 'testnet', // Use 'mainnet' for production
-  timeout: 10000,     // 10 second timeout
-  verbose: true,      // Enable logging for development
+  timeout: 10000, // 10 second timeout
+  verbose: true, // Enable logging for development
 });
 ```
 
@@ -49,7 +49,8 @@ When a user presents a QR code, scan it and pass the data to the verifier:
 
 ```typescript
 // Example QR code data (this would come from a QR scanner)
-const qrCodeData = "aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXNlbnRhdGlvbi0xMjMiLCJoIjoiZGlkOmF1cmE6dGVzdG5ldDphYmMxMjMiLCJ2Y3MiOlsidmMtMSIsInZjLTIiXSwiY3R4Ijp7InNob3dfYWdlX292ZXJfMjEiOnRydWV9LCJleHAiOjE3MzU1NjAwMDAsIm4iOjEyMzQ1Niwic2lnIjoiYWJjZGVmMTIzNDU2In0=";
+const qrCodeData =
+  'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXNlbnRhdGlvbi0xMjMiLCJoIjoiZGlkOmF1cmE6dGVzdG5ldDphYmMxMjMiLCJ2Y3MiOlsidmMtMSIsInZjLTIiXSwiY3R4Ijp7InNob3dfYWdlX292ZXJfMjEiOnRydWV9LCJleHAiOjE3MzU1NjAwMDAsIm4iOjEyMzQ1Niwic2lnIjoiYWJjZGVmMTIzNDU2In0=';
 
 try {
   const result = await verifier.verify({
@@ -81,17 +82,17 @@ The verification result contains all the information you need:
 
 ```typescript
 interface VerificationResult {
-  isValid: boolean;              // Overall verification status
-  holderDID: string;             // User's decentralized identifier
-  verifiedAt: Date;              // Timestamp of verification
-  vcDetails: VCVerificationDetail[];  // Details of each credential
+  isValid: boolean; // Overall verification status
+  holderDID: string; // User's decentralized identifier
+  verifiedAt: Date; // Timestamp of verification
+  vcDetails: VCVerificationDetail[]; // Details of each credential
   attributes: DiscloseableAttributes; // Disclosed information
-  verificationError?: string;    // Error message if failed
-  auditId: string;               // Unique ID for audit trail
-  networkLatency: number;        // Response time in ms
-  signatureValid: boolean;       // Cryptographic signature status
-  presentationId: string;        // Presentation identifier
-  expiresAt: Date;              // When QR code expires
+  verificationError?: string; // Error message if failed
+  auditId: string; // Unique ID for audit trail
+  networkLatency: number; // Response time in ms
+  signatureValid: boolean; // Cryptographic signature status
+  presentationId: string; // Presentation identifier
+  expiresAt: Date; // When QR code expires
 }
 ```
 
@@ -189,7 +190,6 @@ async function main() {
       timestamp: result.verifiedAt,
       isValid: result.isValid,
     });
-
   } catch (error) {
     console.error('Error:', error);
   } finally {
@@ -289,11 +289,7 @@ if (trustScore !== null) {
 Always wrap verification in try-catch blocks:
 
 ```typescript
-import {
-  QRExpiredError,
-  QRParseError,
-  VerificationError
-} from '@aura-network/verifier-sdk';
+import { QRExpiredError, QRParseError, VerificationError } from '@aura-network/verifier-sdk';
 
 try {
   const result = await verifier.verify({ qrCodeData });
@@ -302,7 +298,6 @@ try {
     // Handle invalid verification
     console.log('Invalid:', result.verificationError);
   }
-
 } catch (error) {
   if (error instanceof QRExpiredError) {
     console.error('QR code has expired');
@@ -418,11 +413,12 @@ Use the testnet for development:
 ```typescript
 const verifier = new AuraVerifier({
   network: 'testnet', // Safe for testing
-  verbose: true,      // See detailed logs
+  verbose: true, // See detailed logs
 });
 ```
 
 Generate test QR codes:
+
 - Visit the [Aura Testnet Wallet](https://testnet-wallet.aurablockchain.org)
 - Create credentials
 - Generate verification QR codes
@@ -447,11 +443,7 @@ Generate test QR codes:
 Yes, use batch verification:
 
 ```typescript
-const requests = [
-  { qrCodeData: qr1 },
-  { qrCodeData: qr2 },
-  { qrCodeData: qr3 },
-];
+const requests = [{ qrCodeData: qr1 }, { qrCodeData: qr2 }, { qrCodeData: qr3 }];
 
 const results = await verifier.verifyBatch(requests);
 ```
@@ -465,7 +457,7 @@ Enable offline mode with cached credentials:
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',
-  offlineMode: true,  // Use cached data only
+  offlineMode: true, // Use cached data only
 });
 ```
 

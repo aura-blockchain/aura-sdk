@@ -22,11 +22,7 @@ export class NetworkError extends Error {
   /**
    * Create error from HTTP response
    */
-  static fromResponse(
-    statusCode: number,
-    statusText: string,
-    body?: unknown
-  ): NetworkError {
+  static fromResponse(statusCode: number, statusText: string, body?: unknown): NetworkError {
     const message = `HTTP ${statusCode}: ${statusText}`;
     return new NetworkError(message, 'HTTP_ERROR', statusCode, body);
   }
@@ -64,11 +60,7 @@ export class TimeoutError extends NetworkError {
     public readonly timeoutMs: number,
     public readonly operation: string
   ) {
-    super(
-      `Operation "${operation}" timed out after ${timeoutMs}ms`,
-      'TIMEOUT',
-      408
-    );
+    super(`Operation "${operation}" timed out after ${timeoutMs}ms`, 'TIMEOUT', 408);
     this.name = 'TimeoutError';
     Object.setPrototypeOf(this, TimeoutError.prototype);
   }
@@ -83,15 +75,9 @@ export class NodeUnavailableError extends NetworkError {
     public readonly attemptedEndpoints: string[] = [],
     details?: unknown
   ) {
-    const endpointList = attemptedEndpoints.length > 0
-      ? ` (tried: ${attemptedEndpoints.join(', ')})`
-      : '';
-    super(
-      `Aura node unavailable at ${endpoint}${endpointList}`,
-      'NODE_UNAVAILABLE',
-      503,
-      details
-    );
+    const endpointList =
+      attemptedEndpoints.length > 0 ? ` (tried: ${attemptedEndpoints.join(', ')})` : '';
+    super(`Aura node unavailable at ${endpoint}${endpointList}`, 'NODE_UNAVAILABLE', 503, details);
     this.name = 'NodeUnavailableError';
     Object.setPrototypeOf(this, NodeUnavailableError.prototype);
   }
@@ -156,11 +142,9 @@ export class VerificationError extends Error {
    * Create error for revoked credential
    */
   static revokedCredential(vcId: string): VerificationError {
-    return new VerificationError(
-      `Credential ${vcId} has been revoked`,
-      'CREDENTIAL_REVOKED',
-      { vcId }
-    );
+    return new VerificationError(`Credential ${vcId} has been revoked`, 'CREDENTIAL_REVOKED', {
+      vcId,
+    });
   }
 
   /**
@@ -222,19 +206,13 @@ export class ConfigurationError extends Error {
    * Create error for missing required configuration
    */
   static missingRequired(field: string): ConfigurationError {
-    return new ConfigurationError(
-      `Missing required configuration: ${field}`,
-      field
-    );
+    return new ConfigurationError(`Missing required configuration: ${field}`, field);
   }
 
   /**
    * Create error for invalid configuration value
    */
   static invalidValue(field: string, reason: string): ConfigurationError {
-    return new ConfigurationError(
-      `Invalid configuration for ${field}: ${reason}`,
-      field
-    );
+    return new ConfigurationError(`Invalid configuration for ${field}: ${reason}`, field);
   }
 }

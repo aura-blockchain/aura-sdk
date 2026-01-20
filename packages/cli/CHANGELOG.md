@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 #### Commands
+
 - `aura-verify scan` - Interactive QR code verification with prompts
 - `aura-verify check <qr-data>` - Direct QR code verification from command line
 - `aura-verify status <vc-id>` - Check credential status on-chain
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `aura-verify generate-qr` - Generate sample QR codes for testing
 
 #### Features
+
 - Colorful terminal output with success/failure indicators
 - JSON output mode for scripting and automation (`--json` flag)
 - Verbose mode for debugging (`--verbose` flag)
@@ -36,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - VC status caching
 
 #### Output Formats
+
 - Beautiful formatted tables for credentials
 - Boxed status indicators
 - Color-coded results (green=success, red=failure, yellow=warning)
@@ -44,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Signature validation status
 
 #### Documentation
+
 - Comprehensive README.md with all commands
 - EXAMPLES.md with practical usage scenarios
 - QUICKSTART.md for new users
@@ -53,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Technical Details
 
 #### Dependencies
+
 - `commander` ^11.1.0 - CLI framework
 - `chalk` ^5.3.0 - Terminal colors
 - `ora` ^8.0.1 - Loading spinners
@@ -64,16 +69,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `boxen` ^7.1.1 - Box drawing
 
 #### Requirements
+
 - Node.js >= 18.0.0
 - TypeScript ^5.3.3
 
 #### Build System
+
 - TypeScript compilation with ESM output
 - Source maps for debugging
 - Type declarations included
 - Executable shebang for direct execution
 
 ### Architecture
+
 - Command pattern for extensibility
 - Shared utility modules for code reuse
 - Singleton verifier instance management
@@ -81,12 +89,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Event-based error handling
 
 ### Testing Support
+
 - Sample QR code generation
 - Simple and complex test data
 - Multiple credential type support
 - Configurable expiration times
 
 ### Developer Experience
+
 - TypeScript for type safety
 - Modular command structure
 - Reusable utility functions
@@ -96,6 +106,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned Features
+
 - Shell completion (bash/zsh/fish)
 - Watch mode for continuous verification
 - Webhook support for notifications
@@ -108,6 +119,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Snap package
 
 ### Under Consideration
+
 - GUI/TUI mode with terminal UI
 - Real-time credential monitoring
 - Revocation list management

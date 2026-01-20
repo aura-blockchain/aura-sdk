@@ -6,12 +6,7 @@
  */
 
 import { CredentialCache } from './cache.js';
-import {
-  SyncResult,
-  SyncError,
-  AutoSyncConfig,
-  CachedCredential
-} from './types.js';
+import { SyncResult, SyncError, AutoSyncConfig, CachedCredential } from './types.js';
 
 /**
  * Minimal AuraClient interface for synchronization
@@ -68,12 +63,14 @@ export class CacheSync {
         credentialsSynced: 0,
         revocationListUpdated: false,
         lastSyncTime: new Date(),
-        errors: [{
-          type: 'unknown',
-          message: 'Sync already in progress',
-          timestamp: new Date(),
-          recoverable: true
-        }]
+        errors: [
+          {
+            type: 'unknown',
+            message: 'Sync already in progress',
+            timestamp: new Date(),
+            recoverable: true,
+          },
+        ],
       };
     }
 
@@ -97,7 +94,7 @@ export class CacheSync {
           type: 'revocation',
           message: `Failed to sync revocation list: ${error instanceof Error ? error.message : 'Unknown error'}`,
           timestamp: new Date(),
-          recoverable: true
+          recoverable: true,
         });
       }
 
@@ -132,7 +129,7 @@ export class CacheSync {
             message: `Failed to sync credential ${vcId}: ${error instanceof Error ? error.message : 'Unknown error'}`,
             vcId,
             timestamp: new Date(),
-            recoverable: true
+            recoverable: true,
           });
         }
       }
@@ -152,15 +149,15 @@ export class CacheSync {
           credentialsAdded,
           credentialsUpdated,
           credentialsRemoved,
-          revocationChecks
-        }
+          revocationChecks,
+        },
       };
     } catch (error) {
       errors.push({
         type: 'unknown',
         message: `Sync failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
         timestamp: new Date(),
-        recoverable: false
+        recoverable: false,
       });
 
       return {
@@ -168,7 +165,7 @@ export class CacheSync {
         credentialsSynced,
         revocationListUpdated,
         lastSyncTime: new Date(),
-        errors
+        errors,
       };
     } finally {
       this.isSyncing = false;
@@ -182,12 +179,11 @@ export class CacheSync {
     try {
       const revocationList = await this.client.getRevocationList();
 
-      await this.cache.setRevocationList(
-        revocationList.merkleRoot,
-        revocationList.bitmap
-      );
+      await this.cache.setRevocationList(revocationList.merkleRoot, revocationList.bitmap);
     } catch (error) {
-      throw new Error(`Failed to sync revocation list: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to sync revocation list: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -214,19 +210,23 @@ export class CacheSync {
               issuerDid: credential.issuer,
               revocationStatus: {
                 isRevoked,
-                checkedAt: new Date()
+                checkedAt: new Date(),
               },
               metadata: {
                 cachedAt: new Date(),
                 expiresAt: new Date(Date.now() + 3600 * 1000), // 1 hour default
                 issuedAt: credential.issuanceDate ? new Date(credential.issuanceDate) : undefined,
-                credentialExpiresAt: credential.expirationDate ? new Date(credential.expirationDate) : undefined
-              }
+                credentialExpiresAt: credential.expirationDate
+                  ? new Date(credential.expirationDate)
+                  : undefined,
+              },
             };
 
             await this.cache.set(vcId, cachedCredential);
           } catch (error) {
-            throw new Error(`Failed to fetch credential ${vcId}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            throw new Error(
+              `Failed to fetch credential ${vcId}: ${error instanceof Error ? error.message : 'Unknown error'}`
+            );
           }
         } else {
           // Update revocation status
@@ -240,7 +240,9 @@ export class CacheSync {
         }
       }
     } catch (error) {
-      throw new Error(`Failed to sync credential status: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to sync credential status: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -259,7 +261,7 @@ export class CacheSync {
       wifiOnly: config?.wifiOnly ?? false,
       syncOnStartup: config?.syncOnStartup ?? true,
       maxRetries: config?.maxRetries ?? 3,
-      retryBackoff: config?.retryBackoff ?? 2
+      retryBackoff: config?.retryBackoff ?? 2,
     };
 
     // Sync on startup if configured
@@ -317,7 +319,7 @@ export class CacheSync {
         if (attempt < maxRetries) {
           // Wait before retrying with exponential backoff
           const delay = Math.pow(retryBackoff, attempt) * 1000;
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -358,7 +360,7 @@ export class CacheSync {
       enabled: this.autoSyncConfig?.enabled ?? false,
       intervalMs: this.autoSyncConfig?.intervalMs,
       lastSyncCount: this.syncCount,
-      isSyncing: this.isSyncing
+      isSyncing: this.isSyncing,
     };
   }
 
@@ -410,7 +412,9 @@ export class CacheSync {
 
       return removed;
     } catch (error) {
-      throw new Error(`Failed to remove stale credentials: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to remove stale credentials: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -436,7 +440,9 @@ export class CacheSync {
 
       return invalid;
     } catch (error) {
-      throw new Error(`Failed to validate cached credentials: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to validate cached credentials: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 }

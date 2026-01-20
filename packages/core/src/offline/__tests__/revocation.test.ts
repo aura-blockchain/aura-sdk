@@ -15,7 +15,7 @@ import {
   createRevocationList,
   isRevoked,
   getRevocationStats,
-  validateRevocationList
+  validateRevocationList,
 } from '../revocation.js';
 
 describe('Revocation Bitmap', () => {
@@ -87,7 +87,7 @@ describe('Revocation Bitmap', () => {
 
 describe('Bitmap Compression', () => {
   it('should compress and decompress bitmap', () => {
-    const original = new Uint8Array([0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00]);
+    const original = new Uint8Array([0xff, 0xff, 0xff, 0x00, 0x00, 0x00]);
     const compressed = compressBitmap(original);
     const decompressed = decompressBitmap(compressed);
 
@@ -95,7 +95,7 @@ describe('Bitmap Compression', () => {
   });
 
   it('should handle single-byte bitmap', () => {
-    const original = new Uint8Array([0xAB]);
+    const original = new Uint8Array([0xab]);
     const compressed = compressBitmap(original);
     const decompressed = decompressBitmap(compressed);
 
@@ -103,7 +103,7 @@ describe('Bitmap Compression', () => {
   });
 
   it('should handle alternating pattern', () => {
-    const original = new Uint8Array([0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00]);
+    const original = new Uint8Array([0xff, 0x00, 0xff, 0x00, 0xff, 0x00]);
     const compressed = compressBitmap(original);
     const decompressed = decompressBitmap(compressed);
 
@@ -113,12 +113,7 @@ describe('Bitmap Compression', () => {
 
 describe('Merkle Tree', () => {
   it('should calculate Merkle root', () => {
-    const hashes = [
-      'a'.repeat(64),
-      'b'.repeat(64),
-      'c'.repeat(64),
-      'd'.repeat(64)
-    ];
+    const hashes = ['a'.repeat(64), 'b'.repeat(64), 'c'.repeat(64), 'd'.repeat(64)];
 
     const root = calculateMerkleRoot(hashes);
 
@@ -135,11 +130,7 @@ describe('Merkle Tree', () => {
   });
 
   it('should handle odd number of hashes', () => {
-    const hashes = [
-      'a'.repeat(64),
-      'b'.repeat(64),
-      'c'.repeat(64)
-    ];
+    const hashes = ['a'.repeat(64), 'b'.repeat(64), 'c'.repeat(64)];
 
     const root = calculateMerkleRoot(hashes);
     expect(root).toBeTruthy();
@@ -156,7 +147,7 @@ describe('Merkle Tree', () => {
 describe('Merkle Proofs', () => {
   it('should generate and verify Merkle proof', () => {
     const vcIds = ['vc-001', 'vc-002', 'vc-003', 'vc-004'];
-    const hashes = vcIds.map(id => hashCredentialId(id));
+    const hashes = vcIds.map((id) => hashCredentialId(id));
 
     const index = 1;
     const vcId = vcIds[index];
@@ -175,7 +166,7 @@ describe('Merkle Proofs', () => {
 
   it('should reject invalid Merkle proof', () => {
     const vcIds = ['vc-001', 'vc-002', 'vc-003', 'vc-004'];
-    const hashes = vcIds.map(id => hashCredentialId(id));
+    const hashes = vcIds.map((id) => hashCredentialId(id));
 
     const proof = generateMerkleProof(vcIds[0], hashes, 0);
 
@@ -305,8 +296,11 @@ describe('Edge Cases', () => {
   });
 
   it('should handle large Merkle tree', () => {
-    const credentialIds = Array.from({ length: 1000 }, (_, i) => `vc-${i.toString().padStart(4, '0')}`);
-    const hashes = credentialIds.map(id => hashCredentialId(id));
+    const credentialIds = Array.from(
+      { length: 1000 },
+      (_, i) => `vc-${i.toString().padStart(4, '0')}`
+    );
+    const hashes = credentialIds.map((id) => hashCredentialId(id));
 
     const root = calculateMerkleRoot(hashes);
     expect(root).toBeTruthy();

@@ -62,32 +62,35 @@ await verifier.destroy();
 
 ## Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm install` | Install dependencies |
-| `pnpm build` | Build all packages |
-| `pnpm dev` | Build in watch mode |
-| `pnpm test` | Run tests |
+| Command              | Description             |
+| -------------------- | ----------------------- |
+| `pnpm install`       | Install dependencies    |
+| `pnpm build`         | Build all packages      |
+| `pnpm dev`           | Build in watch mode     |
+| `pnpm test`          | Run tests               |
 | `pnpm test:coverage` | Run tests with coverage |
-| `pnpm lint` | Lint code |
-| `pnpm format` | Format code |
-| `pnpm typecheck` | Type check |
+| `pnpm lint`          | Lint code               |
+| `pnpm format`        | Format code             |
+| `pnpm typecheck`     | Type check              |
 
 ## Troubleshooting
 
 **pnpm not found:**
+
 ```bash
 npm install -g pnpm
 ```
 
 **TypeScript errors:**
 Ensure Node.js 18+ is installed:
+
 ```bash
 node --version
 ```
 
 **Tests fail:**
 Build before testing:
+
 ```bash
 pnpm build && pnpm test
 ```

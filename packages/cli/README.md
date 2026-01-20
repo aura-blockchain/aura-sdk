@@ -48,17 +48,20 @@ aura-verify config
 Interactive QR code verification. Prompts you to paste QR data and verifies the credential.
 
 **Options:**
+
 - `-n, --network <network>` - Network to use (mainnet|testnet|local) [default: mainnet]
 - `-v, --verbose` - Enable verbose logging
 - `-j, --json` - Output as JSON
 
 **Example:**
+
 ```bash
 aura-verify scan
 # Paste QR code data when prompted
 ```
 
 **Example with network:**
+
 ```bash
 aura-verify scan --network testnet
 ```
@@ -70,9 +73,11 @@ aura-verify scan --network testnet
 Verify a QR code from the command line without interaction.
 
 **Arguments:**
+
 - `<qr-data>` - QR code data or URL to verify
 
 **Options:**
+
 - `-n, --network <network>` - Network to use (mainnet|testnet|local) [default: mainnet]
 - `-r, --required-types <types...>` - Required VC types (space-separated)
 - `-m, --max-age <seconds>` - Maximum credential age in seconds
@@ -81,6 +86,7 @@ Verify a QR code from the command line without interaction.
 - `-o, --offline` - Use offline verification only
 
 **Examples:**
+
 ```bash
 # Basic verification
 aura-verify check "aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXNfMT..."
@@ -99,6 +105,7 @@ aura-verify check "aura://..." --offline
 ```
 
 **Exit Codes:**
+
 - `0` - Verification successful
 - `1` - Verification failed
 
@@ -109,14 +116,17 @@ aura-verify check "aura://..." --offline
 Check the on-chain status of a verifiable credential.
 
 **Arguments:**
+
 - `<vc-id>` - Verifiable Credential ID to check
 
 **Options:**
+
 - `-n, --network <network>` - Network to use (mainnet|testnet|local) [default: mainnet]
 - `-v, --verbose` - Enable verbose logging
 - `-j, --json` - Output as JSON
 
 **Examples:**
+
 ```bash
 # Check credential status
 aura-verify status vc_gov_id_001
@@ -129,6 +139,7 @@ aura-verify status vc_123 --json
 ```
 
 **Status Values:**
+
 - `active` - Credential is valid and active
 - `revoked` - Credential has been revoked
 - `expired` - Credential has expired
@@ -142,14 +153,17 @@ aura-verify status vc_123 --json
 Resolve and display a DID document from the blockchain.
 
 **Arguments:**
+
 - `<did>` - DID to resolve (e.g., did:aura:mainnet:aura1...)
 
 **Options:**
+
 - `-n, --network <network>` - Network to use (mainnet|testnet|local) [default: mainnet]
 - `-v, --verbose` - Enable verbose logging
 - `-j, --json` - Output as JSON
 
 **Examples:**
+
 ```bash
 # Resolve DID
 aura-verify did did:aura:mainnet:aura1xyz123abc456
@@ -168,6 +182,7 @@ aura-verify did did:aura:mainnet:aura1xyz123 --json
 Configure network and CLI settings. Can be used interactively or with flags.
 
 **Options:**
+
 - `-s, --show` - Show current configuration
 - `-r, --reset` - Reset configuration to defaults
 - `-n, --network <network>` - Set network (mainnet|testnet|local)
@@ -179,6 +194,7 @@ Configure network and CLI settings. Can be used interactively or with flags.
 - `--no-json` - Disable JSON output
 
 **Examples:**
+
 ```bash
 # Interactive configuration
 aura-verify config
@@ -201,6 +217,7 @@ aura-verify config --reset
 
 **Configuration File:**
 The configuration is stored in:
+
 - Linux: `~/.config/aura-verifier/config.json`
 - macOS: `~/Library/Preferences/aura-verifier/config.json`
 - Windows: `%APPDATA%\aura-verifier\Config\config.json`
@@ -212,6 +229,7 @@ The configuration is stored in:
 Generate sample QR codes for testing purposes.
 
 **Options:**
+
 - `-t, --type <type>` - QR code type (simple|complex) [default: simple]
 - `-o, --output <file>` - Save QR code to file (PNG)
 - `-d, --display` - Display QR code in terminal [default: true]
@@ -219,6 +237,7 @@ Generate sample QR codes for testing purposes.
 - `-j, --json` - Output raw data as JSON
 
 **Examples:**
+
 ```bash
 # Interactive generation
 aura-verify generate-qr
@@ -237,6 +256,7 @@ aura-verify generate-qr --type complex --json
 ```
 
 **QR Code Types:**
+
 - `simple` - Basic age verification (ageOver18)
 - `complex` - Multiple credentials (GovernmentID, Biometric, Age)
 
@@ -255,23 +275,29 @@ All commands support these common options:
 The CLI supports three networks:
 
 ### Mainnet (Production)
+
 ```bash
 aura-verify check "..." --network mainnet
 ```
+
 - gRPC: `rpc.aurablockchain.org:9090`
 - REST: `https://api.aurablockchain.org`
 
 ### Testnet (Testing)
+
 ```bash
 aura-verify check "..." --network testnet
 ```
+
 - gRPC: `testnet-grpc.aurablockchain.org:443`
 - REST: `https://testnet-api.aurablockchain.org`
 
 ### Local (Development)
+
 ```bash
 aura-verify check "..." --network local
 ```
+
 - gRPC: `localhost:9090`
 - REST: `http://localhost:1317`
 
@@ -354,6 +380,7 @@ The CLI is designed for both interactive use and automation:
 ### Exit Codes
 
 All commands follow standard exit code conventions:
+
 - `0` - Success
 - `1` - Failure/Error
 
@@ -503,13 +530,14 @@ aura-verify check "$QR_DATA" --verbose
 Use the CLI in your applications:
 
 ### Node.js
+
 ```javascript
 const { execSync } = require('child_process');
 
 function verifyCredential(qrData) {
   try {
     const result = execSync(`aura-verify check "${qrData}" --json`, {
-      encoding: 'utf-8'
+      encoding: 'utf-8',
     });
     return JSON.parse(result);
   } catch (error) {
@@ -519,6 +547,7 @@ function verifyCredential(qrData) {
 ```
 
 ### Python
+
 ```python
 import subprocess
 import json
@@ -537,6 +566,7 @@ def verify_credential(qr_data):
 ```
 
 ### Shell Script
+
 ```bash
 #!/bin/bash
 

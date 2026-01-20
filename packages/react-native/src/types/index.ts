@@ -37,7 +37,11 @@ export interface VerificationResult {
 export interface PresentationRequest {
   id: string;
   verifier: string;
-  requestedCredentials: Array<{ type: string; required: boolean; constraints?: Record<string, unknown> }>;
+  requestedCredentials: Array<{
+    type: string;
+    required: boolean;
+    constraints?: Record<string, unknown>;
+  }>;
   challenge?: string;
   domain?: string;
 }

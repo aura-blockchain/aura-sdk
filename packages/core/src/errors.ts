@@ -101,10 +101,7 @@ export class QRValidationError extends AuraVerifierError {
    * Create error for invalid field value
    */
   static invalidField(field: string, reason: string): QRValidationError {
-    return new QRValidationError(
-      `Invalid ${field}: ${reason}`,
-      field
-    );
+    return new QRValidationError(`Invalid ${field}: ${reason}`, field);
   }
 
   /**
@@ -128,11 +125,10 @@ export class QRExpiredError extends AuraVerifierError {
   ) {
     const expDate = new Date(expirationTime * 1000).toISOString();
     const currDate = new Date(currentTime * 1000).toISOString();
-    super(
-      `QR code expired at ${expDate} (current time: ${currDate})`,
-      ERROR_CODES.QR_EXPIRED,
-      { expirationTime, currentTime }
-    );
+    super(`QR code expired at ${expDate} (current time: ${currDate})`, ERROR_CODES.QR_EXPIRED, {
+      expirationTime,
+      currentTime,
+    });
     this.name = 'QRExpiredError';
     Object.setPrototypeOf(this, QRExpiredError.prototype);
   }
@@ -156,7 +152,10 @@ export class QRExpiredError extends AuraVerifierError {
  * Error thrown when QR code nonce is invalid or reused
  */
 export class QRNonceError extends AuraVerifierError {
-  constructor(message: string, public readonly nonce?: number) {
+  constructor(
+    message: string,
+    public readonly nonce?: number
+  ) {
     super(message, ERROR_CODES.NONCE_REPLAY, { nonce });
     this.name = 'QRNonceError';
     Object.setPrototypeOf(this, QRNonceError.prototype);
@@ -176,10 +175,7 @@ export class QRNonceError extends AuraVerifierError {
    * Create error for reused nonce (replay attack)
    */
   static reusedNonce(nonce: number): QRNonceError {
-    return new QRNonceError(
-      `Nonce ${nonce} has already been used (replay attack detected)`,
-      nonce
-    );
+    return new QRNonceError(`Nonce ${nonce} has already been used (replay attack detected)`, nonce);
   }
 }
 
@@ -218,10 +214,7 @@ export class SignatureError extends AuraVerifierError {
    * Create error for unsupported algorithm
    */
   static unsupportedAlgorithm(algorithm: string): SignatureError {
-    return new SignatureError(
-      `Unsupported signature algorithm: ${algorithm}`,
-      { algorithm }
-    );
+    return new SignatureError(`Unsupported signature algorithm: ${algorithm}`, { algorithm });
   }
 }
 
@@ -265,18 +258,9 @@ export class NetworkError extends AuraVerifierError {
   /**
    * Create error from HTTP response
    */
-  static fromResponse(
-    statusCode: number,
-    statusText: string,
-    body?: unknown
-  ): NetworkError {
+  static fromResponse(statusCode: number, statusText: string, body?: unknown): NetworkError {
     const message = `HTTP ${statusCode}: ${statusText}`;
-    return new NetworkError(
-      message,
-      ERROR_CODES.NETWORK_ERROR,
-      statusCode,
-      body
-    );
+    return new NetworkError(message, ERROR_CODES.NETWORK_ERROR, statusCode, body);
   }
 
   /**
@@ -312,12 +296,10 @@ export class TimeoutError extends NetworkError {
     public readonly timeoutMs: number,
     public readonly operation: string
   ) {
-    super(
-      `Operation "${operation}" timed out after ${timeoutMs}ms`,
-      ERROR_CODES.TIMEOUT,
-      408,
-      { timeoutMs, operation }
-    );
+    super(`Operation "${operation}" timed out after ${timeoutMs}ms`, ERROR_CODES.TIMEOUT, 408, {
+      timeoutMs,
+      operation,
+    });
     this.name = 'TimeoutError';
     Object.setPrototypeOf(this, TimeoutError.prototype);
   }
@@ -332,9 +314,8 @@ export class NodeUnavailableError extends NetworkError {
     public readonly attemptedEndpoints: string[] = [],
     details?: unknown
   ) {
-    const endpointList = attemptedEndpoints.length > 0
-      ? ` (tried: ${attemptedEndpoints.join(', ')})`
-      : '';
+    const endpointList =
+      attemptedEndpoints.length > 0 ? ` (tried: ${attemptedEndpoints.join(', ')})` : '';
     super(
       `Aura node unavailable at ${endpoint}${endpointList}`,
       ERROR_CODES.NODE_UNAVAILABLE,
@@ -372,13 +353,7 @@ export class APIError extends NetworkError {
   ): APIError {
     const message = response.message || `API error at ${endpoint}`;
     const errorCode = response.code?.toString();
-    return new APIError(
-      message,
-      endpoint,
-      statusCode,
-      errorCode,
-      response.details
-    );
+    return new APIError(message, endpoint, statusCode, errorCode, response.details);
   }
 }
 
@@ -415,11 +390,10 @@ export class CredentialRevokedError extends AuraVerifierError {
     public readonly revokedAt?: Date
   ) {
     const dateInfo = revokedAt ? ` at ${revokedAt.toISOString()}` : '';
-    super(
-      `Credential ${vcId} has been revoked${dateInfo}`,
-      ERROR_CODES.CREDENTIAL_REVOKED,
-      { vcId, revokedAt }
-    );
+    super(`Credential ${vcId} has been revoked${dateInfo}`, ERROR_CODES.CREDENTIAL_REVOKED, {
+      vcId,
+      revokedAt,
+    });
     this.name = 'CredentialRevokedError';
     Object.setPrototypeOf(this, CredentialRevokedError.prototype);
   }
@@ -448,11 +422,7 @@ export class CredentialExpiredError extends AuraVerifierError {
  */
 export class CredentialNotFoundError extends AuraVerifierError {
   constructor(public readonly vcId: string) {
-    super(
-      `Credential ${vcId} not found on blockchain`,
-      ERROR_CODES.CREDENTIAL_NOT_FOUND,
-      { vcId }
-    );
+    super(`Credential ${vcId} not found on blockchain`, ERROR_CODES.CREDENTIAL_NOT_FOUND, { vcId });
     this.name = 'CredentialNotFoundError';
     Object.setPrototypeOf(this, CredentialNotFoundError.prototype);
   }
@@ -467,11 +437,10 @@ export class CredentialSuspendedError extends AuraVerifierError {
     public readonly suspendedAt?: Date
   ) {
     const dateInfo = suspendedAt ? ` at ${suspendedAt.toISOString()}` : '';
-    super(
-      `Credential ${vcId} is suspended${dateInfo}`,
-      ERROR_CODES.CREDENTIAL_SUSPENDED,
-      { vcId, suspendedAt }
-    );
+    super(`Credential ${vcId} is suspended${dateInfo}`, ERROR_CODES.CREDENTIAL_SUSPENDED, {
+      vcId,
+      suspendedAt,
+    });
     this.name = 'CredentialSuspendedError';
     Object.setPrototypeOf(this, CredentialSuspendedError.prototype);
   }
@@ -482,11 +451,9 @@ export class CredentialSuspendedError extends AuraVerifierError {
  */
 export class CredentialPendingError extends AuraVerifierError {
   constructor(public readonly vcId: string) {
-    super(
-      `Credential ${vcId} is still pending activation`,
-      ERROR_CODES.CREDENTIAL_PENDING,
-      { vcId }
-    );
+    super(`Credential ${vcId} is still pending activation`, ERROR_CODES.CREDENTIAL_PENDING, {
+      vcId,
+    });
     this.name = 'CredentialPendingError';
     Object.setPrototypeOf(this, CredentialPendingError.prototype);
   }
@@ -506,11 +473,7 @@ export class DIDResolutionError extends AuraVerifierError {
     details?: unknown
   ) {
     const reasonText = reason ? `: ${reason}` : '';
-    super(
-      `Failed to resolve DID ${did}${reasonText}`,
-      ERROR_CODES.DID_RESOLUTION_FAILED,
-      details
-    );
+    super(`Failed to resolve DID ${did}${reasonText}`, ERROR_CODES.DID_RESOLUTION_FAILED, details);
     this.name = 'DIDResolutionError';
     Object.setPrototypeOf(this, DIDResolutionError.prototype);
   }
@@ -525,11 +488,7 @@ export class InvalidDIDError extends AuraVerifierError {
     public readonly reason?: string
   ) {
     const reasonText = reason ? `: ${reason}` : '';
-    super(
-      `Invalid DID format: ${did}${reasonText}`,
-      ERROR_CODES.INVALID_DID_FORMAT,
-      { did }
-    );
+    super(`Invalid DID format: ${did}${reasonText}`, ERROR_CODES.INVALID_DID_FORMAT, { did });
     this.name = 'InvalidDIDError';
     Object.setPrototypeOf(this, InvalidDIDError.prototype);
   }
@@ -540,11 +499,7 @@ export class InvalidDIDError extends AuraVerifierError {
  */
 export class DIDNotFoundError extends AuraVerifierError {
   constructor(public readonly did: string) {
-    super(
-      `DID document not found: ${did}`,
-      ERROR_CODES.DID_NOT_FOUND,
-      { did }
-    );
+    super(`DID document not found: ${did}`, ERROR_CODES.DID_NOT_FOUND, { did });
     this.name = 'DIDNotFoundError';
     Object.setPrototypeOf(this, DIDNotFoundError.prototype);
   }
@@ -563,11 +518,7 @@ export class VerificationError extends AuraVerifierError {
     public readonly reason: string,
     details?: unknown
   ) {
-    super(
-      message,
-      ERROR_CODES.PRESENTATION_VERIFICATION_FAILED,
-      details
-    );
+    super(message, ERROR_CODES.PRESENTATION_VERIFICATION_FAILED, details);
     this.name = 'VerificationError';
     Object.setPrototypeOf(this, VerificationError.prototype);
   }
@@ -653,11 +604,7 @@ export class SyncError extends AuraVerifierError {
  */
 export class OfflineModeUnavailableError extends AuraVerifierError {
   constructor(public readonly reason: string) {
-    super(
-      `Offline mode unavailable: ${reason}`,
-      ERROR_CODES.OFFLINE_MODE_UNAVAILABLE,
-      { reason }
-    );
+    super(`Offline mode unavailable: ${reason}`, ERROR_CODES.OFFLINE_MODE_UNAVAILABLE, { reason });
     this.name = 'OfflineModeUnavailableError';
     Object.setPrototypeOf(this, OfflineModeUnavailableError.prototype);
   }
@@ -685,20 +632,14 @@ export class ConfigurationError extends AuraVerifierError {
    * Create error for missing required configuration
    */
   static missingRequired(field: string): ConfigurationError {
-    return new ConfigurationError(
-      `Missing required configuration: ${field}`,
-      field
-    );
+    return new ConfigurationError(`Missing required configuration: ${field}`, field);
   }
 
   /**
    * Create error for invalid configuration value
    */
   static invalidValue(field: string, reason: string): ConfigurationError {
-    return new ConfigurationError(
-      `Invalid configuration for ${field}: ${reason}`,
-      field
-    );
+    return new ConfigurationError(`Invalid configuration for ${field}: ${reason}`, field);
   }
 }
 
@@ -784,16 +725,10 @@ export function toAuraVerifierError(error: unknown): AuraVerifierError {
   }
 
   if (error instanceof Error) {
-    return new AuraVerifierError(
-      error.message,
-      ERROR_CODES.UNKNOWN_ERROR,
-      { originalError: error }
-    );
+    return new AuraVerifierError(error.message, ERROR_CODES.UNKNOWN_ERROR, {
+      originalError: error,
+    });
   }
 
-  return new AuraVerifierError(
-    String(error),
-    ERROR_CODES.UNKNOWN_ERROR,
-    { originalError: error }
-  );
+  return new AuraVerifierError(String(error), ERROR_CODES.UNKNOWN_ERROR, { originalError: error });
 }

@@ -15,7 +15,9 @@ vi.mock('@aura-network/verifier-sdk', () => {
 });
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <AuraVerifierProvider config={{ network: 'testnet', grpcEndpoint: 'grpc', restEndpoint: 'rest' } as any}>
+  <AuraVerifierProvider
+    config={{ network: 'testnet', grpcEndpoint: 'grpc', restEndpoint: 'rest' } as any}
+  >
     {children}
   </AuraVerifierProvider>
 );
@@ -30,7 +32,9 @@ describe('useCredentialStatus', () => {
   });
 
   it('fetches status and updates lastUpdated', async () => {
-    const { result } = renderHook(() => useCredentialStatus('vc:aura:1', { autoRefresh: false }), { wrapper });
+    const { result } = renderHook(() => useCredentialStatus('vc:aura:1', { autoRefresh: false }), {
+      wrapper,
+    });
 
     await act(async () => {
       await result.current.refresh();
@@ -41,7 +45,10 @@ describe('useCredentialStatus', () => {
   });
 
   it('auto-refreshes on interval', async () => {
-    const { result } = renderHook(() => useCredentialStatus('vc:aura:2', { refreshInterval: 1000 }), { wrapper });
+    const { result } = renderHook(
+      () => useCredentialStatus('vc:aura:2', { refreshInterval: 1000 }),
+      { wrapper }
+    );
 
     await act(async () => {
       vi.advanceTimersByTime(1000);

@@ -45,9 +45,9 @@ describe('crypto', () => {
         const message = hexToBytes('');
         const signature = hexToBytes('00'.repeat(64));
 
-        await expect(
-          verifySignature(publicKey, message, signature, 'ed25519')
-        ).rejects.toThrow(PublicKeyError);
+        await expect(verifySignature(publicKey, message, signature, 'ed25519')).rejects.toThrow(
+          PublicKeyError
+        );
       });
 
       it('should throw error for invalid signature length', async () => {
@@ -55,9 +55,9 @@ describe('crypto', () => {
         const message = hexToBytes('');
         const signature = hexToBytes('00'.repeat(32)); // Wrong length
 
-        await expect(
-          verifySignature(publicKey, message, signature, 'ed25519')
-        ).rejects.toThrow(SignatureError);
+        await expect(verifySignature(publicKey, message, signature, 'ed25519')).rejects.toThrow(
+          SignatureError
+        );
       });
     });
 
@@ -83,9 +83,9 @@ describe('crypto', () => {
         const message = hexToBytes('');
         const signature = hexToBytes('00'.repeat(64));
 
-        await expect(
-          verifySignature(publicKey, message, signature, 'secp256k1')
-        ).rejects.toThrow(PublicKeyError);
+        await expect(verifySignature(publicKey, message, signature, 'secp256k1')).rejects.toThrow(
+          PublicKeyError
+        );
       });
     });
   });
@@ -98,9 +98,7 @@ describe('crypto', () => {
         encoding: 'hex',
       });
 
-      expect(result).toBe(
-        'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9'
-      );
+      expect(result).toBe('b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9');
     });
 
     it('should hash with SHA-256 and return base64', () => {

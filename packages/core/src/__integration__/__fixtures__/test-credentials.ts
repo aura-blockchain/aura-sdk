@@ -253,30 +253,36 @@ export const INVALID_SIGNATURE_EMPTY_QR = encodeQRCodeData(
 /**
  * QR code with missing required field (vcs)
  */
-export const MALFORMED_MISSING_VCS = 'aura://verify?data=' +
-  Buffer.from(JSON.stringify({
-    v: '1.0',
-    p: generatePresentationId(),
-    h: 'did:aura:mainnet:test',
-    ctx: {},
-    exp: Math.floor(Date.now() / 1000) + 300,
-    n: generateNonce(),
-    sig: generateMockEd25519Signature(),
-  })).toString('base64');
+export const MALFORMED_MISSING_VCS =
+  'aura://verify?data=' +
+  Buffer.from(
+    JSON.stringify({
+      v: '1.0',
+      p: generatePresentationId(),
+      h: 'did:aura:mainnet:test',
+      ctx: {},
+      exp: Math.floor(Date.now() / 1000) + 300,
+      n: generateNonce(),
+      sig: generateMockEd25519Signature(),
+    })
+  ).toString('base64');
 
 /**
  * QR code with missing required field (signature)
  */
-export const MALFORMED_MISSING_SIGNATURE = 'aura://verify?data=' +
-  Buffer.from(JSON.stringify({
-    v: '1.0',
-    p: generatePresentationId(),
-    h: 'did:aura:mainnet:test',
-    vcs: ['vc_test'],
-    ctx: {},
-    exp: Math.floor(Date.now() / 1000) + 300,
-    n: generateNonce(),
-  })).toString('base64');
+export const MALFORMED_MISSING_SIGNATURE =
+  'aura://verify?data=' +
+  Buffer.from(
+    JSON.stringify({
+      v: '1.0',
+      p: generatePresentationId(),
+      h: 'did:aura:mainnet:test',
+      vcs: ['vc_test'],
+      ctx: {},
+      exp: Math.floor(Date.now() / 1000) + 300,
+      n: generateNonce(),
+    })
+  ).toString('base64');
 
 /**
  * QR code with invalid base64
@@ -286,8 +292,8 @@ export const MALFORMED_INVALID_BASE64 = 'aura://verify?data=not-valid-base64!!!@
 /**
  * QR code with invalid JSON
  */
-export const MALFORMED_INVALID_JSON = 'aura://verify?data=' +
-  Buffer.from('{invalid json').toString('base64');
+export const MALFORMED_INVALID_JSON =
+  'aura://verify?data=' + Buffer.from('{invalid json').toString('base64');
 
 /**
  * QR code with wrong protocol version
@@ -357,24 +363,25 @@ export const DUPLICATE_NONCE_QR = encodeQRCodeData(
 /**
  * Raw base64 data (without aura:// prefix)
  */
-export const RAW_BASE64_QR = Buffer.from(
-  JSON.stringify(createMockQRCodeData())
-).toString('base64');
+export const RAW_BASE64_QR = Buffer.from(JSON.stringify(createMockQRCodeData())).toString('base64');
 
 /**
  * QR code with empty VC array
  */
-export const EMPTY_VCS_QR = 'aura://verify?data=' +
-  Buffer.from(JSON.stringify({
-    v: '1.0',
-    p: generatePresentationId(),
-    h: 'did:aura:mainnet:test',
-    vcs: [],
-    ctx: {},
-    exp: Math.floor(Date.now() / 1000) + 300,
-    n: generateNonce(),
-    sig: generateMockEd25519Signature(),
-  })).toString('base64');
+export const EMPTY_VCS_QR =
+  'aura://verify?data=' +
+  Buffer.from(
+    JSON.stringify({
+      v: '1.0',
+      p: generatePresentationId(),
+      h: 'did:aura:mainnet:test',
+      vcs: [],
+      ctx: {},
+      exp: Math.floor(Date.now() / 1000) + 300,
+      n: generateNonce(),
+      sig: generateMockEd25519Signature(),
+    })
+  ).toString('base64');
 
 /**
  * QR code with invalid DID format
@@ -478,26 +485,26 @@ export function generateExpiredQRBatch(count: number): string[] {
  */
 export const MOCK_VC_STATUS_MAP: Record<string, VCStatus> = {
   // Valid credentials
-  'vc_age_21_valid_001': 'active' as VCStatus,
-  'vc_age_18_valid_002': 'active' as VCStatus,
-  'vc_human_valid_003': 'active' as VCStatus,
-  'vc_gov_id_valid_004': 'active' as VCStatus,
-  'vc_kyc_valid_005': 'active' as VCStatus,
-  'vc_age_21_valid_006': 'active' as VCStatus,
-  'vc_human_valid_007': 'active' as VCStatus,
-  'vc_kyc_valid_008': 'active' as VCStatus,
-  'vc_secp256k1_valid_009': 'active' as VCStatus,
-  'vc_valid_010': 'active' as VCStatus,
-  'vc_valid_011': 'active' as VCStatus,
+  vc_age_21_valid_001: 'active' as VCStatus,
+  vc_age_18_valid_002: 'active' as VCStatus,
+  vc_human_valid_003: 'active' as VCStatus,
+  vc_gov_id_valid_004: 'active' as VCStatus,
+  vc_kyc_valid_005: 'active' as VCStatus,
+  vc_age_21_valid_006: 'active' as VCStatus,
+  vc_human_valid_007: 'active' as VCStatus,
+  vc_kyc_valid_008: 'active' as VCStatus,
+  vc_secp256k1_valid_009: 'active' as VCStatus,
+  vc_valid_010: 'active' as VCStatus,
+  vc_valid_011: 'active' as VCStatus,
 
   // Revoked credentials
-  'vc_revoked_001': 'revoked' as VCStatus,
-  'vc_revoked_002': 'revoked' as VCStatus,
+  vc_revoked_001: 'revoked' as VCStatus,
+  vc_revoked_002: 'revoked' as VCStatus,
 
   // Expired credentials
-  'vc_expired_001': 'expired' as VCStatus,
-  'vc_expired_002': 'expired' as VCStatus,
-  'vc_expired_003': 'expired' as VCStatus,
+  vc_expired_001: 'expired' as VCStatus,
+  vc_expired_002: 'expired' as VCStatus,
+  vc_expired_003: 'expired' as VCStatus,
 };
 
 /**

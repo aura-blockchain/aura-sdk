@@ -127,9 +127,15 @@ export function createMyCommand(): Command {
         spinner?.fail('Operation failed');
 
         if (jsonOutput) {
-          console.error(JSON.stringify({
-            error: err instanceof Error ? err.message : String(err)
-          }, null, 2));
+          console.error(
+            JSON.stringify(
+              {
+                error: err instanceof Error ? err.message : String(err),
+              },
+              null,
+              2
+            )
+          );
         } else {
           error(err instanceof Error ? err.message : String(err));
         }
@@ -258,9 +264,15 @@ try {
   spinner?.fail('Error message');
 
   if (jsonOutput) {
-    console.error(JSON.stringify({
-      error: err instanceof Error ? err.message : String(err)
-    }, null, 2));
+    console.error(
+      JSON.stringify(
+        {
+          error: err instanceof Error ? err.message : String(err),
+        },
+        null,
+        2
+      )
+    );
   } else {
     error(err instanceof Error ? err.message : String(err));
   }
@@ -499,10 +511,7 @@ const did1 = await verifier.resolveDID(did1);
 const did2 = await verifier.resolveDID(did2);
 
 // Good: Parallel
-const [did1, did2] = await Promise.all([
-  verifier.resolveDID(did1),
-  verifier.resolveDID(did2),
-]);
+const [did1, did2] = await Promise.all([verifier.resolveDID(did1), verifier.resolveDID(did2)]);
 ```
 
 ## Security Best Practices
@@ -548,11 +557,14 @@ command
   .description('Clear, concise description of what the command does')
   .argument('<required>', 'Description of required argument')
   .option('-o, --optional <value>', 'Description of optional flag', 'default')
-  .addHelpText('after', `
+  .addHelpText(
+    'after',
+    `
 Examples:
   $ aura-verify command arg
   $ aura-verify command arg --optional value
-  `);
+  `
+  );
 ```
 
 ### Code Comments
@@ -574,6 +586,7 @@ async function verify(qrData: string, options: Options): Promise<Result> {
 ### README Updates
 
 When adding features:
+
 1. Add to command list
 2. Add usage examples
 3. Update table of contents
@@ -647,14 +660,17 @@ ls dist/commands/my-command.js
 ### Planned Features
 
 1. **Shell Completion**
+
    - Bash, Zsh, Fish support
    - Auto-complete commands and options
 
 2. **Watch Mode**
+
    - Continuous verification
    - File watching
 
 3. **Plugins**
+
    - External command plugins
    - Custom output formats
 
@@ -666,10 +682,12 @@ ls dist/commands/my-command.js
 ### Architecture Improvements
 
 1. **Modular Output**
+
    - Plugin-based formatters
    - Custom themes
 
 2. **Configuration**
+
    - Multiple profiles
    - Environment-based config
 
@@ -680,22 +698,26 @@ ls dist/commands/my-command.js
 ## Resources
 
 ### Documentation
+
 - [Commander.js](https://github.com/tj/commander.js)
 - [Chalk](https://github.com/chalk/chalk)
 - [Ora](https://github.com/sindresorhus/ora)
 - [Enquirer](https://github.com/enquirer/enquirer)
 
 ### TypeScript
+
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
 - [ESM in Node.js](https://nodejs.org/api/esm.html)
 
 ### Aura Network
+
 - [Aura Docs](https://docs.aurablockchain.org)
 - [Verifier SDK](../../README.md)
 
 ## Support
 
 For development questions:
+
 - Open an issue on GitHub
 - Join Discord #development channel
 - Check existing documentation

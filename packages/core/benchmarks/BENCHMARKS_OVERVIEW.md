@@ -9,6 +9,7 @@ Comprehensive performance benchmarking suite for the Aura Verifier SDK, measurin
 ### Benchmark Suites
 
 1. **qr-benchmark.ts** (12KB)
+
    - QR code parsing performance
    - Tests small, medium, and large payloads
    - Concurrent parsing performance
@@ -16,6 +17,7 @@ Comprehensive performance benchmarking suite for the Aura Verifier SDK, measurin
    - Target: Parse 20,000+ QR codes per second
 
 2. **crypto-benchmark.ts** (16KB)
+
    - Ed25519 signature verification
    - Secp256k1 signature verification
    - Batch verification performance
@@ -24,6 +26,7 @@ Comprehensive performance benchmarking suite for the Aura Verifier SDK, measurin
    - Target: Verify 10,000+ signatures per second
 
 3. **cache-benchmark.ts** (17KB)
+
    - Cache read/write performance
    - Hit/miss rate analysis
    - Memory usage with different cache sizes
@@ -42,17 +45,20 @@ Comprehensive performance benchmarking suite for the Aura Verifier SDK, measurin
 ### Supporting Files
 
 5. **index.ts** (5.5KB)
+
    - Main benchmark runner
    - CLI argument parsing
    - Suite orchestration
    - Summary reporting
 
 6. **quick-test.ts** (6.7KB)
+
    - Fast validation test (~1 minute)
    - Tests all major components
    - Useful for CI/CD and quick validation
 
 7. **README.md** (9KB)
+
    - Comprehensive documentation
    - Usage instructions
    - Performance tips
@@ -68,6 +74,7 @@ Comprehensive performance benchmarking suite for the Aura Verifier SDK, measurin
 ### Performance Metrics
 
 All benchmarks measure:
+
 - **Throughput**: Operations per second
 - **Latency Distribution**: Min, P50, P95, P99, Max
 - **Memory Usage**: Heap allocation and per-operation cost
@@ -84,6 +91,7 @@ All benchmarks measure:
 ### Real-World Scenarios
 
 Benchmarks include:
+
 - Small payloads (1 VC, minimal context)
 - Medium payloads (3 VCs, typical usage)
 - Large payloads (10 VCs, maximum complexity)
@@ -144,24 +152,28 @@ npm run benchmark -- --verbose
 Based on testing with Node.js 18+ on a modern multi-core processor:
 
 #### QR Parsing
+
 - Small QR: ~50,000 ops/sec, 0.02ms avg
 - Medium QR: ~30,000 ops/sec, 0.03ms avg
 - Large QR: ~20,000 ops/sec, 0.05ms avg
 - P95 Latency: < 0.1ms
 
 #### Signature Verification
+
 - Ed25519: ~12,000 ops/sec, 0.08ms avg
 - Secp256k1: ~4,000 ops/sec, 0.25ms avg
 - Batch (10 sigs): ~1,500 batches/sec
 - P95 Latency: < 0.15ms (Ed25519)
 
 #### Cache Operations
+
 - Read (hit): ~60,000 ops/sec, 0.016ms avg
 - Write: ~55,000 ops/sec, 0.018ms avg
 - Read (miss): ~70,000 ops/sec, 0.014ms avg
 - P95 Latency: < 0.03ms
 
 #### End-to-End Verification
+
 - Full flow: ~800 ops/sec, 1.2ms avg
 - With cache hit: ~900 ops/sec, 1.1ms avg
 - With cache miss: ~750 ops/sec, 1.3ms avg
@@ -194,6 +206,7 @@ Based on testing with Node.js 18+ on a modern multi-core processor:
 ### Performance Considerations
 
 The benchmarks are designed to:
+
 - Avoid I/O operations (except for storage adapter tests)
 - Use realistic data sizes and structures
 - Test both cold and warm paths
@@ -211,7 +224,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 0 * * 0'  # Weekly
+    - cron: '0 0 * * 0' # Weekly
 
 jobs:
   benchmark:
@@ -230,6 +243,7 @@ jobs:
 ## Regression Detection
 
 Monitor these key metrics for regressions:
+
 - E2E P95 latency increasing beyond 50ms
 - QR parsing throughput dropping below 15,000 ops/sec
 - Signature verification dropping below 8,000 ops/sec (Ed25519)
@@ -240,6 +254,7 @@ Monitor these key metrics for regressions:
 ### Performance Issues
 
 If benchmarks show poor performance:
+
 1. Close other applications
 2. Ensure CPU is not throttled
 3. Check for background processes
@@ -249,6 +264,7 @@ If benchmarks show poor performance:
 ### Memory Issues
 
 If seeing high memory usage:
+
 1. Reduce iteration count in benchmark files
 2. Run suites individually
 3. Increase Node.js heap size: `NODE_OPTIONS="--max-old-space-size=4096"`
@@ -256,6 +272,7 @@ If seeing high memory usage:
 ### Inconsistent Results
 
 If results vary significantly:
+
 1. Ensure stable system load
 2. Run benchmarks multiple times
 3. Use dedicated benchmarking environment
@@ -264,6 +281,7 @@ If results vary significantly:
 ## Future Enhancements
 
 Potential additions to benchmark suite:
+
 - Network latency simulation for gRPC calls
 - Database query performance for persistent storage
 - Revocation list verification benchmarks
@@ -275,6 +293,7 @@ Potential additions to benchmark suite:
 ## Dependencies
 
 The benchmarks use:
+
 - **@noble/ed25519**: Ed25519 signature operations
 - **@noble/secp256k1**: Secp256k1 signature operations
 - **@noble/hashes**: SHA-256 hashing
@@ -290,6 +309,7 @@ MIT License - same as Aura Verifier SDK
 ## Contact
 
 For questions about benchmarks or performance issues:
+
 - Open an issue on GitHub
 - Check existing benchmark results in CI
 - Review README.md for detailed usage

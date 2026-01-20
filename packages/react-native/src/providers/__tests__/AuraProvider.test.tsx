@@ -12,7 +12,11 @@ const TestConsumer = () => {
     <>
       <Text testID="network">{network}</Text>
       <Text testID="connected">{isConnected ? 'yes' : 'no'}</Text>
-      <Button testID="switch-btn" title="Switch" onPress={() => switchNetwork(NetworkType.MAINNET)} />
+      <Button
+        testID="switch-btn"
+        title="Switch"
+        onPress={() => switchNetwork(NetworkType.MAINNET)}
+      />
     </>
   );
 };

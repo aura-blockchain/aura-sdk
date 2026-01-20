@@ -53,12 +53,12 @@ describe('Offline Mode Integration Tests', () => {
     });
 
     // Mock internal methods
-    vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(
-      async (did: string) => mockServer.queryDIDDocument(did)
+    vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) =>
+      mockServer.queryDIDDocument(did)
     );
 
-    vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(
-      async (vcId: string) => mockServer.queryVCStatus(vcId)
+    vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) =>
+      mockServer.queryVCStatus(vcId)
     );
 
     await verifier.initialize();
@@ -402,7 +402,7 @@ describe('Offline Mode Integration Tests', () => {
           holderDID: 'did:aura:mainnet:holder',
           revocationStatus: {
             isRevoked: i === 2, // One revoked
-          checkedAt: now,
+            checkedAt: now,
           },
           metadata: {
             cachedAt: now,

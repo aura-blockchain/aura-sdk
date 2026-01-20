@@ -86,7 +86,7 @@ export class ComplianceReporter {
     this.config = {
       autoExport: false,
       exportPath: './compliance-reports',
-      ...config
+      ...config,
     };
     this.auditLogger = auditLogger;
 
@@ -109,7 +109,7 @@ export class ComplianceReporter {
     const filter: AuditFilter = {
       startDate: period.start,
       endDate: period.end,
-      type: 'verification'
+      type: 'verification',
     };
 
     const events = await this.auditLogger.query(filter);
@@ -124,31 +124,31 @@ export class ComplianceReporter {
 
       summary: {
         totalVerifications: events.length,
-        successfulVerifications: events.filter(e => e.result === 'success').length,
-        failedVerifications: events.filter(e => e.result === 'failure').length,
+        successfulVerifications: events.filter((e) => e.result === 'success').length,
+        failedVerifications: events.filter((e) => e.result === 'failure').length,
         uniqueUsers: summary.uniqueHolders,
-        dataSubjectsProcessed: summary.uniqueHolders
+        dataSubjectsProcessed: summary.uniqueHolders,
       },
 
       verifications: {
         byType: this.categorizeByType(events),
         byAge: this.categorizeByAge(events),
         byHour: this.categorizeByHour(events),
-        byDevice: summary.byType
+        byDevice: summary.byType,
       },
 
       privacy: {
         attributesDisclosed: this.countAttributesDisclosed(events),
         retentionCompliance: true, // Checked by audit logger
         encryptionEnabled: true, // From audit logger config
-        dataSubjectRequests: 0 // Would track separately
+        dataSubjectRequests: 0, // Would track separately
       },
 
       incidents: {
-        verificationFailures: events.filter(e => e.result === 'failure').length,
-        systemErrors: events.filter(e => e.type === 'error').length,
-        unauthorizedAccess: 0 // Would need specific tracking
-      }
+        verificationFailures: events.filter((e) => e.result === 'failure').length,
+        systemErrors: events.filter((e) => e.type === 'error').length,
+        unauthorizedAccess: 0, // Would need specific tracking
+      },
     };
 
     // Add jurisdiction-specific recommendations
@@ -168,7 +168,7 @@ export class ComplianceReporter {
       age_verification: 0,
       identity_verification: 0,
       license_verification: 0,
-      other: 0
+      other: 0,
     };
 
     for (const event of events) {
@@ -196,7 +196,7 @@ export class ComplianceReporter {
       '25-34': Math.floor(events.length * 0.3),
       '35-44': Math.floor(events.length * 0.25),
       '45-54': Math.floor(events.length * 0.15),
-      '55+': Math.floor(events.length * 0.1)
+      '55+': Math.floor(events.length * 0.1),
     };
   }
 
@@ -237,21 +237,31 @@ export class ComplianceReporter {
     // Jurisdiction-specific recommendations
     switch (this.config.jurisdiction) {
       case 'eu':
-        recommendations.push('Ensure GDPR Article 30 records of processing activities are maintained.');
+        recommendations.push(
+          'Ensure GDPR Article 30 records of processing activities are maintained.'
+        );
         recommendations.push('Verify data retention policies comply with GDPR Article 5(1)(e).');
         if (report.summary.dataSubjectsProcessed > 1000) {
-          recommendations.push('Consider appointing a Data Protection Officer (DPO) per GDPR Article 37.');
+          recommendations.push(
+            'Consider appointing a Data Protection Officer (DPO) per GDPR Article 37.'
+          );
         }
         break;
 
       case 'us':
-        recommendations.push('Ensure compliance with state-specific privacy laws (CCPA, CPRA, etc.).');
-        recommendations.push('Verify age verification processes meet COPPA requirements if applicable.');
+        recommendations.push(
+          'Ensure compliance with state-specific privacy laws (CCPA, CPRA, etc.).'
+        );
+        recommendations.push(
+          'Verify age verification processes meet COPPA requirements if applicable.'
+        );
         break;
 
       case 'uk':
         recommendations.push('Ensure UK GDPR and Data Protection Act 2018 compliance.');
-        recommendations.push('Register with ICO if processing substantial amounts of personal data.');
+        recommendations.push(
+          'Register with ICO if processing substantial amounts of personal data.'
+        );
         break;
 
       case 'ca':
@@ -260,7 +270,9 @@ export class ComplianceReporter {
         break;
 
       case 'au':
-        recommendations.push('Ensure Privacy Act 1988 and Australian Privacy Principles compliance.');
+        recommendations.push(
+          'Ensure Privacy Act 1988 and Australian Privacy Principles compliance.'
+        );
         recommendations.push('Verify cross-border data transfer safeguards are in place.');
         break;
     }
@@ -307,15 +319,13 @@ export class ComplianceReporter {
       '',
       'VERIFICATION BREAKDOWN',
       '---------------------',
-      ...Object.entries(report.verifications.byType).map(([type, count]) =>
-        `${type}: ${count}`
-      ),
+      ...Object.entries(report.verifications.byType).map(([type, count]) => `${type}: ${count}`),
       '',
       'PRIVACY METRICS',
       '--------------',
       `Attributes Disclosed:`,
-      ...Object.entries(report.privacy.attributesDisclosed).map(([attr, count]) =>
-        `  ${attr}: ${count}`
+      ...Object.entries(report.privacy.attributesDisclosed).map(
+        ([attr, count]) => `  ${attr}: ${count}`
       ),
       `Retention Compliance: ${report.privacy.retentionCompliance ? 'Yes' : 'No'}`,
       `Encryption Enabled: ${report.privacy.encryptionEnabled ? 'Yes' : 'No'}`,
@@ -328,7 +338,7 @@ export class ComplianceReporter {
       '',
       'RECOMMENDATIONS',
       '---------------',
-      ...report.recommendations!.map((rec, i) => `${i + 1}. ${rec}`)
+      ...report.recommendations!.map((rec, i) => `${i + 1}. ${rec}`),
     ].join('\n');
 
     return Buffer.from(content, 'utf8');
@@ -347,17 +357,17 @@ export class ComplianceReporter {
       ['Failed Verifications', report.summary.failedVerifications.toString()],
       ['Unique Users', report.summary.uniqueUsers.toString()],
       ['Verification Failures', report.incidents.verificationFailures.toString()],
-      ['System Errors', report.incidents.systemErrors.toString()]
+      ['System Errors', report.incidents.systemErrors.toString()],
     ];
 
-    const csv = rows.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+    const csv = rows.map((row) => row.map((cell) => `"${cell}"`).join(',')).join('\n');
     return Buffer.from(csv, 'utf8');
   }
 
   async generateDataSubjectReport(holderDID: string): Promise<DataSubjectReport> {
     const filter: AuditFilter = {
       holderDID,
-      type: 'verification'
+      type: 'verification',
     };
 
     const events = await this.auditLogger.query(filter);
@@ -381,22 +391,22 @@ export class ComplianceReporter {
         totalVerifications: events.length,
         firstVerification: events[events.length - 1].timestamp,
         lastVerification: events[0].timestamp,
-        attributesDisclosed: Array.from(allAttributes)
+        attributesDisclosed: Array.from(allAttributes),
       },
 
-      verificationHistory: events.map(e => ({
+      verificationHistory: events.map((e) => ({
         id: e.id,
         timestamp: e.timestamp,
         result: e.result || 'unknown',
         verifier: e.verifierAddress || 'unknown',
-        attributes: e.attributes || []
+        attributes: e.attributes || [],
       })),
 
       rightsExercised: {
         accessRequests: 1, // This request counts as one
         deletionRequests: 0,
-        objectionRequests: 0
-      }
+        objectionRequests: 0,
+      },
     };
 
     return report;
@@ -408,7 +418,7 @@ export class ComplianceReporter {
 
     const filter: AuditFilter = {
       holderDID,
-      type: 'verification'
+      type: 'verification',
     };
 
     const events = await this.auditLogger.query(filter);
@@ -431,11 +441,13 @@ export class ComplianceReporter {
       holderDID,
       metadata: {
         action: 'data_subject_deletion_request',
-        recordCount: events.length.toString()
-      }
+        recordCount: events.length.toString(),
+      },
     });
 
-    console.log(`Deletion request logged for ${holderDID}. ${events.length} records marked for deletion.`);
+    console.log(
+      `Deletion request logged for ${holderDID}. ${events.length} records marked for deletion.`
+    );
   }
 
   getNextReportingPeriod(): DateRange {

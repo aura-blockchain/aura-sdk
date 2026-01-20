@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-12-30
 
 ### Added
+
 - Initial release of Aura Verifier SDK for Flutter
 - Basic credential verification via QR codes
 - Support for mainnet, testnet, and local networks
@@ -29,17 +30,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Complete API documentation
 
 ### Features
+
 - **Verification Methods**
+
   - Online verification against blockchain
   - Offline verification using cached data
   - Cached result retrieval
 
 - **QR Code Support**
+
   - Parse QR codes with or without URL prefix
   - Validate QR code format and expiration
   - Extract credential information
 
 - **Caching**
+
   - DID document caching
   - VC status caching
   - Verification result caching
@@ -47,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Configurable cache size and TTL
 
 - **Security**
+
   - Nonce-based replay protection
   - Signature verification
   - Secure credential storage
@@ -61,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Windows
 
 ### Dependencies
+
 - `flutter` - Flutter SDK
 - `http` ^1.1.0 - HTTP client
 - `shared_preferences` ^2.2.2 - Local storage
@@ -69,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `crypto` ^3.0.3 - Cryptographic operations
 
 ### Documentation
+
 - Comprehensive README with examples
 - API reference documentation
 - Example app with common use cases
@@ -78,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
+
 - gRPC support for faster network calls
 - WebAssembly compilation for web
 - Biometric verification integration

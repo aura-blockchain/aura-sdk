@@ -70,7 +70,7 @@ export class FallbackVerification {
       approverRoles: ['manager', 'supervisor'],
       photoRequired: true,
       notesRequired: true,
-      ...config
+      ...config,
     };
 
     this.validateConfig();
@@ -154,8 +154,8 @@ export class FallbackVerification {
         ageVerified: false,
         documentAuthentic: false,
         photoMatches: false,
-        notExpired: false
-      }
+        notExpired: false,
+      },
     };
 
     // Perform automatic verification checks
@@ -184,7 +184,7 @@ export class FallbackVerification {
       dateOfBirth: /(?:dob|date of birth|born):?\s*(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})/i,
       documentNumber: /(?:id|license|doc)(?:\s*#|num)?:?\s*([A-Z0-9-]+)/i,
       expirationDate: /(?:exp|expires?):?\s*(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})/i,
-      issuingAuthority: /(?:issued by|issuer):?\s*([^\n,]+)/i
+      issuingAuthority: /(?:issued by|issuer):?\s*([^\n,]+)/i,
     };
 
     for (const [key, pattern] of Object.entries(patterns)) {
@@ -197,9 +197,7 @@ export class FallbackVerification {
     return data;
   }
 
-  private async performVerificationChecks(
-    record: ManualVerificationRecord
-  ): Promise<void> {
+  private async performVerificationChecks(record: ManualVerificationRecord): Promise<void> {
     // Check age verification
     if (record.extractedData.dateOfBirth) {
       const dob = this.parseDate(record.extractedData.dateOfBirth);
@@ -231,7 +229,7 @@ export class FallbackVerification {
     const formats = [
       /(\d{1,2})[-/](\d{1,2})[-/](\d{4})/, // MM/DD/YYYY
       /(\d{4})[-/](\d{1,2})[-/](\d{1,2})/, // YYYY/MM/DD
-      /(\d{1,2})[-/](\d{1,2})[-/](\d{2})/  // MM/DD/YY
+      /(\d{1,2})[-/](\d{1,2})[-/](\d{2})/, // MM/DD/YY
     ];
 
     for (const format of formats) {
@@ -289,7 +287,7 @@ export class FallbackVerification {
       approved,
       approvedBy,
       approvedAt: new Date(),
-      comments
+      comments,
     };
 
     this.manualRecords.set(recordId, record);
@@ -311,27 +309,27 @@ export class FallbackVerification {
     let records = Array.from(this.manualRecords.values());
 
     if (filter.startDate) {
-      records = records.filter(r => r.timestamp >= filter.startDate!);
+      records = records.filter((r) => r.timestamp >= filter.startDate!);
     }
 
     if (filter.endDate) {
-      records = records.filter(r => r.timestamp <= filter.endDate!);
+      records = records.filter((r) => r.timestamp <= filter.endDate!);
     }
 
     if (filter.documentType) {
-      records = records.filter(r => r.documentType === filter.documentType);
+      records = records.filter((r) => r.documentType === filter.documentType);
     }
 
     if (filter.verifierId) {
-      records = records.filter(r => r.verifierId === filter.verifierId);
+      records = records.filter((r) => r.verifierId === filter.verifierId);
     }
 
     if (filter.approved !== undefined) {
-      records = records.filter(r => r.approval?.approved === filter.approved);
+      records = records.filter((r) => r.approval?.approved === filter.approved);
     }
 
     if (filter.pendingApproval) {
-      records = records.filter(r => !r.approval);
+      records = records.filter((r) => !r.approval);
     }
 
     return records.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
@@ -350,9 +348,9 @@ export class FallbackVerification {
         dateOfBirth: '01/01/1990',
         documentNumber: 'DL123456',
         expirationDate: '12/31/2025',
-        issuingAuthority: 'State DMV'
+        issuingAuthority: 'State DMV',
       },
-      warnings: []
+      warnings: [],
     };
   }
 
@@ -382,20 +380,20 @@ export class FallbackVerification {
         dateOfBirth: scanResult.extractedData.dateOfBirth,
         documentNumber: scanResult.extractedData.documentNumber,
         expirationDate: scanResult.extractedData.expirationDate,
-        issuingAuthority: scanResult.extractedData.issuingAuthority
+        issuingAuthority: scanResult.extractedData.issuingAuthority,
       },
 
       verification: {
         ageVerified: false,
         documentAuthentic: scanResult.confidence > 0.8,
         photoMatches: false,
-        notExpired: false
+        notExpired: false,
       },
 
       metadata: {
         scanConfidence: scanResult.confidence.toString(),
-        warnings: scanResult.warnings.join('; ')
-      }
+        warnings: scanResult.warnings.join('; '),
+      },
     };
 
     await this.performVerificationChecks(record);
@@ -432,10 +430,10 @@ export class FallbackVerification {
         'Document Number',
         'Age Verified',
         'Document Authentic',
-        'Approved'
+        'Approved',
       ];
 
-      const rows = records.map(r => [
+      const rows = records.map((r) => [
         r.id,
         r.timestamp.toISOString(),
         r.documentType,
@@ -444,12 +442,12 @@ export class FallbackVerification {
         r.extractedData.documentNumber || '',
         r.verification.ageVerified.toString(),
         r.verification.documentAuthentic.toString(),
-        r.approval?.approved?.toString() || 'pending'
+        r.approval?.approved?.toString() || 'pending',
       ]);
 
       const csv = [
         headers.join(','),
-        ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+        ...rows.map((row) => row.map((cell) => `"${cell}"`).join(',')),
       ].join('\n');
 
       return Buffer.from(csv, 'utf8');

@@ -41,6 +41,7 @@ The Aura verification flow enables privacy-preserving credential verification wi
 The individual who possesses a verifiable credential on their mobile device.
 
 **Responsibilities:**
+
 - Generate credential presentations with selective disclosure
 - Create QR codes for verification
 - Sign presentations with their private key
@@ -51,6 +52,7 @@ The individual who possesses a verifiable credential on their mobile device.
 The business or organization verifying credentials (bars, marketplaces, etc.).
 
 **Responsibilities:**
+
 - Scan QR codes from holders
 - Verify cryptographic signatures
 - Check credential status on blockchain
@@ -61,6 +63,7 @@ The business or organization verifying credentials (bars, marketplaces, etc.).
 The trusted entity that originally issued the credential (e.g., government, university).
 
 **Responsibilities:**
+
 - Issue verifiable credentials to holders
 - Publish public keys on blockchain
 - Maintain revocation lists
@@ -71,6 +74,7 @@ The trusted entity that originally issued the credential (e.g., government, univ
 The decentralized ledger storing public keys, credential schemas, and revocation data.
 
 **Responsibilities:**
+
 - Store issuer public keys
 - Maintain credential revocation lists
 - Provide immutable audit trail
@@ -87,6 +91,7 @@ aura://verify?data=<base64_encoded_json>
 ```
 
 **Components:**
+
 - `aura://` - Custom URI scheme for Aura protocol
 - `verify` - Action type (verification request)
 - `data` - Query parameter containing base64-encoded JSON payload
@@ -113,16 +118,16 @@ When decoded, the base64 data contains a JSON object:
 
 **Field Descriptions:**
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `v` | string | Protocol version (currently "1.0") |
-| `p` | string | Unique presentation ID for this request |
-| `h` | string | Holder's DID containing their public key |
+| Field | Type     | Description                                        |
+| ----- | -------- | -------------------------------------------------- |
+| `v`   | string   | Protocol version (currently "1.0")                 |
+| `p`   | string   | Unique presentation ID for this request            |
+| `h`   | string   | Holder's DID containing their public key           |
 | `vcs` | string[] | Array of Verifiable Credential IDs being presented |
-| `ctx` | object | Disclosure context (what to reveal) |
-| `exp` | number | Expiration timestamp (Unix seconds) |
-| `n` | number | Nonce for replay attack prevention |
-| `sig` | string | Holder's signature over the presentation |
+| `ctx` | object   | Disclosure context (what to reveal)                |
+| `exp` | number   | Expiration timestamp (Unix seconds)                |
+| `n`   | number   | Nonce for replay attack prevention                 |
+| `sig` | string   | Holder's signature over the presentation           |
 
 ### Disclosure Context
 
@@ -131,19 +136,19 @@ The `ctx` object specifies selective disclosure:
 ```typescript
 interface DisclosureContext {
   // Age verification
-  show_age?: boolean;              // Reveal exact age
-  show_age_over_18?: boolean;      // Prove over 18 (yes/no only)
-  show_age_over_21?: boolean;      // Prove over 21 (yes/no only)
+  show_age?: boolean; // Reveal exact age
+  show_age_over_18?: boolean; // Prove over 18 (yes/no only)
+  show_age_over_21?: boolean; // Prove over 21 (yes/no only)
 
   // Identity
-  show_full_name?: boolean;        // Reveal full name
+  show_full_name?: boolean; // Reveal full name
 
   // Location
-  show_city_state?: boolean;       // Reveal city and state
-  show_full_address?: boolean;     // Reveal complete address
+  show_city_state?: boolean; // Reveal city and state
+  show_full_address?: boolean; // Reveal complete address
 
   // Custom fields
-  [key: string]: boolean;          // Additional custom disclosures
+  [key: string]: boolean; // Additional custom disclosures
 }
 ```
 
@@ -153,9 +158,9 @@ A bar only needs to know if someone is over 21, not their exact age:
 
 ```json
 {
-  "show_age_over_21": true,    // ✓ Reveals: YES/NO
-  "show_age": false,           // ✗ Keeps age private
-  "show_full_name": false      // ✗ Keeps name private
+  "show_age_over_21": true, // ✓ Reveals: YES/NO
+  "show_age": false, // ✗ Keeps age private
+  "show_full_name": false // ✗ Keeps name private
 }
 ```
 
@@ -188,6 +193,7 @@ console.log('Expires:', new Date(qrData.exp * 1000));
 ```
 
 **Parsing validates:**
+
 - URL format is correct
 - Base64 decoding succeeds
 - JSON is well-formed
@@ -206,13 +212,14 @@ if (qrData.exp < now) {
 }
 
 // Optional: Check if expiration is too far in the future (suspicious)
-const maxFutureTime = now + (5 * 60); // 5 minutes
+const maxFutureTime = now + 5 * 60; // 5 minutes
 if (qrData.exp > maxFutureTime) {
   console.warn('Expiration time is unusually far in the future');
 }
 ```
 
 **Expiration Best Practices:**
+
 - Presentations should expire quickly (30 seconds to 5 minutes)
 - Prevents replay attacks
 - Forces fresh credential checks
@@ -225,7 +232,7 @@ Verify the holder signed this presentation.
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const verifier = new VerifierSDK({
-  rpcEndpoint: 'https://rpc.aurablockchain.org'
+  rpcEndpoint: 'https://rpc.aurablockchain.org',
 });
 
 // Construct the signed message (must match exactly what holder signed)
@@ -234,15 +241,15 @@ const message = JSON.stringify({
   vcs: qrData.vcs,
   ctx: qrData.ctx,
   exp: qrData.exp,
-  n: qrData.n
+  n: qrData.n,
 });
 
 // Verify signature
 const result = await verifier.verifySignature({
-  publicKey: qrData.h,      // Holder's DID/public key
-  message: message,          // Canonical message
-  signature: qrData.sig,     // Holder's signature
-  algorithm: 'ed25519'       // Aura uses Ed25519
+  publicKey: qrData.h, // Holder's DID/public key
+  message: message, // Canonical message
+  signature: qrData.sig, // Holder's signature
+  algorithm: 'ed25519', // Aura uses Ed25519
 });
 
 if (!result.valid) {
@@ -251,6 +258,7 @@ if (!result.valid) {
 ```
 
 **Why Signature Verification Matters:**
+
 - Proves the holder possesses the private key
 - Ensures data wasn't tampered with
 - Authenticates the presentation request
@@ -273,7 +281,7 @@ const issuerSigValid = await verifier.verifySignature({
   publicKey: issuerPublicKey,
   message: credential.data,
   signature: credential.issuerSignature,
-  algorithm: 'ed25519'
+  algorithm: 'ed25519',
 });
 
 if (!issuerSigValid.valid) {
@@ -312,17 +320,18 @@ function makeAccessDecision(qrData: QRCodeData, verificationResult: Verification
     signatureValid: verificationResult.valid,
     notExpired: qrData.exp > Date.now() / 1000,
     hasRequiredDisclosure: qrData.ctx.show_age_over_21 === true,
-    credentialNotRevoked: true // From blockchain query
+    credentialNotRevoked: true, // From blockchain query
   };
 
-  const allPassed = Object.values(checks).every(check => check === true);
+  const allPassed = Object.values(checks).every((check) => check === true);
 
   if (allPassed) {
     console.log('✓ Access granted');
     return true;
   } else {
     console.log('✗ Access denied');
-    console.log('Failed checks:',
+    console.log(
+      'Failed checks:',
       Object.entries(checks)
         .filter(([_, passed]) => !passed)
         .map(([name]) => name)
@@ -342,15 +351,16 @@ The message that gets signed is critical. It must be constructed identically by 
 
 ```typescript
 const message = JSON.stringify({
-  p: qrData.p,      // Presentation ID
-  vcs: qrData.vcs,  // Credential IDs (array)
-  ctx: qrData.ctx,  // Disclosure context (object)
-  exp: qrData.exp,  // Expiration (number)
-  n: qrData.n       // Nonce (number)
+  p: qrData.p, // Presentation ID
+  vcs: qrData.vcs, // Credential IDs (array)
+  ctx: qrData.ctx, // Disclosure context (object)
+  exp: qrData.exp, // Expiration (number)
+  n: qrData.n, // Nonce (number)
 });
 ```
 
 **Important:**
+
 - Field order matters in JSON
 - No whitespace or formatting differences
 - Arrays and objects must be identical
@@ -367,11 +377,12 @@ const result = await verifier.verifySignature({
   publicKey: holderPublicKey,
   message: message,
   signature: signature,
-  algorithm: 'ed25519'
+  algorithm: 'ed25519',
 });
 ```
 
 **Characteristics:**
+
 - Fast verification
 - Small signatures (64 bytes)
 - Deterministic
@@ -385,11 +396,12 @@ const result = await verifier.verifySignature({
   publicKey: holderPublicKey,
   message: message,
   signature: signature,
-  algorithm: 'secp256k1'
+  algorithm: 'secp256k1',
 });
 ```
 
 **Characteristics:**
+
 - Used by Bitcoin and Ethereum
 - Larger signatures
 - Non-deterministic (requires nonce)
@@ -404,6 +416,7 @@ a1b2c3d4e5f6789012345678901234567890abcdef...
 ```
 
 **Length:**
+
 - Ed25519: 128 hex characters (64 bytes)
 - secp256k1: 128-144 hex characters (64-72 bytes)
 
@@ -415,19 +428,16 @@ a1b2c3d4e5f6789012345678901234567890abcdef...
 async function queryCredentialStatus(credentialId: string) {
   const query = {
     credential_status: {
-      credential_id: credentialId
-    }
+      credential_id: credentialId,
+    },
   };
 
-  const result = await client.queryContractSmart(
-    CREDENTIAL_CONTRACT_ADDRESS,
-    query
-  );
+  const result = await client.queryContractSmart(CREDENTIAL_CONTRACT_ADDRESS, query);
 
   return {
     revoked: result.revoked,
     revokedAt: result.revoked_at,
-    reason: result.revocation_reason
+    reason: result.revocation_reason,
   };
 }
 ```
@@ -438,14 +448,11 @@ async function queryCredentialStatus(credentialId: string) {
 async function queryIssuerPublicKey(issuerDid: string) {
   const query = {
     issuer_info: {
-      did: issuerDid
-    }
+      did: issuerDid,
+    },
   };
 
-  const result = await client.queryContractSmart(
-    DID_REGISTRY_ADDRESS,
-    query
-  );
+  const result = await client.queryContractSmart(DID_REGISTRY_ADDRESS, query);
 
   return result.public_key;
 }
@@ -457,14 +464,11 @@ async function queryIssuerPublicKey(issuerDid: string) {
 async function queryCredentialSchema(schemaId: string) {
   const query = {
     schema: {
-      schema_id: schemaId
-    }
+      schema_id: schemaId,
+    },
   };
 
-  const result = await client.queryContractSmart(
-    SCHEMA_REGISTRY_ADDRESS,
-    query
-  );
+  const result = await client.queryContractSmart(SCHEMA_REGISTRY_ADDRESS, query);
 
   return result.schema;
 }
@@ -476,11 +480,11 @@ async function queryCredentialSchema(schemaId: string) {
 
 ```typescript
 interface VerificationResult {
-  valid: boolean;              // Overall result
-  error?: string;              // Error message if invalid
+  valid: boolean; // Overall result
+  error?: string; // Error message if invalid
   metadata?: {
-    algorithm: string;         // Algorithm used
-    [key: string]: unknown;    // Additional metadata
+    algorithm: string; // Algorithm used
+    [key: string]: unknown; // Additional metadata
   };
 }
 ```
@@ -501,6 +505,7 @@ interface VerificationResult {
 ### Failure Cases
 
 **Invalid Signature:**
+
 ```typescript
 {
   valid: false,
@@ -512,6 +517,7 @@ interface VerificationResult {
 ```
 
 **Expired Presentation:**
+
 ```typescript
 {
   valid: false,
@@ -524,6 +530,7 @@ interface VerificationResult {
 ```
 
 **Revoked Credential:**
+
 ```typescript
 {
   valid: false,
@@ -542,6 +549,7 @@ interface VerificationResult {
 **Problem:** Attacker intercepts QR code and reuses it.
 
 **Solutions:**
+
 1. **Short Expiration**: Presentations expire in seconds/minutes
 2. **Nonce Tracking**: Store used nonces to detect replays
 3. **Challenge-Response**: Verifier provides unique challenge
@@ -557,9 +565,7 @@ function checkReplay(qrData: QRCodeData): boolean {
   usedNonces.add(qrData.n);
 
   // Clean up old nonces after expiration
-  setTimeout(() => usedNonces.delete(qrData.n),
-    (qrData.exp - Date.now() / 1000 + 60) * 1000
-  );
+  setTimeout(() => usedNonces.delete(qrData.n), (qrData.exp - Date.now() / 1000 + 60) * 1000);
 
   return true;
 }
@@ -599,7 +605,8 @@ const localTime = Date.now() / 1000;
 
 const timeDiff = Math.abs(blockTime - localTime);
 
-if (timeDiff > 300) { // 5 minutes
+if (timeDiff > 300) {
+  // 5 minutes
   console.warn('Clock drift detected:', timeDiff, 'seconds');
 }
 ```
@@ -611,7 +618,7 @@ import { VerifierSDK, parseQRCode } from '@aura-network/verifier-sdk';
 
 async function verifyCredential(qrString: string): Promise<boolean> {
   const verifier = new VerifierSDK({
-    rpcEndpoint: 'https://rpc.aurablockchain.org'
+    rpcEndpoint: 'https://rpc.aurablockchain.org',
   });
 
   try {
@@ -631,14 +638,14 @@ async function verifyCredential(qrString: string): Promise<boolean> {
       vcs: qrData.vcs,
       ctx: qrData.ctx,
       exp: qrData.exp,
-      n: qrData.n
+      n: qrData.n,
     });
 
     const sigResult = await verifier.verifySignature({
       publicKey: qrData.h,
       message: message,
       signature: qrData.sig,
-      algorithm: 'ed25519'
+      algorithm: 'ed25519',
     });
 
     if (!sigResult.valid) {
@@ -658,7 +665,6 @@ async function verifyCredential(qrString: string): Promise<boolean> {
     // Step 7: Access decision
     console.log('Verification successful');
     return true;
-
   } catch (error) {
     console.error('Verification failed:', error);
     return false;

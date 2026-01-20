@@ -380,30 +380,30 @@ echo "Results saved to: $RESULTS_FILE"
 const { execSync } = require('child_process');
 
 function verifyCredential(qrData, options = {}) {
-    const flags = [];
+  const flags = [];
 
-    if (options.network) flags.push(`--network ${options.network}`);
-    if (options.requiredTypes) flags.push(`--required-types ${options.requiredTypes.join(' ')}`);
-    if (options.maxAge) flags.push(`--max-age ${options.maxAge}`);
+  if (options.network) flags.push(`--network ${options.network}`);
+  if (options.requiredTypes) flags.push(`--required-types ${options.requiredTypes.join(' ')}`);
+  if (options.maxAge) flags.push(`--max-age ${options.maxAge}`);
 
-    const command = `aura-verify check "${qrData}" --json ${flags.join(' ')}`;
+  const command = `aura-verify check "${qrData}" --json ${flags.join(' ')}`;
 
-    try {
-        const result = execSync(command, { encoding: 'utf-8' });
-        return JSON.parse(result);
-    } catch (error) {
-        return {
-            isValid: false,
-            error: error.message
-        };
-    }
+  try {
+    const result = execSync(command, { encoding: 'utf-8' });
+    return JSON.parse(result);
+  } catch (error) {
+    return {
+      isValid: false,
+      error: error.message,
+    };
+  }
 }
 
 // Usage
 const result = verifyCredential('aura://verify?data=...', {
-    network: 'mainnet',
-    requiredTypes: ['GovernmentID'],
-    maxAge: 86400
+  network: 'mainnet',
+  requiredTypes: ['GovernmentID'],
+  maxAge: 86400,
 });
 
 console.log('Verification result:', result);
@@ -645,6 +645,7 @@ npm install -g @aura-network/verifier-cli
 ## More Examples
 
 For more examples and use cases, see:
+
 - [README.md](./README.md) - Complete CLI documentation
 - [GitHub Repository](https://github.com/aura-blockchain/aura-verifier-sdk) - SDK documentation
 - [Examples Directory](../../examples/) - Integration examples

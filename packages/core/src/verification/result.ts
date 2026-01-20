@@ -5,11 +5,7 @@
  */
 
 import { sha256HashHex } from '../crypto/hash.js';
-import {
-  VerificationResult,
-  DiscloseableAttributes,
-  VCVerificationDetail,
-} from './types.js';
+import { VerificationResult, DiscloseableAttributes, VCVerificationDetail } from './types.js';
 import { DisclosureContext } from '../qr/types.js';
 
 /**
@@ -302,10 +298,7 @@ export function createSuccessResult(
  * @param requiredTypes - Required VC types
  * @returns True if all required types are present
  */
-export function hasRequiredVCTypes(
-  result: VerificationResult,
-  requiredTypes: string[]
-): boolean {
+export function hasRequiredVCTypes(result: VerificationResult, requiredTypes: string[]): boolean {
   const presentTypes = new Set(result.vcDetails.map((vc) => vc.vcType.toString()));
   return requiredTypes.every((type) => presentTypes.has(type));
 }
@@ -332,9 +325,7 @@ export function calculateVerificationScore(result: VerificationResult): number {
   }
 
   // Credential quality
-  const validVCs = result.vcDetails.filter(
-    (vc) => vc.signatureValid && vc.status === 'active'
-  );
+  const validVCs = result.vcDetails.filter((vc) => vc.signatureValid && vc.status === 'active');
   const vcScore = (validVCs.length / Math.max(result.vcDetails.length, 1)) * 30;
   score += vcScore;
 
@@ -370,9 +361,7 @@ export function getVerificationSummary(result: VerificationResult): {
   onChainCredentials: number;
   score: number;
 } {
-  const validVCs = result.vcDetails.filter(
-    (vc) => vc.signatureValid && vc.status === 'active'
-  );
+  const validVCs = result.vcDetails.filter((vc) => vc.signatureValid && vc.status === 'active');
   const revokedVCs = result.vcDetails.filter((vc) => vc.status === 'revoked');
   const expiredVCs = result.vcDetails.filter((vc) => vc.status === 'expired');
   const onChainVCs = result.vcDetails.filter((vc) => vc.onChain);

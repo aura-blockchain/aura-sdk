@@ -15,12 +15,7 @@ import {
   APIError,
   ConfigurationError,
 } from '../index.js';
-import type {
-  VerificationResult,
-  VCStatusResponse,
-  VCRecord,
-  DIDDocument,
-} from '../types.js';
+import type { VerificationResult, VCStatusResponse, VCRecord, DIDDocument } from '../types.js';
 
 // Mock fetch globally
 const originalFetch = global.fetch;
@@ -232,9 +227,7 @@ describe('AuraClient', () => {
     it('should throw error when not connected', async () => {
       const client = new AuraClient({ network: 'testnet' });
 
-      await expect(
-        client.verifyPresentation('qr_data')
-      ).rejects.toThrow(NetworkError);
+      await expect(client.verifyPresentation('qr_data')).rejects.toThrow(NetworkError);
     });
 
     it('should handle API error response', async () => {
@@ -260,9 +253,7 @@ describe('AuraClient', () => {
       const client = new AuraClient({ network: 'testnet' });
       await client.connect();
 
-      await expect(
-        client.verifyPresentation('invalid_data')
-      ).rejects.toThrow(APIError);
+      await expect(client.verifyPresentation('invalid_data')).rejects.toThrow(APIError);
     });
   });
 
@@ -521,25 +512,24 @@ describe('AuraClient', () => {
 
       // Simulate timeout by listening to the AbortSignal
       mockFetch.mockImplementationOnce(
-        (_url: string, options?: RequestInit) => new Promise((_resolve, reject) => {
-          // Listen for abort signal
-          if (options?.signal) {
-            options.signal.addEventListener('abort', () => {
-              const error = new Error('The operation was aborted');
-              error.name = 'AbortError';
-              reject(error);
-            });
-          }
-        })
+        (_url: string, options?: RequestInit) =>
+          new Promise((_resolve, reject) => {
+            // Listen for abort signal
+            if (options?.signal) {
+              options.signal.addEventListener('abort', () => {
+                const error = new Error('The operation was aborted');
+                error.name = 'AbortError';
+                reject(error);
+              });
+            }
+          })
       );
 
       const client = new AuraClient({ network: 'testnet', timeout: 100 });
       await client.connect();
 
       // This should timeout
-      await expect(
-        client.checkVCStatus('vc_123')
-      ).rejects.toThrow();
+      await expect(client.checkVCStatus('vc_123')).rejects.toThrow();
     });
 
     it('should handle network connection errors', async () => {
@@ -554,9 +544,7 @@ describe('AuraClient', () => {
       const client = new AuraClient({ network: 'testnet' });
       await client.connect();
 
-      await expect(
-        client.checkVCStatus('vc_123')
-      ).rejects.toThrow(NetworkError);
+      await expect(client.checkVCStatus('vc_123')).rejects.toThrow(NetworkError);
     });
   });
 

@@ -105,14 +105,9 @@ export class BloomFilterNonceStorage implements NonceStorage {
    * @param expectedItems - Expected number of nonces to track
    * @param falsePositiveRate - Desired false positive rate (0-1)
    */
-  constructor(
-    expectedItems: number = 100000,
-    falsePositiveRate: number = 0.01
-  ) {
+  constructor(expectedItems: number = 100000, falsePositiveRate: number = 0.01) {
     // Calculate optimal bloom filter size
-    this.filterSize = Math.ceil(
-      (-expectedItems * Math.log(falsePositiveRate)) / (Math.log(2) ** 2)
-    );
+    this.filterSize = Math.ceil((-expectedItems * Math.log(falsePositiveRate)) / Math.log(2) ** 2);
 
     // Calculate optimal number of hash functions
     this.hashCount = Math.ceil((this.filterSize / expectedItems) * Math.log(2));

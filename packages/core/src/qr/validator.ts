@@ -5,12 +5,7 @@
  * Performs semantic validation beyond basic structure checks.
  */
 
-import type {
-  QRCodeData,
-  ValidationResult,
-  ValidationError,
-  QRValidatorOptions,
-} from './types.js';
+import type { QRCodeData, ValidationResult, ValidationError, QRValidatorOptions } from './types.js';
 import { QRValidationError, QRExpiredError, QRNonceError } from './errors.js';
 
 /**
@@ -27,7 +22,9 @@ const DEFAULT_OPTIONS = {
 /**
  * Type for merged options with defaults
  */
-type MergedOptions = typeof DEFAULT_OPTIONS & { nonceValidator?: QRValidatorOptions['nonceValidator'] };
+type MergedOptions = typeof DEFAULT_OPTIONS & {
+  nonceValidator?: QRValidatorOptions['nonceValidator'];
+};
 
 /**
  * Validate QR code data
@@ -49,10 +46,8 @@ type MergedOptions = typeof DEFAULT_OPTIONS & { nonceValidator?: QRValidatorOpti
 /**
  * Alias for validateQRCodeData for convenience
  */
-export const validateQRCode = (
-  data: QRCodeData,
-  options?: QRValidatorOptions
-): ValidationResult => validateQRCodeData(data, options);
+export const validateQRCode = (data: QRCodeData, options?: QRValidatorOptions): ValidationResult =>
+  validateQRCodeData(data, options);
 
 export function validateQRCodeData(
   data: QRCodeData,
@@ -141,11 +136,7 @@ export async function validateQRCodeDataAsync(
   const errors = [...syncResult.errors];
 
   try {
-    const isNonceValid = await opts.nonceValidator.validateAndMark(
-      data.n,
-      data.p,
-      data.exp
-    );
+    const isNonceValid = await opts.nonceValidator.validateAndMark(data.n, data.p, data.exp);
 
     if (!isNonceValid) {
       errors.push({
@@ -200,10 +191,7 @@ export const validateQRCodeAsync = (
  * }
  * ```
  */
-export function validateQRCodeDataStrict(
-  data: QRCodeData,
-  options?: QRValidatorOptions
-): void {
+export function validateQRCodeDataStrict(data: QRCodeData, options?: QRValidatorOptions): void {
   const result = validateQRCodeData(data, options);
   throwOnValidationError(data, result);
 }
@@ -261,10 +249,7 @@ function throwOnValidationError(data: QRCodeData, result: ValidationResult): voi
       throw new QRNonceError(firstError.message, data.n);
     }
 
-    throw new QRValidationError(
-      firstError.message,
-      firstError.field
-    );
+    throw new QRValidationError(firstError.message, firstError.field);
   }
 }
 
@@ -297,10 +282,7 @@ function validateVersion(
 /**
  * Validate presentation ID
  */
-function validatePresentationID(
-  data: QRCodeData,
-  errors: ValidationError[]
-): void {
+function validatePresentationID(data: QRCodeData, errors: ValidationError[]): void {
   if (!data.p || typeof data.p !== 'string') {
     errors.push({
       field: 'p',
@@ -332,10 +314,7 @@ function validatePresentationID(
 /**
  * Validate holder DID format
  */
-function validateHolderDID(
-  data: QRCodeData,
-  errors: ValidationError[]
-): void {
+function validateHolderDID(data: QRCodeData, errors: ValidationError[]): void {
   if (!data.h || typeof data.h !== 'string') {
     errors.push({
       field: 'h',
@@ -416,7 +395,8 @@ function validateHolderDID(
   if (identifier && !/^[a-zA-Z0-9._-]+$/.test(identifier)) {
     errors.push({
       field: 'h',
-      message: 'DID identifier contains invalid characters (only alphanumeric, dots, underscores, and hyphens allowed)',
+      message:
+        'DID identifier contains invalid characters (only alphanumeric, dots, underscores, and hyphens allowed)',
       severity: 'error',
     });
   }
@@ -579,9 +559,8 @@ function validateExpiration(
 
   if (isExpired) {
     const expDate = new Date(data.exp * 1000).toISOString();
-    const tolerance = options.expirationTolerance > 0
-      ? ` (tolerance: ${options.expirationTolerance}s)`
-      : '';
+    const tolerance =
+      options.expirationTolerance > 0 ? ` (tolerance: ${options.expirationTolerance}s)` : '';
     errors.push({
       field: 'exp',
       message: `QR code expired at ${expDate}${tolerance}`,
@@ -604,10 +583,7 @@ function validateExpiration(
 /**
  * Validate nonce value
  */
-function validateNonce(
-  data: QRCodeData,
-  errors: ValidationError[]
-): void {
+function validateNonce(data: QRCodeData, errors: ValidationError[]): void {
   if (typeof data.n !== 'number') {
     errors.push({
       field: 'n',
@@ -658,10 +634,7 @@ function validateNonce(
 /**
  * Validate signature format
  */
-function validateSignatureFormat(
-  data: QRCodeData,
-  errors: ValidationError[]
-): void {
+function validateSignatureFormat(data: QRCodeData, errors: ValidationError[]): void {
   if (!data.sig || typeof data.sig !== 'string') {
     errors.push({
       field: 'sig',

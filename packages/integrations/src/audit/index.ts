@@ -63,7 +63,7 @@ export class AuditLogger {
     this.config = {
       retentionDays: 90,
       localStoragePath: './audit-logs',
-      ...config
+      ...config,
     };
 
     this.validateConfig();
@@ -95,7 +95,7 @@ export class AuditLogger {
     const eventToLog: AuditEvent = {
       ...event,
       id: event.id || uuidv4(),
-      timestamp: event.timestamp || new Date()
+      timestamp: event.timestamp || new Date(),
     };
 
     // Store in memory
@@ -147,9 +147,9 @@ export class AuditLogger {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Audit-Event-ID': event.id
+          'X-Audit-Event-ID': event.id,
         },
-        body: payload
+        body: payload,
       });
 
       if (!response.ok) {
@@ -173,10 +173,12 @@ export class AuditLogger {
     let encrypted = cipher.update(data, 'utf8', 'hex');
     encrypted += cipher.final('hex');
 
-    return JSON.stringify({
-      iv: iv.toString('hex'),
-      data: encrypted
-    }) + '\n';
+    return (
+      JSON.stringify({
+        iv: iv.toString('hex'),
+        data: encrypted,
+      }) + '\n'
+    );
   }
 
   private decrypt(encryptedData: string): string {
@@ -258,19 +260,18 @@ export class AuditLogger {
       if (filter.result) queryParams.set('result', filter.result);
       if (filter.limit) queryParams.set('limit', filter.limit.toString());
 
-      const response = await fetch(
-        `${this.config.remoteEndpoint}/query?${queryParams}`,
-        { method: 'GET' }
-      );
+      const response = await fetch(`${this.config.remoteEndpoint}/query?${queryParams}`, {
+        method: 'GET',
+      });
 
       if (!response.ok) {
         throw new Error(`Remote query failed: ${response.status}`);
       }
 
-      const data = await response.json() as { events: AuditEvent[] };
+      const data = (await response.json()) as { events: AuditEvent[] };
       return data.events.map((e: AuditEvent) => ({
         ...e,
-        timestamp: new Date(e.timestamp)
+        timestamp: new Date(e.timestamp),
       }));
     } catch (error) {
       console.error('Failed to query remote storage:', error);
@@ -282,31 +283,31 @@ export class AuditLogger {
     let filtered = events;
 
     if (filter.startDate) {
-      filtered = filtered.filter(e => e.timestamp >= filter.startDate!);
+      filtered = filtered.filter((e) => e.timestamp >= filter.startDate!);
     }
 
     if (filter.endDate) {
-      filtered = filtered.filter(e => e.timestamp <= filter.endDate!);
+      filtered = filtered.filter((e) => e.timestamp <= filter.endDate!);
     }
 
     if (filter.type) {
-      filtered = filtered.filter(e => e.type === filter.type);
+      filtered = filtered.filter((e) => e.type === filter.type);
     }
 
     if (filter.result) {
-      filtered = filtered.filter(e => e.result === filter.result);
+      filtered = filtered.filter((e) => e.result === filter.result);
     }
 
     if (filter.holderDID) {
-      filtered = filtered.filter(e => e.holderDID === filter.holderDID);
+      filtered = filtered.filter((e) => e.holderDID === filter.holderDID);
     }
 
     if (filter.verifierAddress) {
-      filtered = filtered.filter(e => e.verifierAddress === filter.verifierAddress);
+      filtered = filtered.filter((e) => e.verifierAddress === filter.verifierAddress);
     }
 
     if (filter.deviceId) {
-      filtered = filtered.filter(e => e.deviceId === filter.deviceId);
+      filtered = filtered.filter((e) => e.deviceId === filter.deviceId);
     }
 
     // Sort by timestamp descending (most recent first)
@@ -345,10 +346,10 @@ export class AuditLogger {
       'Verifier Address',
       'Attributes',
       'Device ID',
-      'Location'
+      'Location',
     ];
 
-    const rows = events.map(e => [
+    const rows = events.map((e) => [
       e.id,
       e.timestamp.toISOString(),
       e.type,
@@ -358,12 +359,12 @@ export class AuditLogger {
       e.verifierAddress || '',
       e.attributes?.join(';') || '',
       e.deviceId,
-      e.location ? `${e.location.latitude},${e.location.longitude}` : ''
+      e.location ? `${e.location.latitude},${e.location.longitude}` : '',
     ]);
 
     const csv = [
       headers.join(','),
-      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+      ...rows.map((row) => row.map((cell) => `"${cell}"`).join(',')),
     ].join('\n');
 
     return Buffer.from(csv, 'utf8');
@@ -373,7 +374,7 @@ export class AuditLogger {
     const data = {
       exportedAt: new Date().toISOString(),
       eventCount: events.length,
-      events
+      events,
     };
 
     return Buffer.from(JSON.stringify(data, null, 2), 'utf8');
@@ -391,14 +392,16 @@ export class AuditLogger {
       'EVENTS',
       '======',
       '',
-      ...events.map(e => [
-        `ID: ${e.id}`,
-        `Timestamp: ${e.timestamp.toISOString()}`,
-        `Type: ${e.type}`,
-        `Result: ${e.result || 'N/A'}`,
-        `Device: ${e.deviceId}`,
-        '---'
-      ].join('\n'))
+      ...events.map((e) =>
+        [
+          `ID: ${e.id}`,
+          `Timestamp: ${e.timestamp.toISOString()}`,
+          `Type: ${e.type}`,
+          `Result: ${e.result || 'N/A'}`,
+          `Device: ${e.deviceId}`,
+          '---',
+        ].join('\n')
+      ),
     ].join('\n');
 
     return Buffer.from(content, 'utf8');
@@ -416,7 +419,7 @@ export class AuditLogger {
 
     // Remove from memory cache
     const originalLength = this.events.length;
-    this.events = this.events.filter(e => e.timestamp >= cutoffDate);
+    this.events = this.events.filter((e) => e.timestamp >= cutoffDate);
     deleted += originalLength - this.events.length;
 
     return deleted;
@@ -486,7 +489,7 @@ export class AuditLogger {
       byResult,
       dateRange: { start: minDate, end: maxDate },
       uniqueHolders: uniqueHolders.size,
-      uniqueDevices: uniqueDevices.size
+      uniqueDevices: uniqueDevices.size,
     };
   }
 }

@@ -71,8 +71,8 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./ssl:/etc/nginx/ssl:ro
@@ -109,11 +109,12 @@ metadata:
   namespace: webhook-server
 type: Opaque
 stringData:
-  webhook-secret: "<your-webhook-secret>"
-  admin-api-key: "<your-admin-api-key>"
+  webhook-secret: '<your-webhook-secret>'
+  admin-api-key: '<your-admin-api-key>'
 ```
 
 Create secret:
+
 ```bash
 kubectl apply -f secrets.yaml
 ```
@@ -128,11 +129,11 @@ metadata:
   name: webhook-config
   namespace: webhook-server
 data:
-  PORT: "3000"
-  NODE_ENV: "production"
-  LOG_LEVEL: "info"
-  RATE_LIMIT_WINDOW_MS: "900000"
-  RATE_LIMIT_MAX_REQUESTS: "100"
+  PORT: '3000'
+  NODE_ENV: 'production'
+  LOG_LEVEL: 'info'
+  RATE_LIMIT_WINDOW_MS: '900000'
+  RATE_LIMIT_MAX_REQUESTS: '100'
 ```
 
 ### PersistentVolumeClaim
@@ -175,67 +176,67 @@ spec:
         app: webhook-server
     spec:
       containers:
-      - name: webhook-server
-        image: aura-webhook-server:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3000
-          name: http
-        env:
-        - name: PORT
-          valueFrom:
-            configMapKeyRef:
-              name: webhook-config
-              key: PORT
-        - name: NODE_ENV
-          valueFrom:
-            configMapKeyRef:
-              name: webhook-config
-              key: NODE_ENV
-        - name: WEBHOOK_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: webhook-secrets
-              key: webhook-secret
-        - name: ADMIN_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: webhook-secrets
-              key: admin-api-key
-        - name: DATABASE_PATH
-          value: "/app/data/webhooks.db"
-        volumeMounts:
-        - name: data
-          mountPath: /app/data
-        - name: logs
-          mountPath: /app/logs
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "1000m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 30
-          timeoutSeconds: 5
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          timeoutSeconds: 5
+        - name: webhook-server
+          image: aura-webhook-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webhook-config
+                  key: PORT
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: webhook-config
+                  key: NODE_ENV
+            - name: WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: webhook-secrets
+                  key: webhook-secret
+            - name: ADMIN_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: webhook-secrets
+                  key: admin-api-key
+            - name: DATABASE_PATH
+              value: '/app/data/webhooks.db'
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+            - name: logs
+              mountPath: /app/logs
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '1000m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
       volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: webhook-data-pvc
-      - name: logs
-        emptyDir: {}
+        - name: data
+          persistentVolumeClaim:
+            claimName: webhook-data-pvc
+        - name: logs
+          emptyDir: {}
 ```
 
 ### Service
@@ -251,9 +252,9 @@ spec:
   selector:
     app: webhook-server
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3000
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
   type: ClusterIP
 ```
 
@@ -267,26 +268,26 @@ metadata:
   name: webhook-server-ingress
   namespace: webhook-server
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/rate-limit: "100"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+    nginx.ingress.kubernetes.io/rate-limit: '100'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - webhooks.yourdomain.com
-    secretName: webhook-tls
+    - hosts:
+        - webhooks.yourdomain.com
+      secretName: webhook-tls
   rules:
-  - host: webhooks.yourdomain.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: webhook-server-service
-            port:
-              number: 80
+    - host: webhooks.yourdomain.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: webhook-server-service
+                port:
+                  number: 80
 ```
 
 ### Deploy to Kubernetes
@@ -339,18 +340,18 @@ spec:
   minReplicas: 3
   maxReplicas: 10
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: Utilization
-        averageUtilization: 80
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
 ```
 
 ## Cloud Deployments
@@ -550,7 +551,7 @@ volumes:
     driver_opts:
       type: nfs
       o: addr=nfs-server.example.com,rw
-      device: ":/exports/webhook-data"
+      device: ':/exports/webhook-data'
 ```
 
 ### PostgreSQL Migration (Recommended)
@@ -605,33 +606,33 @@ metadata:
   name: webhook-backup
   namespace: webhook-server
 spec:
-  schedule: "0 2 * * *"  # Daily at 2 AM
+  schedule: '0 2 * * *' # Daily at 2 AM
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: backup
-            image: alpine
-            command:
-            - /bin/sh
-            - -c
-            - |
-              apk add sqlite
-              sqlite3 /app/data/webhooks.db ".backup '/backups/webhook_$(date +%Y%m%d).db'"
-            volumeMounts:
-            - name: data
-              mountPath: /app/data
-            - name: backups
-              mountPath: /backups
+            - name: backup
+              image: alpine
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  apk add sqlite
+                  sqlite3 /app/data/webhooks.db ".backup '/backups/webhook_$(date +%Y%m%d).db'"
+              volumeMounts:
+                - name: data
+                  mountPath: /app/data
+                - name: backups
+                  mountPath: /backups
           restartPolicy: OnFailure
           volumes:
-          - name: data
-            persistentVolumeClaim:
-              claimName: webhook-data-pvc
-          - name: backups
-            persistentVolumeClaim:
-              claimName: webhook-backup-pvc
+            - name: data
+              persistentVolumeClaim:
+                claimName: webhook-data-pvc
+            - name: backups
+              persistentVolumeClaim:
+                claimName: webhook-backup-pvc
 ```
 
 ### Disaster Recovery

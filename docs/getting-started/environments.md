@@ -13,6 +13,7 @@ The Aura Verifier SDK supports three environments:
 ## Mainnet (Production)
 
 ### When to Use
+
 - Production applications
 - Real user credentials
 - Live businesses and services
@@ -27,6 +28,7 @@ const verifier = new AuraVerifier({
 ```
 
 ### Network Details
+
 - **Network ID**: `aura-mvp-1`
 - **gRPC Endpoint**: `rpc.aurablockchain.org:9090`
 - **REST Endpoint**: `https://api.aurablockchain.org`
@@ -35,6 +37,7 @@ const verifier = new AuraVerifier({
 - **Finality**: 1 block (~6 seconds)
 
 ### Characteristics
+
 - Real economic value
 - Permanent credential storage
 - High reliability and uptime
@@ -71,6 +74,7 @@ verifier.on('error', async (data) => {
 ## Testnet (Development & Testing)
 
 ### When to Use
+
 - Development and testing
 - Integration testing
 - Staging environments
@@ -83,11 +87,12 @@ verifier.on('error', async (data) => {
 const verifier = new AuraVerifier({
   network: 'testnet',
   timeout: 15000, // Longer timeout for less stable network
-  verbose: true,  // Enable logging for debugging
+  verbose: true, // Enable logging for debugging
 });
 ```
 
 ### Network Details
+
 - **Network ID**: `aura-mvp-1`
 - **gRPC Endpoint**: `testnet-grpc.aurablockchain.org:443`
 - **REST Endpoint**: `https://testnet-api.aurablockchain.org`
@@ -96,6 +101,7 @@ const verifier = new AuraVerifier({
 - **Finality**: 1 block (~6 seconds)
 
 ### Characteristics
+
 - No real economic value
 - May be reset periodically
 - Test credentials available
@@ -116,7 +122,7 @@ const verifier = new AuraVerifier({
 const verifier = new AuraVerifier({
   network: 'testnet',
   timeout: 30000, // Longer timeout
-  verbose: true,  // See what's happening
+  verbose: true, // See what's happening
   cacheConfig: {
     ttl: 60, // Short TTL for rapid iteration
   },
@@ -141,6 +147,7 @@ async function testVerification() {
 ## Local (Development)
 
 ### When to Use
+
 - Local development
 - Offline development
 - Unit testing
@@ -190,6 +197,7 @@ wget https://github.com/aura-blockchain/aura/releases/download/v1.0.0/aura-linux
 ```
 
 ### Local Network Details
+
 - **Network ID**: `aura-local-1` (customizable)
 - **gRPC Endpoint**: `localhost:9090`
 - **REST Endpoint**: `http://localhost:1317`
@@ -197,6 +205,7 @@ wget https://github.com/aura-blockchain/aura/releases/download/v1.0.0/aura-linux
 - **Instant finality**: Perfect for testing
 
 ### Characteristics
+
 - Complete control
 - Fast block times
 - No external dependencies
@@ -234,16 +243,16 @@ async function localTest() {
 
 ## Environment Comparison
 
-| Feature | Mainnet | Testnet | Local |
-|---------|---------|---------|-------|
-| Stability | High | Medium | High |
-| Speed | Fast | Medium | Very Fast |
-| Cost | May have fees | Free | Free |
-| Reset Frequency | Never | Periodic | Manual |
-| Real Credentials | Yes | No | No |
-| Uptime | 99.9%+ | 95%+ | Depends |
-| Rate Limits | Yes | Generous | None |
-| Best For | Production | Testing | Development |
+| Feature          | Mainnet       | Testnet  | Local       |
+| ---------------- | ------------- | -------- | ----------- |
+| Stability        | High          | Medium   | High        |
+| Speed            | Fast          | Medium   | Very Fast   |
+| Cost             | May have fees | Free     | Free        |
+| Reset Frequency  | Never         | Periodic | Manual      |
+| Real Credentials | Yes           | No       | No          |
+| Uptime           | 99.9%+        | 95%+     | Depends     |
+| Rate Limits      | Yes           | Generous | None        |
+| Best For         | Production    | Testing  | Development |
 
 ## Environment Selection Strategy
 
@@ -312,7 +321,7 @@ const verifier = createVerifier();
 // 1. Update configuration
 const verifier = new AuraVerifier({
   network: 'testnet', // Changed from 'local'
-  timeout: 15000,     // Increased timeout
+  timeout: 15000, // Increased timeout
 });
 
 // 2. Update test data sources
@@ -329,7 +338,7 @@ await runIntegrationTests();
 const verifier = new AuraVerifier({
   network: 'mainnet', // Changed from 'testnet'
   timeout: 10000,
-  verbose: false,     // Disable verbose logging
+  verbose: false, // Disable verbose logging
   cacheConfig: {
     enableDIDCache: true,
     enableVCCache: true,

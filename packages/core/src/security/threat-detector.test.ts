@@ -3,12 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import {
-  ThreatDetector,
-  ThreatLevel,
-  ThreatType,
-  ThreatEvent,
-} from './threat-detector.js';
+import { ThreatDetector, ThreatLevel, ThreatType, ThreatEvent } from './threat-detector.js';
 
 describe('ThreatDetector', () => {
   let detector: ThreatDetector;
@@ -122,10 +117,12 @@ describe('ThreatDetector', () => {
     it('should throw for blocked entity', async () => {
       detector.block('blocked-user');
 
-      await expect(detector.trackVerification({
-        identifier: 'blocked-user',
-        success: true,
-      })).rejects.toThrow('blocked');
+      await expect(
+        detector.trackVerification({
+          identifier: 'blocked-user',
+          success: true,
+        })
+      ).rejects.toThrow('blocked');
     });
   });
 
@@ -193,8 +190,8 @@ describe('ThreatDetector', () => {
         });
       }
 
-      const threats = alertCallback.mock.calls.map(c => c[0] as ThreatEvent);
-      const criticalThreat = threats.find(t => t.level === ThreatLevel.CRITICAL);
+      const threats = alertCallback.mock.calls.map((c) => c[0] as ThreatEvent);
+      const criticalThreat = threats.find((t) => t.level === ThreatLevel.CRITICAL);
       expect(criticalThreat).toBeDefined();
 
       bruteDetector.stop();
@@ -252,8 +249,9 @@ describe('ThreatDetector', () => {
       });
 
       // No geo anomaly should be detected
-      const geoThreats = alertCallback.mock.calls
-        .filter(c => (c[0] as ThreatEvent).type === ThreatType.GEOGRAPHIC_ANOMALY);
+      const geoThreats = alertCallback.mock.calls.filter(
+        (c) => (c[0] as ThreatEvent).type === ThreatType.GEOGRAPHIC_ANOMALY
+      );
       expect(geoThreats).toHaveLength(0);
 
       noProfiling.stop();
@@ -277,8 +275,8 @@ describe('ThreatDetector', () => {
       }
 
       expect(alertCallback).toHaveBeenCalled();
-      const threats = alertCallback.mock.calls.map(c => c[0] as ThreatEvent);
-      const stuffingThreat = threats.find(t => t.type === ThreatType.CREDENTIAL_STUFFING);
+      const threats = alertCallback.mock.calls.map((c) => c[0] as ThreatEvent);
+      const stuffingThreat = threats.find((t) => t.type === ThreatType.CREDENTIAL_STUFFING);
       expect(stuffingThreat).toBeDefined();
 
       stuffingDetector.stop();
@@ -457,8 +455,9 @@ describe('ThreatDetector', () => {
 
       // Should be sorted newest first
       for (let i = 1; i < threats.length; i++) {
-        expect(threats[i - 1].timestamp.getTime())
-          .toBeGreaterThanOrEqual(threats[i].timestamp.getTime());
+        expect(threats[i - 1].timestamp.getTime()).toBeGreaterThanOrEqual(
+          threats[i].timestamp.getTime()
+        );
       }
 
       alertDetector.stop();
@@ -498,7 +497,7 @@ describe('ThreatDetector', () => {
       });
 
       // Wait for history to expire
-      await new Promise(r => setTimeout(r, 150));
+      await new Promise((r) => setTimeout(r, 150));
 
       shortRetention.cleanup();
 

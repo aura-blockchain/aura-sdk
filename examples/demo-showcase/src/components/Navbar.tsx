@@ -18,12 +18,8 @@ export function Navbar() {
               <span className="text-white font-bold text-xl">A</span>
             </div>
             <div>
-              <h1 className="text-lg font-bold text-gray-900 dark:text-white">
-                Aura Verifier
-              </h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400">
-                SDK Demo
-              </p>
+              <h1 className="text-lg font-bold text-gray-900 dark:text-white">Aura Verifier</h1>
+              <p className="text-xs text-gray-600 dark:text-gray-400">SDK Demo</p>
             </div>
           </div>
 

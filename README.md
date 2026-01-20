@@ -12,6 +12,7 @@ Production-ready TypeScript SDK for building third-party verifiers on the Aura N
 The Aura Verifier SDK allows businesses and developers to verify Aura Network digital credentials without storing sensitive personal information. Users present QR codes containing cryptographically signed credential presentations, which verifiers can validate against the blockchain.
 
 **Key Use Cases:**
+
 - Age verification for bars, nightclubs, and age-restricted venues
 - Identity verification for peer-to-peer marketplaces (Craigslist, Facebook Marketplace)
 - Trust scores for online platforms
@@ -50,7 +51,7 @@ import { VerifierSDK } from '@aura-network/verifier-sdk';
 const verifier = new VerifierSDK({
   rpcEndpoint: 'https://testnet-rpc.aurablockchain.org', // Use testnet for now
   timeout: 30000,
-  debug: false
+  debug: false,
 });
 
 // Verify a signature from a QR code
@@ -58,7 +59,7 @@ const result = await verifier.verifySignature({
   publicKey: 'a1b2c3d4...', // hex-encoded public key
   message: 'credential-presentation-data',
   signature: 'signature-from-qr-code',
-  algorithm: 'ed25519'
+  algorithm: 'ed25519',
 });
 
 if (result.valid) {
@@ -91,10 +92,10 @@ if (qrData.ctx.show_age_over_21) {
       vcs: qrData.vcs,
       ctx: qrData.ctx,
       exp: qrData.exp,
-      n: qrData.n
+      n: qrData.n,
     }),
     signature: qrData.sig,
-    algorithm: 'ed25519'
+    algorithm: 'ed25519',
   });
 
   if (verified.valid && Date.now() / 1000 < qrData.exp) {
@@ -119,6 +120,7 @@ if (qrData.ctx.show_age_over_21) {
 ## Network Endpoints
 
 ### Testnet (Current)
+
 ```typescript
 {
   rpcEndpoint: 'https://testnet-rpc.aurablockchain.org',
@@ -127,6 +129,7 @@ if (qrData.ctx.show_age_over_21) {
 ```
 
 ### Mainnet (Coming Soon)
+
 ```typescript
 {
   rpcEndpoint: 'https://mainnet-rpc.aurablockchain.org', // TBD
@@ -241,6 +244,7 @@ Copyright (c) 2025 Aura Network
 ## Acknowledgments
 
 Built with:
+
 - [CosmJS](https://github.com/cosmos/cosmjs) - Cosmos SDK JavaScript library
 - [@noble/ed25519](https://github.com/paulmillr/noble-ed25519) - Ed25519 signature verification
 - [@noble/secp256k1](https://github.com/paulmillr/noble-secp256k1) - secp256k1 signature verification

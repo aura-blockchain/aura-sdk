@@ -14,7 +14,7 @@ import {
   decryptObject,
   isValidEncryptionKey,
   hexToKey,
-  keyToHex
+  keyToHex,
 } from '../encryption.js';
 
 describe('Key Generation and Derivation', () => {
@@ -224,8 +224,8 @@ describe('Object Encryption/Decryption', () => {
       email: 'john@example.com',
       metadata: {
         role: 'admin',
-        permissions: ['read', 'write']
-      }
+        permissions: ['read', 'write'],
+      },
     };
 
     const encrypted = await encryptObject(obj, key);
@@ -240,10 +240,10 @@ describe('Object Encryption/Decryption', () => {
       level1: {
         level2: {
           level3: {
-            value: 'deep nesting'
-          }
-        }
-      }
+            value: 'deep nesting',
+          },
+        },
+      },
     };
 
     const encrypted = await encryptObject(obj, key);
@@ -256,7 +256,7 @@ describe('Object Encryption/Decryption', () => {
     const key = generateEncryptionKey();
     const obj = {
       items: [1, 2, 3, 4, 5],
-      strings: ['a', 'b', 'c']
+      strings: ['a', 'b', 'c'],
     };
 
     const encrypted = await encryptObject(obj, key);
@@ -271,7 +271,7 @@ describe('Object Encryption/Decryption', () => {
       nullValue: null,
       undefinedValue: undefined,
       zeroValue: 0,
-      emptyString: ''
+      emptyString: '',
     };
 
     const encrypted = await encryptObject(obj, key);

@@ -31,6 +31,7 @@ npm run benchmark:quick
 ```
 
 Expected output:
+
 ```
 ================================================================================
 QUICK BENCHMARK TEST
@@ -102,6 +103,7 @@ npm run benchmark:e2e
 ## What Gets Tested
 
 ### 1. QR Parsing (`benchmark:qr`)
+
 - Parse speed for different QR sizes (small, medium, large)
 - Memory usage during parsing
 - Concurrent parsing (10 parallel operations)
@@ -111,6 +113,7 @@ npm run benchmark:e2e
 **Duration:** ~30 seconds
 
 ### 2. Signature Verification (`benchmark:crypto`)
+
 - Ed25519 verification (async and sync)
 - Secp256k1 verification (async and sync)
 - Batch verification (10 signatures at once)
@@ -121,6 +124,7 @@ npm run benchmark:e2e
 **Duration:** ~60 seconds
 
 ### 3. Cache Performance (`benchmark:cache`)
+
 - Write operations
 - Read operations (hit and miss)
 - Delete operations
@@ -135,6 +139,7 @@ npm run benchmark:e2e
 **Duration:** ~45 seconds
 
 ### 4. End-to-End Verification (`benchmark:e2e`)
+
 - Full verification flow (parse + validate + verify)
 - With cache hit
 - With cache miss
@@ -150,30 +155,33 @@ npm run benchmark:e2e
 
 On a modern development machine (4+ cores, SSD):
 
-| Operation | Throughput | P95 Latency | Status |
-|-----------|------------|-------------|--------|
-| QR Parsing (medium) | 30,000 ops/sec | < 0.1ms | ✓ |
-| Ed25519 Verification | 12,000 ops/sec | < 0.2ms | ✓ |
-| Secp256k1 Verification | 4,000 ops/sec | < 0.3ms | ✓ |
-| Cache Read (hit) | 60,000 ops/sec | < 0.03ms | ✓ |
-| E2E Verification | 800 ops/sec | ~1.8ms | ✓ |
+| Operation              | Throughput     | P95 Latency | Status |
+| ---------------------- | -------------- | ----------- | ------ |
+| QR Parsing (medium)    | 30,000 ops/sec | < 0.1ms     | ✓      |
+| Ed25519 Verification   | 12,000 ops/sec | < 0.2ms     | ✓      |
+| Secp256k1 Verification | 4,000 ops/sec  | < 0.3ms     | ✓      |
+| Cache Read (hit)       | 60,000 ops/sec | < 0.03ms    | ✓      |
+| E2E Verification       | 800 ops/sec    | ~1.8ms      | ✓      |
 
 **Key Target:** End-to-end verification P95 latency < 200ms
 
 ## Interpreting Results
 
 ### Latency Metrics
+
 - **P50 (Median)**: Half of operations complete faster
 - **P95**: 95% of operations complete faster (SLA target)
 - **P99**: 99% of operations complete faster (tail latency)
 
 ### Good Performance Indicators
+
 - ✓ P95 latency < 200ms for E2E verification
 - ✓ QR parsing > 15,000 ops/sec
 - ✓ Signature verification > 8,000 ops/sec (Ed25519)
 - ✓ Cache operations > 40,000 ops/sec
 
 ### Performance Issues
+
 - ✗ P95 latency > 500ms
 - ✗ Significant variance between runs
 - ✗ Memory usage growing unbounded
@@ -184,6 +192,7 @@ On a modern development machine (4+ cores, SSD):
 ### "Cannot find module" errors
 
 Make sure you've built the project:
+
 ```bash
 npm run build
 ```
@@ -191,6 +200,7 @@ npm run build
 ### "tsx: command not found"
 
 Install dependencies:
+
 ```bash
 npm install
 ```
@@ -278,12 +288,12 @@ jobs:
 
 ## Performance Targets Summary
 
-| Metric | Target | Critical Threshold |
-|--------|--------|-------------------|
-| E2E P95 Latency | < 200ms | < 500ms |
-| E2E P99 Latency | < 300ms | < 1000ms |
-| QR Parse Throughput | > 15,000/sec | > 10,000/sec |
-| Sig Verify (Ed25519) | > 8,000/sec | > 5,000/sec |
-| Cache Read Throughput | > 40,000/sec | > 20,000/sec |
+| Metric                | Target       | Critical Threshold |
+| --------------------- | ------------ | ------------------ |
+| E2E P95 Latency       | < 200ms      | < 500ms            |
+| E2E P99 Latency       | < 300ms      | < 1000ms           |
+| QR Parse Throughput   | > 15,000/sec | > 10,000/sec       |
+| Sig Verify (Ed25519)  | > 8,000/sec  | > 5,000/sec        |
+| Cache Read Throughput | > 40,000/sec | > 20,000/sec       |
 
 **Success Criteria:** All targets met, no critical thresholds crossed.

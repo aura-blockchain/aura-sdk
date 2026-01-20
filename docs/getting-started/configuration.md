@@ -10,7 +10,7 @@ The minimal configuration requires only a network:
 import { AuraVerifier } from '@aura-network/verifier-sdk';
 
 const verifier = new AuraVerifier({
-  network: 'mainnet'
+  network: 'mainnet',
 });
 ```
 
@@ -56,6 +56,7 @@ const verifier = new AuraVerifier({
 ```
 
 **Default Endpoints:**
+
 - gRPC: `rpc.aurablockchain.org:9090`
 - REST: `https://api.aurablockchain.org`
 - Chain ID: `aura-mvp-1`
@@ -71,6 +72,7 @@ const verifier = new AuraVerifier({
 ```
 
 **Default Endpoints:**
+
 - gRPC: `testnet-grpc.aurablockchain.org:443`
 - REST: `https://testnet-api.aurablockchain.org`
 - Chain ID: `aura-mvp-1`
@@ -87,6 +89,7 @@ const verifier = new AuraVerifier({
 ```
 
 **Default Endpoints:**
+
 - gRPC: `localhost:9090`
 - REST: `http://localhost:1317`
 - Chain ID: `aura-local-1`
@@ -134,8 +137,8 @@ const verifier = new AuraVerifier({
   cacheConfig: {
     enableDIDCache: true,
     enableVCCache: true,
-    ttl: 300,        // 5 minutes
-    maxSize: 50,     // 50 MB
+    ttl: 300, // 5 minutes
+    maxSize: 50, // 50 MB
   },
 });
 ```
@@ -148,8 +151,8 @@ const verifier = new AuraVerifier({
   cacheConfig: {
     enableDIDCache: true,
     enableVCCache: true,
-    ttl: 3600,       // 1 hour
-    maxSize: 200,    // 200 MB
+    ttl: 3600, // 1 hour
+    maxSize: 200, // 200 MB
     storageLocation: './cache',
   },
 });
@@ -163,8 +166,8 @@ const verifier = new AuraVerifier({
   cacheConfig: {
     enableDIDCache: true,
     enableVCCache: true,
-    ttl: 60,         // 1 minute
-    maxSize: 10,     // 10 MB
+    ttl: 60, // 1 minute
+    maxSize: 10, // 10 MB
   },
 });
 ```
@@ -234,6 +237,7 @@ const verifier = new AuraVerifier({
 ```
 
 **Output:**
+
 ```
 [AuraVerifier] Initializing...
 [AuraVerifier] Network: testnet
@@ -284,6 +288,7 @@ const verifier = new AuraVerifier({
 ```
 
 **Environment Variables (.env):**
+
 ```bash
 # Network configuration
 AURA_NETWORK=mainnet
@@ -415,14 +420,14 @@ const verifier = new AuraVerifier({} as any);
 
 // Invalid: unknown network
 const verifier = new AuraVerifier({
-  network: 'invalid' as any
+  network: 'invalid' as any,
 });
 // Throws: ConfigurationError: Invalid network: invalid
 
 // Invalid: negative timeout
 const verifier = new AuraVerifier({
   network: 'mainnet',
-  timeout: -1000
+  timeout: -1000,
 });
 // Throws: ConfigurationError: timeout must be positive
 ```
@@ -492,13 +497,19 @@ Base cache size on your usage:
 
 ```typescript
 // Low traffic (< 100 verifications/day)
-cacheConfig: { maxSize: 10 }
+cacheConfig: {
+  maxSize: 10;
+}
 
 // Medium traffic (100-1000 verifications/day)
-cacheConfig: { maxSize: 50 }
+cacheConfig: {
+  maxSize: 50;
+}
 
 // High traffic (> 1000 verifications/day)
-cacheConfig: { maxSize: 200 }
+cacheConfig: {
+  maxSize: 200;
+}
 ```
 
 ### 5. Set Timeouts Based on Network

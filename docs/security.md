@@ -20,6 +20,7 @@ Comprehensive security guide for building secure verifier applications with the 
 Security is paramount when verifying digital credentials. This guide covers best practices for building secure, privacy-preserving verifier applications.
 
 **Security Principles:**
+
 1. **Defense in Depth**: Multiple layers of security
 2. **Least Privilege**: Minimal data access and storage
 3. **Privacy by Design**: Default to privacy-preserving options
@@ -38,12 +39,12 @@ const result = await verifier.verifySignature({
   publicKey: publicKey,
   message: message,
   signature: signature,
-  algorithm: 'ed25519'  // Fast, secure, deterministic
+  algorithm: 'ed25519', // Fast, secure, deterministic
 });
 
 // ✓ ACCEPTABLE: Use secp256k1 if required
 const result = await verifier.verifySignature({
-  algorithm: 'secp256k1'  // Compatible with Bitcoin/Ethereum
+  algorithm: 'secp256k1', // Compatible with Bitcoin/Ethereum
 });
 
 // ✗ BAD: Don't implement custom signature schemes
@@ -51,6 +52,7 @@ const result = await verifier.verifySignature({
 ```
 
 **Why Ed25519?**
+
 - Resistant to side-channel attacks
 - Fast verification (~70k sigs/sec)
 - Small signatures (64 bytes)
@@ -68,7 +70,7 @@ const message = JSON.stringify({
   vcs: qrData.vcs,
   ctx: qrData.ctx,
   exp: qrData.exp,
-  n: qrData.n
+  n: qrData.n,
 });
 
 // ✗ BAD: Inconsistent message construction
@@ -81,6 +83,7 @@ const message = JSON.stringify(data, null, 2); // Pretty-printing breaks signatu
 ### Key Management
 
 **Public Keys:**
+
 ```typescript
 // ✓ GOOD: Validate public key format
 function validatePublicKey(publicKey: string, algorithm: 'ed25519' | 'secp256k1'): boolean {
@@ -104,9 +107,10 @@ const publicKey = userInput; // No validation!
 ```
 
 **Never Store Private Keys:**
+
 ```typescript
 // ✗ NEVER do this in a verifier application!
-const privateKey = '...';  // Verifiers don't need private keys!
+const privateKey = '...'; // Verifiers don't need private keys!
 
 // ✓ Verifiers only need:
 // - Public keys (to verify signatures)
@@ -230,9 +234,12 @@ class NonceTracker {
     this.usedNonces.set(nonce, expirationTime);
 
     // Schedule cleanup after expiration
-    setTimeout(() => {
-      this.usedNonces.delete(nonce);
-    }, (expirationTime - Date.now() / 1000 + 60) * 1000);
+    setTimeout(
+      () => {
+        this.usedNonces.delete(nonce);
+      },
+      (expirationTime - Date.now() / 1000 + 60) * 1000
+    );
 
     // Periodic cleanup of expired nonces
     this.cleanupExpired();
@@ -293,7 +300,7 @@ const challenge = generateChallenge();
 const messageToSign = JSON.stringify({
   challenge: challenge,
   credential: credentialData,
-  timestamp: Date.now()
+  timestamp: Date.now(),
 });
 
 // Verify includes challenge
@@ -301,7 +308,7 @@ const isValid = await verifier.verifySignature({
   publicKey: userPublicKey,
   message: messageToSign,
   signature: userSignature,
-  algorithm: 'ed25519'
+  algorithm: 'ed25519',
 });
 ```
 
@@ -314,7 +321,7 @@ Only request and store necessary information:
 ```typescript
 // ✓ GOOD: Request only what you need
 const disclosureContext = {
-  show_age_over_21: true  // Only need age verification
+  show_age_over_21: true, // Only need age verification
   // NOT requesting: full name, address, SSN, etc.
 };
 
@@ -322,9 +329,9 @@ const disclosureContext = {
 const disclosureContext = {
   show_full_name: true,
   show_age: true,
-  show_full_address: true,  // Too much information!
+  show_full_address: true, // Too much information!
   show_ssn: true,
-  show_phone: true
+  show_phone: true,
 };
 ```
 
@@ -333,17 +340,17 @@ const disclosureContext = {
 ```typescript
 // ✓ GOOD: Log events without PII
 console.log('Verification succeeded', {
-  holderDid: qrData.h,  // Public identifier - OK
+  holderDid: qrData.h, // Public identifier - OK
   timestamp: Date.now(),
-  verificationType: 'age_over_21'
+  verificationType: 'age_over_21',
 });
 
 // ✗ BAD: Log personal information
 console.log('Verification succeeded', {
-  fullName: 'John Doe',      // PII - don't log!
-  age: 25,                   // PII - don't log!
-  address: '123 Main St',    // PII - don't log!
-  qrData: qrData             // Contains PII - don't log!
+  fullName: 'John Doe', // PII - don't log!
+  age: 25, // PII - don't log!
+  address: '123 Main St', // PII - don't log!
+  qrData: qrData, // Contains PII - don't log!
 });
 ```
 
@@ -365,14 +372,17 @@ class VerificationRecords {
 
   // Periodic cleanup
   startCleanup() {
-    setInterval(() => {
-      const cutoff = Date.now() - (24 * 60 * 60 * 1000); // 24 hours
-      for (const [id, data] of this.records.entries()) {
-        if (data.timestamp < cutoff) {
-          this.records.delete(id);
+    setInterval(
+      () => {
+        const cutoff = Date.now() - 24 * 60 * 60 * 1000; // 24 hours
+        for (const [id, data] of this.records.entries()) {
+          if (data.timestamp < cutoff) {
+            this.records.delete(id);
+          }
         }
-      }
-    }, 60 * 60 * 1000); // Run hourly
+      },
+      60 * 60 * 1000
+    ); // Run hourly
   }
 }
 ```
@@ -389,9 +399,9 @@ function hashPII(data: string): string {
 
 const auditLog = {
   timestamp: Date.now(),
-  userIdHash: hashPII(userId),  // Hashed, not plaintext
+  userIdHash: hashPII(userId), // Hashed, not plaintext
   verificationType: 'age_over_21',
-  result: 'success'
+  result: 'success',
   // No actual name, address, or PII stored
 };
 ```
@@ -403,13 +413,13 @@ const auditLog = {
 ```typescript
 // ✓ GOOD: Enforce HTTPS
 const config = {
-  rpcEndpoint: 'https://rpc.aurablockchain.org',  // HTTPS
-  restEndpoint: 'https://api.aurablockchain.org'  // HTTPS
+  rpcEndpoint: 'https://rpc.aurablockchain.org', // HTTPS
+  restEndpoint: 'https://api.aurablockchain.org', // HTTPS
 };
 
 // ✗ BAD: HTTP is insecure
 const config = {
-  rpcEndpoint: 'http://rpc.aurablockchain.org',  // Vulnerable to MITM
+  rpcEndpoint: 'http://rpc.aurablockchain.org', // Vulnerable to MITM
 };
 
 // ✓ GOOD: Validate HTTPS in production
@@ -427,12 +437,12 @@ if (process.env.NODE_ENV === 'production') {
 import https from 'https';
 
 const agent = new https.Agent({
-  rejectUnauthorized: true  // Enforce certificate validation
+  rejectUnauthorized: true, // Enforce certificate validation
 });
 
 // ✗ BAD: Disable certificate validation
 const agent = new https.Agent({
-  rejectUnauthorized: false  // NEVER do this in production!
+  rejectUnauthorized: false, // NEVER do this in production!
 });
 ```
 
@@ -448,8 +458,7 @@ class RateLimiter {
     const cutoff = now - windowMs;
 
     // Get recent requests
-    const recentRequests = (this.requests.get(ip) || [])
-      .filter(time => time > cutoff);
+    const recentRequests = (this.requests.get(ip) || []).filter((time) => time > cutoff);
 
     if (recentRequests.length >= maxRequests) {
       return false; // Rate limit exceeded
@@ -471,7 +480,7 @@ app.post('/api/verify', (req, res) => {
 
   if (!rateLimiter.checkLimit(ip, 10, 60000)) {
     return res.status(429).json({
-      error: 'Too many requests. Please try again later.'
+      error: 'Too many requests. Please try again later.',
     });
   }
 
@@ -504,7 +513,7 @@ function validateQRString(qrString: unknown): string {
 
 // ✗ BAD: No validation
 function validateQRStringBad(qrString: any): any {
-  return qrString;  // Accepts anything!
+  return qrString; // Accepts anything!
 }
 ```
 
@@ -521,7 +530,7 @@ const cache = new CacheManager({
   maxEntries: 1000,
   persistToDisk: true,
   encryptionKey: process.env.CACHE_ENCRYPTION_KEY || generateEncryptionKey(),
-  storageAdapter: 'file'
+  storageAdapter: 'file',
 });
 
 // ✗ BAD: Store sensitive data unencrypted
@@ -538,7 +547,7 @@ const cache = new CacheManager({
 const encryptionKey = process.env.CACHE_ENCRYPTION_KEY;
 
 // ✗ BAD: Hardcode keys in source code
-const encryptionKey = 'abc123...';  // Committed to git - very bad!
+const encryptionKey = 'abc123...'; // Committed to git - very bad!
 
 // ✓ BETTER: Use key management service (AWS KMS, Azure Key Vault, etc.)
 import { getSecret } from './key-vault';
@@ -562,16 +571,16 @@ chmod 644 /var/cache/aura-verifier/*  # Everyone can read!
 ```typescript
 // ✓ GOOD: Different access levels
 enum Role {
-  OPERATOR = 'operator',      // Can verify credentials
-  ADMIN = 'admin',             // Can view logs
-  SUPERADMIN = 'superadmin'    // Can configure system
+  OPERATOR = 'operator', // Can verify credentials
+  ADMIN = 'admin', // Can view logs
+  SUPERADMIN = 'superadmin', // Can configure system
 }
 
 function checkPermission(user: User, action: string): boolean {
   const permissions = {
     [Role.OPERATOR]: ['verify'],
     [Role.ADMIN]: ['verify', 'view_logs'],
-    [Role.SUPERADMIN]: ['verify', 'view_logs', 'configure']
+    [Role.SUPERADMIN]: ['verify', 'view_logs', 'configure'],
   };
 
   return permissions[user.role]?.includes(action) ?? false;
@@ -637,7 +646,7 @@ class GDPRCompliantVerifier {
     // Allow users to export their data
     return {
       verifications: await this.getUserVerifications(userId),
-      auditLogs: await this.getUserAuditLogs(userId)
+      auditLogs: await this.getUserAuditLogs(userId),
     };
   }
 }
@@ -648,9 +657,9 @@ class GDPRCompliantVerifier {
 ```typescript
 // ✓ GOOD: Enforce data retention limits
 const RETENTION_POLICIES = {
-  verificationRecords: 30 * 24 * 60 * 60 * 1000,    // 30 days
-  auditLogs: 90 * 24 * 60 * 60 * 1000,              // 90 days
-  cachedCredentials: 7 * 24 * 60 * 60 * 1000        // 7 days
+  verificationRecords: 30 * 24 * 60 * 60 * 1000, // 30 days
+  auditLogs: 90 * 24 * 60 * 60 * 1000, // 90 days
+  cachedCredentials: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
 
 async function enforceRetention() {
@@ -658,12 +667,12 @@ async function enforceRetention() {
 
   // Delete old verification records
   await db.verifications.deleteMany({
-    timestamp: { $lt: now - RETENTION_POLICIES.verificationRecords }
+    timestamp: { $lt: now - RETENTION_POLICIES.verificationRecords },
   });
 
   // Delete old audit logs
   await db.auditLogs.deleteMany({
-    timestamp: { $lt: now - RETENTION_POLICIES.auditLogs }
+    timestamp: { $lt: now - RETENTION_POLICIES.auditLogs },
   });
 
   // Clear old cached credentials
@@ -679,6 +688,7 @@ setInterval(enforceRetention, 24 * 60 * 60 * 1000);
 Use this checklist for security audits:
 
 ### Cryptography
+
 - [ ] Using strong algorithms (Ed25519 or secp256k1)
 - [ ] Always verifying signatures before processing data
 - [ ] Using cryptographically secure random numbers
@@ -686,12 +696,14 @@ Use this checklist for security audits:
 - [ ] No custom cryptographic implementations
 
 ### Replay Protection
+
 - [ ] Tracking used nonces
 - [ ] Short expiration times (< 5 minutes)
 - [ ] Time-constant comparisons for secrets
 - [ ] Challenge-response for high-security apps
 
 ### Data Privacy
+
 - [ ] Minimal data collection
 - [ ] No PII in logs
 - [ ] Automatic data deletion
@@ -699,6 +711,7 @@ Use this checklist for security audits:
 - [ ] GDPR compliance
 
 ### Network Security
+
 - [ ] HTTPS only in production
 - [ ] Certificate validation enabled
 - [ ] Rate limiting implemented
@@ -706,6 +719,7 @@ Use this checklist for security audits:
 - [ ] SQL injection prevention
 
 ### Storage Security
+
 - [ ] Encrypted cache storage
 - [ ] Secure key management
 - [ ] Proper file permissions
@@ -713,6 +727,7 @@ Use this checklist for security audits:
 - [ ] Regular security audits
 
 ### Access Control
+
 - [ ] Authentication required
 - [ ] Least privilege principle
 - [ ] Role-based access control
@@ -720,6 +735,7 @@ Use this checklist for security audits:
 - [ ] Audit logging
 
 ### Compliance
+
 - [ ] GDPR compliance
 - [ ] Data retention policies
 - [ ] User consent collection
@@ -753,7 +769,7 @@ class SecurityAuditor {
 
     return {
       passed: issues.length === 0,
-      issues: issues
+      issues: issues,
     };
   }
 
@@ -773,7 +789,7 @@ class SecurityAuditor {
 
     return {
       passed: issues.length === 0,
-      issues: issues
+      issues: issues,
     };
   }
 }

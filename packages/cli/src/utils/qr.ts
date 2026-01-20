@@ -13,9 +13,10 @@ export function generateSampleQRData(type: 'simple' | 'complex' = 'simple'): str
     v: '1.0',
     p: `pres_${Date.now()}_${Math.random().toString(36).substring(7)}`,
     h: 'did:aura:mainnet:aura1xyz123abc456def789',
-    vcs: type === 'simple'
-      ? ['vc_gov_id_001']
-      : ['vc_gov_id_001', 'vc_biometric_002', 'vc_age_verify_003'],
+    vcs:
+      type === 'simple'
+        ? ['vc_gov_id_001']
+        : ['vc_gov_id_001', 'vc_biometric_002', 'vc_age_verify_003'],
     exp: Math.floor(Date.now() / 1000) + 3600, // Expires in 1 hour
     ctx: {
       ageOver18: true,

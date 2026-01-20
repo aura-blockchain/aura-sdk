@@ -2,7 +2,11 @@
  * Verifier instance management
  */
 
-import { AuraVerifier, type AuraVerifierConfig, type NetworkType } from '@aura-network/verifier-sdk';
+import {
+  AuraVerifier,
+  type AuraVerifierConfig,
+  type NetworkType,
+} from '@aura-network/verifier-sdk';
 import { configManager } from './config.js';
 
 let verifierInstance: AuraVerifier | null = null;

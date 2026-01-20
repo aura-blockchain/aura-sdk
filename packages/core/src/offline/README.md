@@ -20,17 +20,17 @@ import { createOfflineVerifier } from '@aura-network/verifier-sdk/offline';
 const offlineVerifier = createOfflineVerifier({
   client: auraClient, // Your AuraClient instance
   cacheConfig: {
-    maxAge: 3600,           // Cache for 1 hour
-    maxEntries: 1000,       // Maximum 1000 credentials
-    persistToDisk: true,    // Persist to localStorage/file
-    encryptionKey: 'your-hex-key' // Optional encryption
+    maxAge: 3600, // Cache for 1 hour
+    maxEntries: 1000, // Maximum 1000 credentials
+    persistToDisk: true, // Persist to localStorage/file
+    encryptionKey: 'your-hex-key', // Optional encryption
   },
   autoSync: {
     enabled: true,
-    intervalMs: 300000,     // Sync every 5 minutes
+    intervalMs: 300000, // Sync every 5 minutes
     syncOnStartup: true,
-    wifiOnly: true          // Only sync on WiFi
-  }
+    wifiOnly: true, // Only sync on WiFi
+  },
 });
 
 // Verify credential (uses cache when available)
@@ -50,23 +50,27 @@ if (result.verified) {
 ### Core Components
 
 1. **CredentialCache** (`cache.ts`)
+
    - Manages credential storage and retrieval
    - Automatic expiration and eviction
    - Optional encryption
    - Import/export capabilities
 
 2. **CacheSync** (`sync.ts`)
+
    - Synchronizes cache with blockchain
    - Updates revocation status
    - Configurable auto-sync
    - Error handling and retry logic
 
 3. **Storage Adapters** (`storage.ts`)
+
    - `MemoryStorage`: In-memory cache (testing/fallback)
    - `BrowserStorage`: localStorage for browsers
    - `FileStorage`: File system for Node.js
 
 4. **Encryption** (`encryption.ts`)
+
    - AES-256-GCM encryption
    - PBKDF2 key derivation
    - String and object encryption
@@ -86,7 +90,7 @@ import { CredentialCache } from '@aura-network/verifier-sdk/offline';
 const cache = new CredentialCache({
   maxAge: 3600,
   maxEntries: 1000,
-  persistToDisk: true
+  persistToDisk: true,
 });
 
 // Store credential
@@ -127,7 +131,7 @@ await sync.syncRevocationList();
 import {
   CredentialCache,
   generateEncryptionKey,
-  keyToHex
+  keyToHex,
 } from '@aura-network/verifier-sdk/offline';
 
 // Generate encryption key
@@ -139,7 +143,7 @@ const cache = new CredentialCache({
   maxAge: 3600,
   maxEntries: 1000,
   persistToDisk: true,
-  encryptionKey: hexKey
+  encryptionKey: hexKey,
 });
 
 // All cache operations are automatically encrypted
@@ -157,9 +161,9 @@ const sync = new CacheSync(auraClient, cache);
 // Start auto-sync every 5 minutes
 sync.startAutoSync(300000, {
   syncOnStartup: true,
-  wifiOnly: true,      // Mobile-friendly
+  wifiOnly: true, // Mobile-friendly
   maxRetries: 3,
-  retryBackoff: 2
+  retryBackoff: 2,
 });
 
 // Check auto-sync status
@@ -176,7 +180,7 @@ sync.stopAutoSync();
 import {
   createRevocationList,
   isRevoked,
-  validateRevocationList
+  validateRevocationList,
 } from '@aura-network/verifier-sdk/offline';
 
 // Create revocation list
@@ -201,12 +205,12 @@ import {
   hashCredentialId,
   generateMerkleProof,
   verifyMerkleProof,
-  calculateMerkleRoot
+  calculateMerkleRoot,
 } from '@aura-network/verifier-sdk/offline';
 
 // Hash credential IDs
 const vcIds = ['vc-001', 'vc-002', 'vc-003', 'vc-004'];
-const hashes = vcIds.map(id => hashCredentialId(id));
+const hashes = vcIds.map((id) => hashCredentialId(id));
 
 // Calculate Merkle root
 const root = calculateMerkleRoot(hashes);
@@ -222,28 +226,25 @@ console.log('Proof valid:', isValid);
 ### Custom Storage Adapter
 
 ```typescript
-import {
-  CredentialCache,
-  createStorageAdapter
-} from '@aura-network/verifier-sdk/offline';
+import { CredentialCache, createStorageAdapter } from '@aura-network/verifier-sdk/offline';
 
 // Auto-detect storage based on environment
 const storage = createStorageAdapter();
 
 // Or specify explicitly
 const browserStorage = createStorageAdapter('browser', {
-  prefix: 'my_app_'
+  prefix: 'my_app_',
 });
 
 const fileStorage = createStorageAdapter('file', {
-  basePath: './cache-data'
+  basePath: './cache-data',
 });
 
 const cache = new CredentialCache({
   maxAge: 3600,
   maxEntries: 1000,
   persistToDisk: true,
-  storageAdapter: 'browser' // or 'file' or 'memory'
+  storageAdapter: 'browser', // or 'file' or 'memory'
 });
 ```
 
@@ -286,12 +287,12 @@ await cache.clear();
 
 ```typescript
 interface CacheConfig {
-  maxAge: number;           // Max cache age in seconds (default: 3600)
-  maxEntries: number;       // Max cached credentials (default: 1000)
-  persistToDisk: boolean;   // Save to localStorage/file (default: true)
-  encryptionKey?: string;   // Optional encryption key (hex string)
+  maxAge: number; // Max cache age in seconds (default: 3600)
+  maxEntries: number; // Max cached credentials (default: 1000)
+  persistToDisk: boolean; // Save to localStorage/file (default: true)
+  encryptionKey?: string; // Optional encryption key (hex string)
   storageAdapter?: 'memory' | 'browser' | 'file';
-  storagePath?: string;     // Custom path for file storage
+  storagePath?: string; // Custom path for file storage
 }
 ```
 
@@ -299,12 +300,12 @@ interface CacheConfig {
 
 ```typescript
 interface AutoSyncConfig {
-  enabled: boolean;         // Enable auto-sync
-  intervalMs: number;       // Sync interval in milliseconds
-  wifiOnly?: boolean;       // Only sync on WiFi (mobile optimization)
-  syncOnStartup?: boolean;  // Sync on app startup
-  maxRetries?: number;      // Maximum retry attempts (default: 3)
-  retryBackoff?: number;    // Backoff multiplier (default: 2)
+  enabled: boolean; // Enable auto-sync
+  intervalMs: number; // Sync interval in milliseconds
+  wifiOnly?: boolean; // Only sync on WiFi (mobile optimization)
+  syncOnStartup?: boolean; // Sync on app startup
+  maxRetries?: number; // Maximum retry attempts (default: 3)
+  retryBackoff?: number; // Backoff multiplier (default: 2)
 }
 ```
 
@@ -355,6 +356,7 @@ npm test
 ```
 
 Test files:
+
 - `cache.test.ts`: Cache functionality tests
 - `storage.test.ts`: Storage adapter tests
 - `encryption.test.ts`: Encryption utility tests

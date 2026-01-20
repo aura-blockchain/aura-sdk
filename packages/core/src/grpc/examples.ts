@@ -286,9 +286,7 @@ export async function customNetworkExample() {
 export class ProductionVerifierService {
   private client: AuraClient | null = null;
 
-  constructor(
-    private readonly network: 'mainnet' | 'testnet' | 'local' = 'mainnet'
-  ) {}
+  constructor(private readonly network: 'mainnet' | 'testnet' | 'local' = 'mainnet') {}
 
   /**
    * Initialize the service
@@ -321,7 +319,10 @@ export class ProductionVerifierService {
   /**
    * Verify a presentation with comprehensive validation
    */
-  async verify(qrCodeData: string, verifierDid?: string): Promise<{
+  async verify(
+    qrCodeData: string,
+    verifierDid?: string
+  ): Promise<{
     success: boolean;
     result?: any;
     error?: string;
@@ -334,10 +335,7 @@ export class ProductionVerifierService {
     }
 
     try {
-      const result = await this.client.verifyPresentation(
-        qrCodeData,
-        verifierDid
-      );
+      const result = await this.client.verifyPresentation(qrCodeData, verifierDid);
 
       // Additional validation
       if (!result.verified) {

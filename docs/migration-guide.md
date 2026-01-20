@@ -46,16 +46,19 @@ If you were using a beta or pre-release version, follow this guide to upgrade.
 #### 1. Package Import Structure
 
 **Before (Beta):**
+
 ```typescript
 import { Verifier } from '@aura-network/verifier-sdk';
 ```
 
 **After (1.0.0):**
+
 ```typescript
 import { AuraVerifier } from '@aura-network/verifier-sdk';
 ```
 
 **Migration:**
+
 ```typescript
 // Replace all instances
 // Old: const verifier = new Verifier(config);
@@ -68,14 +71,16 @@ const verifier = new AuraVerifier(config);
 #### 2. Configuration Object Changes
 
 **Before (Beta):**
+
 ```typescript
 const verifier = new Verifier({
   rpcUrl: 'https://rpc.aurablockchain.org',
-  network: 'mainnet'
+  network: 'mainnet',
 });
 ```
 
 **After (1.0.0):**
+
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',  // Required, determines default endpoints
@@ -89,18 +94,19 @@ const verifier = new AuraVerifier({
 ```
 
 **Migration:**
+
 ```typescript
 // Old configuration
 const oldConfig = {
   rpcUrl: 'https://rpc.aurablockchain.org',
   network: 'mainnet',
-  timeout: 30000
+  timeout: 30000,
 };
 
 // New configuration
 const newConfig = {
   network: 'mainnet',
-  timeout: 30000
+  timeout: 30000,
   // grpcEndpoint and restEndpoint are auto-configured based on network
 };
 ```
@@ -110,11 +116,13 @@ const newConfig = {
 #### 3. Verification Method Signature
 
 **Before (Beta):**
+
 ```typescript
 const result = await verifier.verify(qrString);
 ```
 
 **After (1.0.0):**
+
 ```typescript
 const result = await verifier.verify({
   qrCodeData: qrString,
@@ -127,6 +135,7 @@ const result = await verifier.verify({
 ```
 
 **Migration:**
+
 ```typescript
 // Simple case (no additional requirements)
 // Old: const result = await verifier.verify(qrString);
@@ -137,7 +146,7 @@ const result = await verifier.verify({ qrCodeData: qrString });
 const result = await verifier.verify({
   qrCodeData: qrString,
   requiredVCTypes: [VCType.PROOF_OF_HUMANITY],
-  verifierAddress: 'your-verifier-id'
+  verifierAddress: 'your-verifier-id',
 });
 ```
 
@@ -146,6 +155,7 @@ const result = await verifier.verify({
 #### 4. Result Object Structure
 
 **Before (Beta):**
+
 ```typescript
 interface VerificationResult {
   success: boolean;
@@ -156,6 +166,7 @@ interface VerificationResult {
 ```
 
 **After (1.0.0):**
+
 ```typescript
 interface VerificationResult {
   isValid: boolean;
@@ -175,6 +186,7 @@ interface VerificationResult {
 ```
 
 **Migration:**
+
 ```typescript
 // Old code
 if (result.success) {
@@ -194,6 +206,7 @@ if (result.isValid) {
 #### 5. Error Handling
 
 **Before (Beta):**
+
 ```typescript
 try {
   const result = await verifier.verify(qr);
@@ -203,12 +216,13 @@ try {
 ```
 
 **After (1.0.0):**
+
 ```typescript
 import {
   VerificationError,
   QRExpiredError,
   CredentialRevokedError,
-  NetworkError
+  NetworkError,
 } from '@aura-network/verifier-sdk';
 
 try {
@@ -236,19 +250,22 @@ try {
 #### 6. Initialization Pattern
 
 **Before (Beta):**
+
 ```typescript
 const verifier = new Verifier(config);
 // Ready to use immediately
 ```
 
 **After (1.0.0):**
+
 ```typescript
 const verifier = new AuraVerifier(config);
-await verifier.initialize();  // Required
+await verifier.initialize(); // Required
 // Now ready to use
 ```
 
 **Migration:**
+
 ```typescript
 // Old pattern
 async function verify(qr: string) {
@@ -259,9 +276,9 @@ async function verify(qr: string) {
 // New pattern
 async function verify(qr: string) {
   const verifier = new AuraVerifier(config);
-  await verifier.initialize();  // Add this line
+  await verifier.initialize(); // Add this line
   const result = await verifier.verify({ qrCodeData: qr });
-  await verifier.destroy();  // Cleanup
+  await verifier.destroy(); // Cleanup
   return result;
 }
 ```
@@ -279,8 +296,8 @@ const verifier = new AuraVerifier({
   cacheConfig: {
     enableDIDCache: true,
     enableVCCache: true,
-    ttl: 300
-  }
+    ttl: 300,
+  },
 });
 
 await verifier.initialize();
@@ -298,7 +315,7 @@ await verifier.enableOfflineMode();
 const results = await verifier.verifyBatch([
   { qrCodeData: qr1 },
   { qrCodeData: qr2 },
-  { qrCodeData: qr3 }
+  { qrCodeData: qr3 },
 ]);
 ```
 
@@ -341,7 +358,7 @@ const secureContext = createSecureVerifier({
   enableNonceTracking: true,
   enableRateLimiting: true,
   enableAuditLogging: true,
-  enableThreatDetection: true
+  enableThreatDetection: true,
 });
 
 // Use security components
@@ -372,16 +389,9 @@ import { Verifier } from '@aura-network/verifier-sdk';
 import { AuraVerifier } from '@aura-network/verifier-sdk';
 
 // Add new imports as needed
-import type {
-  VerificationRequest,
-  VerificationResult
-} from '@aura-network/verifier-sdk';
+import type { VerificationRequest, VerificationResult } from '@aura-network/verifier-sdk';
 
-import {
-  VCType,
-  VCStatus,
-  VerificationError
-} from '@aura-network/verifier-sdk';
+import { VCType, VCStatus, VerificationError } from '@aura-network/verifier-sdk';
 ```
 
 #### Step 3: Update Configuration
@@ -390,14 +400,14 @@ import {
 // Before
 const config = {
   rpcUrl: 'https://rpc.aurablockchain.org',
-  network: 'mainnet'
+  network: 'mainnet',
 };
 
 // After
 const config = {
   network: 'mainnet',
   timeout: 10000,
-  verbose: false
+  verbose: false,
 };
 ```
 
@@ -466,6 +476,7 @@ await verifier.destroy();
 ### Example: Complete Migration
 
 **Before (Beta):**
+
 ```typescript
 import { Verifier } from '@aura-network/verifier-sdk';
 
@@ -473,13 +484,11 @@ async function verifyAge(qrCode: string): Promise<boolean> {
   try {
     const verifier = new Verifier({
       rpcUrl: 'https://rpc.aurablockchain.org',
-      network: 'mainnet'
+      network: 'mainnet',
     });
 
     const result = await verifier.verify(qrCode);
-    return result.success && result.credentials?.some(
-      c => c.type === 'AgeVerification'
-    );
+    return result.success && result.credentials?.some((c) => c.type === 'AgeVerification');
   } catch (error) {
     console.error('Verification failed:', error.message);
     return false;
@@ -488,13 +497,14 @@ async function verifyAge(qrCode: string): Promise<boolean> {
 ```
 
 **After (1.0.0):**
+
 ```typescript
 import { AuraVerifier, VCType } from '@aura-network/verifier-sdk';
 
 async function verifyAge(qrCode: string): Promise<boolean> {
   const verifier = new AuraVerifier({
     network: 'mainnet',
-    timeout: 10000
+    timeout: 10000,
   });
 
   try {
@@ -507,10 +517,10 @@ async function verifyAge(qrCode: string): Promise<boolean> {
     // Or use full verification
     const result = await verifier.verify({
       qrCodeData: qrCode,
-      requiredVCTypes: [VCType.AGE_VERIFICATION]
+      requiredVCTypes: [VCType.AGE_VERIFICATION],
     });
 
-    return result.isValid && (result.attributes.ageOver21 === true);
+    return result.isValid && result.attributes.ageOver21 === true;
   } catch (error) {
     if (error instanceof VerificationError) {
       console.error('Verification failed:', error.code, error.message);
@@ -533,10 +543,12 @@ async function verifyAge(qrCode: string): Promise<boolean> {
 These are potential breaking changes planned for future major versions:
 
 1. **Enhanced DID Support**
+
    - Support for multiple DID methods
    - DID rotation handling
 
 2. **Advanced Credential Types**
+
    - Support for selective disclosure credentials
    - Zero-knowledge proof integration
 
@@ -573,10 +585,10 @@ None announced at this time.
 
 ## Compatibility Matrix
 
-| SDK Version | Node.js | TypeScript | Aura Chain |
-|-------------|---------|------------|------------|
-| 1.0.0 | >= 18.0.0 | >= 5.0.0 | mainnet-1, testnet-2 |
-| 0.9.x (beta) | >= 16.0.0 | >= 4.5.0 | testnet-2 |
+| SDK Version  | Node.js   | TypeScript | Aura Chain           |
+| ------------ | --------- | ---------- | -------------------- |
+| 1.0.0        | >= 18.0.0 | >= 5.0.0   | mainnet-1, testnet-2 |
+| 0.9.x (beta) | >= 16.0.0 | >= 4.5.0   | testnet-2            |
 
 ---
 

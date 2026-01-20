@@ -53,9 +53,7 @@ const BadgeContainer = styled.div<{
       return props.verified ? defaultTheme.colors.success : defaultTheme.colors.error;
     }
     if (props.variant === 'subtle') {
-      return props.verified
-        ? `${defaultTheme.colors.success}20`
-        : `${defaultTheme.colors.error}20`;
+      return props.verified ? `${defaultTheme.colors.success}20` : `${defaultTheme.colors.error}20`;
     }
     return 'transparent';
   }};

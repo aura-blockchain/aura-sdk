@@ -1,4 +1,12 @@
-import { Credential, CredentialStatus, VerificationResult, Balance, NetworkType, PresentationRequest, PresentationSubmissionResult } from '../types';
+import {
+  Credential,
+  CredentialStatus,
+  VerificationResult,
+  Balance,
+  NetworkType,
+  PresentationRequest,
+  PresentationSubmissionResult,
+} from '../types';
 
 export interface AuraClientOptions {
   endpoint?: string;
@@ -73,7 +81,8 @@ export class AuraClient {
 
   async verifyCredential(credential: Credential | string): Promise<VerificationResult> {
     if (!this.connected) throw new Error('Client not connected');
-    const cred = typeof credential === 'string' ? await this.queryCredential(credential) : credential;
+    const cred =
+      typeof credential === 'string' ? await this.queryCredential(credential) : credential;
     const expired = cred.expirationDate ? new Date(cred.expirationDate) < new Date() : false;
     const revoked = cred.status === CredentialStatus.REVOKED;
     const verified = !expired && !revoked;

@@ -153,11 +153,11 @@ describe('VerificationEventEmitter', () => {
     it('should handle async handlers', async () => {
       const results: number[] = [];
       const handler1 = vi.fn().mockImplementation(async () => {
-        await new Promise(r => setTimeout(r, 10));
+        await new Promise((r) => setTimeout(r, 10));
         results.push(1);
       });
       const handler2 = vi.fn().mockImplementation(async () => {
-        await new Promise(r => setTimeout(r, 5));
+        await new Promise((r) => setTimeout(r, 5));
         results.push(2);
       });
 

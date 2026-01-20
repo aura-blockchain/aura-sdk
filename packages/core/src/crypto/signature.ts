@@ -61,7 +61,9 @@ export interface SignatureVerificationResult {
  * @param publicKey - Public key as hex string or Uint8Array
  * @returns Detected algorithm or null if cannot be determined
  */
-export function detectSignatureAlgorithm(publicKey: string | Uint8Array): SignatureAlgorithm | null {
+export function detectSignatureAlgorithm(
+  publicKey: string | Uint8Array
+): SignatureAlgorithm | null {
   try {
     let publicKeyBytes: Uint8Array;
     if (typeof publicKey === 'string') {
@@ -78,7 +80,10 @@ export function detectSignatureAlgorithm(publicKey: string | Uint8Array): Signat
     }
 
     // secp256k1 public key is 33 bytes (compressed) or 65 bytes (uncompressed)
-    if (length === SECP256K1_COMPRESSED_PUBLIC_KEY_LENGTH || length === SECP256K1_UNCOMPRESSED_PUBLIC_KEY_LENGTH) {
+    if (
+      length === SECP256K1_COMPRESSED_PUBLIC_KEY_LENGTH ||
+      length === SECP256K1_UNCOMPRESSED_PUBLIC_KEY_LENGTH
+    ) {
       return SignatureAlgorithm.SECP256K1;
     }
 
@@ -206,7 +211,10 @@ export function verifySignatureSync(
  * @param algorithm - Optional algorithm to validate against (auto-detected if not specified)
  * @returns true if public key is valid
  */
-export function isValidPublicKey(publicKey: string | Uint8Array, algorithm?: SignatureAlgorithm): boolean {
+export function isValidPublicKey(
+  publicKey: string | Uint8Array,
+  algorithm?: SignatureAlgorithm
+): boolean {
   try {
     if (algorithm) {
       // Validate for specific algorithm
@@ -242,7 +250,10 @@ export function isValidPublicKey(publicKey: string | Uint8Array, algorithm?: Sig
  * @param algorithm - Optional algorithm to validate against
  * @returns true if signature format is valid
  */
-export function isValidSignature(signature: string | Uint8Array, algorithm?: SignatureAlgorithm): boolean {
+export function isValidSignature(
+  signature: string | Uint8Array,
+  algorithm?: SignatureAlgorithm
+): boolean {
   try {
     if (algorithm) {
       // Validate for specific algorithm
@@ -290,7 +301,10 @@ export async function verifyCosmosSignature(
     return {
       valid: false,
       algorithm: options?.algorithm ?? SignatureAlgorithm.ED25519,
-      error: error instanceof Error ? error.message : 'Unknown error during Cosmos signature verification',
+      error:
+        error instanceof Error
+          ? error.message
+          : 'Unknown error during Cosmos signature verification',
     };
   }
 }
@@ -332,7 +346,10 @@ export function getSupportedAlgorithms(): {
     },
     {
       algorithm: SignatureAlgorithm.SECP256K1,
-      publicKeyLengths: [SECP256K1_COMPRESSED_PUBLIC_KEY_LENGTH, SECP256K1_UNCOMPRESSED_PUBLIC_KEY_LENGTH],
+      publicKeyLengths: [
+        SECP256K1_COMPRESSED_PUBLIC_KEY_LENGTH,
+        SECP256K1_UNCOMPRESSED_PUBLIC_KEY_LENGTH,
+      ],
       signatureLengths: [SECP256K1_SIGNATURE_LENGTH],
     },
   ];

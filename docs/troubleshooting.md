@@ -7,6 +7,7 @@ Common issues and solutions for the Aura Verifier SDK.
 ### Module Not Found
 
 **Error:**
+
 ```
 Cannot find module '@aura-network/verifier-sdk'
 ```
@@ -14,17 +15,20 @@ Cannot find module '@aura-network/verifier-sdk'
 **Solutions:**
 
 1. Verify installation:
+
 ```bash
 npm list @aura-network/verifier-sdk
 ```
 
 2. Reinstall the package:
+
 ```bash
 rm -rf node_modules package-lock.json
 npm install
 ```
 
 3. Check `package.json` has the dependency:
+
 ```json
 {
   "dependencies": {
@@ -36,6 +40,7 @@ npm install
 ### TypeScript Type Errors
 
 **Error:**
+
 ```
 Could not find a declaration file for module '@aura-network/verifier-sdk'
 ```
@@ -43,11 +48,13 @@ Could not find a declaration file for module '@aura-network/verifier-sdk'
 **Solution:**
 
 Install @types/node:
+
 ```bash
 npm install -D @types/node
 ```
 
 Update `tsconfig.json`:
+
 ```json
 {
   "compilerOptions": {
@@ -61,6 +68,7 @@ Update `tsconfig.json`:
 ### Buffer/Process Not Defined (Browser)
 
 **Error:**
+
 ```
 ReferenceError: Buffer is not defined
 ```
@@ -68,11 +76,13 @@ ReferenceError: Buffer is not defined
 **Solution:**
 
 Install polyfills:
+
 ```bash
 npm install buffer process
 ```
 
 Add to webpack config:
+
 ```javascript
 module.exports = {
   resolve: {
@@ -85,6 +95,7 @@ module.exports = {
 ```
 
 Or add to entry point:
+
 ```javascript
 import { Buffer } from 'buffer';
 import process from 'process';
@@ -98,6 +109,7 @@ window.process = process;
 ### QR Code Parse Errors
 
 **Error:**
+
 ```
 QRParseError: Failed to parse QR code data
 ```
@@ -105,11 +117,13 @@ QRParseError: Failed to parse QR code data
 **Causes & Solutions:**
 
 1. **Invalid QR Format**
+
    - Ensure QR starts with `aura://verify?data=`
    - Check base64 encoding is valid
    - Verify JSON structure after decoding
 
 2. **Missing Required Fields**
+
 ```typescript
 // QR data must include:
 {
@@ -125,6 +139,7 @@ QRParseError: Failed to parse QR code data
 ```
 
 3. **Debugging**
+
 ```typescript
 import { parseQRCodeSafe } from '@aura-network/verifier-sdk';
 
@@ -137,6 +152,7 @@ if (!result.success) {
 ### QR Code Expired
 
 **Error:**
+
 ```
 QRExpiredError: QR code expired at 2025-01-15T10:30:00Z
 ```
@@ -144,10 +160,12 @@ QRExpiredError: QR code expired at 2025-01-15T10:30:00Z
 **Solutions:**
 
 1. **Request New QR Code**
+
    - User must generate a fresh QR code from their wallet
    - QR codes typically expire after 5-10 minutes
 
 2. **Check System Time**
+
 ```bash
 # Ensure system clock is accurate
 date
@@ -156,6 +174,7 @@ sudo ntpdate pool.ntp.org
 ```
 
 3. **Allow Tolerance (Not Recommended)**
+
 ```typescript
 const result = await verifier.verify({
   qrCodeData,
@@ -166,6 +185,7 @@ const result = await verifier.verify({
 ### Signature Verification Failed
 
 **Error:**
+
 ```
 VerificationError: Signature verification failed
 ```
@@ -173,15 +193,18 @@ VerificationError: Signature verification failed
 **Causes & Solutions:**
 
 1. **Tampered Data**
+
    - QR code has been modified
    - Solution: Request new QR code from user
 
 2. **Wrong Public Key**
+
    - DID resolution returning wrong key
    - Check network configuration
    - Verify DID format
 
 3. **Debugging**
+
 ```typescript
 const result = await verifier.verify({ qrCodeData });
 
@@ -196,21 +219,25 @@ console.log('DID Document:', didDoc);
 ### Credential Revoked
 
 **Error:**
+
 ```
 VerificationError: Credential has been revoked: vc-123
 ```
 
 **Explanation:**
+
 - The credential issuer has revoked this credential
 - This is expected behavior for invalidated credentials
 
 **Solutions:**
 
 1. **Request New Credential**
+
    - User must contact issuer for new credential
    - Or obtain different credential type
 
 2. **Handle Gracefully**
+
 ```typescript
 try {
   const result = await verifier.verify({ qrCodeData });
@@ -226,6 +253,7 @@ try {
 ### Connection Timeout
 
 **Error:**
+
 ```
 TimeoutError: Operation timed out after 10000ms
 ```
@@ -233,6 +261,7 @@ TimeoutError: Operation timed out after 10000ms
 **Solutions:**
 
 1. **Increase Timeout**
+
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',
@@ -241,6 +270,7 @@ const verifier = new AuraVerifier({
 ```
 
 2. **Check Network Connectivity**
+
 ```bash
 # Test gRPC endpoint
 curl https://api.aurablockchain.org/cosmos/base/tendermint/v1beta1/node_info
@@ -250,6 +280,7 @@ nslookup testnet-rpc.aurablockchain.org
 ```
 
 3. **Use Custom Endpoint**
+
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',
@@ -260,6 +291,7 @@ const verifier = new AuraVerifier({
 ### Network Error
 
 **Error:**
+
 ```
 NetworkError: Failed to connect to blockchain
 ```
@@ -267,11 +299,13 @@ NetworkError: Failed to connect to blockchain
 **Solutions:**
 
 1. **Check Internet Connection**
+
 ```bash
 ping testnet-rpc.aurablockchain.org
 ```
 
 2. **Verify Endpoint**
+
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',
@@ -280,6 +314,7 @@ const verifier = new AuraVerifier({
 ```
 
 3. **Enable Offline Mode**
+
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',
@@ -290,6 +325,7 @@ const verifier = new AuraVerifier({
 ### DID Resolution Failed
 
 **Error:**
+
 ```
 VerificationError: Failed to resolve DID: did:aura:mainnet:abc123
 ```
@@ -297,6 +333,7 @@ VerificationError: Failed to resolve DID: did:aura:mainnet:abc123
 **Solutions:**
 
 1. **Check DID Format**
+
 ```typescript
 import { isValidDID } from '@aura-network/verifier-sdk';
 
@@ -306,6 +343,7 @@ if (!isValidDID(did)) {
 ```
 
 2. **Verify Network**
+
 ```typescript
 // DID network must match verifier network
 const verifier = new AuraVerifier({ network: 'mainnet' });
@@ -313,6 +351,7 @@ const verifier = new AuraVerifier({ network: 'mainnet' });
 ```
 
 3. **Check DID Exists**
+
 ```bash
 # Query via REST
 curl https://api.aurablockchain.org/aura/did/v1/did/did:aura:mainnet:abc123
@@ -327,6 +366,7 @@ curl https://api.aurablockchain.org/aura/did/v1/did/did:aura:mainnet:abc123
 **Solutions:**
 
 1. **Enable Caching**
+
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',
@@ -340,16 +380,19 @@ const verifier = new AuraVerifier({
 ```
 
 2. **Use Offline Mode**
+
 ```typescript
 await verifier.enableOfflineMode();
 ```
 
 3. **Optimize Network**
+
 - Use closer RPC node
 - Reduce timeout for faster failures
 - Enable HTTP/2 if available
 
 4. **Profile Performance**
+
 ```typescript
 const start = Date.now();
 const result = await verifier.verify({ qrCodeData });
@@ -366,6 +409,7 @@ console.log('Network latency:', result.networkLatency, 'ms');
 **Solutions:**
 
 1. **Limit Cache Size**
+
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',
@@ -376,6 +420,7 @@ const verifier = new AuraVerifier({
 ```
 
 2. **Clear Cache Periodically**
+
 ```typescript
 // Clear cache daily
 setInterval(async () => {
@@ -384,6 +429,7 @@ setInterval(async () => {
 ```
 
 3. **Destroy Unused Instances**
+
 ```typescript
 await verifier.destroy();
 ```
@@ -393,6 +439,7 @@ await verifier.destroy();
 ### CORS Errors
 
 **Error:**
+
 ```
 Access to fetch at 'https://api.aurablockchain.org' blocked by CORS policy
 ```
@@ -420,6 +467,7 @@ app.post('/api/verify', async (req, res) => {
 ### Crypto Not Available
 
 **Error:**
+
 ```
 TypeError: crypto.subtle is undefined
 ```
@@ -427,6 +475,7 @@ TypeError: crypto.subtle is undefined
 **Solution:**
 
 Ensure HTTPS in production:
+
 ```typescript
 // crypto.subtle requires HTTPS
 // Use localhost for development or HTTPS in production
@@ -437,6 +486,7 @@ Ensure HTTPS in production:
 ### Random Values Error
 
 **Error:**
+
 ```
 Error: crypto.getRandomValues() not supported
 ```
@@ -444,11 +494,13 @@ Error: crypto.getRandomValues() not supported
 **Solution:**
 
 Install polyfill:
+
 ```bash
 npm install react-native-get-random-values
 ```
 
 Import at app entry:
+
 ```typescript
 import 'react-native-get-random-values';
 import { AuraVerifier } from '@aura-network/verifier-sdk';
@@ -459,6 +511,7 @@ import { AuraVerifier } from '@aura-network/verifier-sdk';
 **Solution:**
 
 Clear cache:
+
 ```bash
 npm start -- --reset-cache
 ```
@@ -525,6 +578,7 @@ If your issue isn't listed here:
 4. **Stack Overflow**: Tag with `aura-network`
 
 When reporting issues, include:
+
 - SDK version (`SDK_INFO.version`)
 - Node.js version (`node --version`)
 - Platform (Node.js, browser, React Native, etc.)

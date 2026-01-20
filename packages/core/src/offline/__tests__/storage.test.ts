@@ -109,7 +109,7 @@ describe('MemoryStorage', () => {
       const exported = storage.exportData();
       expect(exported).toEqual({
         key1: 'value1',
-        key2: 'value2'
+        key2: 'value2',
       });
     });
 
@@ -226,7 +226,7 @@ describe('FileStorage', () => {
       const keys = await storage.keys();
       expect(keys).toHaveLength(2);
       // Keys are hashed, so we can't check exact values
-      keys.forEach(key => {
+      keys.forEach((key) => {
         expect(typeof key).toBe('string');
         expect(key.length).toBeGreaterThan(0);
       });
@@ -350,7 +350,9 @@ describe('createStorageAdapter', () => {
       const storage = createStorageAdapter();
       // In Node.js environment (vitest), it should create FileStorage
       // In browser, it would create BrowserStorage
-      expect(['MemoryStorage', 'FileStorage', 'BrowserStorage']).toContain(storage.constructor.name);
+      expect(['MemoryStorage', 'FileStorage', 'BrowserStorage']).toContain(
+        storage.constructor.name
+      );
     });
 
     it('should create memory storage when file system is not available', () => {

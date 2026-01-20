@@ -46,7 +46,10 @@ if (secp256k1.etc) {
   secp256k1.etc.hmacSha256Sync = (key: Uint8Array, ...messages: Uint8Array[]): Uint8Array => {
     return hmac(sha256, key, concatBytes(...messages));
   };
-  secp256k1.etc.hmacSha256Async = async (key: Uint8Array, ...messages: Uint8Array[]): Promise<Uint8Array> => {
+  secp256k1.etc.hmacSha256Async = async (
+    key: Uint8Array,
+    ...messages: Uint8Array[]
+  ): Promise<Uint8Array> => {
     return hmac(sha256, key, concatBytes(...messages));
   };
 }

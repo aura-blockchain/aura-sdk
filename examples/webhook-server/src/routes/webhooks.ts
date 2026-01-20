@@ -76,64 +76,59 @@ router.post(
  * POST /webhooks/revocation
  * Receive credential revocation and expiration events
  */
-router.post(
-  '/revocation',
-  ipAllowlist,
-  validateSignature,
-  async (req: Request, res: Response) => {
-    try {
-      // Validate payload
-      const payload = WebhookPayloadSchema.parse(req.body);
+router.post('/revocation', ipAllowlist, validateSignature, async (req: Request, res: Response) => {
+  try {
+    // Validate payload
+    const payload = WebhookPayloadSchema.parse(req.body);
 
-      // Log event
-      logWebhookEvent(payload.eventType, payload.id, {
-        credentialId: 'data' in payload ? (payload.data as any).credentialId : undefined,
-      });
+    // Log event
+    logWebhookEvent(payload.eventType, payload.id, {
+      credentialId: 'data' in payload ? (payload.data as any).credentialId : undefined,
+    });
 
-      // Store in database
-      const db = getDatabase();
-      db.insertEvent({
-        id: payload.id,
-        eventType: payload.eventType,
-        payload: JSON.stringify(payload),
-        signature: req.headers['x-webhook-signature'] as string,
-        verified: (req as any).signatureVerified || false,
-        sourceIp: req.ip || 'unknown',
-        receivedAt: payload.timestamp,
-      });
+    // Store in database
+    const db = getDatabase();
+    db.insertEvent({
+      id: payload.id,
+      eventType: payload.eventType,
+      payload: JSON.stringify(payload),
+      signature: req.headers['x-webhook-signature'] as string,
+      verified: (req as any).signatureVerified || false,
+      sourceIp: req.ip || 'unknown',
+      receivedAt: payload.timestamp,
+    });
 
-      // Process event asynchronously
-      const handler = getEventHandler();
-      handler.processEvent(payload).catch((error) => {
-        logWebhookError(payload.id, error);
-      });
+    // Process event asynchronously
+    const handler = getEventHandler();
+    handler.processEvent(payload).catch((error) => {
+      logWebhookError(payload.id, error);
+    });
 
-      // Return success immediately
-      res.status(200).json({
-        success: true,
-        message: 'Webhook received',
-        eventId: payload.id,
-      });
-    } catch (error) {
-      logger.error('Error processing revocation webhook', {
-        error: error instanceof Error ? error.message : String(error),
-        body: req.body,
-      });
+    // Return success immediately
+    res.status(200).json({
+      success: true,
+      message: 'Webhook received',
+      eventId: payload.id,
+    });
+  } catch (error) {
+    logger.error('Error processing revocation webhook', {
+      error: error instanceof Error ? error.message : String(error),
+      body: req.body,
+    });
 
-      if (error instanceof Error && error.name === 'ZodError') {
-        res.status(400).json({
-          error: 'Bad Request',
-          message: 'Invalid webhook payload',
-          details: error.message,
-        });
-      } else {
-        res.status(500).json({
-          error: 'Internal Server Error',
-          message: 'Error processing webhook',
-        });
-      }
+    if (error instanceof Error && error.name === 'ZodError') {
+      res.status(400).json({
+        error: 'Bad Request',
+        message: 'Invalid webhook payload',
+        details: error.message,
+      });
+    } else {
+      res.status(500).json({
+        error: 'Internal Server Error',
+        message: 'Error processing webhook',
+      });
     }
   }
-);
+});
 
 export default router;

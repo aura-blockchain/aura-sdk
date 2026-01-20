@@ -7,6 +7,7 @@ Welcome to the comprehensive developer documentation for the Aura Verifier SDK -
 The Aura Verifier SDK enables businesses and developers to verify digital credentials issued on the Aura Network without storing sensitive personal information. Users present QR codes containing cryptographically signed credential presentations, which verifiers can validate against the blockchain.
 
 This SDK provides a complete solution for:
+
 - Parsing and validating QR code presentations
 - Cryptographic signature verification (Ed25519 and secp256k1)
 - Blockchain integration for credential status checking
@@ -16,24 +17,28 @@ This SDK provides a complete solution for:
 ## Key Features
 
 ### Production-Ready
+
 - Full TypeScript support with comprehensive type definitions
 - Robust error handling and retry logic
 - Extensive test coverage
 - Battle-tested in real-world deployments
 
 ### Privacy-First Design
+
 - Zero-knowledge disclosure contexts (prove age > 21 without revealing exact birthdate)
 - Minimal data exposure
 - No personal information stored by verifiers
 - GDPR and CCPA compliant by design
 
 ### Flexible Deployment
+
 - Online verification against blockchain
 - Offline mode with cached credentials and revocation lists
 - Hybrid mode with automatic fallback
 - Cross-platform: Node.js, browsers, React Native, Flutter
 
 ### Developer-Friendly
+
 - Simple, intuitive API
 - Comprehensive documentation
 - Rich examples for common use cases
@@ -42,36 +47,44 @@ This SDK provides a complete solution for:
 ## Use Cases
 
 ### Age Verification
+
 Bars, nightclubs, dispensaries, and age-restricted venues can verify that customers are over 18 or 21 without seeing their exact birthdate or other personal information.
 
 **Benefits:**
+
 - Instant verification (< 1 second)
 - Privacy-preserving (no birthdate revealed)
 - Works offline
 - Audit trail included
 
 ### Identity Verification
+
 Peer-to-peer marketplaces, rental platforms, and sharing economy services can verify user identities to build trust without collecting sensitive documents.
 
 **Use Cases:**
+
 - Craigslist/Facebook Marketplace seller verification
 - Airbnb/VRBO host verification
 - Rideshare driver verification
 - Freelance platform contractor verification
 
 ### KYC Compliance
+
 Financial services, cryptocurrency exchanges, and regulated industries can meet Know Your Customer requirements with blockchain-verified credentials.
 
 **Benefits:**
+
 - Regulatory compliant
 - Reduced liability
 - Faster onboarding
 - Lower operational costs
 
 ### Event Access Control
+
 Concerts, conferences, festivals, and private events can control access with verified credentials tied to specific attributes or memberships.
 
 **Examples:**
+
 - VIP ticket verification
 - Member-only events
 - Age-restricted venues
@@ -103,12 +116,14 @@ if (result.isValid) {
 ## Documentation Structure
 
 ### Getting Started
+
 - [Installation](./getting-started/installation.md) - Install the SDK in your project
 - [Quick Start](./getting-started/quick-start.md) - 5-minute verification tutorial
 - [Configuration](./getting-started/configuration.md) - All configuration options explained
 - [Environments](./getting-started/environments.md) - Mainnet, testnet, and local development
 
 ### Guides
+
 - [Age Verification](./guides/age-verification.md) - Complete guide for age-restricted venues
 - [Identity Verification](./guides/identity-verification.md) - KYC and identity flows
 - [Offline Mode](./guides/offline-mode.md) - Set up offline verification with caching
@@ -119,6 +134,7 @@ if (result.isValid) {
 - [Compliance](./guides/compliance.md) - GDPR, CCPA, and PCI compliance
 
 ### API Reference
+
 - [AuraVerifier Class](./api/verifier.md) - Main verifier class reference
 - [QR Parser](./api/qr-parser.md) - QR code parsing and validation
 - [Cryptographic Utilities](./api/crypto.md) - Signature verification and hashing
@@ -126,6 +142,7 @@ if (result.isValid) {
 - [Error Codes](./api/errors.md) - Error codes and handling
 
 ### Integrations
+
 - [React](./integrations/react.md) - React web applications
 - [React Native](./integrations/react-native.md) - Mobile apps
 - [Flutter](./integrations/flutter.md) - Cross-platform mobile
@@ -133,12 +150,14 @@ if (result.isValid) {
 - [POS Systems](./integrations/pos-systems.md) - Point-of-sale integration
 
 ### Examples
+
 - [Bar/Nightclub Age Verification](./examples/bar-nightclub.md) - Complete venue implementation
 - [P2P Marketplace](./examples/marketplace.md) - Marketplace trust verification
 - [Event Ticketing](./examples/event-ticketing.md) - Event access control
 - [Financial Services KYC](./examples/financial-services.md) - Compliance workflows
 
 ### Additional Resources
+
 - [Troubleshooting](./troubleshooting.md) - Common issues and solutions
 - [Changelog](./changelog.md) - Version history and migration guides
 
@@ -172,14 +191,17 @@ graph TB
 ## System Requirements
 
 ### Node.js Applications
+
 - Node.js >= 18.0.0
 - npm >= 9.0.0 or pnpm >= 8.0.0
 
 ### Browser Applications
+
 - Modern browsers supporting ES2020
 - Recommended: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
 
 ### Mobile Applications
+
 - React Native >= 0.70
 - Flutter >= 3.0
 - iOS >= 13.0
@@ -188,18 +210,21 @@ graph TB
 ## Network Information
 
 ### Mainnet
+
 - **Network ID**: `aura-mvp-1`
 - **gRPC Endpoint**: `rpc.aurablockchain.org:9090`
 - **REST Endpoint**: `https://api.aurablockchain.org`
 - **Explorer**: `https://explorer.aurablockchain.org`
 
 ### Testnet
+
 - **Network ID**: `aura-mvp-1`
 - **gRPC Endpoint**: `testnet-grpc.aurablockchain.org:443`
 - **REST Endpoint**: `https://testnet-api.aurablockchain.org`
 - **Explorer**: `https://testnet-explorer.aurablockchain.org`
 
 ### Local Development
+
 - **Network ID**: `aura-local-1`
 - **gRPC Endpoint**: `localhost:9090`
 - **REST Endpoint**: `http://localhost:1317`
@@ -208,15 +233,15 @@ graph TB
 
 Based on real-world production deployments:
 
-| Operation | Latency | Throughput |
-|-----------|---------|------------|
-| Online Verification | 200-500ms | 100+ req/sec |
-| Offline Verification | 10-50ms | 1000+ req/sec |
-| QR Code Parsing | < 5ms | 10,000+ ops/sec |
-| Signature Verification | 5-15ms | 2,000+ ops/sec |
-| Cache Lookup | < 1ms | 100,000+ ops/sec |
+| Operation              | Latency   | Throughput       |
+| ---------------------- | --------- | ---------------- |
+| Online Verification    | 200-500ms | 100+ req/sec     |
+| Offline Verification   | 10-50ms   | 1000+ req/sec    |
+| QR Code Parsing        | < 5ms     | 10,000+ ops/sec  |
+| Signature Verification | 5-15ms    | 2,000+ ops/sec   |
+| Cache Lookup           | < 1ms     | 100,000+ ops/sec |
 
-*Benchmarks measured on AWS t3.medium instance with 100ms network latency*
+_Benchmarks measured on AWS t3.medium instance with 100ms network latency_
 
 ## Security Considerations
 
@@ -248,6 +273,7 @@ Copyright (c) 2025 Aura Network
 ## Contributing
 
 We welcome contributions! Please see our [Contributing Guide](../CONTRIBUTING.md) for:
+
 - Code of conduct
 - Development workflow
 - Testing requirements

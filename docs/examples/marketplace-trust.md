@@ -16,6 +16,7 @@ Complete implementation guide for using the Aura Verifier SDK in peer-to-peer ma
 ## Overview
 
 Peer-to-peer marketplaces face significant trust challenges:
+
 - Scammers with fake identities
 - Fraudulent buyers/sellers
 - Safety concerns for in-person meetups
@@ -24,6 +25,7 @@ Peer-to-peer marketplaces face significant trust challenges:
 The Aura Verifier SDK enables marketplace platforms to verify user credentials without storing sensitive personal information, creating a safer trading environment while protecting privacy.
 
 **Benefits:**
+
 - **Increased Trust**: Verified users have proven identity
 - **Reduced Fraud**: Harder for scammers to operate
 - **User Safety**: Verified meetups are safer
@@ -45,6 +47,7 @@ const disclosureContext = {
 ```
 
 **Benefits:**
+
 - Reduces fake accounts
 - Builds user trust
 - Enables dispute resolution
@@ -55,12 +58,12 @@ Build reputation based on verified credentials:
 
 ```typescript
 interface TrustScore {
-  identityVerified: boolean;      // +50 points
-  ageVerified: boolean;            // +20 points
-  addressVerified: boolean;        // +30 points
-  credentialCount: number;         // +10 per credential
-  accountAge: number;              // Days since verification
-  totalScore: number;              // 0-100
+  identityVerified: boolean; // +50 points
+  ageVerified: boolean; // +20 points
+  addressVerified: boolean; // +30 points
+  credentialCount: number; // +10 per credential
+  accountAge: number; // Days since verification
+  totalScore: number; // 0-100
 }
 ```
 
@@ -69,10 +72,7 @@ interface TrustScore {
 Require additional verification for expensive items:
 
 ```typescript
-async function verifyHighValueTransaction(
-  sellerId: string,
-  itemValue: number
-): Promise<boolean> {
+async function verifyHighValueTransaction(sellerId: string, itemValue: number): Promise<boolean> {
   // Items over $500 require identity verification
   if (itemValue > 500) {
     const seller = await getSellerProfile(sellerId);
@@ -144,7 +144,7 @@ export async function verifyUserProfile(
 ): Promise<UserVerification> {
   const verifier = new VerifierSDK({
     rpcEndpoint: 'https://rpc.aurablockchain.org',
-    timeout: 15000
+    timeout: 15000,
   });
 
   try {
@@ -163,14 +163,14 @@ export async function verifyUserProfile(
       vcs: qrData.vcs,
       ctx: qrData.ctx,
       exp: qrData.exp,
-      n: qrData.n
+      n: qrData.n,
     });
 
     const sigResult = await verifier.verifySignature({
       publicKey: qrData.h,
       message: message,
       signature: qrData.sig,
-      algorithm: 'ed25519'
+      algorithm: 'ed25519',
     });
 
     if (!sigResult.valid) {
@@ -183,17 +183,15 @@ export async function verifyUserProfile(
       fullName: qrData.ctx.show_full_name ? extractName(qrData) : undefined,
       cityState: qrData.ctx.show_city_state ? extractLocation(qrData) : undefined,
       identityVerified: qrData.ctx.show_full_name === true,
-      addressVerified: qrData.ctx.show_city_state === true ||
-                       qrData.ctx.show_full_address === true,
+      addressVerified: qrData.ctx.show_city_state === true || qrData.ctx.show_full_address === true,
       verificationDate: new Date(),
-      trustScore: calculateTrustScore(qrData.ctx)
+      trustScore: calculateTrustScore(qrData.ctx),
     };
 
     // Save to database
     await saveUserVerification(verification);
 
     return verification;
-
   } finally {
     await verifier.disconnect();
   }
@@ -223,7 +221,7 @@ function extractLocation(qrData: QRCodeData): string {
 async function saveUserVerification(verification: UserVerification) {
   // Save to your database
   await db.users.update(verification.userId, {
-    verification: verification
+    verification: verification,
   });
 }
 ```
@@ -378,13 +376,12 @@ export async function checkTransactionSafety(
     safe: safetyScore >= 50,
     warnings,
     recommendations,
-    safetyScore: Math.max(0, safetyScore)
+    safetyScore: Math.max(0, safetyScore),
   };
 }
 
 function isNewAccount(verificationDate: Date): boolean {
-  const daysSinceVerification =
-    (Date.now() - verificationDate.getTime()) / (1000 * 60 * 60 * 24);
+  const daysSinceVerification = (Date.now() - verificationDate.getTime()) / (1000 * 60 * 60 * 24);
   return daysSinceVerification < 7; // Less than 1 week
 }
 ```
@@ -411,12 +408,12 @@ app.post('/api/verify-profile', async (req, res) => {
     res.json({
       success: true,
       verification: verification,
-      badge: getTrustBadge(verification)
+      badge: getTrustBadge(verification),
     });
   } catch (error) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -430,12 +427,12 @@ app.post('/api/check-safety', async (req, res) => {
 
     res.json({
       success: true,
-      safety: safety
+      safety: safety,
     });
   } catch (error) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -450,7 +447,7 @@ app.get('/api/trust-score/:userId', async (req, res) => {
     if (!verification) {
       return res.json({
         verified: false,
-        trustScore: 0
+        trustScore: 0,
       });
     }
 
@@ -458,12 +455,12 @@ app.get('/api/trust-score/:userId', async (req, res) => {
       verified: verification.identityVerified,
       trustScore: verification.trustScore,
       badge: getTrustBadge(verification),
-      verificationDate: verification.verificationDate
+      verificationDate: verification.verificationDate,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -650,27 +647,27 @@ const styles = StyleSheet.create({
 }
 
 .trust-badge-none {
-  border-color: #9E9E9E;
-  color: #9E9E9E;
-  background: #F5F5F5;
+  border-color: #9e9e9e;
+  color: #9e9e9e;
+  background: #f5f5f5;
 }
 
 .trust-badge-basic {
-  border-color: #2196F3;
-  color: #2196F3;
-  background: #E3F2FD;
+  border-color: #2196f3;
+  color: #2196f3;
+  background: #e3f2fd;
 }
 
 .trust-badge-verified {
-  border-color: #4CAF50;
-  color: #4CAF50;
-  background: #E8F5E9;
+  border-color: #4caf50;
+  color: #4caf50;
+  background: #e8f5e9;
 }
 
 .trust-badge-premium {
-  border-color: #FFD700;
-  color: #F57C00;
-  background: #FFF8E1;
+  border-color: #ffd700;
+  color: #f57c00;
+  background: #fff8e1;
 }
 
 .trust-icon {
@@ -678,7 +675,7 @@ const styles = StyleSheet.create({
 }
 
 .trust-score {
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
   padding: 2px 8px;
   border-radius: 10px;
   font-size: 12px;
@@ -746,16 +743,16 @@ Don't require full verification immediately:
 const verificationLevels = {
   level1: {
     required: ['show_city_state'],
-    benefits: ['Post listings', 'Browse items']
+    benefits: ['Post listings', 'Browse items'],
   },
   level2: {
     required: ['show_full_name', 'show_city_state'],
-    benefits: ['Message sellers', 'Make offers']
+    benefits: ['Message sellers', 'Make offers'],
   },
   level3: {
     required: ['show_full_name', 'show_city_state', 'show_age_over_18'],
-    benefits: ['High-value transactions', 'Premium badge']
-  }
+    benefits: ['High-value transactions', 'Premium badge'],
+  },
 };
 ```
 
@@ -802,10 +799,10 @@ function detectSuspiciousActivity(userId: string): boolean {
     hasMultipleFailedVerifications(userId),
     hasRecentlyChangedCredentials(userId),
     hasUnusuallyHighTransactionVolume(userId),
-    hasMultipleAccountsFromSameDevice(userId)
+    hasMultipleAccountsFromSameDevice(userId),
   ];
 
-  return checks.some(check => check === true);
+  return checks.some((check) => check === true);
 }
 ```
 
@@ -814,6 +811,7 @@ function detectSuspiciousActivity(userId: string): boolean {
 ### Issue: Users Don't Complete Verification
 
 **Solutions:**
+
 - Simplify verification flow
 - Show clear benefits
 - Offer incentives (discounts, featured listings)
@@ -822,6 +820,7 @@ function detectSuspiciousActivity(userId: string): boolean {
 ### Issue: Privacy Concerns
 
 **Solutions:**
+
 - Clear privacy policy
 - Show exactly what's shared
 - Allow users to choose disclosure level
@@ -830,6 +829,7 @@ function detectSuspiciousActivity(userId: string): boolean {
 ### Issue: Low Trust Scores
 
 **Solutions:**
+
 - Offer multiple verification paths
 - Weight different credentials appropriately
 - Allow score to improve over time
@@ -838,6 +838,7 @@ function detectSuspiciousActivity(userId: string): boolean {
 ### Issue: Verification Friction
 
 **Solutions:**
+
 - Allow partial verification
 - Save progress
 - Offer help/support chat

@@ -69,6 +69,7 @@ GET /health
 Check if the server is running.
 
 **Response:**
+
 ```json
 {
   "status": "healthy",
@@ -91,6 +92,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -131,6 +133,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -151,6 +154,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -171,6 +175,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -194,6 +199,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -234,6 +240,7 @@ GET /credential/:vcId/status
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -252,6 +259,7 @@ GET /credential/:vcId/status
 The API returns appropriate HTTP status codes and error messages:
 
 ### 400 Bad Request
+
 ```json
 {
   "success": false,
@@ -262,6 +270,7 @@ The API returns appropriate HTTP status codes and error messages:
 ```
 
 ### 503 Service Unavailable
+
 ```json
 {
   "success": false,
@@ -272,6 +281,7 @@ The API returns appropriate HTTP status codes and error messages:
 ```
 
 ### 500 Internal Server Error
+
 ```json
 {
   "success": false,

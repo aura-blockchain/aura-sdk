@@ -161,9 +161,7 @@ export function CodeExamples() {
     >
       <div className="flex items-center gap-2 mb-6">
         <Code className="w-6 h-6 text-aura-600 dark:text-aura-400" />
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-          Code Examples
-        </h3>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Code Examples</h3>
       </div>
 
       <div className="flex flex-wrap gap-2 mb-4">
@@ -212,11 +210,12 @@ export function CodeExamples() {
       </div>
 
       <div className="mt-4 p-4 bg-aura-50 dark:bg-aura-900/20 rounded-xl">
-        <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
-          Try it yourself
-        </h4>
+        <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Try it yourself</h4>
         <p className="text-sm text-gray-700 dark:text-gray-300">
-          Install the SDK: <code className="px-2 py-1 bg-white dark:bg-gray-800 rounded">npm install @aura-network/verifier-sdk</code>
+          Install the SDK:{' '}
+          <code className="px-2 py-1 bg-white dark:bg-gray-800 rounded">
+            npm install @aura-network/verifier-sdk
+          </code>
         </p>
       </div>
     </motion.div>

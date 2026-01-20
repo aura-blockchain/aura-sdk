@@ -22,7 +22,7 @@ async function batchVerifyExample() {
   const verifier = new AuraVerifier({
     network: 'mainnet',
     timeout: 15000,
-    verbose: true
+    verbose: true,
   });
 
   await verifier.initialize();
@@ -33,14 +33,14 @@ async function batchVerifyExample() {
     'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXMyIi4uLn0=',
     'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXMzIi4uLn0=',
     'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXM0Ii4uLn0=',
-    'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXM1Ii4uLn0='
+    'aura://verify?data=eyJ2IjoiMS4wIiwicCI6InByZXM1Ii4uLn0=',
   ];
 
   // Prepare batch requests
-  const requests = qrCodes.map(qrCode => ({
+  const requests = qrCodes.map((qrCode) => ({
     qrCodeData: qrCode,
     requiredVCTypes: [VCType.PROOF_OF_HUMANITY],
-    verifierAddress: 'did:aura:verifier123'
+    verifierAddress: 'did:aura:verifier123',
   }));
 
   console.log(`Verifying ${requests.length} credentials...`);
@@ -53,8 +53,8 @@ async function batchVerifyExample() {
   const avgTime = duration / results.length;
 
   // Process results
-  const valid = results.filter(r => r.isValid).length;
-  const invalid = results.filter(r => !r.isValid).length;
+  const valid = results.filter((r) => r.isValid).length;
+  const invalid = results.filter((r) => !r.isValid).length;
 
   console.log('\nBatch Verification Complete:');
   console.log(`- Total: ${results.length}`);
@@ -109,8 +109,8 @@ class EventCheckIn {
       timeout: 10000,
       cacheConfig: {
         enableVCCache: true,
-        ttl: 3600
-      }
+        ttl: 3600,
+      },
     });
   }
 
@@ -125,7 +125,7 @@ class EventCheckIn {
     const attendee: Attendee = {
       id: attendeeId,
       qrCode,
-      status: 'pending'
+      status: 'pending',
     };
 
     this.attendees.set(attendeeId, attendee);
@@ -133,7 +133,7 @@ class EventCheckIn {
     try {
       const result = await this.verifier.verify({
         qrCodeData: qrCode,
-        requiredVCTypes: [VCType.PROOF_OF_HUMANITY, VCType.GOVERNMENT_ID]
+        requiredVCTypes: [VCType.PROOF_OF_HUMANITY, VCType.GOVERNMENT_ID],
       });
 
       if (result.isValid) {
@@ -159,9 +159,9 @@ class EventCheckIn {
   async processBatch(qrCodes: string[]): Promise<void> {
     console.log(`\nProcessing batch of ${qrCodes.length} attendees...`);
 
-    const requests = qrCodes.map(qrCode => ({
+    const requests = qrCodes.map((qrCode) => ({
       qrCodeData: qrCode,
-      requiredVCTypes: [VCType.PROOF_OF_HUMANITY, VCType.GOVERNMENT_ID]
+      requiredVCTypes: [VCType.PROOF_OF_HUMANITY, VCType.GOVERNMENT_ID],
     }));
 
     const results = await this.verifier.verifyBatch(requests);
@@ -174,28 +174,28 @@ class EventCheckIn {
         status: result.isValid ? 'verified' : 'denied',
         name: result.attributes.fullName,
         checkInTime: result.isValid ? new Date() : undefined,
-        reason: result.isValid ? undefined : result.verificationError
+        reason: result.isValid ? undefined : result.verificationError,
       };
 
       this.attendees.set(attendeeId, attendee);
     });
 
-    const verified = results.filter(r => r.isValid).length;
+    const verified = results.filter((r) => r.isValid).length;
     console.log(`Batch complete: ${verified}/${qrCodes.length} verified`);
   }
 
   getStats() {
     const all = Array.from(this.attendees.values());
-    const verified = all.filter(a => a.status === 'verified').length;
-    const denied = all.filter(a => a.status === 'denied').length;
-    const pending = all.filter(a => a.status === 'pending').length;
+    const verified = all.filter((a) => a.status === 'verified').length;
+    const denied = all.filter((a) => a.status === 'denied').length;
+    const pending = all.filter((a) => a.status === 'pending').length;
 
     return {
       total: all.length,
       verified,
       denied,
       pending,
-      rate: verified / all.length * 100
+      rate: (verified / all.length) * 100,
     };
   }
 
@@ -248,7 +248,7 @@ interface WorkerResult {
 
 class ParallelVerifier {
   private workers: Worker[] = [];
-  private readonly workerCount = 4;  // 4 parallel workers
+  private readonly workerCount = 4; // 4 parallel workers
 
   async initialize() {
     // Create worker pool
@@ -261,7 +261,7 @@ class ParallelVerifier {
   async verifyBatch(qrCodes: string[]): Promise<WorkerResult[]> {
     const tasks: WorkerTask[] = qrCodes.map((qrCode, index) => ({
       id: index,
-      qrCode
+      qrCode,
     }));
 
     const results = await Promise.all(
@@ -285,12 +285,12 @@ class ParallelVerifier {
         }
       });
 
-      tasks.forEach(task => worker.postMessage(task));
+      tasks.forEach((task) => worker.postMessage(task));
     });
   }
 
   async shutdown() {
-    await Promise.all(this.workers.map(w => w.terminate()));
+    await Promise.all(this.workers.map((w) => w.terminate()));
   }
 }
 
@@ -309,13 +309,13 @@ parentPort?.on('message', async (task: WorkerTask) => {
       id: task.id,
       isValid: result.isValid,
       holderDID: result.holderDID,
-      error: result.verificationError
+      error: result.verificationError,
     });
   } catch (error) {
     parentPort?.postMessage({
       id: task.id,
       isValid: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -351,7 +351,7 @@ async function batchWithProgress(qrCodes: string[]) {
           invalid++;
         }
 
-        const progress = (completed / total * 100).toFixed(1);
+        const progress = ((completed / total) * 100).toFixed(1);
         process.stdout.write(`\rProgress: ${progress}% (${valid} valid, ${invalid} invalid)`);
 
         return result;
@@ -367,7 +367,7 @@ async function batchWithProgress(qrCodes: string[]) {
   console.log('\n\nBatch verification complete!');
   await verifier.destroy();
 
-  return results.filter(r => r !== null);
+  return results.filter((r) => r !== null);
 }
 ```
 
@@ -382,7 +382,7 @@ async function rateLimitedBatch(
   qrCodes: string[],
   options = {
     batchSize: 10,
-    delayMs: 1000
+    delayMs: 1000,
   }
 ) {
   const verifier = new AuraVerifier({ network: 'mainnet' });
@@ -397,14 +397,14 @@ async function rateLimitedBatch(
     console.log(`Processing batch ${Math.floor(i / options.batchSize) + 1}...`);
 
     const chunkResults = await verifier.verifyBatch(
-      chunk.map(qrCode => ({ qrCodeData: qrCode }))
+      chunk.map((qrCode) => ({ qrCodeData: qrCode }))
     );
 
     results.push(...chunkResults);
 
     // Wait before next batch
     if (i + options.batchSize < qrCodes.length) {
-      await new Promise(resolve => setTimeout(resolve, options.delayMs));
+      await new Promise((resolve) => setTimeout(resolve, options.delayMs));
     }
   }
 
@@ -432,7 +432,7 @@ async function processWithOptimalBatching(qrCodes: string[]) {
 
   for (let i = 0; i < qrCodes.length; i += batchSize) {
     const batch = qrCodes.slice(i, i + batchSize);
-    await verifier.verifyBatch(batch.map(qr => ({ qrCodeData: qr })));
+    await verifier.verifyBatch(batch.map((qr) => ({ qrCodeData: qr })));
   }
 }
 ```
@@ -441,15 +441,13 @@ async function processWithOptimalBatching(qrCodes: string[]) {
 
 ```typescript
 async function robustBatchVerify(qrCodes: string[]) {
-  const results = await verifier.verifyBatch(
-    qrCodes.map(qr => ({ qrCodeData: qr }))
-  );
+  const results = await verifier.verifyBatch(qrCodes.map((qr) => ({ qrCodeData: qr })));
 
-  const errors = results.filter(r => !r.isValid);
+  const errors = results.filter((r) => !r.isValid);
 
   if (errors.length > 0) {
     console.error(`${errors.length} verifications failed:`);
-    errors.forEach(err => {
+    errors.forEach((err) => {
       console.error(`- ${err.holderDID}: ${err.verificationError}`);
     });
   }
@@ -467,8 +465,8 @@ const verifier = new AuraVerifier({
     enableVCCache: true,
     enableDIDCache: true,
     ttl: 3600,
-    maxSize: 500  // Larger cache for batch operations
-  }
+    maxSize: 500, // Larger cache for batch operations
+  },
 });
 ```
 

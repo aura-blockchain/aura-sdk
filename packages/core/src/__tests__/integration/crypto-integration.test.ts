@@ -272,9 +272,14 @@ describe('Crypto Integration Tests', () => {
 
       // DER signature (variable length)
       const derSignature = new Uint8Array([
-        0x30, 0x44, // Sequence tag and length
-        0x02, 0x20, ...new Uint8Array(32), // r value
-        0x02, 0x20, ...new Uint8Array(32), // s value
+        0x30,
+        0x44, // Sequence tag and length
+        0x02,
+        0x20,
+        ...new Uint8Array(32), // r value
+        0x02,
+        0x20,
+        ...new Uint8Array(32), // s value
       ]);
       expect(isValidSecp256k1Signature(derSignature)).toBe(true);
 
@@ -521,11 +526,7 @@ describe('Crypto Integration Tests', () => {
       const publicKeyHex = uint8ArrayToHex(publicKey);
 
       // Verify from hex
-      const isValidFromHex = await verifyEd25519Signature(
-        signatureHex,
-        qrData,
-        publicKeyHex
-      );
+      const isValidFromHex = await verifyEd25519Signature(signatureHex, qrData, publicKeyHex);
       expect(isValidFromHex).toBe(true);
     });
 
@@ -547,7 +548,7 @@ describe('Crypto Integration Tests', () => {
       const iterations = 100;
       const messages = Array.from({ length: iterations }, (_, i) => `Message ${i}`);
       const signatures = await Promise.all(
-        messages.map(msg => ed25519.sign(new TextEncoder().encode(msg), privateKey))
+        messages.map((msg) => ed25519.sign(new TextEncoder().encode(msg), privateKey))
       );
 
       const startTime = Date.now();
@@ -604,11 +605,7 @@ describe('Crypto Integration Tests', () => {
 
       const invalidSignature = new Uint8Array(64); // All zeros
 
-      const isValid = await verifyEd25519Signature(
-        invalidSignature,
-        'Test',
-        publicKey
-      );
+      const isValid = await verifyEd25519Signature(invalidSignature, 'Test', publicKey);
       expect(isValid).toBe(false);
     });
 
@@ -632,11 +629,7 @@ describe('Crypto Integration Tests', () => {
       const publicKey = new Uint8Array(32);
       const shortSignature = new Uint8Array(32); // Too short
 
-      const isValid = await verifyEd25519Signature(
-        shortSignature,
-        'Test',
-        publicKey
-      );
+      const isValid = await verifyEd25519Signature(shortSignature, 'Test', publicKey);
       expect(isValid).toBe(false);
     });
   });

@@ -12,9 +12,7 @@ const router = express.Router();
 router.get('/', async (req: Request, res: Response) => {
   try {
     const db = getDatabase();
-    const since = req.query.since
-      ? new Date(req.query.since as string)
-      : undefined;
+    const since = req.query.since ? new Date(req.query.since as string) : undefined;
 
     const analytics = db.getAnalytics(since);
 
@@ -83,9 +81,7 @@ router.get('/events/type/:eventType', async (req: Request, res: Response) => {
       return;
     }
 
-    const limit = req.query.limit
-      ? parseInt(req.query.limit as string, 10)
-      : 100;
+    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 100;
 
     const db = getDatabase();
     const events = db.getEventsByType(eventType, limit);
@@ -117,9 +113,7 @@ router.get('/events/type/:eventType', async (req: Request, res: Response) => {
  */
 router.get('/events/recent', async (req: Request, res: Response) => {
   try {
-    const limit = req.query.limit
-      ? parseInt(req.query.limit as string, 10)
-      : 100;
+    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 100;
 
     const db = getDatabase();
     const events = db.getRecentEvents(limit);
@@ -161,9 +155,7 @@ router.delete('/events/old', async (req: Request, res: Response) => {
       return;
     }
 
-    const daysOld = req.query.days
-      ? parseInt(req.query.days as string, 10)
-      : 30;
+    const daysOld = req.query.days ? parseInt(req.query.days as string, 10) : 30;
 
     if (daysOld < 1) {
       res.status(400).json({

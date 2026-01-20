@@ -10,7 +10,11 @@ const mockPresentationRequest = {
   id: 'pr:123',
   verifier: 'did:aura:verifier789',
   requestedCredentials: [
-    { type: 'UniversityDegreeCredential', required: true, constraints: { fields: ['degree.type'] } },
+    {
+      type: 'UniversityDegreeCredential',
+      required: true,
+      constraints: { fields: ['degree.type'] },
+    },
   ],
   challenge: 'abc123',
   domain: 'https://verifier.example.com',
@@ -115,7 +119,10 @@ describe('useVerification', () => {
   });
 
   it('should return early when client is missing', async () => {
-    (clientHook.useAuraClient as unknown as vi.Mock).mockReturnValue({ client: null, isConnected: false } as any);
+    (clientHook.useAuraClient as unknown as vi.Mock).mockReturnValue({
+      client: null,
+      isConnected: false,
+    } as any);
     const { result } = renderHook(() => useVerification(), { wrapper });
 
     await act(async () => {
@@ -159,32 +166,32 @@ describe('useVerification', () => {
     expect(result.current.presentation).toBeNull();
     expect(result.current.pendingRequest).toBeNull();
     expect(result.current.error).toBeNull();
-    });
   });
+});
 
-  it('should create selective presentation', async () => {
-    const { result } = renderHook(() => useVerification(), { wrapper });
-    act(() => {
-      result.current.createSelectivePresentation(
-        [{ credentialId: 'vc:aura:sel', disclosedFields: ['degree.type'] }],
-        mockPresentationRequest
-      );
-    });
-    await waitFor(() => expect(result.current.presentation).toBeDefined());
+it('should create selective presentation', async () => {
+  const { result } = renderHook(() => useVerification(), { wrapper });
+  act(() => {
+    result.current.createSelectivePresentation(
+      [{ credentialId: 'vc:aura:sel', disclosedFields: ['degree.type'] }],
+      mockPresentationRequest
+    );
   });
+  await waitFor(() => expect(result.current.presentation).toBeDefined());
+});
 
-  it('sets error when createPresentation fails', async () => {
-    (clientHook.useAuraClient as unknown as vi.Mock).mockReturnValue({
-      client: {
-        createPresentation: vi.fn().mockRejectedValue(new Error('boom')),
-        submitPresentation: vi.fn(),
-        verifyPresentation: vi.fn(),
-      },
-      isConnected: true,
-    } as any);
-    const { result } = renderHook(() => useVerification(), { wrapper });
-    await act(async () => {
-      await result.current.createPresentation(['vc'], mockPresentationRequest);
-    });
-    expect(result.current.error?.message).toBe('boom');
+it('sets error when createPresentation fails', async () => {
+  (clientHook.useAuraClient as unknown as vi.Mock).mockReturnValue({
+    client: {
+      createPresentation: vi.fn().mockRejectedValue(new Error('boom')),
+      submitPresentation: vi.fn(),
+      verifyPresentation: vi.fn(),
+    },
+    isConnected: true,
+  } as any);
+  const { result } = renderHook(() => useVerification(), { wrapper });
+  await act(async () => {
+    await result.current.createPresentation(['vc'], mockPresentationRequest);
   });
+  expect(result.current.error?.message).toBe('boom');
+});

@@ -18,12 +18,14 @@ This module provides a production-ready client for communicating with Aura block
 ### Core Implementation
 
 1. **client.ts** (338 lines)
+
    - `AuraClient` - Main client class
    - `createAuraClient()` - Factory function
    - `connectAuraClient()` - Create and connect in one step
    - Connection management and health checks
 
 2. **queries.ts** (480 lines)
+
    - `QueryExecutor` - HTTP request execution with retry logic
    - `VCRegistryQueries` - VC registry module queries
    - `IdentityQueries` - DID resolution queries
@@ -31,12 +33,14 @@ This module provides a production-ready client for communicating with Aura block
    - Exponential backoff retry mechanism
 
 3. **endpoints.ts** (149 lines)
+
    - Network configurations (mainnet, testnet, local)
    - REST API endpoint paths
    - Default retry and timeout configurations
    - Helper functions for endpoint management
 
 4. **types.ts** (324 lines)
+
    - Complete type definitions for all API responses
    - DID document types (W3C DID Core)
    - Verifiable Credential structures
@@ -44,6 +48,7 @@ This module provides a production-ready client for communicating with Aura block
    - Network and connection types
 
 5. **errors.ts** (240 lines)
+
    - `NetworkError` - Base network error
    - `TimeoutError` - Request timeout errors
    - `NodeUnavailableError` - Node connectivity errors
@@ -58,7 +63,7 @@ This module provides a production-ready client for communicating with Aura block
 
 ### Tests
 
-7. **__tests__/client.test.ts** (598 lines)
+7. \***\*tests**/client.test.ts\*\* (598 lines)
    - Comprehensive test suite with vitest
    - Mocked fetch responses
    - Tests for all client methods
@@ -206,12 +211,15 @@ interface AuraClientConfig {
 ##### VC Registry Methods
 
 - `verifyPresentation(qrCodeData: string, verifierAddress?: string): Promise<VerificationResult>`
+
   - Verify a presentation from QR code data
 
 - `checkVCStatus(vcId: string): Promise<VCStatusResponse>`
+
   - Check status of a single VC
 
 - `batchCheckVCStatus(vcIds: string[]): Promise<Map<string, VCStatusResponse>>`
+
   - Batch check status of multiple VCs
 
 - `getVC(vcId: string): Promise<VCRecord | null>`
@@ -225,6 +233,7 @@ interface AuraClientConfig {
 ##### Health Methods
 
 - `checkHealth(): Promise<boolean>`
+
   - Check if node is available
 
 - `getNodeInfo(): Promise<unknown>`
@@ -233,16 +242,19 @@ interface AuraClientConfig {
 ## Network Endpoints
 
 ### Mainnet
+
 - REST: `https://api.aurablockchain.org`
 - gRPC: `rpc.aurablockchain.org:9090`
 - Chain ID: `aura-mvp-1`
 
 ### Testnet
+
 - REST: `https://testnet-api.aurablockchain.org`
 - gRPC: `testnet-grpc.aurablockchain.org:443`
 - Chain ID: `aura-mvp-1`
 
 ### Local
+
 - REST: `http://localhost:1317`
 - gRPC: `localhost:9090`
 - Chain ID: `aura-local-test`
@@ -252,6 +264,7 @@ interface AuraClientConfig {
 The client implements these Aura REST API endpoints:
 
 ### VC Registry Module
+
 - `POST /aura/vcregistry/v1beta1/verify_presentation` - Verify presentation
 - `GET /aura/vcregistry/v1beta1/vc/{vc_id}` - Get VC by ID
 - `GET /aura/vcregistry/v1beta1/vc_status/{vc_id}` - Get VC status
@@ -259,10 +272,12 @@ The client implements these Aura REST API endpoints:
 - `GET /aura/vcregistry/v1beta1/vcs/issuer/{issuer_did}` - List VCs by issuer
 
 ### Identity Module
+
 - `GET /aura/identity/v1beta1/did/{did}` - Resolve DID document
 - `GET /aura/identity/v1beta1/did/{did}/verification_methods` - Get verification methods
 
 ### Chain Info
+
 - `GET /cosmos/base/tendermint/v1beta1/node_info` - Get node info
 - `GET /cosmos/base/tendermint/v1beta1/blocks/latest` - Get latest block
 - `GET /cosmos/base/tendermint/v1beta1/syncing` - Get syncing status
@@ -270,6 +285,7 @@ The client implements these Aura REST API endpoints:
 ## Retry Configuration
 
 Default retry behavior:
+
 - Max attempts: 3
 - Initial delay: 1000ms (1 second)
 - Max delay: 10000ms (10 seconds)
@@ -278,6 +294,7 @@ Default retry behavior:
 - Retryable status codes: 408, 429, 500, 502, 503, 504
 
 Exponential backoff formula:
+
 ```
 delay = min(initialDelay * (multiplier ^ attempt), maxDelay) + jitter
 jitter = random(0, delay * 0.2)
@@ -286,24 +303,28 @@ jitter = random(0, delay * 0.2)
 ## Features
 
 ### Automatic Retry
+
 - Exponential backoff with jitter
 - Configurable retry attempts and delays
 - Automatic retry on network errors and specific HTTP status codes
 - Timeout handling with retry support
 
 ### Type Safety
+
 - Complete TypeScript type definitions
 - Type-safe API responses
 - Compile-time error checking
 - IntelliSense support
 
 ### Error Handling
+
 - Custom error classes for different scenarios
 - Detailed error messages with context
 - HTTP status codes and error details
 - Structured error information
 
 ### Browser and Node.js Support
+
 - Uses standard `fetch` API (works in both environments)
 - No Node.js-specific dependencies
 - Compatible with modern browsers
@@ -312,11 +333,13 @@ jitter = random(0, delay * 0.2)
 ## Testing
 
 Run tests:
+
 ```bash
 npm test -- src/grpc/__tests__/client.test.ts
 ```
 
 The test suite includes:
+
 - Constructor and configuration tests
 - Connection and disconnection tests
 - All API method tests
@@ -329,6 +352,7 @@ The test suite includes:
 ## Dependencies
 
 Uses native browser APIs:
+
 - `fetch` - HTTP requests
 - `AbortController` - Request cancellation
 - `setTimeout` - Timeouts and delays

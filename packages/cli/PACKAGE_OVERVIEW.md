@@ -39,11 +39,13 @@ packages/cli/
 ### 1. Commands (6 Total)
 
 #### Core Verification
+
 - **scan** - Interactive QR code verification
 - **check** - Direct command-line verification
 - **status** - On-chain credential status checking
 
 #### Advanced Features
+
 - **did** - DID document resolution
 - **config** - Configuration management
 - **generate-qr** - Test QR code generation
@@ -51,6 +53,7 @@ packages/cli/
 ### 2. Output Modes
 
 #### Human-Readable (Default)
+
 - Colorful terminal output
 - Formatted tables
 - Status boxes
@@ -58,6 +61,7 @@ packages/cli/
 - Clear success/error indicators
 
 #### JSON Mode (`--json`)
+
 - Machine-readable output
 - Perfect for scripting
 - Consistent structure
@@ -91,21 +95,25 @@ packages/cli/
 ### Dependencies
 
 #### Core
+
 - `@aura-network/verifier-sdk` - Main SDK (workspace reference)
 - `commander` ^11.1.0 - CLI framework
 - `chalk` ^5.3.0 - Terminal styling
 - `ora` ^8.0.1 - Loading spinners
 
 #### Interactive
+
 - `enquirer` ^2.4.1 - User prompts
 - `qrcode-terminal` ^0.12.0 - Terminal QR display
 - `qrcode` ^1.5.3 - QR generation
 
 #### Output
+
 - `cli-table3` ^0.6.3 - Table formatting
 - `boxen` ^7.1.1 - Box drawing
 
 #### Storage
+
 - `conf` ^12.0.0 - Configuration persistence
 
 ### Build Configuration
@@ -133,6 +141,7 @@ The package installs a global `aura-verify` command.
 ### Command Pattern
 
 Each command is a separate module that:
+
 1. Defines options and arguments
 2. Handles user input
 3. Calls SDK functions
@@ -142,12 +151,14 @@ Each command is a separate module that:
 ### Utility Modules
 
 #### Config Manager (`utils/config.ts`)
+
 - Persistent configuration storage
 - Schema validation
 - Default values
 - Cross-platform paths
 
 #### Output Formatter (`utils/output.ts`)
+
 - Success/error/warning messages
 - Table formatting
 - JSON output
@@ -155,12 +166,14 @@ Each command is a separate module that:
 - DID document display
 
 #### QR Utilities (`utils/qr.ts`)
+
 - Sample data generation
 - Terminal display
 - File export (PNG)
 - Data URL generation
 
 #### Verifier Manager (`utils/verifier.ts`)
+
 - Singleton instance management
 - Automatic initialization
 - Configuration merging
@@ -218,9 +231,7 @@ fi
 
 ```javascript
 const { execSync } = require('child_process');
-const result = JSON.parse(
-  execSync(`aura-verify check "${qrData}" --json`)
-);
+const result = JSON.parse(execSync(`aura-verify check "${qrData}" --json`));
 ```
 
 ## Configuration Management
@@ -295,17 +306,20 @@ Verifiable Credentials:
 ## Use Cases
 
 ### 1. Age Verification
+
 ```bash
 aura-verify scan
 # Check ageOver21 attribute
 ```
 
 ### 2. Identity Verification
+
 ```bash
 aura-verify check "$QR" --required-types GovernmentID
 ```
 
 ### 3. KYC Compliance
+
 ```bash
 aura-verify check "$QR" \
   --required-types GovernmentID Biometric \
@@ -313,16 +327,19 @@ aura-verify check "$QR" \
 ```
 
 ### 4. Status Monitoring
+
 ```bash
 aura-verify status vc_12345
 ```
 
 ### 5. DID Resolution
+
 ```bash
 aura-verify did did:aura:mainnet:aura1xyz
 ```
 
 ### 6. Testing
+
 ```bash
 aura-verify generate-qr --type complex
 ```
@@ -330,17 +347,20 @@ aura-verify generate-qr --type complex
 ## Performance
 
 ### Caching
+
 - DID documents cached (300s TTL)
 - VC status cached (300s TTL)
 - Singleton verifier instance
 - Configuration cached in memory
 
 ### Network
+
 - Configurable timeout (default 30s)
 - Retry logic (handled by SDK)
 - Connection pooling (handled by SDK)
 
 ### Startup
+
 - Fast initialization
 - Lazy loading
 - Minimal dependencies
@@ -348,12 +368,14 @@ aura-verify generate-qr --type complex
 ## Security
 
 ### Best Practices
+
 - No credential storage
 - No private key handling
 - Read-only verification
 - Secure configuration storage
 
 ### Network Security
+
 - HTTPS for REST endpoints
 - gRPC with TLS support
 - Endpoint validation
@@ -454,6 +476,7 @@ npm test
 ## Documentation
 
 ### Included Files
+
 - **README.md** - Complete reference
 - **QUICKSTART.md** - Getting started
 - **EXAMPLES.md** - Usage examples
@@ -462,6 +485,7 @@ npm test
 - **LICENSE** - MIT License
 
 ### Inline Documentation
+
 - Command help text
 - Option descriptions
 - Error messages
@@ -470,11 +494,13 @@ npm test
 ## Support
 
 ### Community
+
 - GitHub Issues
 - Discord Server
 - Documentation Site
 
 ### Professional
+
 - Enterprise support available
 - Custom development
 - Training and onboarding
@@ -482,16 +508,19 @@ npm test
 ## Roadmap
 
 ### Version 1.1
+
 - Shell completion
 - Watch mode
 - Webhook support
 
 ### Version 1.2
+
 - CSV/Excel export
 - Multi-language support
 - Performance benchmarks
 
 ### Version 2.0
+
 - TUI/GUI mode
 - Plugin system
 - Analytics
@@ -503,6 +532,7 @@ MIT License - See LICENSE file
 ## Contributing
 
 Contributions welcome! Please:
+
 1. Fork repository
 2. Create feature branch
 3. Add tests
@@ -514,6 +544,7 @@ Contributions welcome! Please:
 The Aura Verifier CLI is a complete, production-ready tool for credential verification. It combines ease of use with powerful features, making it suitable for both interactive terminal use and automated scripting scenarios.
 
 Key strengths:
+
 - Professional output formatting
 - Comprehensive command set
 - Flexible configuration

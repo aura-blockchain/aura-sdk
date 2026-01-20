@@ -54,7 +54,9 @@ export function createDIDCommand(): Command {
         spinner?.fail('DID resolution failed');
 
         if (jsonOutput) {
-          console.error(JSON.stringify({ error: err instanceof Error ? err.message : String(err) }, null, 2));
+          console.error(
+            JSON.stringify({ error: err instanceof Error ? err.message : String(err) }, null, 2)
+          );
         } else {
           error(err instanceof Error ? err.message : String(err));
         }

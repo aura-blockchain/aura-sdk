@@ -17,20 +17,10 @@ import type {
   VerificationStrategy,
   NonceConfig,
 } from './types.js';
-import {
-  VCType,
-  VCStatus,
-  DIDDocument,
-  NETWORK_ENDPOINTS,
-  VerificationError,
-} from './types.js';
+import { VCType, VCStatus, DIDDocument, NETWORK_ENDPOINTS, VerificationError } from './types.js';
 import { safeJSONReviver } from '../utils/index.js';
 import { NonceManager, NonceValidatorAdapter } from '../security/nonce-manager.js';
-import {
-  VerificationEventEmitter,
-  createVerificationEvent,
-  createErrorEvent,
-} from './events.js';
+import { VerificationEventEmitter, createVerificationEvent, createErrorEvent } from './events.js';
 import {
   extractAttributes,
   createFailedResult,
@@ -51,7 +41,12 @@ export class AuraVerifier {
   private vcStatusCache: Map<string, { status: VCStatus; timestamp: number }>;
   private nonceManager: NonceManager | null;
   private nonceValidator: NonceValidatorAdapter | null;
-  private nonceConfig: { enabled: boolean; nonceWindow: number; clockSkew: number; manager?: NonceManager };
+  private nonceConfig: {
+    enabled: boolean;
+    nonceWindow: number;
+    clockSkew: number;
+    manager?: NonceManager;
+  };
 
   constructor(config: AuraVerifierConfig) {
     // Merge with defaults
@@ -74,10 +69,12 @@ export class AuraVerifier {
 
     if (this.nonceConfig.enabled) {
       // Use provided manager or create a new one
-      this.nonceManager = this.nonceConfig.manager ?? new NonceManager({
-        nonceWindow: this.nonceConfig.nonceWindow,
-        clockSkew: this.nonceConfig.clockSkew,
-      });
+      this.nonceManager =
+        this.nonceConfig.manager ??
+        new NonceManager({
+          nonceWindow: this.nonceConfig.nonceWindow,
+          clockSkew: this.nonceConfig.clockSkew,
+        });
       this.nonceValidator = new NonceValidatorAdapter(this.nonceManager);
 
       if (this.config.verbose) {
@@ -93,10 +90,7 @@ export class AuraVerifier {
     }
 
     // Initialize batch verifier
-    this.batchVerifier = new BatchVerifier(
-      this.verify.bind(this),
-      { concurrency: 5 }
-    );
+    this.batchVerifier = new BatchVerifier(this.verify.bind(this), { concurrency: 5 });
 
     this.initialized = false;
   }
@@ -266,8 +260,8 @@ export class AuraVerifier {
       const method: VerificationStrategy = request.offlineOnly
         ? 'offline'
         : this.config.offlineMode
-        ? 'cached'
-        : 'online';
+          ? 'cached'
+          : 'online';
 
       if (hasRevokedVC) {
         const revokedVC = vcDetails.find((vc) => vc.status === VCStatus.REVOKED)!;
@@ -333,9 +327,7 @@ export class AuraVerifier {
       );
 
       // Emit verification event
-      await this.eventEmitter.emitVerification(
-        createVerificationEvent(result, request)
-      );
+      await this.eventEmitter.emitVerification(createVerificationEvent(result, request));
 
       return result;
     } catch (error) {
@@ -390,7 +382,7 @@ export class AuraVerifier {
    */
   async isAge21Plus(qrCodeData: string): Promise<boolean> {
     const result = await this.verify({ qrCodeData });
-    return result.isValid && (result.attributes.ageOver21 === true);
+    return result.isValid && result.attributes.ageOver21 === true;
   }
 
   /**
@@ -398,7 +390,7 @@ export class AuraVerifier {
    */
   async isAge18Plus(qrCodeData: string): Promise<boolean> {
     const result = await this.verify({ qrCodeData });
-    return result.isValid && (result.attributes.ageOver18 === true);
+    return result.isValid && result.attributes.ageOver18 === true;
   }
 
   /**

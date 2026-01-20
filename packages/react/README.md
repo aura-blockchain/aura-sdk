@@ -45,11 +45,7 @@ function App() {
 ### 2. Use hooks and components
 
 ```tsx
-import {
-  useVerification,
-  VerificationBadge,
-  QRScanner,
-} from '@aura-network/verifier-sdk-react';
+import { useVerification, VerificationBadge, QRScanner } from '@aura-network/verifier-sdk-react';
 
 function VerifyComponent() {
   const { result, loading, error, verify } = useVerification();
@@ -132,13 +128,10 @@ Monitor credential status with real-time updates.
 import { useCredentialStatus } from '@aura-network/verifier-sdk-react';
 
 function StatusMonitor({ vcId }: { vcId: string }) {
-  const { status, loading, error, refresh, lastUpdated } = useCredentialStatus(
-    vcId,
-    {
-      refreshInterval: 60000, // Check every minute
-      autoRefresh: true,
-    }
-  );
+  const { status, loading, error, refresh, lastUpdated } = useCredentialStatus(vcId, {
+    refreshInterval: 60000, // Check every minute
+    autoRefresh: true,
+  });
 
   return (
     <div>
@@ -160,20 +153,11 @@ Manage offline verification mode.
 import { useOfflineMode } from '@aura-network/verifier-sdk-react';
 
 function OfflineControls() {
-  const {
-    isOffline,
-    toggleOffline,
-    hasCachedData,
-    lastSync,
-    sync,
-    syncing,
-  } = useOfflineMode();
+  const { isOffline, toggleOffline, hasCachedData, lastSync, sync, syncing } = useOfflineMode();
 
   return (
     <div>
-      <button onClick={toggleOffline}>
-        {isOffline ? 'Go Online' : 'Go Offline'}
-      </button>
+      <button onClick={toggleOffline}>{isOffline ? 'Go Online' : 'Go Offline'}</button>
       {hasCachedData && <span>✓ Cached data available</span>}
       {lastSync && <div>Last sync: {lastSync.toLocaleString()}</div>}
       <button onClick={sync} disabled={syncing}>
@@ -198,7 +182,7 @@ import { VerificationBadge } from '@aura-network/verifier-sdk-react';
   size="md" // 'sm' | 'md' | 'lg'
   variant="solid" // 'solid' | 'outline' | 'subtle'
   showDetails
-/>
+/>;
 ```
 
 ### AgeBadge
@@ -213,7 +197,7 @@ import { AgeBadge } from '@aura-network/verifier-sdk-react';
   verified={true}
   size="md"
   variant="solid"
-/>
+/>;
 ```
 
 ### AuraScoreBadge
@@ -228,7 +212,7 @@ import { AuraScoreBadge } from '@aura-network/verifier-sdk-react';
   size="md"
   variant="solid"
   showLabel
-/>
+/>;
 ```
 
 ### QRScanner
@@ -245,7 +229,7 @@ import { QRScanner } from '@aura-network/verifier-sdk-react';
   width={400}
   height={400}
   showFrame
-/>
+/>;
 ```
 
 **Note:** QRScanner requires additional QR decoding library like `jsqr` or `html5-qrcode` for production use.
@@ -262,7 +246,7 @@ import { VerificationHistory } from '@aura-network/verifier-sdk-react';
   onItemClick={(item) => console.log('Clicked:', item)}
   maxItems={10}
   emptyMessage="No verifications yet"
-/>
+/>;
 ```
 
 ## Theming
@@ -300,10 +284,7 @@ function App() {
   };
 
   return (
-    <AuraVerifierProvider
-      config={{ network: 'mainnet' }}
-      onError={handleError}
-    >
+    <AuraVerifierProvider config={{ network: 'mainnet' }} onError={handleError}>
       <YourApp />
     </AuraVerifierProvider>
   );
@@ -321,18 +302,14 @@ function BatchVerify() {
 
   const verifyBatch = async (qrCodes: string[]) => {
     const results = await Promise.all(
-      qrCodes.map((qrData) =>
-        verifier?.verify({ qrCodeData: qrData })
-      )
+      qrCodes.map((qrData) => verifier?.verify({ qrCodeData: qrData }))
     );
     setResults(results);
   };
 
   return (
     <div>
-      <button onClick={() => verifyBatch(qrCodeList)}>
-        Verify All
-      </button>
+      <button onClick={() => verifyBatch(qrCodeList)}>Verify All</button>
       {results.map((result, i) => (
         <VerificationBadge key={i} result={result} />
       ))}

@@ -29,7 +29,9 @@ export function sha256Hash(data: string | Uint8Array | Buffer): Uint8Array {
 
     return sha256(bytes);
   } catch (error) {
-    throw new Error(`Failed to compute SHA-256 hash: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to compute SHA-256 hash: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -84,7 +86,9 @@ export function hexToUint8Array(hex: string): Uint8Array {
 
     return hexToBytes(paddedHex);
   } catch (error) {
-    throw new Error(`Failed to convert hex to Uint8Array: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to convert hex to Uint8Array: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -97,7 +101,9 @@ export function uint8ArrayToHex(bytes: Uint8Array): string {
   try {
     return bytesToHex(bytes);
   } catch (error) {
-    throw new Error(`Failed to convert Uint8Array to hex: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to convert Uint8Array to hex: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -113,7 +119,9 @@ export function hashObject(obj: unknown): Uint8Array {
     const jsonString = JSON.stringify(obj);
     return sha256Hash(jsonString);
   } catch (error) {
-    throw new Error(`Failed to hash object: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to hash object: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 

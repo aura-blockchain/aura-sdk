@@ -9,19 +9,21 @@ If you're familiar with the core TypeScript SDK, here's how the Flutter API maps
 ### Initialization
 
 **TypeScript:**
+
 ```typescript
 import { AuraVerifier } from '@aura-network/verifier-sdk';
 
 const verifier = new AuraVerifier({
   network: 'mainnet',
   timeout: 10000,
-  offlineMode: false
+  offlineMode: false,
 });
 
 await verifier.initialize();
 ```
 
 **Flutter:**
+
 ```dart
 import 'package:aura_verifier/aura_verifier.dart';
 
@@ -36,6 +38,7 @@ await verifier.initialize();
 ### Verification
 
 **TypeScript:**
+
 ```typescript
 const result = await verifier.verify({
   qrCodeData: qrString,
@@ -48,6 +51,7 @@ if (result.isValid) {
 ```
 
 **Flutter:**
+
 ```dart
 final result = await verifier.verify(
   qrString,
@@ -62,6 +66,7 @@ if (result.isValid) {
 ### Offline Mode
 
 **TypeScript:**
+
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',
@@ -69,11 +74,12 @@ const verifier = new AuraVerifier({
   cacheConfig: {
     enableDIDCache: true,
     ttl: 3600,
-  }
+  },
 });
 ```
 
 **Flutter:**
+
 ```dart
 final verifier = AuraVerifierEnhanced(
   network: AuraNetwork.mainnet,
@@ -88,6 +94,7 @@ final verifier = AuraVerifierEnhanced(
 ### Event Handling
 
 **TypeScript:**
+
 ```typescript
 verifier.on('verification:complete', (data) => {
   console.log('Verification completed:', data);
@@ -95,6 +102,7 @@ verifier.on('verification:complete', (data) => {
 ```
 
 **Flutter:**
+
 ```dart
 verifier.events.listen((event) {
   if (event.type == VerifierEventType.verificationCompleted) {
@@ -106,6 +114,7 @@ verifier.events.listen((event) {
 ### Batch Verification
 
 **TypeScript:**
+
 ```typescript
 const results = await verifier.verifyBatch(qrCodes, {
   concurrency: 5,
@@ -114,6 +123,7 @@ const results = await verifier.verifyBatch(qrCodes, {
 ```
 
 **Flutter:**
+
 ```dart
 final results = await verifier.verifyBatch(
   qrCodes,
@@ -131,16 +141,18 @@ If migrating from React Native, the concepts are similar but with Flutter-specif
 ### Component to Widget
 
 **React Native:**
+
 ```jsx
 import { AuraQRScanner } from '@aura-network/verifier-react-native';
 
 <AuraQRScanner
   onScan={(result) => console.log(result)}
   onError={(error) => console.error(error)}
-/>
+/>;
 ```
 
 **Flutter:**
+
 ```dart
 import 'package:aura_verifier/aura_verifier.dart';
 
@@ -154,6 +166,7 @@ AuraQRScanner(
 ### Hooks to State Management
 
 **React Native:**
+
 ```jsx
 import { useAuraVerifier } from '@aura-network/verifier-react-native';
 
@@ -165,6 +178,7 @@ function MyComponent() {
 ```
 
 **Flutter:**
+
 ```dart
 class MyWidget extends StatefulWidget {
   @override
@@ -200,13 +214,16 @@ class _MyWidgetState extends State<MyWidget> {
 ### 1. Async Patterns
 
 **TypeScript (Promises):**
+
 ```typescript
-verifier.verify(qrCode)
-  .then(result => console.log(result))
-  .catch(error => console.error(error));
+verifier
+  .verify(qrCode)
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
 ```
 
 **Flutter (Futures):**
+
 ```dart
 try {
   final result = await verifier.verify(qrCode);
@@ -219,6 +236,7 @@ try {
 ### 2. Error Handling
 
 **TypeScript:**
+
 ```typescript
 import { VerificationError } from '@aura-network/verifier-sdk';
 
@@ -232,6 +250,7 @@ try {
 ```
 
 **Flutter:**
+
 ```dart
 import 'package:aura_verifier/aura_verifier.dart';
 
@@ -245,17 +264,18 @@ try {
 
 ### 3. Type Naming
 
-| TypeScript | Flutter |
-|------------|---------|
-| `NetworkType` | `AuraNetwork` |
-| `VCType` | `VCType` (same) |
-| `VCStatus` | `VCStatus` (same) |
+| TypeScript           | Flutter                     |
+| -------------------- | --------------------------- |
+| `NetworkType`        | `AuraNetwork`               |
+| `VCType`             | `VCType` (same)             |
+| `VCStatus`           | `VCStatus` (same)           |
 | `VerificationResult` | `VerificationResult` (same) |
-| `QRCodeData` | `QRCodeData` (same) |
+| `QRCodeData`         | `QRCodeData` (same)         |
 
 ### 4. Configuration
 
 **TypeScript:**
+
 ```typescript
 interface AuraVerifierConfig {
   network: NetworkType;
@@ -267,6 +287,7 @@ interface AuraVerifierConfig {
 ```
 
 **Flutter:**
+
 ```dart
 class AuraVerifier {
   final AuraNetwork network;
@@ -410,12 +431,14 @@ AuraQRScanner(
 ### Issue 1: "Verifier not initialized"
 
 **Problem:**
+
 ```dart
 final verifier = AuraVerifier(network: AuraNetwork.mainnet);
 await verifier.verify(qrCode); // Error: not initialized
 ```
 
 **Solution:**
+
 ```dart
 final verifier = AuraVerifier(network: AuraNetwork.mainnet);
 await verifier.initialize(); // Must call initialize first
@@ -429,12 +452,14 @@ await verifier.verify(qrCode); // Now works
 **Solution:** Add permissions to platform files:
 
 iOS (`Info.plist`):
+
 ```xml
 <key>NSCameraUsageDescription</key>
 <string>We need camera access to scan QR codes</string>
 ```
 
 Android (`AndroidManifest.xml`):
+
 ```xml
 <uses-permission android:name="android.permission.CAMERA" />
 ```
@@ -444,6 +469,7 @@ Android (`AndroidManifest.xml`):
 **Problem:** App memory grows over time
 
 **Solution:** Always dispose verifiers:
+
 ```dart
 @override
 void dispose() {
@@ -457,6 +483,7 @@ void dispose() {
 **Problem:** Verification takes too long
 
 **Solution:** Increase timeout or use caching:
+
 ```dart
 final verifier = AuraVerifier(
   network: AuraNetwork.mainnet,

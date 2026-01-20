@@ -6,11 +6,7 @@
     "sourceType": "module",
     "project": ["./tsconfig.json", "./packages/*/tsconfig.json"]
   },
-  "plugins": [
-    "@typescript-eslint",
-    "import",
-    "prettier"
-  ],
+  "plugins": ["@typescript-eslint", "import", "prettier"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -50,14 +46,7 @@
     "import/order": [
       "error",
       {
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index"
-        ],
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
@@ -90,11 +79,5 @@
       }
     }
   },
-  "ignorePatterns": [
-    "dist",
-    "node_modules",
-    "coverage",
-    "*.config.ts",
-    "*.config.js"
-  ]
+  "ignorePatterns": ["dist", "node_modules", "coverage", "*.config.ts", "*.config.js"]
 }

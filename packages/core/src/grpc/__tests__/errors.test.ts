@@ -122,10 +122,7 @@ describe('NodeUnavailableError', () => {
   });
 
   it('should list attempted endpoints', () => {
-    const attempted = [
-      'https://rpc1.aurablockchain.org',
-      'https://rpc2.aurablockchain.org',
-    ];
+    const attempted = ['https://rpc1.aurablockchain.org', 'https://rpc2.aurablockchain.org'];
     const error = new NodeUnavailableError('https://rpc.aurablockchain.org', attempted);
 
     expect(error.message).toContain('rpc1.aurablockchain.org');

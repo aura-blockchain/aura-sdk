@@ -322,9 +322,12 @@ function displayVerificationResult(result: VerificationResult, verbose: boolean)
     console.log(chalk.gray('─'.repeat(50)));
 
     for (const [key, value] of Object.entries(result.attributes)) {
-      const displayValue = typeof value === 'boolean'
-        ? (value ? chalk.green('Yes') : chalk.red('No'))
-        : chalk.white(String(value));
+      const displayValue =
+        typeof value === 'boolean'
+          ? value
+            ? chalk.green('Yes')
+            : chalk.red('No')
+          : chalk.white(String(value));
       console.log(`${key}: ${displayValue}`);
     }
     console.log();
@@ -352,9 +355,7 @@ function displayVerificationResult(result: VerificationResult, verbose: boolean)
     } else {
       // Simple list
       for (const vc of result.vcDetails) {
-        const status = vc.isValid
-          ? chalk.green('✓ Valid')
-          : chalk.red('✗ Invalid');
+        const status = vc.isValid ? chalk.green('✓ Valid') : chalk.red('✗ Invalid');
         const type = VCType[vc.vcType] || String(vc.vcType);
         console.log(`${status} - ${chalk.cyan(type)} (${chalk.gray(vc.vcId)})`);
       }

@@ -49,8 +49,8 @@ export function Hero() {
             transition={{ delay: 0.5, duration: 0.8 }}
             className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            Verify digital credentials with zero-knowledge proofs. Enable age verification,
-            identity checks, and trust scores without storing sensitive personal information.
+            Verify digital credentials with zero-knowledge proofs. Enable age verification, identity
+            checks, and trust scores without storing sensitive personal information.
           </motion.p>
 
           <motion.div
@@ -97,7 +97,12 @@ export function Hero() {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                />
               </motion.svg>
             </a>
           </motion.div>

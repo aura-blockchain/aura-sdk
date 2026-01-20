@@ -158,32 +158,34 @@ export class InMemoryAuditLogStorage implements AuditLogStorage {
     this.entries.push(entry);
   }
 
-  async read(options: {
-    startTime?: Date;
-    endTime?: Date;
-    category?: AuditCategory;
-    actor?: string;
-    limit?: number;
-    offset?: number;
-  } = {}): Promise<AuditLogEntry[]> {
+  async read(
+    options: {
+      startTime?: Date;
+      endTime?: Date;
+      category?: AuditCategory;
+      actor?: string;
+      limit?: number;
+      offset?: number;
+    } = {}
+  ): Promise<AuditLogEntry[]> {
     let filtered = this.entries;
 
     // Filter by time range
     if (options.startTime) {
-      filtered = filtered.filter(e => new Date(e.timestamp) >= options.startTime!);
+      filtered = filtered.filter((e) => new Date(e.timestamp) >= options.startTime!);
     }
     if (options.endTime) {
-      filtered = filtered.filter(e => new Date(e.timestamp) <= options.endTime!);
+      filtered = filtered.filter((e) => new Date(e.timestamp) <= options.endTime!);
     }
 
     // Filter by category
     if (options.category) {
-      filtered = filtered.filter(e => e.category === options.category);
+      filtered = filtered.filter((e) => e.category === options.category);
     }
 
     // Filter by actor
     if (options.actor) {
-      filtered = filtered.filter(e => e.actor === options.actor);
+      filtered = filtered.filter((e) => e.actor === options.actor);
     }
 
     // Apply pagination
@@ -198,9 +200,7 @@ export class InMemoryAuditLogStorage implements AuditLogStorage {
   }
 
   async rotate(beforeDate: Date): Promise<void> {
-    this.entries = this.entries.filter(
-      e => new Date(e.timestamp) >= beforeDate
-    );
+    this.entries = this.entries.filter((e) => new Date(e.timestamp) >= beforeDate);
   }
 
   async verifyChain(entries: AuditLogEntry[]): Promise<boolean> {
@@ -519,7 +519,7 @@ export class AuditLogger {
     this.buffer = [];
 
     try {
-      await Promise.all(entries.map(entry => this.storage.write(entry)));
+      await Promise.all(entries.map((entry) => this.storage.write(entry)));
     } catch (error) {
       // Re-add entries to buffer on failure
       this.buffer.unshift(...entries);
@@ -541,7 +541,8 @@ export class AuditLogger {
       category: AuditCategory.VERIFICATION,
       action: 'VERIFY_CREDENTIAL',
       outcome: options.outcome,
-      severity: options.outcome === AuditOutcome.SUCCESS ? AuditSeverity.INFO : AuditSeverity.WARNING,
+      severity:
+        options.outcome === AuditOutcome.SUCCESS ? AuditSeverity.INFO : AuditSeverity.WARNING,
       actor: options.actor,
       target: options.target,
       message: `Credential verification ${options.outcome.toLowerCase()}`,
@@ -558,7 +559,8 @@ export class AuditLogger {
       category: AuditCategory.DID_RESOLUTION,
       action: 'RESOLVE_DID',
       outcome: options.outcome,
-      severity: options.outcome === AuditOutcome.SUCCESS ? AuditSeverity.INFO : AuditSeverity.WARNING,
+      severity:
+        options.outcome === AuditOutcome.SUCCESS ? AuditSeverity.INFO : AuditSeverity.WARNING,
       target: options.did,
       message: `DID resolution ${options.outcome.toLowerCase()}`,
       metadata: options.metadata,
@@ -601,7 +603,7 @@ export class AuditLogger {
    * Verify log chain integrity
    */
   async verifyIntegrity(entries?: AuditLogEntry[]): Promise<boolean> {
-    const logsToVerify = entries || await this.storage.read();
+    const logsToVerify = entries || (await this.storage.read());
     return this.storage.verifyChain(logsToVerify);
   }
 

@@ -158,10 +158,10 @@ describe('EncryptionUtils', () => {
       const bytes = Buffer.from(encrypted.ciphertext, 'hex');
       if (bytes.length > 4) {
         // XOR multiple bytes to ensure we actually corrupt the data
-        bytes[0] ^= 0xFF;
-        bytes[1] ^= 0xFF;
-        bytes[2] ^= 0xFF;
-        bytes[3] ^= 0xFF;
+        bytes[0] ^= 0xff;
+        bytes[1] ^= 0xff;
+        bytes[2] ^= 0xff;
+        bytes[3] ^= 0xff;
       }
       encrypted.ciphertext = bytes.toString('hex');
 
@@ -203,9 +203,7 @@ describe('EncryptionUtils', () => {
 
       const encrypted = await utils.encryptWithPassword(plaintext, 'password1');
 
-      await expect(
-        utils.decryptWithPassword(encrypted, 'password2')
-      ).rejects.toThrow();
+      await expect(utils.decryptWithPassword(encrypted, 'password2')).rejects.toThrow();
     });
 
     it('should include KDF metadata', async () => {
@@ -367,7 +365,7 @@ describe('KeyRotationManager', () => {
     manager.rotateKey();
 
     // Wait for expiration
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await new Promise((resolve) => setTimeout(resolve, 150));
 
     manager.cleanup();
 
@@ -392,7 +390,7 @@ describe('KeyRotationManager', () => {
     const manager = new KeyRotationManager(undefined, 100);
     const { keyId } = manager.getCurrentKey();
 
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await new Promise((resolve) => setTimeout(resolve, 150));
 
     manager.cleanup();
 

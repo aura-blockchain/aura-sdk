@@ -1,356 +1,358 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aura Verify Widget</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .widget {
-      background: white;
-      border-radius: 24px;
-      padding: 32px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .logo {
-      font-size: 32px;
-      font-weight: 700;
-      color: #6B46C1;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      color: #666;
-      font-size: 14px;
-    }
-
-    .input-group {
-      margin-bottom: 20px;
-    }
-
-    .input-group label {
-      display: block;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-
-    .input-group textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 14px;
-      font-family: monospace;
-      resize: vertical;
-      min-height: 100px;
-      transition: border-color 0.2s;
-    }
-
-    .input-group textarea:focus {
-      outline: none;
-      border-color: #6B46C1;
-    }
-
-    .verify-btn {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #6B46C1 0%, #805AD5 100%);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .verify-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(107, 70, 193, 0.4);
-    }
-
-    .verify-btn:disabled {
-      background: #cbd5e0;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .result {
-      margin-top: 24px;
-      padding: 20px;
-      border-radius: 16px;
-      display: none;
-    }
-
-    .result.success {
-      display: block;
-      background: linear-gradient(135deg, #48BB78 0%, #38A169 100%);
-      color: white;
-    }
-
-    .result.failure {
-      display: block;
-      background: linear-gradient(135deg, #F56565 0%, #E53E3E 100%);
-      color: white;
-    }
-
-    .result-icon {
-      font-size: 48px;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .result-title {
-      font-size: 24px;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .result-details {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .result-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .result-row:last-child {
-      border-bottom: none;
-    }
-
-    .result-label {
-      font-weight: 500;
-      opacity: 0.9;
-    }
-
-    .result-value {
-      font-weight: 600;
-    }
-
-    .age-badge {
-      display: inline-block;
-      background: white;
-      color: #38A169;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 18px;
-    }
-
-    .loading {
-      display: none;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .loading.active {
-      display: block;
-    }
-
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid #e2e8f0;
-      border-top-color: #6B46C1;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 12px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .error {
-      background: #FED7D7;
-      color: #C53030;
-      padding: 12px 16px;
-      border-radius: 12px;
-      margin-top: 16px;
-      display: none;
-      font-size: 14px;
-    }
-
-    .error.active {
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <div class="widget">
-    <div class="header">
-      <div class="logo">AURA VERIFY</div>
-      <div class="subtitle">Verify blockchain credentials instantly</div>
-    </div>
-
-    <div class="input-group">
-      <label for="qrData">QR Code Data</label>
-      <textarea
-        id="qrData"
-        placeholder="Paste QR code data here (aura://verify?data=...)"
-      ></textarea>
-    </div>
-
-    <button class="verify-btn" id="verifyBtn" onclick="verify()">
-      Verify Credential
-    </button>
-
-    <div class="loading" id="loading">
-      <div class="spinner"></div>
-      <div>Verifying...</div>
-    </div>
-
-    <div class="error" id="error"></div>
-
-    <div class="result" id="result">
-      <div class="result-icon" id="resultIcon"></div>
-      <div class="result-title" id="resultTitle"></div>
-      <div class="result-details" id="resultDetails"></div>
-    </div>
-  </div>
-
-  <script type="module">
-    import { AuraVerifier } from '@aura-network/verifier-sdk';
-
-    // Initialize verifier (use testnet for demo)
-    const verifier = new AuraVerifier({
-      network: 'testnet',
-    });
-
-    window.verify = async function() {
-      const qrData = document.getElementById('qrData').value.trim();
-      const btn = document.getElementById('verifyBtn');
-      const loading = document.getElementById('loading');
-      const result = document.getElementById('result');
-      const error = document.getElementById('error');
-
-      if (!qrData) {
-        showError('Please enter QR code data');
-        return;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aura Verify Widget</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
 
-      // Reset UI
-      result.className = 'result';
-      error.className = 'error';
-      btn.disabled = true;
-      loading.className = 'loading active';
-
-      try {
-        await verifier.initialize();
-
-        const verificationResult = await verifier.verify({
-          qrCodeData: qrData,
-        });
-
-        displayResult(verificationResult);
-      } catch (err) {
-        showError(err.message || 'Verification failed');
-      } finally {
-        btn.disabled = false;
-        loading.className = 'loading';
-      }
-    };
-
-    function displayResult(r) {
-      const result = document.getElementById('result');
-      const icon = document.getElementById('resultIcon');
-      const title = document.getElementById('resultTitle');
-      const details = document.getElementById('resultDetails');
-
-      if (r.isValid) {
-        result.className = 'result success';
-        icon.textContent = '✓';
-        title.textContent = 'AURA VERIFIED';
-      } else {
-        result.className = 'result failure';
-        icon.textContent = '✗';
-        title.textContent = 'NOT VERIFIED';
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
       }
 
-      let detailsHTML = '';
+      .widget {
+        background: white;
+        border-radius: 24px;
+        padding: 32px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
 
-      if (r.attributes.is_over_21) {
-        detailsHTML += `
+      .header {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .logo {
+        font-size: 32px;
+        font-weight: 700;
+        color: #6b46c1;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        color: #666;
+        font-size: 14px;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+      }
+
+      .input-group label {
+        display: block;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      .input-group textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 14px;
+        font-family: monospace;
+        resize: vertical;
+        min-height: 100px;
+        transition: border-color 0.2s;
+      }
+
+      .input-group textarea:focus {
+        outline: none;
+        border-color: #6b46c1;
+      }
+
+      .verify-btn {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #6b46c1 0%, #805ad5 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .verify-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(107, 70, 193, 0.4);
+      }
+
+      .verify-btn:disabled {
+        background: #cbd5e0;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .result {
+        margin-top: 24px;
+        padding: 20px;
+        border-radius: 16px;
+        display: none;
+      }
+
+      .result.success {
+        display: block;
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+      }
+
+      .result.failure {
+        display: block;
+        background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+        color: white;
+      }
+
+      .result-icon {
+        font-size: 48px;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+
+      .result-title {
+        font-size: 24px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      .result-details {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      .result-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .result-row:last-child {
+        border-bottom: none;
+      }
+
+      .result-label {
+        font-weight: 500;
+        opacity: 0.9;
+      }
+
+      .result-value {
+        font-weight: 600;
+      }
+
+      .age-badge {
+        display: inline-block;
+        background: white;
+        color: #38a169;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 18px;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .loading.active {
+        display: block;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #e2e8f0;
+        border-top-color: #6b46c1;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 12px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .error {
+        background: #fed7d7;
+        color: #c53030;
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-top: 16px;
+        display: none;
+        font-size: 14px;
+      }
+
+      .error.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="widget">
+      <div class="header">
+        <div class="logo">AURA VERIFY</div>
+        <div class="subtitle">Verify blockchain credentials instantly</div>
+      </div>
+
+      <div class="input-group">
+        <label for="qrData">QR Code Data</label>
+        <textarea
+          id="qrData"
+          placeholder="Paste QR code data here (aura://verify?data=...)"
+        ></textarea>
+      </div>
+
+      <button class="verify-btn" id="verifyBtn" onclick="verify()">Verify Credential</button>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div>Verifying...</div>
+      </div>
+
+      <div class="error" id="error"></div>
+
+      <div class="result" id="result">
+        <div class="result-icon" id="resultIcon"></div>
+        <div class="result-title" id="resultTitle"></div>
+        <div class="result-details" id="resultDetails"></div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { AuraVerifier } from '@aura-network/verifier-sdk';
+
+      // Initialize verifier (use testnet for demo)
+      const verifier = new AuraVerifier({
+        network: 'testnet',
+      });
+
+      window.verify = async function () {
+        const qrData = document.getElementById('qrData').value.trim();
+        const btn = document.getElementById('verifyBtn');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('result');
+        const error = document.getElementById('error');
+
+        if (!qrData) {
+          showError('Please enter QR code data');
+          return;
+        }
+
+        // Reset UI
+        result.className = 'result';
+        error.className = 'error';
+        btn.disabled = true;
+        loading.className = 'loading active';
+
+        try {
+          await verifier.initialize();
+
+          const verificationResult = await verifier.verify({
+            qrCodeData: qrData,
+          });
+
+          displayResult(verificationResult);
+        } catch (err) {
+          showError(err.message || 'Verification failed');
+        } finally {
+          btn.disabled = false;
+          loading.className = 'loading';
+        }
+      };
+
+      function displayResult(r) {
+        const result = document.getElementById('result');
+        const icon = document.getElementById('resultIcon');
+        const title = document.getElementById('resultTitle');
+        const details = document.getElementById('resultDetails');
+
+        if (r.isValid) {
+          result.className = 'result success';
+          icon.textContent = '✓';
+          title.textContent = 'AURA VERIFIED';
+        } else {
+          result.className = 'result failure';
+          icon.textContent = '✗';
+          title.textContent = 'NOT VERIFIED';
+        }
+
+        let detailsHTML = '';
+
+        if (r.attributes.is_over_21) {
+          detailsHTML += `
           <div class="result-row">
             <span class="result-label">Age Status</span>
             <span class="age-badge">21+</span>
           </div>
         `;
-      } else if (r.attributes.is_over_18) {
-        detailsHTML += `
+        } else if (r.attributes.is_over_18) {
+          detailsHTML += `
           <div class="result-row">
             <span class="result-label">Age Status</span>
             <span class="age-badge">18+</span>
           </div>
         `;
-      }
+        }
 
-      if (r.holderDID) {
-        const shortDID = r.holderDID.substring(0, 20) + '...';
-        detailsHTML += `
+        if (r.holderDID) {
+          const shortDID = r.holderDID.substring(0, 20) + '...';
+          detailsHTML += `
           <div class="result-row">
             <span class="result-label">Holder</span>
             <span class="result-value">${shortDID}</span>
           </div>
         `;
-      }
+        }
 
-      detailsHTML += `
+        detailsHTML += `
         <div class="result-row">
           <span class="result-label">Verified At</span>
           <span class="result-value">${new Date(r.verifiedAt).toLocaleTimeString()}</span>
         </div>
       `;
 
-      if (r.vcDetails && r.vcDetails.length > 0) {
-        detailsHTML += `
+        if (r.vcDetails && r.vcDetails.length > 0) {
+          detailsHTML += `
           <div class="result-row">
             <span class="result-label">Credentials</span>
             <span class="result-value">${r.vcDetails.length} verified</span>
           </div>
         `;
+        }
+
+        details.innerHTML = detailsHTML;
       }
 
-      details.innerHTML = detailsHTML;
-    }
-
-    function showError(message) {
-      const error = document.getElementById('error');
-      error.textContent = message;
-      error.className = 'error active';
-    }
-  </script>
-</body>
+      function showError(message) {
+        const error = document.getElementById('error');
+        error.textContent = message;
+        error.className = 'error active';
+      }
+    </script>
+  </body>
 </html>

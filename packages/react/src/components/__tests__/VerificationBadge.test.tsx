@@ -45,7 +45,11 @@ describe('VerificationBadge', () => {
   });
 
   it('renders failed state and details when showDetails=true', () => {
-    const failed: VerificationResult = { ...baseResult, isValid: false, verificationError: 'bad sig' };
+    const failed: VerificationResult = {
+      ...baseResult,
+      isValid: false,
+      verificationError: 'bad sig',
+    };
 
     render(<VerificationBadge result={failed} showDetails />);
 

@@ -69,11 +69,7 @@ describe('Crypto Module', () => {
       const signature = new Uint8Array(64).fill(0); // Mock signature
 
       // This will fail because the signature is invalid, which is expected
-      const result = await verifySignature(
-        signature,
-        message,
-        publicKey
-      );
+      const result = await verifySignature(signature, message, publicKey);
 
       // We expect a result object with valid=false because this is a mock signature
       expect(result).toHaveProperty('valid');

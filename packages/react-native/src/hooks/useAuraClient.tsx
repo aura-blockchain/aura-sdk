@@ -19,7 +19,10 @@ export function useAuraClient(opts?: Options) {
     let cancelled = false;
     const init = async () => {
       try {
-        const c = new AuraClient({ network: opts?.network ?? ctx.network, endpoint: opts?.endpoint });
+        const c = new AuraClient({
+          network: opts?.network ?? ctx.network,
+          endpoint: opts?.endpoint,
+        });
         await c.connect();
         if (cancelled) return;
         setClient(c);

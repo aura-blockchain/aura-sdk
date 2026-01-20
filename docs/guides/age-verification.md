@@ -5,6 +5,7 @@ Complete guide to implementing age verification for bars, nightclubs, dispensari
 ## Overview
 
 Age verification with Aura provides:
+
 - **Instant verification** - Results in < 1 second
 - **Privacy-preserving** - No birthdate revealed, only age threshold (18+ or 21+)
 - **Offline capability** - Works without internet after initial sync
@@ -27,18 +28,23 @@ const isOver21 = await verifier.isAge21Plus(qrCodeData);
 ## Use Cases
 
 ### Bars and Nightclubs
+
 Verify customers are 21+ before entry or alcohol service.
 
 ### Cannabis Dispensaries
+
 Verify customers meet age requirements (18+ or 21+ depending on jurisdiction).
 
 ### Tobacco/Vape Shops
+
 Verify customers are 18+ for tobacco product purchases.
 
 ### Adult Entertainment
+
 Verify customers meet age requirements for adult content or venues.
 
 ### Online Age Gates
+
 Verify age for age-restricted websites and digital services.
 
 ## Implementation Guide
@@ -371,11 +377,9 @@ class VenueEntrySystem {
     return {
       totalEntries: this.entranceLog.length,
       averageVerificationTime:
-        this.entranceLog.reduce((sum, e) => sum + e.verificationTime, 0) /
-        this.entranceLog.length,
-      entriesLastHour: this.entranceLog.filter(
-        (e) => Date.now() - e.timestamp.getTime() < 3600000
-      ).length,
+        this.entranceLog.reduce((sum, e) => sum + e.verificationTime, 0) / this.entranceLog.length,
+      entriesLastHour: this.entranceLog.filter((e) => Date.now() - e.timestamp.getTime() < 3600000)
+        .length,
     };
   }
 
@@ -531,9 +535,7 @@ class AgeVerificationLogger {
     // Check for multiple failed attempts
     const recentFailures = this.logs.filter(
       (l) =>
-        l.holderDID === log.holderDID &&
-        !l.verified &&
-        Date.now() - l.timestamp.getTime() < 300000 // 5 minutes
+        l.holderDID === log.holderDID && !l.verified && Date.now() - l.timestamp.getTime() < 300000 // 5 minutes
     );
 
     if (recentFailures.length > 3) {
@@ -551,9 +553,7 @@ class AgeVerificationLogger {
   }
 
   async generateComplianceReport(startDate: Date, endDate: Date) {
-    const logs = this.logs.filter(
-      (l) => l.timestamp >= startDate && l.timestamp <= endDate
-    );
+    const logs = this.logs.filter((l) => l.timestamp >= startDate && l.timestamp <= endDate);
 
     return {
       totalVerifications: logs.length,

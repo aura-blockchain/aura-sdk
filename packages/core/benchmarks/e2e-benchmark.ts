@@ -279,11 +279,7 @@ async function fullVerificationFlow(
   const messageBytes = new TextEncoder().encode(message);
   const signatureBytes = Buffer.from(qrData.sig, 'hex');
 
-  const signatureValid = await verifyEd25519Signature(
-    signatureBytes,
-    messageBytes,
-    publicKey
-  );
+  const signatureValid = await verifyEd25519Signature(signatureBytes, messageBytes, publicKey);
 
   if (!signatureValid) {
     return false;
@@ -448,7 +444,9 @@ async function concurrentVerificationTest(): Promise<void> {
   const concurrencyLevels = [1, 5, 10, 25, 50, 100];
   const verificationsPerLevel = 500;
 
-  console.log(`${'Concurrency'.padEnd(15)} ${'Total Time'.padStart(15)} ${'Throughput'.padStart(20)} ${'Avg Latency'.padStart(15)}`);
+  console.log(
+    `${'Concurrency'.padEnd(15)} ${'Total Time'.padStart(15)} ${'Throughput'.padStart(20)} ${'Avg Latency'.padStart(15)}`
+  );
   console.log('-'.repeat(80));
 
   for (const concurrency of concurrencyLevels) {
@@ -497,7 +495,9 @@ async function burstLoadTest(): Promise<void> {
   const testData = await generateSignedQRData(3);
   const burstSizes = [10, 50, 100, 250, 500];
 
-  console.log(`${'Burst Size'.padEnd(15)} ${'Total Time'.padStart(15)} ${'Throughput'.padStart(20)} ${'P95 Latency'.padStart(15)}`);
+  console.log(
+    `${'Burst Size'.padEnd(15)} ${'Total Time'.padStart(15)} ${'Throughput'.padStart(20)} ${'P95 Latency'.padStart(15)}`
+  );
   console.log('-'.repeat(80));
 
   for (const burstSize of burstSizes) {
@@ -547,7 +547,7 @@ async function main(): Promise<void> {
   printResults(results);
 
   // Print detailed latency distribution for main benchmark
-  const mainBenchmark = results.find(r => r.name.includes('Full Verification (Parse'));
+  const mainBenchmark = results.find((r) => r.name.includes('Full Verification (Parse'));
   if (mainBenchmark) {
     printLatencyDistribution(mainBenchmark);
   }
@@ -562,8 +562,11 @@ async function main(): Promise<void> {
   console.log('PERFORMANCE SUMMARY');
   console.log('='.repeat(80) + '\n');
 
-  const fullVerification = results.find(r =>
-    r.name.includes('Full Verification (Parse') && !r.name.includes('Large') && !r.name.includes('Small')
+  const fullVerification = results.find(
+    (r) =>
+      r.name.includes('Full Verification (Parse') &&
+      !r.name.includes('Large') &&
+      !r.name.includes('Small')
   );
 
   if (fullVerification) {
@@ -577,14 +580,18 @@ async function main(): Promise<void> {
 
   // Target validation
   const target = 200; // ms
-  const p95Latencies = results.map(r => r.p95Latency || 0);
+  const p95Latencies = results.map((r) => r.p95Latency || 0);
   const avgP95 = p95Latencies.reduce((sum, val) => sum + val, 0) / p95Latencies.length;
   const maxP95 = Math.max(...p95Latencies);
 
   console.log('Target Performance:');
   console.log(`  Target P95:         < ${target} ms`);
-  console.log(`  Average P95:        ${formatNumber(avgP95)} ms ${avgP95 < target ? '✓ PASS' : '✗ FAIL'}`);
-  console.log(`  Max P95:            ${formatNumber(maxP95)} ms ${maxP95 < target ? '✓ PASS' : '✗ FAIL'}\n`);
+  console.log(
+    `  Average P95:        ${formatNumber(avgP95)} ms ${avgP95 < target ? '✓ PASS' : '✗ FAIL'}`
+  );
+  console.log(
+    `  Max P95:            ${formatNumber(maxP95)} ms ${maxP95 < target ? '✓ PASS' : '✗ FAIL'}\n`
+  );
 
   if (fullVerification && fullVerification.p95Latency) {
     const status = fullVerification.p95Latency < target ? '✓ PASS' : '✗ FAIL';

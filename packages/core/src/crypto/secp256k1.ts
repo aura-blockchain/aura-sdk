@@ -130,7 +130,7 @@ function bigIntToBytes(n: bigint, length: number): Uint8Array {
   const bytes = new Uint8Array(length);
   let value = n;
   for (let i = length - 1; i >= 0; i--) {
-    bytes[i] = Number(value & 0xFFn);
+    bytes[i] = Number(value & 0xffn);
     value = value >> 8n;
   }
   return bytes;
@@ -185,7 +185,7 @@ export async function verifySecp256k1Signature(
     }
 
     // Auto-detect or validate signature format
-    const isDER = options?.isDER ?? (signatureBytes.length !== SECP256K1_SIGNATURE_LENGTH);
+    const isDER = options?.isDER ?? signatureBytes.length !== SECP256K1_SIGNATURE_LENGTH;
 
     // Convert DER to compact format if needed
     if (isDER) {
@@ -193,13 +193,17 @@ export async function verifySecp256k1Signature(
         const { r, s } = parseDERSignature(signatureBytes);
         signatureBytes = rsToCompact(r, s);
       } catch (error) {
-        throw new Error(`Invalid DER signature: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        throw new Error(
+          `Invalid DER signature: ${error instanceof Error ? error.message : 'Unknown error'}`
+        );
       }
     }
 
     // Validate signature length (after conversion if DER)
     if (signatureBytes.length !== SECP256K1_SIGNATURE_LENGTH) {
-      throw new Error(`Invalid secp256k1 signature length. Expected ${SECP256K1_SIGNATURE_LENGTH} bytes, got ${signatureBytes.length}`);
+      throw new Error(
+        `Invalid secp256k1 signature length. Expected ${SECP256K1_SIGNATURE_LENGTH} bytes, got ${signatureBytes.length}`
+      );
     }
 
     // Convert public key to Uint8Array
@@ -226,7 +230,9 @@ export async function verifySecp256k1Signature(
       const point = secp256k1.Point.fromHex(publicKeyBytes);
       normalizedPublicKey = point.toRawBytes(true); // true = compressed
     } catch (error) {
-      throw new Error(`Invalid secp256k1 public key: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Invalid secp256k1 public key: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
 
     // Convert message to bytes
@@ -286,7 +292,7 @@ export function verifySecp256k1SignatureSync(
     }
 
     // Auto-detect or validate signature format
-    const isDER = options?.isDER ?? (signatureBytes.length !== SECP256K1_SIGNATURE_LENGTH);
+    const isDER = options?.isDER ?? signatureBytes.length !== SECP256K1_SIGNATURE_LENGTH;
 
     // Convert DER to compact format if needed
     if (isDER) {
@@ -294,13 +300,17 @@ export function verifySecp256k1SignatureSync(
         const { r, s } = parseDERSignature(signatureBytes);
         signatureBytes = rsToCompact(r, s);
       } catch (error) {
-        throw new Error(`Invalid DER signature: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        throw new Error(
+          `Invalid DER signature: ${error instanceof Error ? error.message : 'Unknown error'}`
+        );
       }
     }
 
     // Validate signature length
     if (signatureBytes.length !== SECP256K1_SIGNATURE_LENGTH) {
-      throw new Error(`Invalid secp256k1 signature length. Expected ${SECP256K1_SIGNATURE_LENGTH} bytes, got ${signatureBytes.length}`);
+      throw new Error(
+        `Invalid secp256k1 signature length. Expected ${SECP256K1_SIGNATURE_LENGTH} bytes, got ${signatureBytes.length}`
+      );
     }
 
     // Convert public key to Uint8Array
@@ -327,7 +337,9 @@ export function verifySecp256k1SignatureSync(
       const point = secp256k1.Point.fromHex(publicKeyBytes);
       normalizedPublicKey = point.toRawBytes(true);
     } catch (error) {
-      throw new Error(`Invalid secp256k1 public key: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Invalid secp256k1 public key: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
 
     // Convert message to bytes
@@ -374,7 +386,9 @@ export function compressPublicKey(publicKey: string | Uint8Array): Uint8Array {
     const point = secp256k1.Point.fromHex(publicKeyBytes);
     return point.toRawBytes(true); // true = compressed
   } catch (error) {
-    throw new Error(`Failed to compress public key: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to compress public key: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -395,7 +409,9 @@ export function decompressPublicKey(publicKey: string | Uint8Array): Uint8Array 
     const point = secp256k1.Point.fromHex(publicKeyBytes);
     return point.toRawBytes(false); // false = uncompressed
   } catch (error) {
-    throw new Error(`Failed to decompress public key: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to decompress public key: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 

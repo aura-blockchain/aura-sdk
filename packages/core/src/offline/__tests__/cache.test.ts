@@ -16,7 +16,7 @@ describe('CredentialCache', () => {
       maxAge: 3600,
       maxEntries: 100,
       persistToDisk: false,
-      storageAdapter: 'memory'
+      storageAdapter: 'memory',
     });
   });
 
@@ -131,7 +131,7 @@ describe('CredentialCache', () => {
         maxAge: 3600,
         maxEntries: 3,
         persistToDisk: false,
-        storageAdapter: 'memory'
+        storageAdapter: 'memory',
       });
 
       // Add 4 credentials (should evict first one)
@@ -142,7 +142,7 @@ describe('CredentialCache', () => {
         await smallCache.set(vcId, cachedData);
 
         // Small delay to ensure different timestamps
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise((resolve) => setTimeout(resolve, 10));
       }
 
       const stats = await smallCache.getStats();
@@ -191,7 +191,7 @@ describe('CredentialCache', () => {
   describe('Revocation List Caching', () => {
     it('should cache revocation list', async () => {
       const merkleRoot = 'a'.repeat(64);
-      const bitmap = new Uint8Array([0xFF, 0x00, 0x00, 0xFF]);
+      const bitmap = new Uint8Array([0xff, 0x00, 0x00, 0xff]);
 
       await cache.setRevocationList(merkleRoot, bitmap);
 
@@ -223,7 +223,7 @@ describe('CredentialCache', () => {
         maxEntries: 100,
         persistToDisk: false,
         storageAdapter: 'memory',
-        encryptionKey: keyToHex(encryptionKey)
+        encryptionKey: keyToHex(encryptionKey),
       });
 
       const vcId = 'test-vc-encrypted';
@@ -247,7 +247,7 @@ describe('CredentialCache', () => {
           maxEntries: 100,
           persistToDisk: false,
           storageAdapter: 'memory',
-          encryptionKey: 'invalid-key'
+          encryptionKey: 'invalid-key',
         });
       }).toThrow();
     });
@@ -285,7 +285,7 @@ describe('CredentialCache', () => {
         maxAge: 3600,
         maxEntries: 100,
         persistToDisk: false,
-        storageAdapter: 'memory'
+        storageAdapter: 'memory',
       });
 
       await newCache.import(exported);
@@ -331,7 +331,7 @@ function createMockCredential(vcId: string): VerifiableCredential {
   return {
     '@context': [
       'https://www.w3.org/2018/credentials/v1',
-      'https://testnet-api.aurablockchain.org/aura/vcregistry/v1beta1'
+      'https://testnet-api.aurablockchain.org/aura/vcregistry/v1beta1',
     ],
     id: vcId,
     type: ['VerifiableCredential', 'AuraIdentityCredential'],
@@ -340,15 +340,15 @@ function createMockCredential(vcId: string): VerifiableCredential {
     credentialSubject: {
       id: 'did:aura:holder456',
       name: 'Test User',
-      age: 25
+      age: 25,
     },
     proof: {
       type: 'Ed25519Signature2020',
       created: new Date().toISOString(),
       proofPurpose: 'assertionMethod',
       verificationMethod: 'did:aura:issuer123#key-1',
-      signature: 'z' + 'a'.repeat(86)
-    }
+      signature: 'z' + 'a'.repeat(86),
+    },
   };
 }
 
@@ -362,13 +362,15 @@ function createCachedCredential(vcId: string, credential: VerifiableCredential):
     issuerDid: credential.issuer,
     revocationStatus: {
       isRevoked: false,
-      checkedAt: now
+      checkedAt: now,
     },
     metadata: {
       cachedAt: now,
       expiresAt: new Date(now.getTime() + 3600000), // 1 hour
       issuedAt: new Date(credential.issuanceDate),
-      credentialExpiresAt: credential.expirationDate ? new Date(credential.expirationDate) : undefined
-    }
+      credentialExpiresAt: credential.expirationDate
+        ? new Date(credential.expirationDate)
+        : undefined,
+    },
   };
 }

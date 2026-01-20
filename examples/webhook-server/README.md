@@ -91,18 +91,18 @@ npm run build
 
 Create a `.env` file based on `.env.example`:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | Server port | `3000` |
-| `NODE_ENV` | Environment (development/production) | `development` |
-| `WEBHOOK_SECRET` | Secret key for signature verification | **Required** |
-| `DATABASE_PATH` | Path to SQLite database | `./data/webhooks.db` |
-| `RATE_LIMIT_WINDOW_MS` | Rate limit window in milliseconds | `900000` (15 min) |
-| `RATE_LIMIT_MAX_REQUESTS` | Max requests per window | `100` |
-| `ALLOWED_IPS` | Comma-separated allowed IPs | (all allowed) |
-| `LOG_LEVEL` | Logging level (debug/info/warn/error) | `info` |
-| `LOG_FILE_PATH` | Path to log file | `./logs/webhook-server.log` |
-| `ADMIN_API_KEY` | API key for admin operations | (optional) |
+| Variable                  | Description                           | Default                     |
+| ------------------------- | ------------------------------------- | --------------------------- |
+| `PORT`                    | Server port                           | `3000`                      |
+| `NODE_ENV`                | Environment (development/production)  | `development`               |
+| `WEBHOOK_SECRET`          | Secret key for signature verification | **Required**                |
+| `DATABASE_PATH`           | Path to SQLite database               | `./data/webhooks.db`        |
+| `RATE_LIMIT_WINDOW_MS`    | Rate limit window in milliseconds     | `900000` (15 min)           |
+| `RATE_LIMIT_MAX_REQUESTS` | Max requests per window               | `100`                       |
+| `ALLOWED_IPS`             | Comma-separated allowed IPs           | (all allowed)               |
+| `LOG_LEVEL`               | Logging level (debug/info/warn/error) | `info`                      |
+| `LOG_FILE_PATH`           | Path to log file                      | `./logs/webhook-server.log` |
+| `ADMIN_API_KEY`           | API key for admin operations          | (optional)                  |
 
 ### Generate Webhook Secret
 
@@ -123,6 +123,7 @@ GET /health
 Returns server health status.
 
 **Response:**
+
 ```json
 {
   "status": "healthy",
@@ -143,10 +144,12 @@ POST /webhooks/verification
 Receives verification success/failure and age verification events.
 
 **Headers:**
+
 - `Content-Type: application/json`
 - `X-Webhook-Signature: sha256=<signature>`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -164,6 +167,7 @@ POST /webhooks/revocation
 Receives credential revocation and expiration events.
 
 **Headers:**
+
 - `Content-Type: application/json`
 - `X-Webhook-Signature: sha256=<signature>`
 
@@ -179,6 +183,7 @@ GET /analytics?since=2024-01-01T00:00:00Z
 Get overall webhook analytics.
 
 **Response:**
+
 ```json
 {
   "totalEvents": 1234,
@@ -213,6 +218,7 @@ GET /analytics/events/type/:eventType?limit=100
 Retrieve events of a specific type.
 
 **Valid Event Types:**
+
 - `VERIFICATION_SUCCESS`
 - `VERIFICATION_FAILED`
 - `CREDENTIAL_REVOKED`
@@ -244,11 +250,11 @@ All webhook events follow this base structure:
 
 ```typescript
 {
-  id: string;           // UUID
-  timestamp: string;    // ISO 8601 datetime
-  eventType: string;    // Event type enum
-  apiVersion: string;   // API version (default: "1.0")
-  data: object;         // Event-specific data
+  id: string; // UUID
+  timestamp: string; // ISO 8601 datetime
+  eventType: string; // Event type enum
+  apiVersion: string; // API version (default: "1.0")
+  data: object; // Event-specific data
 }
 ```
 
@@ -398,10 +404,7 @@ The server verifies signatures using the following algorithm:
 import crypto from 'crypto';
 
 function verifySignature(payload: string, signature: string, secret: string): boolean {
-  const expectedSignature = crypto
-    .createHmac('sha256', secret)
-    .update(payload)
-    .digest('hex');
+  const expectedSignature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
 
   return crypto.timingSafeEqual(
     Buffer.from(signature.replace('sha256=', ''), 'hex'),
@@ -559,23 +562,23 @@ spec:
         app: webhook-server
     spec:
       containers:
-      - name: webhook-server
-        image: webhook-server:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: WEBHOOK_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: webhook-secrets
-              key: webhook-secret
-        volumeMounts:
-        - name: data
-          mountPath: /app/data
+        - name: webhook-server
+          image: webhook-server:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: webhook-secrets
+                  key: webhook-secret
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
       volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: webhook-data-pvc
+        - name: data
+          persistentVolumeClaim:
+            claimName: webhook-data-pvc
 ```
 
 ## Development
@@ -639,6 +642,7 @@ npm run db:migrate
 **Problem:** All webhooks return 401 Unauthorized
 
 **Solution:**
+
 - Verify `WEBHOOK_SECRET` matches the secret used by Aura Network
 - Check that raw body is being captured correctly
 - Ensure no middleware modifies the request body before verification
@@ -648,6 +652,7 @@ npm run db:migrate
 **Problem:** `SQLITE_BUSY` errors
 
 **Solution:**
+
 - Enable WAL mode (enabled by default)
 - Increase timeout: `db.pragma('busy_timeout = 5000')`
 - Reduce concurrent write operations
@@ -657,6 +662,7 @@ npm run db:migrate
 **Problem:** Legitimate requests being blocked
 
 **Solution:**
+
 - Increase `RATE_LIMIT_MAX_REQUESTS`
 - Extend `RATE_LIMIT_WINDOW_MS`
 - Implement per-user rate limiting instead of per-IP
@@ -666,6 +672,7 @@ npm run db:migrate
 **Problem:** Server crashes with OOM errors
 
 **Solution:**
+
 - Implement event cleanup: `DELETE FROM webhook_events WHERE created_at < datetime('now', '-30 days')`
 - Use pagination for analytics queries
 - Increase container memory limits
@@ -695,5 +702,6 @@ MIT
 ## Support
 
 For issues and questions:
+
 - GitHub Issues: [https://github.com/aura-network/aura-verifier-sdk/issues](https://github.com/aura-network/aura-verifier-sdk/issues)
 - Documentation: [https://docs.aurablockchain.org](https://docs.aurablockchain.org)

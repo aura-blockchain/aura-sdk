@@ -11,12 +11,10 @@ import {
   parseDID,
 } from '../network.js';
 
-const addressArb = fc.stringOf(
-  fc.constantFrom(
-    ..."abcdefghijklmnopqrstuvwxyz0123456789"
-  ),
-  { minLength: 6, maxLength: 64 }
-);
+const addressArb = fc.stringOf(fc.constantFrom(...'abcdefghijklmnopqrstuvwxyz0123456789'), {
+  minLength: 6,
+  maxLength: 64,
+});
 
 const networkArb = fc.constantFrom(NetworkType.MAINNET, NetworkType.TESTNET, NetworkType.LOCALNET);
 

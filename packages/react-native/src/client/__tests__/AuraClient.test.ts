@@ -80,7 +80,11 @@ describe('AuraClient', () => {
 
   it('builds presentations and verifies/submits them', async () => {
     await client.connect();
-    const request = { requestedCredentials: [{ type: 'University', required: true }], challenge: 'ch', domain: 'd' };
+    const request = {
+      requestedCredentials: [{ type: 'University', required: true }],
+      challenge: 'ch',
+      domain: 'd',
+    };
     const presentation = await client.createPresentation(['vc:1'], request as any);
     expect(presentation.verifiableCredential).toHaveLength(1);
 

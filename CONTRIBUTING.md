@@ -93,6 +93,7 @@ git checkout -b fix/issue-description
 ```
 
 **Branch Naming Convention:**
+
 - `feature/` - New features
 - `fix/` - Bug fixes
 - `docs/` - Documentation changes
@@ -183,10 +184,7 @@ All public APIs must be documented with JSDoc:
  * @returns Parsed and validated QR code data
  * @throws {QRParseError} If QR code format is invalid
  */
-export function parseQRCode(
-  qrString: string,
-  options?: QRParserOptions
-): QRCodeData {
+export function parseQRCode(qrString: string, options?: QRParserOptions): QRCodeData {
   // Implementation
 }
 ```
@@ -332,7 +330,7 @@ pnpm dev
 // Enable debug logging
 const verifier = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
-  debug: true  // Enables verbose logging
+  debug: true, // Enables verbose logging
 });
 ```
 

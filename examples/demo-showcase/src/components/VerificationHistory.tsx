@@ -35,9 +35,7 @@ export function VerificationHistory({ history, onClear }: VerificationHistoryPro
       {history.length === 0 ? (
         <div className="text-center py-12">
           <Clock className="w-16 h-16 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
-          <p className="text-gray-500 dark:text-gray-400">
-            No verification history yet
-          </p>
+          <p className="text-gray-500 dark:text-gray-400">No verification history yet</p>
           <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
             Completed verifications will appear here
           </p>
@@ -66,12 +64,16 @@ export function VerificationHistory({ history, onClear }: VerificationHistoryPro
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1">
-                        <div className={`font-semibold ${
-                          item.status === 'success'
-                            ? 'text-green-700 dark:text-green-400'
-                            : 'text-red-700 dark:text-red-400'
-                        }`}>
-                          {item.status === 'success' ? 'Verified Successfully' : 'Verification Failed'}
+                        <div
+                          className={`font-semibold ${
+                            item.status === 'success'
+                              ? 'text-green-700 dark:text-green-400'
+                              : 'text-red-700 dark:text-red-400'
+                          }`}
+                        >
+                          {item.status === 'success'
+                            ? 'Verified Successfully'
+                            : 'Verification Failed'}
                         </div>
                         <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                           {new Date(item.timestamp).toLocaleString()}
@@ -110,7 +112,10 @@ export function VerificationHistory({ history, onClear }: VerificationHistoryPro
           <div className="flex justify-between text-sm mt-2">
             <span className="text-gray-600 dark:text-gray-400">Success Rate</span>
             <span className="font-semibold text-green-600 dark:text-green-400">
-              {Math.round((history.filter(h => h.status === 'success').length / history.length) * 100)}%
+              {Math.round(
+                (history.filter((h) => h.status === 'success').length / history.length) * 100
+              )}
+              %
             </span>
           </div>
         </div>

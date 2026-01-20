@@ -8,25 +8,29 @@
 ## Completed Work (This Session)
 
 ### Test Coverage Improvements
+
 - **Starting point:** ~64% coverage with 891 tests
 - **Current state:** ~92.5% coverage with 1484 tests (593 new tests added)
 
 ### Tests Added
-| Module | Tests Added | Status |
-|--------|-------------|--------|
-| `src/verifier.ts` | 17 new tests | 53% → 100% coverage |
-| `src/security/threat-detector.ts` | 40 tests | 99.84% coverage |
-| `src/grpc/errors.ts` | 38 tests | 100% coverage |
-| `src/verification/events.ts` | 41 tests | 100% coverage |
-| `src/verification/result.ts` | 89 tests | 100% coverage |
-| `src/qr/parser.ts` | 59 tests | 94% coverage |
-| `src/offline/offline-verifier.ts` | 26 tests | 94.5% coverage |
-| `src/grpc/endpoints.ts` | 67 tests | 100% coverage |
+
+| Module                            | Tests Added  | Status              |
+| --------------------------------- | ------------ | ------------------- |
+| `src/verifier.ts`                 | 17 new tests | 53% → 100% coverage |
+| `src/security/threat-detector.ts` | 40 tests     | 99.84% coverage     |
+| `src/grpc/errors.ts`              | 38 tests     | 100% coverage       |
+| `src/verification/events.ts`      | 41 tests     | 100% coverage       |
+| `src/verification/result.ts`      | 89 tests     | 100% coverage       |
+| `src/qr/parser.ts`                | 59 tests     | 94% coverage        |
+| `src/offline/offline-verifier.ts` | 26 tests     | 94.5% coverage      |
+| `src/grpc/endpoints.ts`           | 67 tests     | 100% coverage       |
 
 ### Bug Fixes
+
 1. **ThreatDetector geo-anomaly detection** - Fixed race condition where location was added to history before anomaly detection ran (`src/security/threat-detector.ts:479-499`)
 
 ### Configuration Updates
+
 - Updated `vitest.config.ts` to exclude non-code files from coverage:
   - Benchmark files (`**/benchmarks/**`)
   - Example files (`**/examples/**`, `**/*-example*.ts`)
@@ -56,6 +60,7 @@ src/verification   |   92.64% |    91.69% |   98.63% |   92.64%
 ### HIGH Priority
 
 1. **Add tests for remaining low-coverage files:**
+
    - `src/crypto/setup.ts` - 73.91% coverage (initialization code)
    - `src/offline/storage.ts` - 67.75% coverage (BrowserStorage needs JSDOM environment)
    - `src/grpc/queries.ts` - 79.06% coverage
@@ -67,6 +72,7 @@ src/verification   |   92.64% |    91.69% |   98.63% |   92.64%
 ### MEDIUM Priority
 
 3. **Documentation:**
+
    - API documentation for public interfaces
    - Usage examples for common scenarios
 

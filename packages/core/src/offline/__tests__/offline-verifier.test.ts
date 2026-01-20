@@ -17,8 +17,8 @@ function createMockClient(overrides: Record<string, unknown> = {}) {
       expirationDate: '2025-01-01T00:00:00Z',
       credentialSubject: {
         id: 'did:aura:mainnet:holder',
-        name: 'John Doe'
-      }
+        name: 'John Doe',
+      },
     }),
     isCredentialRevoked: vi.fn().mockResolvedValue(false),
     ...overrides,
@@ -37,8 +37,8 @@ function createMockCachedCredential(overrides: Partial<CachedCredential> = {}): 
       issuanceDate: '2024-01-01T00:00:00Z',
       credentialSubject: {
         id: 'did:aura:mainnet:holder',
-        name: 'John Doe'
-      }
+        name: 'John Doe',
+      },
     },
     holderDid: 'did:aura:mainnet:holder',
     issuerDid: 'did:aura:mainnet:issuer',

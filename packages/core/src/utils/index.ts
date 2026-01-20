@@ -437,7 +437,7 @@ export function hexToBytes(hex: string): Uint8Array {
  */
 export function bytesToHex(bytes: Uint8Array): string {
   return Array.from(bytes)
-    .map(byte => byte.toString(16).padStart(2, '0'))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
     .join('');
 }
 
@@ -469,7 +469,7 @@ export function deepClone<T>(obj: T): T {
  * ```
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -552,7 +552,9 @@ export function isBrowser(): boolean {
  * @returns True if Node.js, false if browser
  */
 export function isNode(): boolean {
-  return typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
+  return (
+    typeof process !== 'undefined' && process.versions != null && process.versions.node != null
+  );
 }
 
 /**

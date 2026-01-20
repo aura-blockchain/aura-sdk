@@ -15,9 +15,11 @@ new AuraVerifier(config: AuraVerifierConfig)
 Creates a new `AuraVerifier` instance.
 
 **Parameters:**
+
 - `config` - Configuration object (see [Configuration](../getting-started/configuration.md))
 
 **Example:**
+
 ```typescript
 const verifier = new AuraVerifier({
   network: 'mainnet',
@@ -27,6 +29,7 @@ const verifier = new AuraVerifier({
 ```
 
 **Throws:**
+
 - `ConfigurationError` - If configuration is invalid
 
 ---
@@ -44,10 +47,12 @@ Initializes the verifier and establishes blockchain connectivity. Must be called
 **Returns:** Promise that resolves when initialization is complete
 
 **Throws:**
+
 - `NetworkError` - If unable to connect to blockchain
 - `ConfigurationError` - If configuration is invalid
 
 **Example:**
+
 ```typescript
 const verifier = new AuraVerifier({ network: 'mainnet' });
 await verifier.initialize();
@@ -64,16 +69,17 @@ async verify(request: VerificationRequest): Promise<VerificationResult>
 Verifies a credential presentation from a QR code.
 
 **Parameters:**
+
 - `request` - Verification request object
 
 ```typescript
 interface VerificationRequest {
-  qrCodeData: string;                    // QR code string
-  verifierAddress?: string;              // Optional verifier DID/address
-  requiredVCTypes?: VCType[];           // Required credential types
-  maxCredentialAge?: number;            // Max age in seconds
+  qrCodeData: string; // QR code string
+  verifierAddress?: string; // Optional verifier DID/address
+  requiredVCTypes?: VCType[]; // Required credential types
+  maxCredentialAge?: number; // Max age in seconds
   requiredDisclosures?: Partial<DisclosureContext>;
-  offlineOnly?: boolean;                // Use cache only
+  offlineOnly?: boolean; // Use cache only
 }
 ```
 
@@ -81,23 +87,24 @@ interface VerificationRequest {
 
 ```typescript
 interface VerificationResult {
-  isValid: boolean;                      // Overall status
-  holderDID: string;                     // Holder's DID
-  verifiedAt: Date;                      // Verification timestamp
-  vcDetails: VCVerificationDetail[];     // Credential details
-  attributes: DiscloseableAttributes;    // Disclosed attributes
-  verificationError?: string;            // Error if failed
-  auditId: string;                       // Unique audit ID
-  networkLatency: number;                // Response time (ms)
-  verificationMethod: VerificationMethod;// 'online' | 'offline' | 'cached'
-  presentationId: string;                // Presentation ID
-  expiresAt: Date;                       // QR expiration time
-  signatureValid: boolean;               // Signature status
-  metadata?: Record<string, unknown>;    // Additional data
+  isValid: boolean; // Overall status
+  holderDID: string; // Holder's DID
+  verifiedAt: Date; // Verification timestamp
+  vcDetails: VCVerificationDetail[]; // Credential details
+  attributes: DiscloseableAttributes; // Disclosed attributes
+  verificationError?: string; // Error if failed
+  auditId: string; // Unique audit ID
+  networkLatency: number; // Response time (ms)
+  verificationMethod: VerificationMethod; // 'online' | 'offline' | 'cached'
+  presentationId: string; // Presentation ID
+  expiresAt: Date; // QR expiration time
+  signatureValid: boolean; // Signature status
+  metadata?: Record<string, unknown>; // Additional data
 }
 ```
 
 **Throws:**
+
 - `QRParseError` - If QR code parsing fails
 - `QRExpiredError` - If QR code has expired
 - `VerificationError` - If verification fails
@@ -105,6 +112,7 @@ interface VerificationResult {
 - `TimeoutError` - If request times out
 
 **Example:**
+
 ```typescript
 try {
   const result = await verifier.verify({
@@ -133,17 +141,15 @@ async verifyBatch(requests: VerificationRequest[]): Promise<VerificationResult[]
 Verifies multiple credentials concurrently.
 
 **Parameters:**
+
 - `requests` - Array of verification requests
 
 **Returns:** Promise resolving to array of `VerificationResult` (errors are filtered out)
 
 **Example:**
+
 ```typescript
-const requests = [
-  { qrCodeData: qr1 },
-  { qrCodeData: qr2 },
-  { qrCodeData: qr3 },
-];
+const requests = [{ qrCodeData: qr1 }, { qrCodeData: qr2 }, { qrCodeData: qr3 }];
 
 const results = await verifier.verifyBatch(requests);
 
@@ -165,11 +171,13 @@ async isAge21Plus(qrCodeData: string): Promise<boolean>
 Convenience method to check if holder is 21 years or older.
 
 **Parameters:**
+
 - `qrCodeData` - QR code string
 
 **Returns:** `true` if verified and over 21, `false` otherwise
 
 **Example:**
+
 ```typescript
 const isOver21 = await verifier.isAge21Plus(qrCodeData);
 
@@ -191,11 +199,13 @@ async isAge18Plus(qrCodeData: string): Promise<boolean>
 Convenience method to check if holder is 18 years or older.
 
 **Parameters:**
+
 - `qrCodeData` - QR code string
 
 **Returns:** `true` if verified and over 18, `false` otherwise
 
 **Example:**
+
 ```typescript
 const isOver18 = await verifier.isAge18Plus(qrCodeData);
 
@@ -215,11 +225,13 @@ async isVerifiedHuman(qrCodeData: string): Promise<boolean>
 Convenience method to check if holder has proof-of-humanity and biometric credentials.
 
 **Parameters:**
+
 - `qrCodeData` - QR code string
 
 **Returns:** `true` if verified human, `false` otherwise
 
 **Example:**
+
 ```typescript
 const isHuman = await verifier.isVerifiedHuman(qrCodeData);
 
@@ -239,17 +251,20 @@ async getAuraScore(qrCodeData: string): Promise<number | null>
 Calculates an Aura trust score (0-100) based on credential diversity, on-chain presence, and signature validity.
 
 **Parameters:**
+
 - `qrCodeData` - QR code string
 
 **Returns:** Score from 0-100, or `null` if verification failed
 
 **Scoring:**
+
 - Base: 30 points for valid verification
 - Credential diversity: Up to 30 points (10 per unique VC type)
 - On-chain presence: Up to 20 points (10 per on-chain VC)
 - Signature validity: 20 points
 
 **Example:**
+
 ```typescript
 const score = await verifier.getAuraScore(qrCodeData);
 
@@ -275,6 +290,7 @@ async checkCredentialStatus(vcId: string): Promise<VCStatus>
 Checks the status of a specific credential on-chain.
 
 **Parameters:**
+
 - `vcId` - Verifiable Credential ID
 
 **Returns:** Credential status enum value
@@ -290,6 +306,7 @@ enum VCStatus {
 ```
 
 **Example:**
+
 ```typescript
 const status = await verifier.checkCredentialStatus('vc-123');
 
@@ -317,11 +334,13 @@ async resolveDID(did: string): Promise<DIDDocument | null>
 Resolves a DID to its DID Document.
 
 **Parameters:**
+
 - `did` - Decentralized Identifier string (e.g., `did:aura:mainnet:abc123`)
 
 **Returns:** DID Document or `null` if not found
 
 **Example:**
+
 ```typescript
 const didDoc = await verifier.resolveDID('did:aura:mainnet:abc123');
 
@@ -342,6 +361,7 @@ async enableOfflineMode(): Promise<void>
 Enables offline mode - uses cached data only, no network requests.
 
 **Example:**
+
 ```typescript
 await verifier.enableOfflineMode();
 console.log('Offline mode enabled');
@@ -358,6 +378,7 @@ async disableOfflineMode(): Promise<void>
 Disables offline mode - resumes network requests.
 
 **Example:**
+
 ```typescript
 await verifier.disableOfflineMode();
 console.log('Online mode enabled');
@@ -388,6 +409,7 @@ interface SyncResult {
 ```
 
 **Example:**
+
 ```typescript
 const result = await verifier.syncCache();
 
@@ -408,10 +430,12 @@ on(event: VerifierEvent, handler: EventHandler): void
 Registers an event handler.
 
 **Parameters:**
+
 - `event` - Event type: `'verification'` | `'error'` | `'sync'` | `'cache_update'`
 - `handler` - Event handler function
 
 **Example:**
+
 ```typescript
 verifier.on('verification', (data: VerificationEventData) => {
   console.log('Verification:', data.result.auditId, data.result.isValid);
@@ -439,10 +463,12 @@ off(event: VerifierEvent, handler: EventHandler): void
 Unregisters an event handler.
 
 **Parameters:**
+
 - `event` - Event type
 - `handler` - Handler function to remove
 
 **Example:**
+
 ```typescript
 const handler = (data) => console.log(data);
 
@@ -462,6 +488,7 @@ async destroy(): Promise<void>
 Destroys the verifier instance, saves cache, and cleans up resources. Call before application shutdown.
 
 **Example:**
+
 ```typescript
 process.on('SIGTERM', async () => {
   await verifier.destroy();
@@ -476,7 +503,7 @@ process.on('SIGTERM', async () => {
 ### config
 
 ```typescript
-config: Required<AuraVerifierConfig>
+config: Required<AuraVerifierConfig>;
 ```
 
 Read-only configuration object. Access via:

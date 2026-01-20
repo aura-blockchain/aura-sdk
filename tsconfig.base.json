@@ -48,11 +48,5 @@
     "allowUnreachableCode": false,
     "exactOptionalPropertyTypes": false
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "coverage",
-    "**/*.spec.ts",
-    "**/*.test.ts"
-  ]
+  "exclude": ["node_modules", "dist", "coverage", "**/*.spec.ts", "**/*.test.ts"]
 }

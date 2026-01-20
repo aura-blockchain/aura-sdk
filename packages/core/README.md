@@ -46,12 +46,14 @@ await verifier.destroy();
 Main SDK class for credential verification.
 
 **Constructor Options:**
+
 - `rpcEndpoint` - Aura Network RPC endpoint
 - `restEndpoint` - REST API endpoint (optional)
 - `timeout` - Request timeout in milliseconds (default: 30000)
 - `network` - Network preset: 'mainnet' | 'testnet' | 'local'
 
 **Methods:**
+
 - `initialize()` - Connect to the network
 - `verify(options)` - Verify a credential presentation
 - `destroy()` - Clean up resources
@@ -91,7 +93,7 @@ import { parseQRCode } from '@aura-network/verifier-sdk';
 
 const qrData = parseQRCode('aura://verify?data=...');
 
-console.log(qrData.h);   // Holder DID
+console.log(qrData.h); // Holder DID
 console.log(qrData.vcs); // Credential IDs
 console.log(qrData.ctx); // Disclosure context
 console.log(qrData.exp); // Expiration timestamp
@@ -99,11 +101,11 @@ console.log(qrData.exp); // Expiration timestamp
 
 ## Network Endpoints
 
-| Network | RPC | REST |
-|---------|-----|------|
+| Network           | RPC                                    | REST                                   |
+| ----------------- | -------------------------------------- | -------------------------------------- |
 | Testnet (Current) | https://testnet-rpc.aurablockchain.org | https://testnet-api.aurablockchain.org |
-| Local | http://localhost:26657 | http://localhost:1317 |
-| Mainnet (TBD) | https://mainnet-rpc.aurablockchain.org | https://mainnet-api.aurablockchain.org |
+| Local             | http://localhost:26657                 | http://localhost:1317                  |
+| Mainnet (TBD)     | https://mainnet-rpc.aurablockchain.org | https://mainnet-api.aurablockchain.org |
 
 ## Requirements
 

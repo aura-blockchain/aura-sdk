@@ -32,23 +32,26 @@ constructor(config: AuraVerifierConfig)
 ```
 
 **Parameters:**
+
 - `config: AuraVerifierConfig` - Verifier configuration
 
 **AuraVerifierConfig Interface:**
+
 ```typescript
 interface AuraVerifierConfig {
-  network: NetworkType;           // 'mainnet' | 'testnet' | 'local'
-  grpcEndpoint?: string;           // Custom gRPC endpoint (optional)
-  restEndpoint?: string;           // Custom REST endpoint (optional)
-  offlineMode?: boolean;           // Enable offline mode (default: false)
-  cacheConfig?: CacheConfig;       // Cache configuration
-  timeout?: number;                // Request timeout in ms (default: 30000)
-  verbose?: boolean;               // Enable verbose logging (default: false)
-  chainId?: string;                // Custom chain ID (for local networks)
+  network: NetworkType; // 'mainnet' | 'testnet' | 'local'
+  grpcEndpoint?: string; // Custom gRPC endpoint (optional)
+  restEndpoint?: string; // Custom REST endpoint (optional)
+  offlineMode?: boolean; // Enable offline mode (default: false)
+  cacheConfig?: CacheConfig; // Cache configuration
+  timeout?: number; // Request timeout in ms (default: 30000)
+  verbose?: boolean; // Enable verbose logging (default: false)
+  chainId?: string; // Custom chain ID (for local networks)
 }
 ```
 
 **Example:**
+
 ```typescript
 import { AuraVerifier } from '@aura-network/verifier-sdk';
 
@@ -61,8 +64,8 @@ const verifier = new AuraVerifier({
     enableDIDCache: true,
     enableVCCache: true,
     ttl: 300,
-    maxSize: 50
-  }
+    maxSize: 50,
+  },
 });
 ```
 
@@ -77,6 +80,7 @@ async initialize(): Promise<void>
 ```
 
 **Example:**
+
 ```typescript
 await verifier.initialize();
 ```
@@ -92,49 +96,54 @@ async verify(request: VerificationRequest): Promise<VerificationResult>
 ```
 
 **Parameters:**
+
 - `request: VerificationRequest` - Verification request parameters
 
 **VerificationRequest Interface:**
+
 ```typescript
 interface VerificationRequest {
-  qrCodeData: string;                          // QR code data string
-  verifierAddress?: string;                    // Verifier DID/address for audit
-  requiredVCTypes?: VCType[];                  // Required credential types
-  maxCredentialAge?: number;                   // Max credential age in seconds
+  qrCodeData: string; // QR code data string
+  verifierAddress?: string; // Verifier DID/address for audit
+  requiredVCTypes?: VCType[]; // Required credential types
+  maxCredentialAge?: number; // Max credential age in seconds
   requiredDisclosures?: Partial<DisclosureContext>;
-  offlineOnly?: boolean;                       // Use cached data only
+  offlineOnly?: boolean; // Use cached data only
 }
 ```
 
 **Returns:**
+
 - `Promise<VerificationResult>` - Verification result
 
 **VerificationResult Interface:**
+
 ```typescript
 interface VerificationResult {
-  isValid: boolean;                           // Overall verification status
-  holderDID: string;                          // Holder's DID
-  verifiedAt: Date;                           // Verification timestamp
-  vcDetails: VCVerificationDetail[];          // Details of each credential
-  attributes: DiscloseableAttributes;         // Disclosed attributes
-  verificationError?: string;                 // Error message if failed
-  auditId: string;                            // Unique audit ID
-  networkLatency: number;                     // Network latency in ms
-  verificationMethod: VerificationStrategy;   // 'online' | 'offline' | 'cached'
-  presentationId: string;                     // Presentation ID from QR
-  expiresAt: Date;                            // QR code expiration time
-  signatureValid: boolean;                    // Signature verification status
-  metadata?: Record<string, unknown>;         // Additional metadata
+  isValid: boolean; // Overall verification status
+  holderDID: string; // Holder's DID
+  verifiedAt: Date; // Verification timestamp
+  vcDetails: VCVerificationDetail[]; // Details of each credential
+  attributes: DiscloseableAttributes; // Disclosed attributes
+  verificationError?: string; // Error message if failed
+  auditId: string; // Unique audit ID
+  networkLatency: number; // Network latency in ms
+  verificationMethod: VerificationStrategy; // 'online' | 'offline' | 'cached'
+  presentationId: string; // Presentation ID from QR
+  expiresAt: Date; // QR code expiration time
+  signatureValid: boolean; // Signature verification status
+  metadata?: Record<string, unknown>; // Additional metadata
 }
 ```
 
 **Example:**
+
 ```typescript
 const result = await verifier.verify({
   qrCodeData: qrString,
   verifierAddress: 'aura1verifier...',
   requiredVCTypes: [VCType.PROOF_OF_HUMANITY],
-  maxCredentialAge: 86400 // 24 hours
+  maxCredentialAge: 86400, // 24 hours
 });
 
 if (result.isValid) {
@@ -157,17 +166,20 @@ async verifyBatch(requests: VerificationRequest[]): Promise<VerificationResult[]
 ```
 
 **Parameters:**
+
 - `requests: VerificationRequest[]` - Array of verification requests
 
 **Returns:**
+
 - `Promise<VerificationResult[]>` - Array of verification results
 
 **Example:**
+
 ```typescript
 const results = await verifier.verifyBatch([
   { qrCodeData: qr1 },
   { qrCodeData: qr2 },
-  { qrCodeData: qr3 }
+  { qrCodeData: qr3 },
 ]);
 
 results.forEach((result, index) => {
@@ -188,6 +200,7 @@ async isAge21Plus(qrCodeData: string): Promise<boolean>
 ```
 
 **Example:**
+
 ```typescript
 const isOver21 = await verifier.isAge21Plus(qrString);
 if (isOver21) {
@@ -226,9 +239,11 @@ async getAuraScore(qrCodeData: string): Promise<number | null>
 ```
 
 **Returns:**
+
 - `Promise<number | null>` - Trust score 0-100, or null if verification failed
 
 **Example:**
+
 ```typescript
 const score = await verifier.getAuraScore(qrString);
 console.log(`Trust score: ${score}/100`);
@@ -247,6 +262,7 @@ async checkCredentialStatus(vcId: string): Promise<VCStatus>
 ```
 
 **Returns:**
+
 - `Promise<VCStatus>` - Credential status ('active' | 'revoked' | 'expired' | 'suspended' | 'unknown')
 
 ---
@@ -260,6 +276,7 @@ async resolveDID(did: string): Promise<DIDDocument | null>
 ```
 
 **Returns:**
+
 - `Promise<DIDDocument | null>` - DID document or null if not found
 
 ---
@@ -293,9 +310,11 @@ async syncCache(): Promise<SyncResult>
 ```
 
 **Returns:**
+
 - `Promise<SyncResult>` - Synchronization result
 
 **SyncResult Interface:**
+
 ```typescript
 interface SyncResult {
   success: boolean;
@@ -321,12 +340,14 @@ on(event: VerifierEvent, handler: EventHandler): void
 ```
 
 **Event Types:**
+
 - `'verification'` - Verification completed
 - `'error'` - Error occurred
 - `'sync'` - Cache synchronized
 - `'cache_update'` - Cache updated
 
 **Example:**
+
 ```typescript
 verifier.on('verification', (data: VerificationEventData) => {
   console.log('Verification completed:', data.result.isValid);
@@ -358,6 +379,7 @@ async destroy(): Promise<void>
 ```
 
 **Example:**
+
 ```typescript
 await verifier.destroy();
 ```
@@ -375,23 +397,25 @@ constructor(config: VerifierConfig)
 ```
 
 **VerifierConfig Interface:**
+
 ```typescript
 interface VerifierConfig {
-  rpcEndpoint: string;      // RPC endpoint URL (required)
-  restEndpoint?: string;    // REST endpoint URL (optional)
-  timeout?: number;         // Request timeout in ms (default: 30000)
-  debug?: boolean;          // Enable debug logging (default: false)
+  rpcEndpoint: string; // RPC endpoint URL (required)
+  restEndpoint?: string; // REST endpoint URL (optional)
+  timeout?: number; // Request timeout in ms (default: 30000)
+  debug?: boolean; // Enable debug logging (default: false)
 }
 ```
 
 **Example:**
+
 ```typescript
 import { VerifierSDK } from '@aura-network/verifier-sdk';
 
 const sdk = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
   timeout: 30000,
-  debug: false
+  debug: false,
 });
 ```
 
@@ -406,22 +430,24 @@ async verifySignature(request: SignatureVerificationRequest): Promise<Verificati
 ```
 
 **SignatureVerificationRequest Interface:**
+
 ```typescript
 interface SignatureVerificationRequest {
-  publicKey: string;              // Public key in hex format
-  message: string | Uint8Array;   // Message to verify
-  signature: string;              // Signature in hex format
-  algorithm: SignatureAlgorithm;  // 'ed25519' | 'secp256k1'
+  publicKey: string; // Public key in hex format
+  message: string | Uint8Array; // Message to verify
+  signature: string; // Signature in hex format
+  algorithm: SignatureAlgorithm; // 'ed25519' | 'secp256k1'
 }
 ```
 
 **Example:**
+
 ```typescript
 const result = await sdk.verifySignature({
   publicKey: 'a1b2c3...',
   message: 'Hello, Aura!',
   signature: 'd4e5f6...',
-  algorithm: 'ed25519'
+  algorithm: 'ed25519',
 });
 
 console.log('Signature valid:', result.valid);
@@ -438,11 +464,12 @@ async verifyTransaction(request: TransactionVerificationRequest): Promise<Verifi
 ```
 
 **TransactionVerificationRequest Interface:**
+
 ```typescript
 interface TransactionVerificationRequest {
-  txHash: string;           // Transaction hash
-  signerAddress: string;    // Expected signer address
-  chainId: string;          // Chain ID
+  txHash: string; // Transaction hash
+  signerAddress: string; // Expected signer address
+  chainId: string; // Chain ID
 }
 ```
 
@@ -457,10 +484,11 @@ hash(request: HashRequest): string | Uint8Array
 ```
 
 **HashRequest Interface:**
+
 ```typescript
 interface HashRequest {
   data: string | Uint8Array;
-  algorithm: HashAlgorithm;      // 'sha256' | 'sha512' | 'keccak256'
+  algorithm: HashAlgorithm; // 'sha256' | 'sha512' | 'keccak256'
   encoding?: 'hex' | 'base64' | 'bytes';
 }
 ```
@@ -476,12 +504,13 @@ deriveAddress(request: AddressDerivationRequest): string
 ```
 
 **AddressDerivationRequest Interface:**
+
 ```typescript
 interface AddressDerivationRequest {
   publicKey: string;
-  publicKeyFormat: PublicKeyFormat;  // 'hex' | 'base64' | 'bech32'
-  prefix: string;                    // Address prefix (e.g., 'aura')
-  algorithm: SignatureAlgorithm;     // 'ed25519' | 'secp256k1'
+  publicKeyFormat: PublicKeyFormat; // 'hex' | 'base64' | 'bech32'
+  prefix: string; // Address prefix (e.g., 'aura')
+  algorithm: SignatureAlgorithm; // 'ed25519' | 'secp256k1'
 }
 ```
 
@@ -526,34 +555,35 @@ async disconnect(): Promise<void>
 Parse QR code string to structured data.
 
 ```typescript
-function parseQRCode(
-  qrString: string,
-  options?: QRParserOptions
-): QRCodeData
+function parseQRCode(qrString: string, options?: QRParserOptions): QRCodeData;
 ```
 
 **Parameters:**
+
 - `qrString: string` - QR code data string
 - `options?: QRParserOptions` - Parser options
 
 **Returns:**
+
 - `QRCodeData` - Parsed QR code data
 
 **QRCodeData Interface:**
+
 ```typescript
 interface QRCodeData {
-  v: string;              // Protocol version
-  p: string;              // Presentation ID
-  h: string;              // Holder DID
-  vcs: string[];          // Verifiable Credential IDs
+  v: string; // Protocol version
+  p: string; // Presentation ID
+  h: string; // Holder DID
+  vcs: string[]; // Verifiable Credential IDs
   ctx: DisclosureContext; // Disclosure context
-  exp: number;            // Expiration timestamp (Unix)
-  n: number;              // Nonce
-  sig: string;            // Signature (hex)
+  exp: number; // Expiration timestamp (Unix)
+  n: number; // Nonce
+  sig: string; // Signature (hex)
 }
 ```
 
 **Example:**
+
 ```typescript
 import { parseQRCode } from '@aura-network/verifier-sdk';
 
@@ -569,13 +599,11 @@ console.log('Credentials:', qrData.vcs);
 Safe version that returns result object instead of throwing.
 
 ```typescript
-function parseQRCodeSafe(
-  qrString: string,
-  options?: QRParserOptions
-): ParseResult
+function parseQRCodeSafe(qrString: string, options?: QRParserOptions): ParseResult;
 ```
 
 **ParseResult Interface:**
+
 ```typescript
 interface ParseResult {
   success: boolean;
@@ -591,13 +619,11 @@ interface ParseResult {
 Validate parsed QR code data.
 
 ```typescript
-function validateQRCodeData(
-  qrData: QRCodeData,
-  options?: QRValidatorOptions
-): ValidationResult
+function validateQRCodeData(qrData: QRCodeData, options?: QRValidatorOptions): ValidationResult;
 ```
 
 **ValidationResult Interface:**
+
 ```typescript
 interface ValidationResult {
   valid: boolean;
@@ -622,7 +648,7 @@ function parseAndValidateQRCode(
     validateDID?: boolean;
     validateSignature?: boolean;
   }
-): QRCodeData
+): QRCodeData;
 ```
 
 ---
@@ -640,6 +666,7 @@ constructor(config: AuraClientConfig)
 ```
 
 **AuraClientConfig Interface:**
+
 ```typescript
 interface AuraClientConfig {
   grpcEndpoint: string;
@@ -652,8 +679,8 @@ interface AuraClientConfig {
 #### Factory Functions
 
 ```typescript
-function createAuraClient(config: AuraClientConfig): AuraClient
-function connectAuraClient(config: AuraClientConfig): Promise<AuraClient>
+function createAuraClient(config: AuraClientConfig): AuraClient;
+function connectAuraClient(config: AuraClientConfig): Promise<AuraClient>;
 ```
 
 ---
@@ -716,16 +743,17 @@ function createOfflineVerifier(options: {
     syncOnStartup?: boolean;
     wifiOnly?: boolean;
   };
-})
+});
 ```
 
 **Example:**
+
 ```typescript
 import { createOfflineVerifier, createAuraClient } from '@aura-network/verifier-sdk';
 
 const client = createAuraClient({
   grpcEndpoint: 'https://rpc.aurablockchain.org:9090',
-  restEndpoint: 'https://api.aurablockchain.org'
+  restEndpoint: 'https://api.aurablockchain.org',
 });
 
 const offlineVerifier = createOfflineVerifier({
@@ -733,13 +761,13 @@ const offlineVerifier = createOfflineVerifier({
   cacheConfig: {
     maxAge: 3600,
     maxEntries: 1000,
-    persistToDisk: true
+    persistToDisk: true,
   },
   autoSync: {
     enabled: true,
     intervalMs: 300000, // 5 minutes
-    syncOnStartup: true
-  }
+    syncOnStartup: true,
+  },
 });
 
 // Verify credential
@@ -762,10 +790,11 @@ constructor(config?: NonceManagerConfig)
 ```
 
 **NonceManagerConfig Interface:**
+
 ```typescript
 interface NonceManagerConfig {
-  nonceWindow?: number;      // Nonce validity window in ms (default: 300000)
-  cleanupInterval?: number;  // Cleanup interval in ms (default: 60000)
+  nonceWindow?: number; // Nonce validity window in ms (default: 300000)
+  cleanupInterval?: number; // Cleanup interval in ms (default: 60000)
 }
 ```
 
@@ -778,6 +807,7 @@ stop(): void
 ```
 
 **Example:**
+
 ```typescript
 import { NonceManager } from '@aura-network/verifier-sdk';
 
@@ -802,11 +832,12 @@ constructor(config?: RateLimiterConfig)
 ```
 
 **RateLimiterConfig Interface:**
+
 ```typescript
 interface RateLimiterConfig {
-  maxRequests?: number;    // Max requests per window (default: 100)
-  windowMs?: number;       // Time window in ms (default: 60000)
-  burstCapacity?: number;  // Burst capacity (default: 120)
+  maxRequests?: number; // Max requests per window (default: 100)
+  windowMs?: number; // Time window in ms (default: 60000)
+  burstCapacity?: number; // Burst capacity (default: 120)
 }
 ```
 
@@ -820,12 +851,13 @@ stop(): void
 ```
 
 **Example:**
+
 ```typescript
 import { RateLimiter } from '@aura-network/verifier-sdk';
 
 const limiter = new RateLimiter({
   maxRequests: 100,
-  windowMs: 60000
+  windowMs: 60000,
 });
 
 const allowed = await limiter.checkLimit('user-did');
@@ -873,6 +905,7 @@ stop(): void
 ```
 
 **Example:**
+
 ```typescript
 import { AuditLogger, AuditOutcome } from '@aura-network/verifier-sdk';
 
@@ -882,7 +915,7 @@ await logger.logVerificationAttempt({
   actor: 'did:aura:verifier123',
   target: 'vc-456',
   outcome: AuditOutcome.SUCCESS,
-  details: { ip: '192.168.1.1' }
+  details: { ip: '192.168.1.1' },
 });
 ```
 
@@ -914,10 +947,11 @@ stop(): void
 Factory function for secure verifier with all protections.
 
 ```typescript
-function createSecureVerifier(config?: SecurityConfig): SecureVerifierContext
+function createSecureVerifier(config?: SecurityConfig): SecureVerifierContext;
 ```
 
 **Example:**
+
 ```typescript
 import { createSecureVerifier } from '@aura-network/verifier-sdk';
 
@@ -929,8 +963,8 @@ const secureContext = createSecureVerifier({
   threatConfig: {
     onThreatDetected: (event) => {
       console.error('Threat detected:', event);
-    }
-  }
+    },
+  },
 });
 
 // Use security components
@@ -952,19 +986,19 @@ async function verifyEd25519Signature(
   publicKey: Uint8Array,
   message: Uint8Array,
   signature: Uint8Array
-): Promise<boolean>
+): Promise<boolean>;
 
 function verifyEd25519SignatureSync(
   publicKey: Uint8Array,
   message: Uint8Array,
   signature: Uint8Array
-): boolean
+): boolean;
 
-function isValidEd25519PublicKey(publicKey: Uint8Array): boolean
-function isValidEd25519Signature(signature: Uint8Array): boolean
+function isValidEd25519PublicKey(publicKey: Uint8Array): boolean;
+function isValidEd25519Signature(signature: Uint8Array): boolean;
 
-const ED25519_PUBLIC_KEY_LENGTH = 32
-const ED25519_SIGNATURE_LENGTH = 64
+const ED25519_PUBLIC_KEY_LENGTH = 32;
+const ED25519_SIGNATURE_LENGTH = 64;
 ```
 
 ---
@@ -976,20 +1010,20 @@ async function verifySecp256k1Signature(
   publicKey: Uint8Array,
   message: Uint8Array,
   signature: Uint8Array
-): Promise<boolean>
+): Promise<boolean>;
 
 function verifySecp256k1SignatureSync(
   publicKey: Uint8Array,
   message: Uint8Array,
   signature: Uint8Array
-): boolean
+): boolean;
 
-function isValidSecp256k1PublicKey(publicKey: Uint8Array): boolean
-function isValidSecp256k1Signature(signature: Uint8Array): boolean
+function isValidSecp256k1PublicKey(publicKey: Uint8Array): boolean;
+function isValidSecp256k1Signature(signature: Uint8Array): boolean;
 
-const SECP256K1_COMPRESSED_PUBLIC_KEY_LENGTH = 33
-const SECP256K1_UNCOMPRESSED_PUBLIC_KEY_LENGTH = 65
-const SECP256K1_SIGNATURE_LENGTH = 64
+const SECP256K1_COMPRESSED_PUBLIC_KEY_LENGTH = 33;
+const SECP256K1_UNCOMPRESSED_PUBLIC_KEY_LENGTH = 65;
+const SECP256K1_SIGNATURE_LENGTH = 64;
 ```
 
 ---
@@ -997,11 +1031,11 @@ const SECP256K1_SIGNATURE_LENGTH = 64
 ### Hash Utilities
 
 ```typescript
-function sha256Hash(data: Uint8Array): Uint8Array
-function sha256HashHex(data: string | Uint8Array): string
-function hexToUint8Array(hex: string): Uint8Array
-function uint8ArrayToHex(bytes: Uint8Array): string
-function isValidHexString(hex: string): boolean
+function sha256Hash(data: Uint8Array): Uint8Array;
+function sha256HashHex(data: string | Uint8Array): string;
+function hexToUint8Array(hex: string): Uint8Array;
+function uint8ArrayToHex(bytes: Uint8Array): string;
+function isValidHexString(hex: string): boolean;
 ```
 
 ---
@@ -1009,33 +1043,21 @@ function isValidHexString(hex: string): boolean
 ### Encryption Utilities
 
 ```typescript
-async function encrypt(
-  plaintext: Uint8Array,
-  key: Uint8Array
-): Promise<EncryptedData>
+async function encrypt(plaintext: Uint8Array, key: Uint8Array): Promise<EncryptedData>;
 
-async function decrypt(
-  encrypted: EncryptedData,
-  key: Uint8Array
-): Promise<Uint8Array>
+async function decrypt(encrypted: EncryptedData, key: Uint8Array): Promise<Uint8Array>;
 
-async function encryptString(
-  plaintext: string,
-  key: Uint8Array
-): Promise<EncryptedData>
+async function encryptString(plaintext: string, key: Uint8Array): Promise<EncryptedData>;
 
-async function decryptString(
-  encrypted: EncryptedData,
-  key: Uint8Array
-): Promise<string>
+async function decryptString(encrypted: EncryptedData, key: Uint8Array): Promise<string>;
 
 async function deriveKeyFromPassword(
   password: string,
   salt: Uint8Array,
   iterations?: number
-): Promise<Uint8Array>
+): Promise<Uint8Array>;
 
-function generateEncryptionKey(): Uint8Array
+function generateEncryptionKey(): Uint8Array;
 ```
 
 ---
@@ -1050,10 +1072,10 @@ Base error class for all SDK errors.
 
 ```typescript
 class AuraVerifierError extends Error {
-  constructor(message: string, code: ErrorCode, details?: unknown)
+  constructor(message: string, code: ErrorCode, details?: unknown);
 
-  readonly code: ErrorCode
-  readonly details?: unknown
+  readonly code: ErrorCode;
+  readonly details?: unknown;
 }
 ```
 
@@ -1063,14 +1085,14 @@ Verification-specific errors.
 
 ```typescript
 class VerificationError extends AuraVerifierError {
-  static qrParseError(details?: unknown): VerificationError
-  static qrExpired(expiresAt: Date): VerificationError
-  static invalidSignature(details?: unknown): VerificationError
-  static didResolutionFailed(did: string): VerificationError
-  static vcRevoked(vcId: string): VerificationError
-  static vcExpired(vcId: string, expiresAt: Date): VerificationError
-  static networkError(details?: unknown): VerificationError
-  static timeout(timeoutMs: number): VerificationError
+  static qrParseError(details?: unknown): VerificationError;
+  static qrExpired(expiresAt: Date): VerificationError;
+  static invalidSignature(details?: unknown): VerificationError;
+  static didResolutionFailed(did: string): VerificationError;
+  static vcRevoked(vcId: string): VerificationError;
+  static vcExpired(vcId: string, expiresAt: Date): VerificationError;
+  static networkError(details?: unknown): VerificationError;
+  static timeout(timeoutMs: number): VerificationError;
 }
 ```
 
@@ -1118,7 +1140,7 @@ enum VCType {
   ADDRESS_PROOF = 'AddressProof',
   KYC = 'KYC',
   PROOF_OF_HUMANITY = 'ProofOfHumanity',
-  CUSTOM = 'Custom'
+  CUSTOM = 'Custom',
 }
 ```
 
@@ -1130,7 +1152,7 @@ enum VCStatus {
   REVOKED = 'revoked',
   EXPIRED = 'expired',
   SUSPENDED = 'suspended',
-  UNKNOWN = 'unknown'
+  UNKNOWN = 'unknown',
 }
 ```
 
@@ -1139,11 +1161,11 @@ enum VCStatus {
 ### Constants
 
 ```typescript
-const NETWORK_ENDPOINTS: Record<NetworkType, NetworkEndpoints>
-const DEFAULT_CONFIG: Required<AuraVerifierConfig>
-const ERROR_CODES: Record<string, ErrorCode>
-const VC_TYPES: Record<string, VCTypeValue>
-const VC_STATUSES: Record<string, VCStatusValue>
+const NETWORK_ENDPOINTS: Record<NetworkType, NetworkEndpoints>;
+const DEFAULT_CONFIG: Required<AuraVerifierConfig>;
+const ERROR_CODES: Record<string, ErrorCode>;
+const VC_TYPES: Record<string, VCTypeValue>;
+const VC_STATUSES: Record<string, VCStatusValue>;
 ```
 
 ---
@@ -1153,34 +1175,34 @@ const VC_STATUSES: Record<string, VCStatusValue>
 ### DID Utilities
 
 ```typescript
-function generateAuditId(): string
-function formatDID(network: string, identifier: string): string
-function isValidDID(did: string): boolean
-function extractDIDNetwork(did: string): string
-function extractDIDIdentifier(did: string): string
+function generateAuditId(): string;
+function formatDID(network: string, identifier: string): string;
+function isValidDID(did: string): boolean;
+function extractDIDNetwork(did: string): string;
+function extractDIDIdentifier(did: string): string;
 ```
 
 ### Time Utilities
 
 ```typescript
-function timestampToDate(timestamp: number): Date
-function dateToTimestamp(date: Date): number
-function getCurrentTimestamp(): number
-function isExpired(expiresAt: number | Date): boolean
-function getTimeRemaining(expiresAt: number | Date): number
-function formatTimestamp(timestamp: number | Date): string
+function timestampToDate(timestamp: number): Date;
+function dateToTimestamp(date: Date): number;
+function getCurrentTimestamp(): number;
+function isExpired(expiresAt: number | Date): boolean;
+function getTimeRemaining(expiresAt: number | Date): number;
+function formatTimestamp(timestamp: number | Date): string;
 ```
 
 ### General Utilities
 
 ```typescript
-function generateNonce(): number
-function sanitizeForLog(data: unknown): unknown
-function deepClone<T>(obj: T): T
-function sleep(ms: number): Promise<void>
-function retry<T>(fn: () => Promise<T>, options: RetryConfig): Promise<T>
-function isBrowser(): boolean
-function isNode(): boolean
+function generateNonce(): number;
+function sanitizeForLog(data: unknown): unknown;
+function deepClone<T>(obj: T): T;
+function sleep(ms: number): Promise<void>;
+function retry<T>(fn: () => Promise<T>, options: RetryConfig): Promise<T>;
+function isBrowser(): boolean;
+function isNode(): boolean;
 ```
 
 ---

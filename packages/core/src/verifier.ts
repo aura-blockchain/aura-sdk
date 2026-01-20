@@ -79,9 +79,7 @@ export class VerifierSDK {
   /**
    * Verify a signature
    */
-  async verifySignature(
-    request: SignatureVerificationRequest
-  ): Promise<VerificationResult> {
+  async verifySignature(request: SignatureVerificationRequest): Promise<VerificationResult> {
     try {
       const isValid = await verifySignature(
         request.publicKey,
@@ -110,9 +108,7 @@ export class VerifierSDK {
   /**
    * Verify a Cosmos SDK transaction
    */
-  async verifyTransaction(
-    request: TransactionVerificationRequest
-  ): Promise<VerificationResult> {
+  async verifyTransaction(request: TransactionVerificationRequest): Promise<VerificationResult> {
     try {
       const client = await this.getClient();
 

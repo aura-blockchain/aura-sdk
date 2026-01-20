@@ -12,7 +12,11 @@ vi.mock('@aura-network/verifier-sdk', () => {
 });
 
 describe('useAuraVerifier', () => {
-  const baseConfig = { network: 'testnet', grpcEndpoint: 'grpc://local', restEndpoint: 'http://local' };
+  const baseConfig = {
+    network: 'testnet',
+    grpcEndpoint: 'grpc://local',
+    restEndpoint: 'http://local',
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();

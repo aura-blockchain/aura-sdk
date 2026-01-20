@@ -103,15 +103,18 @@ aura-verify verify <qr-code> [options]
 ```
 
 **Arguments:**
+
 - `<qr-code>` - QR code data (aura://verify?data=... or base64)
 
 **Options:**
+
 - `-n, --network <network>` - Network to use (mainnet/testnet) [default: testnet]
 - `-t, --timeout <ms>` - Request timeout in milliseconds [default: 10000]
 - `-v, --verbose` - Show verbose output
 - `-j, --json` - Output as JSON
 
 **Exit codes:**
+
 - `0` - Verification successful
 - `1` - Verification failed or error occurred
 
@@ -124,9 +127,11 @@ aura-verify parse <qr-code> [options]
 ```
 
 **Arguments:**
+
 - `<qr-code>` - QR code data
 
 **Options:**
+
 - `-j, --json` - Output as JSON
 
 ### status
@@ -138,9 +143,11 @@ aura-verify status <vc-id> [options]
 ```
 
 **Arguments:**
+
 - `<vc-id>` - Verifiable Credential ID
 
 **Options:**
+
 - `-n, --network <network>` - Network to use [default: testnet]
 - `-t, --timeout <ms>` - Request timeout [default: 10000]
 - `-j, --json` - Output as JSON
@@ -154,13 +161,16 @@ aura-verify age-21 <qr-code> [options]
 ```
 
 **Arguments:**
+
 - `<qr-code>` - QR code data
 
 **Options:**
+
 - `-n, --network <network>` - Network to use [default: testnet]
 - `-j, --json` - Output as JSON
 
 **Exit codes:**
+
 - `0` - Holder is 21+
 - `1` - Holder is not 21+ or error occurred
 
@@ -173,13 +183,16 @@ aura-verify age-18 <qr-code> [options]
 ```
 
 **Arguments:**
+
 - `<qr-code>` - QR code data
 
 **Options:**
+
 - `-n, --network <network>` - Network to use [default: testnet]
 - `-j, --json` - Output as JSON
 
 **Exit codes:**
+
 - `0` - Holder is 18+
 - `1` - Holder is not 18+ or error occurred
 

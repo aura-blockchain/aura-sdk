@@ -38,7 +38,7 @@ describe('Verification Flow Integration Tests', () => {
 
     // Mock blockchain queries
     vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) => {
-      await new Promise(resolve => setTimeout(resolve, 50)); // Simulate network latency
+      await new Promise((resolve) => setTimeout(resolve, 50)); // Simulate network latency
       return {
         id: did,
         verificationMethod: [],
@@ -47,7 +47,7 @@ describe('Verification Flow Integration Tests', () => {
     });
 
     vi.spyOn(verifier as any, 'queryVCStatus').mockImplementation(async (vcId: string) => {
-      await new Promise(resolve => setTimeout(resolve, 30)); // Simulate network latency
+      await new Promise((resolve) => setTimeout(resolve, 30)); // Simulate network latency
       return getMockVCStatus(vcId);
     });
 
@@ -90,13 +90,13 @@ describe('Verification Flow Integration Tests', () => {
       expect(result.isValid).toBe(true);
       expect(result.vcDetails).toHaveLength(3);
 
-      const vcIds = result.vcDetails.map(vc => vc.vcId);
+      const vcIds = result.vcDetails.map((vc) => vc.vcId);
       expect(vcIds).toContain('vc_age_21_valid_006');
       expect(vcIds).toContain('vc_human_valid_007');
       expect(vcIds).toContain('vc_kyc_valid_008');
 
       // All should be active
-      result.vcDetails.forEach(vc => {
+      result.vcDetails.forEach((vc) => {
         expect(vc.status).toBe(VCStatus.ACTIVE);
       });
     });
@@ -204,7 +204,7 @@ describe('Verification Flow Integration Tests', () => {
       const mockLatency = 100;
 
       vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async (did: string) => {
-        await new Promise(resolve => setTimeout(resolve, mockLatency));
+        await new Promise((resolve) => setTimeout(resolve, mockLatency));
         return {
           id: did,
           verificationMethod: [],
@@ -270,9 +270,7 @@ describe('Verification Flow Integration Tests', () => {
     it('should verify human credential', async () => {
       vi.spyOn(verifier as any, 'verify').mockResolvedValue({
         isValid: true,
-        vcDetails: [
-          { vcType: VCType.PROOF_OF_HUMANITY },
-        ],
+        vcDetails: [{ vcType: VCType.PROOF_OF_HUMANITY }],
       });
 
       const isHuman = await verifier.isVerifiedHuman('test_qr');
@@ -310,28 +308,28 @@ describe('Verification Flow Integration Tests', () => {
   describe('Batch Verification', () => {
     it('should verify multiple QR codes in batch', async () => {
       const qrCodes = generateValidQRBatch(5);
-      const requests = qrCodes.map(qr => ({ qrCodeData: qr }));
+      const requests = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
       const results = await verifier.verifyBatch(requests);
 
       // verifyBatch filters out errors, so we may get fewer results
       expect(results.length).toBeGreaterThan(0);
       expect(results.length).toBeLessThanOrEqual(5);
-      results.forEach(result => {
+      results.forEach((result) => {
         expect(result.isValid).toBe(true);
       });
     });
 
     it('should handle mixed valid/invalid batch', async () => {
       const qrCodes = generateMixedQRBatch(3, 2);
-      const requests = qrCodes.map(qr => ({ qrCodeData: qr }));
+      const requests = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
       const results = await verifier.verifyBatch(requests);
 
       expect(results).toHaveLength(5);
 
-      const validCount = results.filter(r => r.isValid).length;
-      const invalidCount = results.filter(r => !r.isValid).length;
+      const validCount = results.filter((r) => r.isValid).length;
+      const invalidCount = results.filter((r) => !r.isValid).length;
 
       expect(validCount).toBe(3);
       expect(invalidCount).toBe(2);
@@ -339,7 +337,7 @@ describe('Verification Flow Integration Tests', () => {
 
     it('should process batch efficiently', async () => {
       const qrCodes = generateValidQRBatch(10);
-      const requests = qrCodes.map(qr => ({ qrCodeData: qr }));
+      const requests = qrCodes.map((qr) => ({ qrCodeData: qr }));
 
       const startTime = Date.now();
       await verifier.verifyBatch(requests);
@@ -440,7 +438,7 @@ describe('Verification Flow Integration Tests', () => {
 
       vi.spyOn(verifier as any, 'queryDIDDocument').mockImplementation(async () => {
         // Short delay that should complete
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 50));
         return { id: 'did:aura:test', verificationMethod: [], authentication: [] };
       });
 
@@ -567,9 +565,9 @@ describe('Verification Flow Integration Tests', () => {
         verbose: false,
       });
 
-      await expect(
-        newVerifier.verify({ qrCodeData: VALID_AGE_21_QR })
-      ).rejects.toThrow('not initialized');
+      await expect(newVerifier.verify({ qrCodeData: VALID_AGE_21_QR })).rejects.toThrow(
+        'not initialized'
+      );
 
       await newVerifier.destroy();
     });
@@ -584,9 +582,7 @@ describe('Verification Flow Integration Tests', () => {
       await newVerifier.destroy();
 
       // After destroy, should need reinitialization
-      await expect(
-        newVerifier.verify({ qrCodeData: VALID_AGE_21_QR })
-      ).rejects.toThrow();
+      await expect(newVerifier.verify({ qrCodeData: VALID_AGE_21_QR })).rejects.toThrow();
     });
   });
 });

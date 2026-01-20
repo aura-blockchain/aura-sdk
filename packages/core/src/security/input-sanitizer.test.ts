@@ -214,7 +214,9 @@ describe('InputSanitizer', () => {
   describe('validateEmail', () => {
     it('should accept valid email', () => {
       expect(sanitizer.validateEmail('user@example.com')).toBe('user@example.com');
-      expect(sanitizer.validateEmail('test.user+tag@sub.example.com')).toBe('test.user+tag@sub.example.com');
+      expect(sanitizer.validateEmail('test.user+tag@sub.example.com')).toBe(
+        'test.user+tag@sub.example.com'
+      );
     });
 
     it('should convert to lowercase', () => {
@@ -327,7 +329,7 @@ describe('InputSanitizer', () => {
       );
 
       expect(sanitizer.escapeHTML('Tom & Jerry')).toBe('Tom &amp; Jerry');
-      expect(sanitizer.escapeHTML("It's working")).toBe("It&#x27;s working");
+      expect(sanitizer.escapeHTML("It's working")).toBe('It&#x27;s working');
     });
   });
 

@@ -23,12 +23,14 @@ Offline mode allows verifiers to continue operating when internet connectivity i
 - **Schema Definitions**: Credential schemas for validation
 
 **Benefits:**
+
 - Faster verification (no network latency)
 - Reliability in low-connectivity environments
 - Reduced bandwidth costs
 - Better user experience
 
 **Trade-offs:**
+
 - Slightly stale revocation data
 - Storage requirements
 - Sync complexity
@@ -38,16 +40,19 @@ Offline mode allows verifiers to continue operating when internet connectivity i
 ### Recommended Use Cases
 
 1. **Physical Venues with Poor Connectivity**
+
    - Nightclubs with crowded WiFi
    - Remote event venues
    - Underground locations (basements, subways)
 
 2. **Mobile Verifiers**
+
    - Door staff with mobile scanners
    - Delivery drivers
    - Field service workers
 
 3. **High-Volume Scenarios**
+
    - Concert entry gates
    - Stadium access control
    - Festival check-ins
@@ -60,11 +65,13 @@ Offline mode allows verifiers to continue operating when internet connectivity i
 ### Not Recommended For
 
 1. **High-Security Applications**
+
    - Financial transactions
    - Government services
    - Medical record access
 
 2. **Real-Time Revocation Critical**
+
    - Law enforcement verification
    - High-value transactions
    - Time-sensitive credentials
@@ -82,17 +89,17 @@ import { VerifierSDK, CacheManager } from '@aura-network/verifier-sdk';
 
 // Initialize cache manager
 const cache = new CacheManager({
-  maxAge: 3600,              // Cache credentials for 1 hour
-  maxEntries: 1000,          // Store up to 1000 credentials
-  persistToDisk: true,       // Persist cache across restarts
-  storageAdapter: 'browser'  // Use localStorage (browser)
+  maxAge: 3600, // Cache credentials for 1 hour
+  maxEntries: 1000, // Store up to 1000 credentials
+  persistToDisk: true, // Persist cache across restarts
+  storageAdapter: 'browser', // Use localStorage (browser)
 });
 
 // Initialize SDK with cache
 const verifier = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
-  offlineMode: true  // Enable offline verification
+  offlineMode: true, // Enable offline verification
 });
 ```
 
@@ -106,13 +113,13 @@ const cache = new CacheManager({
   maxEntries: 5000,
   persistToDisk: true,
   storageAdapter: 'file',
-  storagePath: '/var/cache/aura-verifier'
+  storagePath: '/var/cache/aura-verifier',
 });
 
 const verifier = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
-  offlineMode: true
+  offlineMode: true,
 });
 ```
 
@@ -127,13 +134,13 @@ const cache = new CacheManager({
   maxEntries: 500,
   persistToDisk: true,
   storageAdapter: 'react-native',
-  asyncStorage: AsyncStorage
+  asyncStorage: AsyncStorage,
 });
 
 const verifier = new VerifierSDK({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
   cache: cache,
-  offlineMode: true
+  offlineMode: true,
 });
 ```
 
@@ -167,11 +174,11 @@ interface CacheConfig {
 
 ```typescript
 const cache = new CacheManager({
-  maxAge: 1800,        // 30 minutes
-  maxEntries: 500,     // Limit cache size
+  maxAge: 1800, // 30 minutes
+  maxEntries: 500, // Limit cache size
 
   // Auto-eviction strategy
-  evictionPolicy: 'lru' // Least recently used
+  evictionPolicy: 'lru', // Least recently used
 });
 
 // Monitor cache size
@@ -197,7 +204,7 @@ const cache = new CacheManager({
   persistToDisk: true,
   encryptionKey: encryptionKey, // Hex-encoded AES-256 key
   storageAdapter: 'file',
-  storagePath: '/secure/cache'
+  storagePath: '/secure/cache',
 });
 
 // Store the key securely (e.g., environment variable, key vault)
@@ -213,7 +220,7 @@ import { RevocationListSync } from '@aura-network/verifier-sdk';
 
 const syncManager = new RevocationListSync({
   rpcEndpoint: 'https://rpc.aurablockchain.org',
-  cache: cache
+  cache: cache,
 });
 
 // Sync all revocation lists
@@ -232,12 +239,12 @@ const syncManager = new RevocationListSync({
   cache: cache,
   autoSync: {
     enabled: true,
-    intervalMs: 300000,      // Sync every 5 minutes
-    wifiOnly: true,          // Only sync on WiFi (mobile)
-    syncOnStartup: true,     // Sync when app starts
+    intervalMs: 300000, // Sync every 5 minutes
+    wifiOnly: true, // Only sync on WiFi (mobile)
+    syncOnStartup: true, // Sync when app starts
     maxRetries: 3,
-    retryBackoff: 2
-  }
+    retryBackoff: 2,
+  },
 });
 
 // Start auto-sync
@@ -262,16 +269,10 @@ Sync only specific issuers or credential types:
 
 ```typescript
 // Sync only credentials from specific issuers
-await syncManager.syncIssuers([
-  'did:aura:mainnet:issuer1',
-  'did:aura:mainnet:issuer2'
-]);
+await syncManager.syncIssuers(['did:aura:mainnet:issuer1', 'did:aura:mainnet:issuer2']);
 
 // Sync only specific credential types
-await syncManager.syncCredentialTypes([
-  'GovernmentID',
-  'DriversLicense'
-]);
+await syncManager.syncCredentialTypes(['GovernmentID', 'DriversLicense']);
 ```
 
 ### Sync Status
@@ -297,7 +298,7 @@ async function verifyCredential(qrString: string): Promise<boolean> {
   const verifier = new VerifierSDK({
     rpcEndpoint: 'https://rpc.aurablockchain.org',
     cache: cache,
-    offlineMode: false // Prefer online
+    offlineMode: false, // Prefer online
   });
 
   try {
@@ -308,7 +309,7 @@ async function verifyCredential(qrString: string): Promise<boolean> {
     const result = await verifier.verifyCredential(qrData, {
       preferOnline: true,
       fallbackToCache: true,
-      maxCacheAge: 3600 // Accept cache up to 1 hour old
+      maxCacheAge: 3600, // Accept cache up to 1 hour old
     });
 
     if (result.fromCache) {
@@ -319,7 +320,6 @@ async function verifyCredential(qrString: string): Promise<boolean> {
     }
 
     return result.verified;
-
   } catch (error) {
     console.error('Verification failed:', error);
     return false;
@@ -336,13 +336,13 @@ async function verifyOffline(qrString: string): Promise<boolean> {
   const verifier = new VerifierSDK({
     rpcEndpoint: 'https://rpc.aurablockchain.org',
     cache: cache,
-    offlineMode: true // Force offline
+    offlineMode: true, // Force offline
   });
 
   const qrData = parseQRCode(qrString);
 
   const result = await verifier.verifyCredential(qrData, {
-    requireOnline: false // Don't fail if network unavailable
+    requireOnline: false, // Don't fail if network unavailable
   });
 
   if (!result.verified) {
@@ -398,6 +398,7 @@ Cached revocation data may be outdated.
 **Risk:** Accepting a credential that was revoked since last sync.
 
 **Mitigation:**
+
 - Sync frequently (every 5-15 minutes)
 - Display cache age to users
 - Set maximum acceptable cache age
@@ -405,12 +406,13 @@ Cached revocation data may be outdated.
 
 ```typescript
 const result = await verifier.verifyCredential(qrData, {
-  maxCacheAge: 300 // Reject cache older than 5 minutes
+  maxCacheAge: 300, // Reject cache older than 5 minutes
 });
 
 if (result.fromCache) {
   const cacheAge = Date.now() - result.revocationStatus.lastChecked.getTime();
-  if (cacheAge > 600000) { // 10 minutes
+  if (cacheAge > 600000) {
+    // 10 minutes
     console.warn('Cache is stale - recommend online verification');
   }
 }
@@ -421,15 +423,18 @@ if (result.fromCache) {
 Large caches consume storage space.
 
 **Typical Sizes:**
+
 - 1 credential: ~5-10 KB
 - 1000 credentials: ~5-10 MB
 - Revocation list: ~1-5 MB (depending on total credentials)
 
 **Management:**
+
 ```typescript
 // Monitor storage
 const stats = await cache.getStats();
-if (stats.sizeBytes > 50 * 1024 * 1024) { // 50 MB
+if (stats.sizeBytes > 50 * 1024 * 1024) {
+  // 50 MB
   console.warn('Cache size exceeds 50 MB');
 
   // Clear old entries
@@ -467,6 +472,7 @@ await prepareOfflineMode();
 Cached issuer keys may become invalid if rotated.
 
 **Solution:**
+
 - Include key version in cache
 - Sync issuer data regularly
 - Fall back to online for key mismatches
@@ -479,7 +485,7 @@ Offline devices may have clock drift.
 // Validate local clock on sync
 await syncManager.syncAll({
   validateClock: true,
-  maxClockDrift: 300 // 5 minutes
+  maxClockDrift: 300, // 5 minutes
 });
 ```
 
@@ -494,9 +500,9 @@ const syncManager = new RevocationListSync({
   cache: cache,
   autoSync: {
     enabled: true,
-    intervalMs: 300000,     // Every 5 minutes
-    syncOnStartup: true
-  }
+    intervalMs: 300000, // Every 5 minutes
+    syncOnStartup: true,
+  },
 });
 ```
 
@@ -578,7 +584,7 @@ const cache = new CacheManager({
   maxEntries: 1000,
   persistToDisk: true,
   encryptionKey: process.env.CACHE_ENCRYPTION_KEY,
-  storageAdapter: 'file'
+  storageAdapter: 'file',
 });
 ```
 
@@ -608,7 +614,7 @@ import {
   CacheManager,
   RevocationListSync,
   NetworkMonitor,
-  parseQRCode
+  parseQRCode,
 } from '@aura-network/verifier-sdk';
 
 class OfflineFirstVerifier {
@@ -625,14 +631,14 @@ class OfflineFirstVerifier {
       persistToDisk: true,
       encryptionKey: process.env.CACHE_ENCRYPTION_KEY,
       storageAdapter: 'file',
-      storagePath: './cache'
+      storagePath: './cache',
     });
 
     // Setup SDK
     this.verifier = new VerifierSDK({
       rpcEndpoint: 'https://rpc.aurablockchain.org',
       cache: this.cache,
-      offlineMode: false
+      offlineMode: false,
     });
 
     // Setup sync
@@ -642,8 +648,8 @@ class OfflineFirstVerifier {
       autoSync: {
         enabled: true,
         intervalMs: 300000, // 5 minutes
-        syncOnStartup: true
-      }
+        syncOnStartup: true,
+      },
     });
 
     // Monitor network
@@ -673,7 +679,7 @@ class OfflineFirstVerifier {
       const result = await this.verifier.verifyCredential(qrData, {
         preferOnline: true,
         fallbackToCache: true,
-        maxCacheAge: 3600
+        maxCacheAge: 3600,
       });
 
       if (result.fromCache) {
@@ -696,7 +702,7 @@ class OfflineFirstVerifier {
     return {
       network: networkStatus.isOnline ? 'online' : 'offline',
       cache: cacheStats,
-      sync: syncStatus
+      sync: syncStatus,
     };
   }
 

@@ -14,15 +14,10 @@ export function verifyWebhookSignature(
 ): boolean {
   try {
     // Remove 'sha256=' prefix if present
-    const signatureValue = signature.startsWith('sha256=')
-      ? signature.substring(7)
-      : signature;
+    const signatureValue = signature.startsWith('sha256=') ? signature.substring(7) : signature;
 
     // Compute expected signature
-    const expectedSignature = crypto
-      .createHmac('sha256', secret)
-      .update(payload)
-      .digest('hex');
+    const expectedSignature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
 
     // Constant-time comparison to prevent timing attacks
     return crypto.timingSafeEqual(
@@ -42,10 +37,7 @@ export function verifyWebhookSignature(
  * @returns The generated signature with 'sha256=' prefix
  */
 export function generateWebhookSignature(payload: string, secret: string): string {
-  const signature = crypto
-    .createHmac('sha256', secret)
-    .update(payload)
-    .digest('hex');
+  const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
 
   return `sha256=${signature}`;
 }

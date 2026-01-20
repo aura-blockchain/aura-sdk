@@ -5,9 +5,11 @@ This guide covers installing the Aura Verifier SDK in various environments and p
 ## Prerequisites
 
 ### Node.js Version
+
 The Aura Verifier SDK requires Node.js version 18.0.0 or higher.
 
 Check your Node.js version:
+
 ```bash
 node --version
 ```
@@ -21,6 +23,7 @@ nvm use 18
 ```
 
 ### TypeScript (Optional but Recommended)
+
 While the SDK works with JavaScript, TypeScript provides the best developer experience with full type safety.
 
 ```bash
@@ -42,6 +45,7 @@ npm install @aura-network/verifier-sdk
 ```
 
 For development dependencies (if building integrations):
+
 ```bash
 npm install --save-dev @aura-network/verifier-sdk
 ```
@@ -55,6 +59,7 @@ pnpm add @aura-network/verifier-sdk
 ```
 
 For development:
+
 ```bash
 pnpm add -D @aura-network/verifier-sdk
 ```
@@ -82,6 +87,7 @@ npm install @aura-network/verifier-sdk
 ```
 
 **Additional dependencies for Node.js:**
+
 ```bash
 # If using Express.js
 npm install express
@@ -99,11 +105,13 @@ npm install @aura-network/verifier-sdk
 ```
 
 **Browser polyfills** (if needed for older browsers):
+
 ```bash
 npm install buffer process
 ```
 
 Add to your webpack config:
+
 ```javascript
 module.exports = {
   resolve: {
@@ -199,6 +207,7 @@ dependencies:
 ```
 
 Then run:
+
 ```bash
 flutter pub get
 ```
@@ -251,6 +260,7 @@ console.log('AuraVerifier initialized successfully!');
 ```
 
 Run with:
+
 ```bash
 # Using ts-node
 npx ts-node test-install.ts
@@ -277,6 +287,7 @@ console.log('AuraVerifier initialized successfully!');
 ```
 
 Run with:
+
 ```bash
 node test-install.js
 ```
@@ -298,6 +309,7 @@ console.log('AuraVerifier initialized successfully!');
 ```
 
 Run with:
+
 ```bash
 node test-install.mjs
 ```
@@ -309,11 +321,13 @@ node test-install.mjs
 If you see `Cannot find module '@aura-network/verifier-sdk'`:
 
 1. Verify the package is installed:
+
    ```bash
    npm list @aura-network/verifier-sdk
    ```
 
 2. Clear npm cache and reinstall:
+
    ```bash
    rm -rf node_modules package-lock.json
    npm install
@@ -326,6 +340,7 @@ If you see `Cannot find module '@aura-network/verifier-sdk'`:
 If TypeScript can't find types:
 
 1. Ensure `@types/node` is installed:
+
    ```bash
    npm install -D @types/node
    ```
@@ -351,6 +366,7 @@ npm install buffer process
 ```
 
 Add to your entry point:
+
 ```javascript
 import { Buffer } from 'buffer';
 import process from 'process';
@@ -364,11 +380,13 @@ window.process = process;
 If you encounter errors in React Native:
 
 1. Install crypto polyfill:
+
    ```bash
    npm install react-native-get-random-values
    ```
 
 2. Import at the top of your app entry point:
+
    ```javascript
    import 'react-native-get-random-values';
    ```
@@ -387,6 +405,7 @@ npm ls @aura-network/verifier-sdk
 ```
 
 Update to the latest version:
+
 ```bash
 npm update @aura-network/verifier-sdk
 ```
@@ -396,6 +415,7 @@ npm update @aura-network/verifier-sdk
 If installation fails due to network issues:
 
 1. Use a different registry:
+
    ```bash
    npm config set registry https://registry.npmjs.org/
    ```
@@ -462,15 +482,15 @@ After successful installation:
 
 ## System Requirements Summary
 
-| Platform | Minimum Version | Recommended |
-|----------|----------------|-------------|
-| Node.js | 18.0.0 | 20.x LTS |
-| npm | 9.0.0 | Latest |
-| pnpm | 8.0.0 | Latest |
-| TypeScript | 5.0.0 | 5.3+ |
-| React | 17.0.0 | 18.x |
-| React Native | 0.70.0 | 0.73+ |
-| Flutter | 3.0.0 | 3.16+ |
+| Platform     | Minimum Version | Recommended |
+| ------------ | --------------- | ----------- |
+| Node.js      | 18.0.0          | 20.x LTS    |
+| npm          | 9.0.0           | Latest      |
+| pnpm         | 8.0.0           | Latest      |
+| TypeScript   | 5.0.0           | 5.3+        |
+| React        | 17.0.0          | 18.x        |
+| React Native | 0.70.0          | 0.73+       |
+| Flutter      | 3.0.0           | 3.16+       |
 
 ## Next Steps
 

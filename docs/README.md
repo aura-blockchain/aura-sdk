@@ -7,11 +7,13 @@ Welcome to the comprehensive documentation for the Aura Verifier SDK!
 This documentation contains everything you need to integrate credential verification into your application.
 
 ### Total Documentation Size: 344 KB
+
 ### Total Files: 21 markdown files
 
 ## Quick Navigation
 
 ### Getting Started (4 files)
+
 Start here if you're new to the SDK:
 
 1. **[Installation](./getting-started/installation.md)** - Install the SDK in your project (npm, pnpm, yarn)
@@ -20,6 +22,7 @@ Start here if you're new to the SDK:
 4. **[Environments](./getting-started/environments.md)** - Mainnet, testnet, and local development
 
 ### Guides (3 files)
+
 In-depth guides for specific features:
 
 1. **[Age Verification](./guides/age-verification.md)** - Complete guide for bars, nightclubs, dispensaries
@@ -27,16 +30,19 @@ In-depth guides for specific features:
 3. **[Security Best Practices](./guides/security-best-practices.md)** - Essential security guidelines
 
 ### API Reference (1 file)
+
 Complete API documentation:
 
 1. **[AuraVerifier Class](./api/verifier.md)** - Main verifier class reference with all methods
 
 ### Integrations (1 file)
+
 Platform-specific integration guides:
 
 1. **[Node.js/Express](./integrations/node-express.md)** - Backend API integration
 
 ### Examples (3 files)
+
 Real-world implementation examples:
 
 1. **[Bar/Nightclub](./examples/bar-nightclub.md)** - Complete venue age verification system
@@ -78,24 +84,28 @@ docs/
 ## Recommended Reading Paths
 
 ### For New Users
+
 1. [Quick Start](./getting-started/quick-start.md)
 2. [Configuration](./getting-started/configuration.md)
 3. [Age Verification Guide](./guides/age-verification.md) (if applicable)
 4. [Security Best Practices](./guides/security-best-practices.md)
 
 ### For Integration Developers
+
 1. [Installation](./getting-started/installation.md)
 2. [Node.js/Express Integration](./integrations/node-express.md)
 3. [API Reference](./api/verifier.md)
 4. [Error Handling in Troubleshooting](./troubleshooting.md)
 
 ### For Production Deployment
+
 1. [Configuration](./getting-started/configuration.md)
 2. [Environments](./getting-started/environments.md)
 3. [Security Best Practices](./guides/security-best-practices.md)
 4. [Offline Mode](./guides/offline-mode.md)
 
 ### For Specific Use Cases
+
 - **Age-Restricted Venues**: [Age Verification Guide](./guides/age-verification.md) → [Bar/Nightclub Example](./examples/bar-nightclub.md)
 - **Online Marketplaces**: [Marketplace Trust Example](./examples/marketplace-trust.md)
 - **Mobile/Offline**: [Offline Mode Guide](./guides/offline-mode.md)
@@ -103,6 +113,7 @@ docs/
 ## Key Features Documented
 
 ### Core Functionality
+
 - ✅ Credential verification
 - ✅ QR code parsing and validation
 - ✅ Cryptographic signature verification
@@ -111,6 +122,7 @@ docs/
 - ✅ Credential status checking
 
 ### Advanced Features
+
 - ✅ Offline verification mode
 - ✅ Intelligent caching
 - ✅ Batch verification
@@ -119,6 +131,7 @@ docs/
 - ✅ Convenience methods (age checks, humanity verification)
 
 ### Security
+
 - ✅ Signature verification
 - ✅ Replay attack prevention
 - ✅ Expiration enforcement
@@ -127,6 +140,7 @@ docs/
 - ✅ Input validation
 
 ### Integration
+
 - ✅ Node.js/Express
 - ✅ TypeScript support
 - ✅ Error handling
@@ -138,6 +152,7 @@ docs/
 The following topics could be added in future updates:
 
 ### Planned Guides
+
 - `identity-verification.md` - KYC and identity verification flows
 - `webhooks.md` - Webhook integration guide
 - `batch-verification.md` - High-volume verification strategies
@@ -145,18 +160,21 @@ The following topics could be added in future updates:
 - `compliance.md` - GDPR, CCPA, PCI compliance
 
 ### Planned API Reference
+
 - `qr-parser.md` - QR code parsing API reference
 - `crypto.md` - Cryptographic utilities reference
 - `types.md` - TypeScript type definitions
 - `errors.md` - Error codes and classes
 
 ### Planned Integrations
+
 - `react.md` - React web application integration
 - `react-native.md` - React Native mobile integration
 - `flutter.md` - Flutter cross-platform integration
 - `pos-systems.md` - Point-of-sale system integration
 
 ### Planned Examples
+
 - `event-ticketing.md` - Event access control example
 - `financial-services.md` - KYC compliance example
 

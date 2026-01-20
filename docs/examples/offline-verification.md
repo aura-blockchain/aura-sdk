@@ -20,7 +20,7 @@ import {
   createOfflineVerifier,
   createAuraClient,
   CacheSync,
-  CredentialCache
+  CredentialCache,
 } from '@aura-network/verifier-sdk';
 
 async function main() {
@@ -28,24 +28,24 @@ async function main() {
   const client = createAuraClient({
     grpcEndpoint: 'https://rpc.aurablockchain.org:9090',
     restEndpoint: 'https://api.aurablockchain.org',
-    timeout: 10000
+    timeout: 10000,
   });
 
   // 2. Setup offline verifier with auto-sync
   const offlineVerifier = createOfflineVerifier({
     client,
     cacheConfig: {
-      maxAge: 3600,         // Cache entries for 1 hour
-      maxEntries: 1000,     // Maximum 1000 cached credentials
-      persistToDisk: true,  // Persist cache to disk
-      encryptionKey: process.env.ENCRYPTION_KEY  // Encrypt cached data
+      maxAge: 3600, // Cache entries for 1 hour
+      maxEntries: 1000, // Maximum 1000 cached credentials
+      persistToDisk: true, // Persist cache to disk
+      encryptionKey: process.env.ENCRYPTION_KEY, // Encrypt cached data
     },
     autoSync: {
       enabled: true,
-      intervalMs: 300000,   // Sync every 5 minutes
-      syncOnStartup: true,  // Sync immediately on startup
-      wifiOnly: false       // Sync on any connection
-    }
+      intervalMs: 300000, // Sync every 5 minutes
+      syncOnStartup: true, // Sync immediately on startup
+      wifiOnly: false, // Sync on any connection
+    },
   });
 
   console.log('Offline verifier initialized');
@@ -75,7 +75,7 @@ async function main() {
   console.log('\nCache Statistics:');
   console.log('- Total entries:', stats.totalEntries);
   console.log('- Total size:', stats.totalSize, 'bytes');
-  console.log('- Hit rate:', (stats.hits / (stats.hits + stats.misses) * 100).toFixed(2), '%');
+  console.log('- Hit rate:', ((stats.hits / (stats.hits + stats.misses)) * 100).toFixed(2), '%');
 
   // 6. Cleanup
   await offlineVerifier.destroy();
@@ -96,13 +96,13 @@ async function manualCacheExample() {
   // Initialize with caching enabled
   const verifier = new AuraVerifier({
     network: 'mainnet',
-    offlineMode: false,  // Start in online mode
+    offlineMode: false, // Start in online mode
     cacheConfig: {
       enableDIDCache: true,
       enableVCCache: true,
-      ttl: 3600,  // 1 hour TTL
-      maxSize: 100  // 100 MB max cache size
-    }
+      ttl: 3600, // 1 hour TTL
+      maxSize: 100, // 100 MB max cache size
+    },
   });
 
   await verifier.initialize();
@@ -122,7 +122,7 @@ async function manualCacheExample() {
 
   // Verification now uses cached data only
   const result3 = await verifier.verify({ qrCodeData: qr3 });
-  console.log('Verification method:', result3.verificationMethod);  // 'cached' or 'offline'
+  console.log('Verification method:', result3.verificationMethod); // 'cached' or 'offline'
 
   // Re-enable online mode
   await verifier.disableOfflineMode();
@@ -146,8 +146,8 @@ async function networkAwareVerifier() {
     cacheConfig: {
       enableDIDCache: true,
       enableVCCache: true,
-      ttl: 3600
-    }
+      ttl: 3600,
+    },
   });
 
   await verifier.initialize();
@@ -170,7 +170,7 @@ async function networkAwareVerifier() {
       const result = await verifier.syncCache();
       console.log('Cache synced:', result.didsSynced, 'DIDs');
     }
-  }, 300000);  // Every 5 minutes
+  }, 300000); // Every 5 minutes
 
   return verifier;
 }
@@ -186,15 +186,11 @@ import { CredentialCache } from '@aura-network/verifier-sdk';
 async function prewarmCache(client: AuraClient) {
   const cache = new CredentialCache({
     maxAge: 3600,
-    maxEntries: 1000
+    maxEntries: 1000,
   });
 
   // Pre-load frequently accessed credentials
-  const commonCredentials = [
-    'vc-gov-id-template',
-    'vc-poh-template',
-    'vc-age-template'
-  ];
+  const commonCredentials = ['vc-gov-id-template', 'vc-poh-template', 'vc-age-template'];
 
   console.log('Pre-warming cache...');
   for (const vcId of commonCredentials) {
@@ -207,12 +203,12 @@ async function prewarmCache(client: AuraClient) {
         issuerDid: credential.issuer,
         revocationStatus: {
           isRevoked: false,
-          checkedAt: new Date()
+          checkedAt: new Date(),
         },
         metadata: {
           cachedAt: new Date(),
-          expiresAt: new Date(Date.now() + 3600000)
-        }
+          expiresAt: new Date(Date.now() + 3600000),
+        },
       });
     } catch (error) {
       console.error(`Failed to cache ${vcId}:`, error);
@@ -233,7 +229,7 @@ import { MemoryStorage } from '@aura-network/verifier-sdk';
 
 const cache = new CredentialCache({
   maxAge: 3600,
-  storage: new MemoryStorage()
+  storage: new MemoryStorage(),
 });
 ```
 
@@ -244,7 +240,7 @@ import { BrowserStorage } from '@aura-network/verifier-sdk';
 
 const cache = new CredentialCache({
   maxAge: 3600,
-  storage: new BrowserStorage({ prefix: 'aura-cache-' })
+  storage: new BrowserStorage({ prefix: 'aura-cache-' }),
 });
 ```
 
@@ -257,8 +253,8 @@ const cache = new CredentialCache({
   maxAge: 3600,
   storage: new FileStorage({
     directory: './cache',
-    encryptionKey: process.env.ENCRYPTION_KEY
-  })
+    encryptionKey: process.env.ENCRYPTION_KEY,
+  }),
 });
 ```
 
@@ -267,11 +263,7 @@ const cache = new CredentialCache({
 Always encrypt cached data in production:
 
 ```typescript
-import {
-  generateEncryptionKey,
-  keyToHex,
-  CredentialCache
-} from '@aura-network/verifier-sdk';
+import { generateEncryptionKey, keyToHex, CredentialCache } from '@aura-network/verifier-sdk';
 
 // Generate encryption key once
 const key = generateEncryptionKey();
@@ -281,7 +273,7 @@ console.log('Save this key securely:', hexKey);
 // Use encrypted cache
 const cache = new CredentialCache({
   maxAge: 3600,
-  encryptionKey: hexKey
+  encryptionKey: hexKey,
 });
 ```
 
@@ -291,16 +283,16 @@ const cache = new CredentialCache({
 
 ```typescript
 const cache = new CredentialCache({
-  maxAge: 3600,  // 1 hour for most credentials
+  maxAge: 3600, // 1 hour for most credentials
   // Customize TTL per credential type
   getTTL: (credential) => {
     if (credential.vcType === 'GovernmentID') {
-      return 86400;  // 24 hours for government IDs
+      return 86400; // 24 hours for government IDs
     } else if (credential.vcType === 'ProofOfHumanity') {
-      return 3600;   // 1 hour for POH
+      return 3600; // 1 hour for POH
     }
-    return 7200;  // Default 2 hours
-  }
+    return 7200; // Default 2 hours
+  },
 });
 ```
 
@@ -308,11 +300,11 @@ const cache = new CredentialCache({
 
 ```typescript
 const cache = new CredentialCache({
-  maxSize: 100,  // 100 MB max
-  evictionPolicy: 'lru',  // Least Recently Used
+  maxSize: 100, // 100 MB max
+  evictionPolicy: 'lru', // Least Recently Used
   onEviction: (entry) => {
     console.log('Evicted from cache:', entry.vcId);
-  }
+  },
 });
 ```
 
@@ -323,7 +315,7 @@ async function verifyWithFallback(qrCode: string) {
   const verifier = new AuraVerifier({
     network: 'mainnet',
     offlineMode: false,
-    cacheConfig: { enableVCCache: true }
+    cacheConfig: { enableVCCache: true },
   });
 
   await verifier.initialize();
@@ -360,8 +352,8 @@ async function monitorCache(cache: CredentialCache) {
   setInterval(async () => {
     const stats = await cache.getStats();
 
-    const hitRate = stats.hits / (stats.hits + stats.misses) * 100;
-    const sizePercentage = stats.totalSize / (100 * 1024 * 1024) * 100;
+    const hitRate = (stats.hits / (stats.hits + stats.misses)) * 100;
+    const sizePercentage = (stats.totalSize / (100 * 1024 * 1024)) * 100;
 
     console.log('Cache Health:');
     console.log('- Hit rate:', hitRate.toFixed(2), '%');
@@ -376,7 +368,7 @@ async function monitorCache(cache: CredentialCache) {
       console.warn('Cache nearly full - consider clearing old entries');
       await cache.clear();
     }
-  }, 60000);  // Check every minute
+  }, 60000); // Check every minute
 }
 ```
 

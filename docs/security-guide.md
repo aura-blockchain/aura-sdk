@@ -36,15 +36,15 @@ The Aura Verifier SDK provides enterprise-grade security features to protect you
 
 ### Threats Addressed
 
-| Threat | Mitigation |
-|--------|------------|
-| Replay Attacks | Nonce tracking with time windows |
-| Brute Force | Rate limiting and threat detection |
-| QR Code Injection | Input sanitization and validation |
-| Man-in-the-Middle | Cryptographic signature verification |
+| Threat             | Mitigation                               |
+| ------------------ | ---------------------------------------- |
+| Replay Attacks     | Nonce tracking with time windows         |
+| Brute Force        | Rate limiting and threat detection       |
+| QR Code Injection  | Input sanitization and validation        |
+| Man-in-the-Middle  | Cryptographic signature verification     |
 | Credential Forgery | On-chain verification and DID resolution |
-| Denial of Service | Rate limiting and burst protection |
-| Data Tampering | Audit log chaining and integrity checks |
+| Denial of Service  | Rate limiting and burst protection       |
+| Data Tampering     | Audit log chaining and integrity checks  |
 
 ### Out of Scope
 
@@ -72,20 +72,20 @@ const secureContext = createSecureVerifier({
   enableInputSanitization: true,
 
   nonceConfig: {
-    nonceWindow: 300000,  // 5 minutes
-    cleanupInterval: 60000
+    nonceWindow: 300000, // 5 minutes
+    cleanupInterval: 60000,
   },
 
   rateLimitConfig: {
     maxRequests: 100,
     windowMs: 60000,
-    burstCapacity: 120
+    burstCapacity: 120,
   },
 
   auditConfig: {
     enableChaining: true,
     bufferSize: 1000,
-    flushInterval: 5000
+    flushInterval: 5000,
   },
 
   threatConfig: {
@@ -96,13 +96,13 @@ const secureContext = createSecureVerifier({
       // Alert security team
       console.error('Security threat detected:', event);
       // Block IP, send alert, etc.
-    }
+    },
   },
 
   sanitizerConfig: {
     maxStringLength: 10000,
-    strictMode: true
-  }
+    strictMode: true,
+  },
 });
 ```
 
@@ -118,9 +118,9 @@ Protect against abuse and brute force attacks.
 import { RateLimiter } from '@aura-network/verifier-sdk';
 
 const limiter = new RateLimiter({
-  maxRequests: 100,     // Max requests per window
-  windowMs: 60000,      // 1 minute window
-  burstCapacity: 120    // Allow bursts up to 120
+  maxRequests: 100, // Max requests per window
+  windowMs: 60000, // 1 minute window
+  burstCapacity: 120, // Allow bursts up to 120
 });
 
 // Before processing request
@@ -129,7 +129,7 @@ const allowed = await limiter.checkLimit(identifier);
 
 if (!allowed) {
   return res.status(429).json({
-    error: 'Rate limit exceeded. Please try again later.'
+    error: 'Rate limit exceeded. Please try again later.',
   });
 }
 
@@ -147,8 +147,8 @@ const limiter = new MultiTierRateLimiter({
   tiers: {
     free: { maxRequests: 50, windowMs: 60000 },
     premium: { maxRequests: 500, windowMs: 60000 },
-    enterprise: { maxRequests: 5000, windowMs: 60000 }
-  }
+    enterprise: { maxRequests: 5000, windowMs: 60000 },
+  },
 });
 
 // Check limit based on user tier
@@ -159,11 +159,13 @@ const allowed = await limiter.checkLimit(userId, userTier);
 ### Rate Limiting Best Practices
 
 1. **Identifier Strategy**
+
    - Use IP address for anonymous users
    - Use user ID for authenticated users
    - Consider using both for defense in depth
 
 2. **Response Headers**
+
    ```typescript
    const remaining = await limiter.getRemainingRequests(identifier);
    res.setHeader('X-RateLimit-Limit', '100');
@@ -188,16 +190,13 @@ Prevent replay attacks with time-based nonce tracking.
 import { NonceManager } from '@aura-network/verifier-sdk';
 
 const nonceManager = new NonceManager({
-  nonceWindow: 300000,    // 5 minute window
-  cleanupInterval: 60000  // Cleanup every minute
+  nonceWindow: 300000, // 5 minute window
+  cleanupInterval: 60000, // Cleanup every minute
 });
 
 // Validate nonce from QR code
 const qrData = parseQRCode(qrString);
-const isValid = await nonceManager.validateNonce(
-  qrData.n.toString(),
-  qrData.exp * 1000
-);
+const isValid = await nonceManager.validateNonce(qrData.n.toString(), qrData.exp * 1000);
 
 if (!isValid) {
   throw new Error('Invalid or replayed nonce');
@@ -212,7 +211,7 @@ if (!isValid) {
 
 ```typescript
 const nonceManager = new NonceManager({
-  nonceWindow: 300000  // 5 minutes
+  nonceWindow: 300000, // 5 minutes
 });
 
 // Nonces are valid within the time window
@@ -228,23 +227,25 @@ import { BloomFilterNonceStorage } from '@aura-network/verifier-sdk';
 
 const storage = new BloomFilterNonceStorage({
   expectedElements: 1000000,
-  falsePositiveRate: 0.001
+  falsePositiveRate: 0.001,
 });
 
 const nonceManager = new NonceManager({
   nonceWindow: 300000,
-  storage
+  storage,
 });
 ```
 
 ### Nonce Best Practices
 
 1. **Appropriate Window Size**
+
    - Too short: UX issues (QR expires too fast)
    - Too long: Security risk (larger replay window)
    - Recommended: 5-10 minutes
 
 2. **Cleanup Strategy**
+
    - Regular cleanup to prevent memory growth
    - Balance cleanup frequency vs. performance
 
@@ -264,9 +265,9 @@ Maintain tamper-evident audit trails for compliance and security monitoring.
 import { AuditLogger, AuditOutcome } from '@aura-network/verifier-sdk';
 
 const logger = new AuditLogger({
-  enableChaining: true,    // Tamper-evident log chain
+  enableChaining: true, // Tamper-evident log chain
   bufferSize: 1000,
-  flushInterval: 5000
+  flushInterval: 5000,
 });
 
 // Log verification attempt
@@ -277,16 +278,16 @@ await logger.logVerificationAttempt({
   details: {
     ip: req.ip,
     userAgent: req.headers['user-agent'],
-    vcTypes: result.vcDetails.map(vc => vc.vcType),
-    timestamp: new Date()
-  }
+    vcTypes: result.vcDetails.map((vc) => vc.vcType),
+    timestamp: new Date(),
+  },
 });
 
 // Log access
 await logger.logAccess({
   actor: userId,
   resource: 'verification-api',
-  action: 'verify_credential'
+  action: 'verify_credential',
 });
 ```
 
@@ -297,21 +298,21 @@ await logger.logAccess({
 const logs = await logger.getLogs({
   startTime: new Date('2025-01-01'),
   endTime: new Date('2025-01-31'),
-  actor: 'did:aura:verifier123'
+  actor: 'did:aura:verifier123',
 });
 
 // Analyze logs
-logs.forEach(log => {
+logs.forEach((log) => {
   console.log(`[${log.timestamp}] ${log.actor} -> ${log.target}: ${log.outcome}`);
 });
 
 // Export for compliance
-const exportData = logs.map(log => ({
+const exportData = logs.map((log) => ({
   timestamp: log.timestamp.toISOString(),
   actor: log.actor,
   action: log.action,
   outcome: log.outcome,
-  details: log.details
+  details: log.details,
 }));
 ```
 
@@ -339,7 +340,7 @@ class DatabaseAuditStorage implements AuditLogStorage {
       category: entry.category,
       details: JSON.stringify(entry.details),
       hash: entry.hash,
-      previousHash: entry.previousHash
+      previousHash: entry.previousHash,
     });
   }
 
@@ -348,14 +349,14 @@ class DatabaseAuditStorage implements AuditLogStorage {
       where: {
         timestamp: {
           gte: filter.startTime,
-          lte: filter.endTime
+          lte: filter.endTime,
         },
         actor: filter.actor,
-        category: filter.category
-      }
+        category: filter.category,
+      },
     });
 
-    return logs.map(log => ({
+    return logs.map((log) => ({
       timestamp: log.timestamp,
       actor: log.actor,
       action: log.action,
@@ -363,14 +364,14 @@ class DatabaseAuditStorage implements AuditLogStorage {
       category: log.category,
       details: JSON.parse(log.details),
       hash: log.hash,
-      previousHash: log.previousHash
+      previousHash: log.previousHash,
     }));
   }
 }
 
 const logger = new AuditLogger({
   storage: new DatabaseAuditStorage(),
-  enableChaining: true
+  enableChaining: true,
 });
 ```
 
@@ -394,7 +395,7 @@ const detector = new ThreatDetector({
       identifier: event.identifier,
       level: event.level,
       reason: event.reason,
-      metadata: event.metadata
+      metadata: event.metadata,
     });
 
     // Take action based on threat level
@@ -402,13 +403,13 @@ const detector = new ThreatDetector({
       await blockIdentifier(event.identifier);
       await alertSecurityTeam(event);
     }
-  }
+  },
 });
 
 // Record requests
 await detector.recordRequest(identifier, {
   ip: req.ip,
-  endpoint: req.path
+  endpoint: req.path,
 });
 
 // Record failures
@@ -425,12 +426,12 @@ if (level === ThreatLevel.HIGH || level === ThreatLevel.CRITICAL) {
 
 ### Threat Levels
 
-| Level | Criteria | Action |
-|-------|----------|--------|
-| LOW | Normal activity | Monitor |
-| MEDIUM | Elevated activity | Log warning |
-| HIGH | Suspicious patterns | Rate limit aggressively |
-| CRITICAL | Confirmed attack | Block immediately |
+| Level    | Criteria            | Action                  |
+| -------- | ------------------- | ----------------------- |
+| LOW      | Normal activity     | Monitor                 |
+| MEDIUM   | Elevated activity   | Log warning             |
+| HIGH     | Suspicious patterns | Rate limit aggressively |
+| CRITICAL | Confirmed attack    | Block immediately       |
 
 ### Custom Threat Detection Rules
 
@@ -441,24 +442,23 @@ const detector = new ThreatDetector({
       name: 'rapid_failures',
       check: (history) => {
         const recentFailures = history.filter(
-          e => e.type === 'failure' &&
-          Date.now() - e.timestamp < 60000
+          (e) => e.type === 'failure' && Date.now() - e.timestamp < 60000
         );
         return recentFailures.length > 10;
       },
-      level: ThreatLevel.HIGH
+      level: ThreatLevel.HIGH,
     },
     {
       name: 'geographic_anomaly',
       check: (history, metadata) => {
         // Check for suspicious geographic patterns
-        const countries = history.map(e => e.metadata?.country);
+        const countries = history.map((e) => e.metadata?.country);
         const uniqueCountries = new Set(countries);
-        return uniqueCountries.size > 5;  // 5+ countries in short time
+        return uniqueCountries.size > 5; // 5+ countries in short time
       },
-      level: ThreatLevel.MEDIUM
-    }
-  ]
+      level: ThreatLevel.MEDIUM,
+    },
+  ],
 });
 ```
 
@@ -475,7 +475,7 @@ import { InputSanitizer, defaultSanitizer } from '@aura-network/verifier-sdk';
 
 const sanitizer = new InputSanitizer({
   maxStringLength: 10000,
-  strictMode: true
+  strictMode: true,
 });
 
 // Sanitize QR code input
@@ -521,8 +521,8 @@ const sanitizer = new InputSanitizer({
     presentationId: (value: string): boolean => {
       // Custom presentation ID validation
       return /^pres-[a-f0-9]{32}$/i.test(value);
-    }
-  }
+    },
+  },
 });
 ```
 
@@ -559,11 +559,7 @@ const decrypted = await decryptObject(retrieved, key);
 ### Key Derivation from Password
 
 ```typescript
-import {
-  deriveKeyFromPassword,
-  encryptString,
-  decryptString
-} from '@aura-network/verifier-sdk';
+import { deriveKeyFromPassword, encryptString, decryptString } from '@aura-network/verifier-sdk';
 
 // Derive key from password
 const password = 'user-password';
@@ -585,8 +581,8 @@ const decrypted = await decryptString(encrypted, key);
 import { KeyRotationManager } from '@aura-network/verifier-sdk';
 
 const keyManager = new KeyRotationManager({
-  rotationInterval: 86400000,  // 24 hours
-  keyDerivationIterations: 100000
+  rotationInterval: 86400000, // 24 hours
+  keyDerivationIterations: 100000,
 });
 
 // Get current key
@@ -610,14 +606,14 @@ await keyManager.rotateKeys();
 const verifier = new AuraVerifier({
   network: 'mainnet',
   timeout: 10000,
-  verbose: false,  // Disable verbose logging
+  verbose: false, // Disable verbose logging
   cacheConfig: {
     enableDIDCache: true,
     enableVCCache: true,
     ttl: 300,
     storageLocation: process.env.CACHE_DIR,
-    encryptionKey: process.env.ENCRYPTION_KEY  // Use env variables
-  }
+    encryptionKey: process.env.ENCRYPTION_KEY, // Use env variables
+  },
 });
 ```
 
@@ -639,8 +635,8 @@ export ENCRYPTION_KEY=$(aws secretsmanager get-secret-value --secret-id aura-enc
 // Use HTTPS endpoints only
 const verifier = new AuraVerifier({
   network: 'mainnet',
-  grpcEndpoint: 'grpcs://rpc.aurablockchain.org:9090',  // TLS
-  restEndpoint: 'https://api.aurablockchain.org'         // HTTPS
+  grpcEndpoint: 'grpcs://rpc.aurablockchain.org:9090', // TLS
+  restEndpoint: 'https://api.aurablockchain.org', // HTTPS
 });
 ```
 
@@ -656,7 +652,7 @@ try {
 
   // Return generic error to client
   res.status(400).json({
-    error: 'Verification failed. Please try again.'
+    error: 'Verification failed. Please try again.',
   });
 }
 ```
@@ -674,15 +670,16 @@ verifier.on('error', async (data) => {
 // Monitor suspicious patterns
 setInterval(async () => {
   const logs = await auditLogger.getLogs({
-    startTime: new Date(Date.now() - 3600000),  // Last hour
-    outcome: AuditOutcome.FAILURE
+    startTime: new Date(Date.now() - 3600000), // Last hour
+    outcome: AuditOutcome.FAILURE,
   });
 
   const failureRate = logs.length / totalRequests;
-  if (failureRate > 0.5) {  // >50% failure rate
+  if (failureRate > 0.5) {
+    // >50% failure rate
     await alertSecurityTeam('High failure rate detected');
   }
-}, 300000);  // Every 5 minutes
+}, 300000); // Every 5 minutes
 ```
 
 ### 6. Regular Security Updates
@@ -703,22 +700,24 @@ npm audit fix
 ### GDPR Compliance
 
 1. **Data Minimization**
+
    ```typescript
    // Only request necessary attributes
    const result = await verifier.verify({
      qrCodeData,
      requiredDisclosures: {
-       show_age_over_21: true  // Only age, not full DOB
-     }
+       show_age_over_21: true, // Only age, not full DOB
+     },
    });
    ```
 
 2. **Data Retention**
+
    ```typescript
    // Clear cache after retention period
    setInterval(async () => {
      await cache.clear();
-   }, 86400000);  // 24 hours
+   }, 86400000); // 24 hours
    ```
 
 3. **Audit Trail**
@@ -728,7 +727,7 @@ npm audit fix
      actor: verifierDID,
      target: holderDID,
      outcome: AuditOutcome.SUCCESS,
-     details: { purpose: 'age_verification' }
+     details: { purpose: 'age_verification' },
    });
    ```
 

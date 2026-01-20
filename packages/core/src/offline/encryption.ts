@@ -56,7 +56,7 @@ export function createAutoWipeKey(
     cancel: () => {
       clearTimeout(timer);
       wipeKey(keyCopy);
-    }
+    },
   };
 }
 
@@ -96,7 +96,7 @@ export function deriveKeyFromPassword(
     // Derive 32-byte key for AES-256
     const key = pbkdf2(sha256, password, actualSalt, {
       c: actualIterations,
-      dkLen: 32
+      dkLen: 32,
     });
 
     return { key, salt: actualSalt };
@@ -134,9 +134,7 @@ export async function encrypt(
     }
 
     // Convert data to Uint8Array if needed
-    const plaintext = typeof data === 'string'
-      ? new TextEncoder().encode(data)
-      : data;
+    const plaintext = typeof data === 'string' ? new TextEncoder().encode(data) : data;
 
     // Generate random IV (12 bytes for GCM)
     const iv = randomBytes(12);
@@ -154,7 +152,7 @@ export async function encrypt(
     const encryptParams: any = {
       name: 'AES-GCM',
       iv: iv,
-      tagLength: 128
+      tagLength: 128,
     };
 
     // Add AAD if provided
@@ -166,7 +164,10 @@ export async function encrypt(
     const ciphertext = await getCrypto().subtle.encrypt(
       encryptParams as AesGcmParams,
       cryptoKey,
-      plaintext.buffer.slice(plaintext.byteOffset, plaintext.byteOffset + plaintext.byteLength) as ArrayBuffer
+      plaintext.buffer.slice(
+        plaintext.byteOffset,
+        plaintext.byteOffset + plaintext.byteLength
+      ) as ArrayBuffer
     );
 
     // Split ciphertext and auth tag
@@ -180,7 +181,7 @@ export async function encrypt(
       iv: arrayBufferToBase64(iv),
       authTag: arrayBufferToBase64(authTag),
       ciphertext: arrayBufferToBase64(actualCiphertext),
-      aad: aad
+      aad: aad,
     };
   } catch {
     // Security: Don't expose error details
@@ -194,10 +195,7 @@ export async function encrypt(
  * @param key - 32-byte decryption key
  * @returns Decrypted data as Uint8Array
  */
-export async function decrypt(
-  encryptedData: EncryptedData,
-  key: Uint8Array
-): Promise<Uint8Array> {
+export async function decrypt(encryptedData: EncryptedData, key: Uint8Array): Promise<Uint8Array> {
   try {
     // Validate key length
     if (key.length !== 32) {
@@ -232,7 +230,7 @@ export async function decrypt(
     const decryptParams: any = {
       name: 'AES-GCM',
       iv: iv.buffer.slice(iv.byteOffset, iv.byteOffset + iv.byteLength) as ArrayBuffer,
-      tagLength: 128
+      tagLength: 128,
     };
 
     // Add AAD if it was used during encryption
@@ -244,7 +242,10 @@ export async function decrypt(
     const plaintext = await getCrypto().subtle.decrypt(
       decryptParams as AesGcmParams,
       cryptoKey,
-      combined.buffer.slice(combined.byteOffset, combined.byteOffset + combined.byteLength) as ArrayBuffer
+      combined.buffer.slice(
+        combined.byteOffset,
+        combined.byteOffset + combined.byteLength
+      ) as ArrayBuffer
     );
 
     return new Uint8Array(plaintext);
@@ -353,7 +354,7 @@ export function keyToHex(key: Uint8Array): string {
   }
 
   return Array.from(key)
-    .map(b => b.toString(16).padStart(2, '0'))
+    .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
 }
 

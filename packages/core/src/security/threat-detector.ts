@@ -306,15 +306,12 @@ export class ThreatDetector {
   /**
    * Detect rapid request pattern
    */
-  private async detectRapidRequests(
-    identifier: string,
-    record: ActivityRecord
-  ): Promise<void> {
+  private async detectRapidRequests(identifier: string, record: ActivityRecord): Promise<void> {
     const now = Date.now();
     const windowStart = now - this.rapidRequestWindow;
 
     // Count recent requests
-    const recentRequests = record.requestTimes.filter(t => t >= windowStart);
+    const recentRequests = record.requestTimes.filter((t) => t >= windowStart);
 
     if (recentRequests.length >= this.maxRequestsPerWindow) {
       await this.emitThreat({
@@ -337,10 +334,7 @@ export class ThreatDetector {
   /**
    * Detect brute force pattern
    */
-  private async detectBruteForce(
-    identifier: string,
-    record: ActivityRecord
-  ): Promise<void> {
+  private async detectBruteForce(identifier: string, record: ActivityRecord): Promise<void> {
     if (record.failureCount >= this.maxFailedAttempts) {
       const failureRate = record.failureCount / (record.successCount + record.failureCount);
 
@@ -409,7 +403,7 @@ export class ThreatDetector {
     // Check for many different credentials/entities accessed rapidly
     const now = Date.now();
     const recentWindow = now - this.rapidRequestWindow;
-    const recentRequests = record.requestTimes.filter(t => t >= recentWindow);
+    const recentRequests = record.requestTimes.filter((t) => t >= recentWindow);
 
     if (recentRequests.length > 10 && record.entities.size > 5) {
       await this.emitThreat({
@@ -478,7 +472,9 @@ export class ThreatDetector {
 
     // Prepare location string for anomaly detection
     const locationStr = location
-      ? (typeof location === 'string' ? location : location.country || 'unknown')
+      ? typeof location === 'string'
+        ? location
+        : location.country || 'unknown'
       : undefined;
 
     // Run threat detection BEFORE adding location to history
@@ -541,7 +537,9 @@ export class ThreatDetector {
       evidence: { reason },
       recommendation: 'Reject all requests from this entity',
       automaticActionTaken: true,
-    }).catch(() => { /* Silent failure */ });
+    }).catch(() => {
+      /* Silent failure */
+    });
   }
 
   /**
@@ -597,9 +595,7 @@ export class ThreatDetector {
       allThreats.push(...record.threats);
     }
 
-    return allThreats
-      .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
-      .slice(0, limit);
+    return allThreats.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()).slice(0, limit);
   }
 
   /**
@@ -611,12 +607,10 @@ export class ThreatDetector {
 
     for (const [identifier, record] of this.activities.entries()) {
       // Remove old request times
-      record.requestTimes = record.requestTimes.filter(t => t >= cutoff);
+      record.requestTimes = record.requestTimes.filter((t) => t >= cutoff);
 
       // Remove old threats
-      record.threats = record.threats.filter(
-        t => t.timestamp.getTime() >= cutoff
-      );
+      record.threats = record.threats.filter((t) => t.timestamp.getTime() >= cutoff);
 
       // Remove record if no recent activity
       if (record.lastSeen < cutoff && record.threats.length === 0) {
