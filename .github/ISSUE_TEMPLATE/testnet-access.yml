@@ -1,7 +1,7 @@
 name: Testnet Access Request
 description: Request access to the AURA testnet or testnet tokens
-title: "[TESTNET ACCESS] "
-labels: ["testnet", "access-request"]
+title: '[TESTNET ACCESS] '
+labels: ['testnet', 'access-request']
 assignees: []
 
 body:
@@ -47,7 +47,7 @@ body:
     attributes:
       label: Token Amount Needed
       description: If requesting tokens, how many AURA do you need? (Standard faucet provides 200 AURA)
-      placeholder: "200"
+      placeholder: '200'
     validations:
       required: false
 

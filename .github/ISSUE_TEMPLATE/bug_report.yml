@@ -1,6 +1,6 @@
 name: Bug Report
 description: Report a bug in Aura
-labels: ["bug", "triage"]
+labels: ['bug', 'triage']
 body:
   - type: markdown
     attributes:
@@ -14,7 +14,7 @@ body:
     attributes:
       label: Aura Version
       description: Output of `aurad version`
-      placeholder: "v1.0.0"
+      placeholder: 'v1.0.0'
     validations:
       required: true
 
