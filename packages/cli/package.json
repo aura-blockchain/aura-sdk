@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@aura-network/verifier-sdk": "workspace:*",
-    "commander": "^11.1.0",
+    "commander": "^14.0.2",
     "chalk": "^5.3.0",
     "ora": "^8.0.1",
     "qrcode-terminal": "^0.12.0",
