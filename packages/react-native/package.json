@@ -37,6 +37,6 @@
     "react-test-renderer": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/coverage-v8": "^1.2.0",
-    "jsdom": "^23.0.1"
+    "jsdom": "^27.4.0"
   }
 }
