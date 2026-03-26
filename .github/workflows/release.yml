@@ -97,7 +97,7 @@ jobs:
 
       - name: Upload build artifacts
         if: matrix.node == 18
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-artifacts
           path: |
@@ -181,7 +181,7 @@ jobs:
           cat published-packages.md
 
       - name: Upload package list
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: published-packages
           path: published-packages.md
