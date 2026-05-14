@@ -38,7 +38,7 @@
     "husky": "^8.0.3",
     "prettier": "^3.2.4",
     "typescript": "^5.3.3",
-    "vitest": "^4.0.16"
+    "vitest": "^4.1.6"
   },
   "repository": {
     "type": "git",
