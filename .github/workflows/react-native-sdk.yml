@@ -29,7 +29,7 @@ jobs:
             packages/react-native/pnpm-lock.yaml
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 8.15.0
 
@@ -64,7 +64,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 8.15.0
       - name: Install dependencies
@@ -88,7 +88,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 8.15.0
       - name: Install dependencies
