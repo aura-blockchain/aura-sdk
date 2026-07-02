@@ -37,7 +37,7 @@
     "@types/node": "^20.11.5",
     "@types/qrcode-terminal": "^0.12.2",
     "@types/qrcode": "^1.5.5",
-    "typescript": "^5.3.3"
+    "typescript": "^6.0.3"
   },
   "keywords": [
     "aura",
