@@ -25,7 +25,7 @@
   "dependencies": {
     "@aura-network/verifier-sdk": "workspace:*",
     "node-fetch": "^3.3.2",
-    "uuid": "^9.0.1"
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
