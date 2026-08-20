@@ -35,7 +35,7 @@
     "benchmark:e2e": "tsx benchmarks/e2e-benchmark.ts"
   },
   "dependencies": {
-    "@cosmjs/crypto": "^0.32.2",
+    "@cosmjs/crypto": "^0.39.0",
     "@cosmjs/encoding": "^0.32.2",
     "@cosmjs/proto-signing": "^0.32.2",
     "@cosmjs/stargate": "^0.32.2",
